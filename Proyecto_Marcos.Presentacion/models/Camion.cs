@@ -8,9 +8,9 @@ namespace Proyecto_Marcos.Presentacion.models
 {
     class Camion
     {
-        private float _capaciadaMax { get; set; }
-       
-        private float _tara { get ; set; }
+        public float _capaciadaMax { get; set; }
+
+        public float _tara { get ; set; }
 
         
         

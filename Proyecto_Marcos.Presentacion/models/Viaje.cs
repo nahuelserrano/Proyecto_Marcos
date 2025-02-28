@@ -17,7 +17,6 @@ namespace Proyecto_Marcos.Presentacion.models
         private int _remito { get; set; }
         private float _precio_kilo { get; set; }
         private float _total => (_peso * _precio_kilo)*tonelada;
-       
         private float _carga;
         public float Carga
         { get { return _carga; }
