@@ -8,12 +8,12 @@ namespace Proyecto_Marcos.Presentacion.models
 {
     class Cliente
     {
-        public Viaje viaje { get; set; }
+        public Camion viaje { get; set; }
         public String _nombre { get; set; }
         public String _apellido { get; set; }
         public cheque _cheque { get; set; }
 
-        public Cliente(Viaje viaje, String nombre, String apellido, cheque cheque)
+        public Cliente(Camion viaje, String nombre, String apellido, cheque cheque)
         {
             this.viaje = viaje;
             this._nombre = nombre;

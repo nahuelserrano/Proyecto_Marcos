@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Proyecto_Marcos.Presentacion.models
 {
-    class Viaje
+    public class Camion
     {
         const int tonelada = 1000;
         private Camion camion { get; set; }
@@ -35,8 +35,12 @@ namespace Proyecto_Marcos.Presentacion.models
         private Chofer _chofer { get; set; }
         private float presupuesto => _carga * _precio_kilo;
         private Cliente _cliente { get; set; }
+        public DateTime FechaInicio { get; internal set; }
+        public DateTime FechaEntrega { get; internal set; }
+        public int KilosCarga { get; internal set; }
+        public object CamionId { get; internal set; }
 
-        public Viaje(DateTime fechaPartida, String destino, String lugarPartida, float _peso, int remito, float _precio_kilo, float carga, Chofer chofer, Cliente cliente)
+        public Camion(DateTime fechaPartida, String destino, String lugarPartida, float _peso, int remito, float _precio_kilo, float carga, Chofer chofer, Cliente cliente)
         {
             this._fechaPartida = fechaPartida;
             this.destino = destino;

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TransporteApp.Repositories;
+using TransporteApp.Utils;
 
 namespace Proyecto_Marcos.Presentacion.Services
 {
@@ -24,7 +26,7 @@ namespace Proyecto_Marcos.Presentacion.Services
         }
 
         // Clase Task: representa una operación que está en progreso o que se completará en el futuro, parecidas a las promesas
-        public async Task<Result<int>> CrearViajeAsync(Viaje viaje)
+        public async Task<Result<int>> CrearViajeAsync(Camion viaje)
         {
             if (viaje == null)
                 return Result<int>.Failure("¡El viaje no puede ser null!");
