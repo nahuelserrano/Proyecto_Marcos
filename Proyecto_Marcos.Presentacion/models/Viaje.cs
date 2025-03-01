@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Proyecto_Marcos.Presentacion.models
 {
-    class Viaje
+    public class Viaje
     {
         const int tonelada = 1000;
         private Camion camion { get; set; }

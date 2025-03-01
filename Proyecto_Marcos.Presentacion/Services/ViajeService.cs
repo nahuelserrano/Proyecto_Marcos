@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TransporteApp.Repositories;
+using TransporteApp.Utils;
 
 namespace Proyecto_Marcos.Presentacion.Services
 {
@@ -29,7 +31,7 @@ namespace Proyecto_Marcos.Presentacion.Services
             if (viaje == null)
                 return Result<int>.Failure("¡El viaje no puede ser null!");
 
-            if (viaje.FechaInicio < DateTime.Now)
+            if (viaje.FechaEntrega < DateTime.Now)
                 return Result<int>.Failure("No puedes crear viajes en el pasado");
 
             if (viaje.FechaEntrega <= viaje.FechaInicio)
