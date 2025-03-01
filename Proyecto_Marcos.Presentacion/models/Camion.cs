@@ -6,23 +6,32 @@ using System.Threading.Tasks;
 
 namespace Proyecto_Marcos.Presentacion.models
 {
-    class Camion
+    public class Camion
     {
-        private float _capaciadaMax { get; set; }
-       
-        private float _tara { get ; set; }
+        internal int CapacidadMaxima;
 
-        
-        
-       public Camion(float capMax, float tara)
+        public float CapaciadaMax { get; set; }
+
+        public float Tara { get ; set; }
+        public int Id { get; set; }
+        public String patente { get; set; }
+
+
+
+        public Camion(float capMax, float tara, String patente)
         {
-            this._capaciadaMax = capMax;
-            this._tara = tara;
+            this.CapaciadaMax = capMax;
+            this.Tara = tara;
+       
+            this.patente = patente;
+
+
+
         }
 
         public bool chequeo_peso_maximo(float peso)
         {
-            if (this._tara+peso>this._capaciadaMax)
+            if (this.Tara + peso>this.CapaciadaMax)
             {
                 return false;
             }

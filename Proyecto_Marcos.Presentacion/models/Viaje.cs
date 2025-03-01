@@ -36,6 +36,10 @@ namespace Proyecto_Marcos.Presentacion.models
         private Chofer _chofer { get; set; }
         private float presupuesto => _carga * _precio_kilo;
         private Cliente _cliente { get; set; }
+        public DateTime FechaInicio { get; internal set; }
+        public DateTime FechaEntrega { get; internal set; }
+        public int KilosCarga { get; internal set; }
+        public object CamionId { get; internal set; }
 
         public Viaje(DateTime fechaPartida, String destino, String lugarPartida, float _peso, int remito, float _precio_kilo, float carga, Chofer chofer, Cliente cliente)
         {

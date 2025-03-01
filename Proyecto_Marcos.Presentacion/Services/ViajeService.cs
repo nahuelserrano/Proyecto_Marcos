@@ -26,7 +26,7 @@ namespace Proyecto_Marcos.Presentacion.Services
         }
 
         // Clase Task: representa una operación que está en progreso o que se completará en el futuro, parecidas a las promesas
-        public async Task<Result<int>> CrearViajeAsync(Viaje viaje)
+        public async Task<Result<int>> CrearViajeAsync(Camion viaje)
         {
             if (viaje == null)
                 return Result<int>.Failure("¡El viaje no puede ser null!");
@@ -58,7 +58,7 @@ namespace Proyecto_Marcos.Presentacion.Services
             }
         }
 
-        public async Task<Result<int>> getViajeByIdAsync()
+        public async Task<Result<int>> ObtenerViajePorIdAsync()
         {
             return Result<int>.Failure("Hubo un error al crear el viaje");
         }

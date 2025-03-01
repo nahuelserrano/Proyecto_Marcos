@@ -8,5 +8,7 @@ namespace Proyecto_Marcos.Presentacion.models
 {
     class Pagos
     {
+        public float monto { get; set; }
+        public bool pagado { get; set; }
     }
 }

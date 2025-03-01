@@ -14,9 +14,9 @@ namespace Proyecto_Marcos.Presentacion.models
 {
     class Chofer
     {
-        private String nombre { get; set; }
-        private String apellido { get; set; }
-        private List<Pagos> pagos;
+        public String nombre { get; set; }
+        public String apellido { get; set; }
+        public List<Pagos> pagos;
         
         public Chofer (String nombre, String apellido)
         {

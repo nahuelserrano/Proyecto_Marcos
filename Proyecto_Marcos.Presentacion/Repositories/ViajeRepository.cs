@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Proyecto_Marcos.Presentacion.models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,12 @@ namespace TransporteApp.Repositories
     {
         public Object db { get; set; }
 
-        internal async Task<int> InsertarViajeAsync(Viaje viaje)
+        internal async Task<int> InsertarViajeAsync(Camion viaje)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal async Task<int> InsertarViajeAsync(Camion viaje)
         {
             throw new NotImplementedException();
         }

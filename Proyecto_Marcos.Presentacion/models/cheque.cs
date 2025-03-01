@@ -8,5 +8,7 @@ namespace Proyecto_Marcos.Presentacion.models
 {
     class cheque
     {
+        public Cliente _cliente_Dueño_Cheque { get; set; }
+        
     }
 }
