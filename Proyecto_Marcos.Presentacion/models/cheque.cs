@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Proyecto_Marcos.Presentacion.models
 {
-    class cheque
+    class Cheque
     {
-        public Cliente _cliente_Dueño_Cheque { get; set; }
+        private Cliente _cliente_Dueño_Cheque { get; set; }
         
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TransporteApp.Utils
+namespace Proyecto_Marcos.Presentacion.Utils
 {
     public class Result<T>
     {

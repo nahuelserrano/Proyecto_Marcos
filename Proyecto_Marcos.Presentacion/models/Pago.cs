@@ -10,6 +10,6 @@ namespace Proyecto_Marcos.Presentacion
     {
         public int id { get; set; }
         public int Monto { get; set; }
-        public Boolean Pagado { get; set; }
+        public bool Pagado { get; set; }
     }
 }

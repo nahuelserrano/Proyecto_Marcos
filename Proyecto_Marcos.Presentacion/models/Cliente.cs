@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Proyecto_Marcos.Presentacion.models
 {
-    class Cliente
+    public class Cliente
     {
         public Camion viaje { get; set; }
         public String _nombre { get; set; }

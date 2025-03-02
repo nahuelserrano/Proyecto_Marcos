@@ -1,26 +1,37 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TransporteApp.Utils;
 
 namespace Proyecto_Marcos.Presentacion.Utils
 {
    public static class Validador
-    {
-        public static Result<bool> ValidarId<T>(int id, String nombreDeClase = null)//el tipo T reemplaza a cualquier tipo de dato por ejemplo valirdarId <camion>
+   {
+
+        public static Result<bool> ValidarId(int id, string nombreDeClase)//el tipo T reemplaza a cualquier tipo de dato por ejemplo valirdarId <camion>
         {
-            String nombre = nombreDeClase;
-            if (nombre == null)
-            {
-                nombre = typeof(T).Name;
-            }
             if (id <= 0)
             {
-                return Result<bool>.Failure($"El id de {nombre} no puede ser menor a 0");
+                return Result<bool>.Failure(MensajeError.idInvalido(nombreDeClase));
             }
-            return Result<bool>.Failure(true);
+            return Result<bool>.Success(true);
+        }
+
+        public static Result<bool> ValidarNumeroPositivo(decimal valor, string atributo)//el tipo T reemplaza a cualquier tipo de dato por ejemplo valirdarId <camion>
+        {
+            if (valor <= 0)
+            {
+                return Result<bool>.Failure(MensajeError.valorInvalido(atributo));
+            }
+            return Result<bool>.Success(true);
+        }
+
+        public static Result<bool> ValidarNoNull(object objeto, string nombreDeClase = null)
+        {
+            if (nombreDeClase == null)
+                nombreDeClase = typeof(object).Name;
+            
+            if (objeto == null)
+                return Result<bool>.Failure(MensajeError.objetoNulo(nombreDeClase));
+
+            return Result<bool>.Success(true);
         }
     }
 }
