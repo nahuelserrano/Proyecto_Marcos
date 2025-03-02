@@ -26,7 +26,7 @@ namespace Proyecto_Marcos.Presentacion.Services
         }
 
         // Clase Task: representa una operación que está en progreso o que se completará en el futuro, parecidas a las promesas
-        public async Task<Result<int>> CrearViajeAsync(Camion viaje)
+        public async Task<Result<int>> CrearViaje(Camion viaje)
         {
             if (viaje == null)
                 return Result<int>.Failure("¡El viaje no puede ser null!");
@@ -58,9 +58,51 @@ namespace Proyecto_Marcos.Presentacion.Services
             }
         }
 
-        public async Task<Result<int>> ObtenerViajePorIdAsync()
+        public async Task<Result<Viaje>> ObtenerViaje(int id)
         {
-            return Result<int>.Failure("Hubo un error al crear el viaje");
+            if (id <= 0)
+                return Result<Viaje>.Failure(ErrorMessages.InvalidId("Viaje"));
+
+            try
+            {
+                var viaje = await _viajeRepository.ObtenerViajeAsync(id);
+
+                if (viaje == null)
+                    return Result<Viaje>.Failure($"No se encontró ningún viaje con el ID {id}");
+
+                return Result<Viaje>.Success(viaje);
+            }
+            catch (Exception ex)
+            {
+                // Logger.LogError($"Error al obtener viaje {id}: {ex.Message}");
+                return Result<Viaje>.Failure($"Ocurrió un error al obtener el viaje con ID {id}");
+            }
         }
+
+        // READ - Obtener todos los viajes con filtros opcionales
+        public async Task<Result<List<Viaje>>> ObtenerViajes(
+            DateTime? fechaInicio = null,
+            DateTime? fechaFin = null,
+            int? choferId = null,
+            int? camionId = null,
+            string estado = null)
+        {
+            try
+            {
+                var viajes = await _viajeRepository.ObtenerViajesAsync(fechaInicio, fechaFin, choferId, camionId, estado);
+
+                if (viajes == null || viajes.Count == 0)
+                    return Result<List<Viaje>>.Success(new List<Viaje>()); // Devolver lista vacía, no es un error
+
+                return Result<List<Viaje>>.Success(viajes);
+            }
+            catch (Exception ex)
+            {
+                // Logger.LogError($"Error al obtener lista de viajes: {ex.Message}");
+                return Result<List<Viaje>>.Failure("Ocurrió un error al obtener la lista de viajes");
+            }
+        }
+
+
     }
 }

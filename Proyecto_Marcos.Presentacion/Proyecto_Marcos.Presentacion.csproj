@@ -59,11 +59,10 @@
     <Compile Include="models\Chofer.cs" />
     <Compile Include="models\Cheque.cs" />
     <Compile Include="models\Cliente.cs" />
-    <Compile Include="models\Pagos.cs" />
+    <Compile Include="models\Pago.cs" />
     <Compile Include="models\Viaje.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Pago.cs" />
     <Compile Include="Repositories\CamionRepository.cs" />
     <Compile Include="Repositories\ChoferRepository.cs" />
     <Compile Include="Repositories\ViajeRepository.cs" />
@@ -73,9 +72,13 @@
     <Compile Include="Services\ClienteService.cs" />
     <Compile Include="Services\PagosService.cs" />
     <Compile Include="Services\ViajeService.cs" />
-    <Compile Include="Utils\ErrorMesagess.cs" />
+    <Compile Include="Utils\MensajeError.cs" />
     <Compile Include="Utils\Result.cs" />
     <Compile Include="Utils\Validador.cs" />
+<<<<<<< HEAD
+=======
+    <Compile Include="Utils\ValidadorViaje.cs" />
+>>>>>>> 820e7f2ccf9ed9cdf09c58036aa39c40aef99846
     <EmbeddedResource Include="Formulario_Viajes.resx">
       <DependentUpon>Formulario_Viajes.cs</DependentUpon>
     </EmbeddedResource>
