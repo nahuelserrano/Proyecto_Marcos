@@ -31,7 +31,7 @@ namespace Proyecto_Marcos.Presentacion.Services
             if (viaje == null)
                 return Result<int>.Failure("¡El viaje no puede ser null!");
 
-            if (viaje.FechaInicio < DateTime.Now)
+            if (viaje.FechaEntrega < DateTime.Now)
                 return Result<int>.Failure("No puedes crear viajes en el pasado");
 
             if (viaje.FechaEntrega <= viaje.FechaInicio)
@@ -58,7 +58,7 @@ namespace Proyecto_Marcos.Presentacion.Services
             }
         }
 
-        public async Task<Result<int>> getViajeByIdAsync()
+        public async Task<Result<int>> ObtenerViajePorIdAsync()
         {
             return Result<int>.Failure("Hubo un error al crear el viaje");
         }

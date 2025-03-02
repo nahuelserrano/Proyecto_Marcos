@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TransporteApp.Models;
+using Proyecto_Marcos.Presentacion.models;
 
 namespace TransporteApp.Repositories
 {
