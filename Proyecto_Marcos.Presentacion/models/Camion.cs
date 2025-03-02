@@ -8,35 +8,26 @@ namespace Proyecto_Marcos.Presentacion.models
 {
     public class Camion
     {
-        internal int CapacidadMaxima;
 
-        public float CapaciadaMax { get; set; }
+        public float CapacidadMax { get; set; }
 
         public float Tara { get ; set; }
         public int Id { get; set; }
-        public String patente { get; set; }
+        public String Patente { get; set; }
 
 
 
         public Camion(float capMax, float tara, String patente)
         {
-            this.CapaciadaMax = capMax;
+            this.CapacidadMax = capMax;
             this.Tara = tara;
+            this.Patente = patente;
+
+
+
+        }
+
        
-            this.patente = patente;
-
-
-
-        }
-
-        public bool chequeo_peso_maximo(float peso)
-        {
-            if (this.Tara + peso>this.CapaciadaMax)
-            {
-                return false;
-            }
-            return true;
-        }
         
         
     }

@@ -10,5 +10,11 @@ namespace Proyecto_Marcos.Presentacion.models
     {
         public float monto { get; set; }
         public bool pagado { get; set; }
+
+        public Pagos(float monto, bool pagado)
+        {
+            this.monto = monto;
+            this.pagado = pagado;
+        }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Proyecto_Marcos.Presentacion.models
 {
-    public class Camion
+    public class Viaje
     {
         const int tonelada = 1000;
         private Camion camion { get; set; }
@@ -16,13 +16,14 @@ namespace Proyecto_Marcos.Presentacion.models
         private float _peso { get; set; }
         private int _remito { get; set; }
         private float _precio_kilo { get; set; }
-        private float _total => (_peso * _precio_kilo)*tonelada;
+        private float _total => (_peso * _precio_kilo) * tonelada;
         private float _carga;
         public float Carga
-        { get { return _carga; }
+        {
+            get { return _carga; }
             set
             {
-                if (this.chequeo(_carga))
+                if (this.camion.chequeo_peso_maximo(_carga))
                 {
                     _carga = value;
                 }
@@ -40,7 +41,7 @@ namespace Proyecto_Marcos.Presentacion.models
         public int KilosCarga { get; internal set; }
         public object CamionId { get; internal set; }
 
-        public Camion(DateTime fechaPartida, String destino, String lugarPartida, float _peso, int remito, float _precio_kilo, float carga, Chofer chofer, Cliente cliente)
+        public Viaje(DateTime fechaPartida, String destino, String lugarPartida, float _peso, int remito, float _precio_kilo, float carga, Chofer chofer, Cliente cliente)
         {
             this._fechaPartida = fechaPartida;
             this.destino = destino;
@@ -53,18 +54,10 @@ namespace Proyecto_Marcos.Presentacion.models
             this._cliente = cliente;
         }
 
-
-
-        private Boolean chequeo(float c) { 
         
-            if (this.camion.chequeo_peso_maximo(_carga))
-            {
-                return true;
-            }
-           
-           return false;
-
-        }
     }
+
+   
+
+    
 }
-        

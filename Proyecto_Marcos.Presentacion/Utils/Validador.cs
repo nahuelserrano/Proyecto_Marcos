@@ -20,7 +20,7 @@ namespace Proyecto_Marcos.Presentacion.Utils
             {
                 return Result<bool>.Failure($"El id de {nombre} no puede ser menor a 0");
             }
-            return Result<bool>.Failure(true);
+            return Result<bool>.Success(true);
         }
     }
 }

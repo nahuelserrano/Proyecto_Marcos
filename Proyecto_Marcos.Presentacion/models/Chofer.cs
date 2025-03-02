@@ -12,24 +12,20 @@ namespace Proyecto_Marcos.Presentacion.models
 
 
 {
-    class Chofer
+    public class Chofer
     {
         public String nombre { get; set; }
         public String apellido { get; set; }
-        public List<Pagos> pagos;
-        
+       
         public Chofer (String nombre, String apellido)
         {
             this.nombre = nombre;
             this.apellido = apellido;
-            this.pagos = new List<Pagos>();
+           
         }
        
 
-        public void addPagos(Pagos p)
-        {
-            pagos.Add(p);
-        }
+       
    
     }
 }

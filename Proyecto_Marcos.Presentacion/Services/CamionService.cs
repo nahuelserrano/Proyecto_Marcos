@@ -43,27 +43,24 @@ public class CamionService
     }
 
 
-    public async Task<Result<int>> CrearcamionAsync(float capacidadMax, float tara, String patente)
+    public async Task<Result<int>> CrearcamionAsync(Camion camion)
     {
-        if (capacidadMax == null|| tara == null|| patente == null) return Result<int>.Failure("¡datos incompletos!");
+        if (camion.CapacidadMax == null || camion.Tara == null || camion.Patente == null) return Result<int>.Failure("¡datos incompletos!");
 
 
 
-        if ( tara < this.pesominimo) return Result<int>.Failure("la tara del camion no es correcta");
-        if (capacidadMax < this.pesominimo) return Result<int>.Failure("el peso maximo del camion no es correcto");
+        if (camion.Tara < this.pesominimo) return Result<int>.Failure("la tara del camion no es correcta");
+        if (camion.CapacidadMax < this.pesominimo) return Result<int>.Failure("el peso maximo del camion no es correcto");
 
 
 
-        // Validar el peso de la carga contra la capacidad del camión
-        Camion camion = await _camionService.ObtenerCamionAsync(camion.CamionId);
-        if (camion.KilosCarga > camion.CapacidadMaxima)
-            return Result<int>.Failure($"¡La carga excede la capacidad! Máximo permitido: {camion.CapacidadMaxima}kg");
 
+        
 
         try
         {
             // Intentar insertar en la base de datos
-            int idcamion = await _camionRepository.InsertarcamionAsync(camion);
+            int idcamion = await _camionRepository.insertarcamionAsync(camion);
             return Result<int>.Success(idcamion);
         }
         catch (Exception ex)
@@ -73,4 +70,31 @@ public class CamionService
             return Result<int>.Failure("Hubo un error al crear el camion");
         }
     }
+
+    public async Task<Result<int>> EditarCamionAsync(int id, float? capacidadMax = null, float? tara = null, string patente = null)
+    {
+        if (id <= 0)
+            return Result<int>.Failure("ID de vehículo inválido.");
+
+       
+        var vehiculoExistente = await _camionRepository.ObtenerPorIdAsync(id);
+
+        if (vehiculoExistente == null)
+            return Result<int>.Failure("El vehículo no existe.");
+
+    
+        if (capacidadMax.HasValue)
+            vehiculoExistente.CapacidadMax = capacidadMax.Value;
+
+        if (tara.HasValue)
+            vehiculoExistente.Tara = tara.Value;
+
+        if (!string.IsNullOrWhiteSpace(patente))
+            vehiculoExistente.Patente = patente;
+
+        await _camionRepository.ActualizarAsync(vehiculoExistente);
+
+        return Result<int>.Success(id);
+    }
+
 }

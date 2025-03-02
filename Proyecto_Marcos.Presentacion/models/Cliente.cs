@@ -6,19 +6,21 @@ using System.Threading.Tasks;
 
 namespace Proyecto_Marcos.Presentacion.models
 {
-    class Cliente
+    public class Cliente
     {
-        public Camion viaje { get; set; }
-        public String _nombre { get; set; }
-        public String _apellido { get; set; }
-        public cheque _cheque { get; set; }
+  
+        public String Nombre { get; set; }
+        public String Apellido { get; set; }
+        public int dni { get; set; }
 
-        public Cliente(Camion viaje, String nombre, String apellido, cheque cheque)
+
+        public Cliente(Camion viaje, String nombre, String apellido, int dni)
         {
-            this.viaje = viaje;
-            this._nombre = nombre;
-            this._apellido = apellido;
-            this._cheque = cheque;
+         
+            this.Nombre = nombre;
+            this.Apellido = apellido;
+            this.dni = dni;
+
         }
     }
 }
