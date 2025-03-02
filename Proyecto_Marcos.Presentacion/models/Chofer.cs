@@ -8,9 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace Proyecto_Marcos.Presentacion.models
-
-
+namespace Proyecto_Marcos.Presentacion.Models
 {
     public class Chofer
     {
@@ -23,9 +21,5 @@ namespace Proyecto_Marcos.Presentacion.models
             this.apellido = apellido;
            
         }
-       
-
-       
-   
     }
 }

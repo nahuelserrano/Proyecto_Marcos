@@ -1,8 +1,7 @@
 ﻿using System;
-using static ChoferService;
 using System.Threading.Tasks;
-using Proyecto_Marcos.Presentacion.models;
-using TransporteApp.Utils;
+using Proyecto_Marcos.Presentacion.Models;
+using Proyecto_Marcos.Presentacion.Utils;
 
 
 public class CamionService
@@ -42,20 +41,13 @@ public class CamionService
 
     }
 
-
     public async Task<Result<int>> CrearcamionAsync(Camion camion)
     {
         if (camion.CapacidadMax == null || camion.Tara == null || camion.Patente == null) return Result<int>.Failure("¡datos incompletos!");
 
-
-
         if (camion.Tara < this.pesominimo) return Result<int>.Failure("la tara del camion no es correcta");
+
         if (camion.CapacidadMax < this.pesominimo) return Result<int>.Failure("el peso maximo del camion no es correcto");
-
-
-
-
-        
 
         try
         {
@@ -76,12 +68,10 @@ public class CamionService
         if (id <= 0)
             return Result<int>.Failure("ID de vehículo inválido.");
 
-       
         var vehiculoExistente = await _camionRepository.ObtenerPorIdAsync(id);
 
         if (vehiculoExistente == null)
             return Result<int>.Failure("El vehículo no existe.");
-
     
         if (capacidadMax.HasValue)
             vehiculoExistente.CapacidadMax = capacidadMax.Value;
@@ -96,5 +86,4 @@ public class CamionService
 
         return Result<int>.Success(id);
     }
-
 }

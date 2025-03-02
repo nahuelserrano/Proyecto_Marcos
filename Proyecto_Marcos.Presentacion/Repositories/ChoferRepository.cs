@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Proyecto_Marcos.Presentacion.models;
+using Proyecto_Marcos.Presentacion.Models;
 
-public class ChoferRepository
+namespace Proyecto_Marcos.Presentacion.Repositories
 {
-    internal async Task<Chofer> getById(int id)
+    public class ChoferRepository
     {
-        throw new NotImplementedException();
+        internal async Task<Chofer> getById(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

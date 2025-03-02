@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proyecto_Marcos.Presentacion.models
+namespace Proyecto_Marcos.Presentacion.Models
 {
     public class Viaje
     {
@@ -53,11 +53,5 @@ namespace Proyecto_Marcos.Presentacion.models
             this._chofer = chofer;
             this._cliente = cliente;
         }
-
-        
     }
-
-   
-
-    
 }

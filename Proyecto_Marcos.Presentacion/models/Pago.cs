@@ -1,8 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-public class Class1
+namespace Proyecto_Marcos.Presentacion.Models
 {
-	public Class1()
-	{
-	}
+    public class Pago
+    {
+        public int id { get; set; }
+        public int Monto { get; set; }
+        public bool Pagado { get; set; }
+    }
 }

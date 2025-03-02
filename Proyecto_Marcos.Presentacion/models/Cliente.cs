@@ -4,15 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proyecto_Marcos.Presentacion.models
+namespace Proyecto_Marcos.Presentacion.Models
 {
     public class Cliente
     {
-  
         public String Nombre { get; set; }
         public String Apellido { get; set; }
         public int dni { get; set; }
-
 
         public Cliente(Camion viaje, String nombre, String apellido, int dni)
         {

@@ -1,10 +1,7 @@
-﻿using Proyecto_Marcos.Presentacion.models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
 using System.Threading.Tasks;
-using TransporteApp.Utils;
+using Proyecto_Marcos.Presentacion.Models;
+using Proyecto_Marcos.Presentacion.Utils;
 
 namespace Proyecto_Marcos.Presentacion.Services
 {
@@ -16,7 +13,6 @@ namespace Proyecto_Marcos.Presentacion.Services
         {
             this._chequeRepository = chequeR ?? throw new ArgumentNullException(nameof(chequeR));
         }
-
 
         public async Task<Result<Cheque>> GetByIdAsync(int id)
         {
@@ -42,22 +38,13 @@ namespace Proyecto_Marcos.Presentacion.Services
             this._chequeRepository.eliminarcheque(chequeId);
 
             return Result<bool>.Success(true);
-
         }
+
         public async Task<Result<int>> CrearChequeAsync(Cheque cheque)
         {
             if (cheque.Cliente_Dueño_Cheque == null || cheque.FechaIngresoCheque == null || cheque.NumeroCheque == null || cheque.Monto == null || cheque.Banco == null || cheque.FechaCobro == null) return Result<int>.Failure("¡datos incompletos!");
 
-        
-
-
             if (cheque.FechaIngresoCheque.Date > cheque.FechaCobro.Date)  return Result<int>.Failure("La fecha de ingreso del cheque no puede ser posterior a la fecha de cobro.");
-
-
-
-
-
-
 
             try
             {
@@ -106,7 +93,6 @@ namespace Proyecto_Marcos.Presentacion.Services
 
             try
             {
-      
                 await _chequeRepository.ActualizarAsync(chequeExistente);
                 return Result<int>.Success(id);
             }
@@ -115,6 +101,5 @@ namespace Proyecto_Marcos.Presentacion.Services
                 return Result<int>.Failure($"Hubo un error al actualizar el cheque: {ex.Message}");
             }
         }
-
     }
 }

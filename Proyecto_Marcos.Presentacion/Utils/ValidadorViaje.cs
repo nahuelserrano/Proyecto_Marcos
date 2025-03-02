@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Proyecto_Marcos.Presentacion.models;
-using Proyecto_Marcos.Presentacion.Utils;
+using Proyecto_Marcos.Presentacion.Models;
 
 namespace Proyecto_Marcos.Presentacion.Utils
 {

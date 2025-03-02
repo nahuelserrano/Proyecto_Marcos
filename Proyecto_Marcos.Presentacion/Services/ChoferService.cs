@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using TransporteApp.Utils;
-using Proyecto_Marcos.Presentacion.models;
-using TransporteApp.Repositories;
-
+using Proyecto_Marcos.Presentacion.Models;
+using Proyecto_Marcos.Presentacion.Repositories;
+using Proyecto_Marcos.Presentacion.Utils;
 
 public class ChoferService
 {
@@ -26,6 +25,7 @@ public class ChoferService
         
         return Result<int>.Success(id);
     }
+
     internal async Task<Result<bool>> eliminarCamionAsync(int choferId)
     {
         if (choferId <= 0) return Result<bool>.Failure("El id no puede ser menor a 0");
@@ -37,7 +37,6 @@ public class ChoferService
         this._choferRepository.eliminarChofer(choferId);
 
         return Result<bool>.Success(true);
-
     }
 
     public async Task<Result<int>> CrearChoferAsync(Chofer chofer)
@@ -51,13 +50,11 @@ public class ChoferService
 
         try
         {
-    
             int idChofer = await _choferRepository.insertarChoferAsync(chofer);
             return Result<int>.Success(idChofer);
         }
         catch (Exception ex)
         {
-           
             return Result<int>.Failure("Hubo un error al crear el chofer: " + ex.Message);
         }
     }
@@ -67,18 +64,13 @@ public class ChoferService
         if (id <= 0)
             return Result<int>.Failure("ID de chofer inválido.");
 
-
         var vehiculoExistente = await _choferRepository.ObtenerPorIdAsync(id);
 
         if (vehiculoExistente == null)
             return Result<int>.Failure("El vehículo no existe.");
 
-
-        
-
         if (!string.IsNullOrWhiteSpace(nombre))
             vehiculoExistente.Patente = nombre;
-
 
         if (!string.IsNullOrWhiteSpace(apellido))
             vehiculoExistente.Patente = apellido;

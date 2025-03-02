@@ -1,12 +1,11 @@
-﻿using Proyecto_Marcos.Presentacion.models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Proyecto_Marcos.Presentacion.models;
+using Proyecto_Marcos.Presentacion.Models;
 
-namespace TransporteApp.Repositories
+namespace Proyecto_Marcos.Presentacion.Repositories
 {
     public class ViajeRepository
     {

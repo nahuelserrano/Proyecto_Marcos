@@ -70,7 +70,7 @@
 		<Compile Include="Services\ChequeService.cs" />
 		<Compile Include="Services\ChoferService.cs" />
 		<Compile Include="Services\ClienteService.cs" />
-		<Compile Include="Services\PagosService.cs" />
+		<Compile Include="Services\PagoService.cs" />
 		<Compile Include="Services\ViajeService.cs" />
 		<Compile Include="Utils\MensajeError.cs" />
 		<Compile Include="Utils\Result.cs" />
