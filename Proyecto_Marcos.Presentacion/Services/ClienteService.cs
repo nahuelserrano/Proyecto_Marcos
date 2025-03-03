@@ -15,7 +15,7 @@ namespace Proyecto_Marcos.Presentacion.Services
             this._clienteRepository = _clienteRepository ?? throw new ArgumentNullException(nameof(_clienteRepository));
         }
 
-        public async Task<Result<int>> getByIdAsync(int id)
+        public async Task<Result<int>> GetByIdAsync(int id)
         {
             if (id <= 0)
                 return Result<int>.Failure("El id no puede ser menor a 0");
@@ -29,7 +29,7 @@ namespace Proyecto_Marcos.Presentacion.Services
         }
 
 
-        internal async Task<Result<bool>> eliminarClienteAsync(int clienteId)
+        internal async Task<Result<bool>> EliminarClienteAsync(int clienteId)
         {
             if (clienteId <= 0) return Result<bool>.Failure("El id no puede ser menor a 0");
 

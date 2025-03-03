@@ -19,34 +19,25 @@ namespace Proyecto_Marcos.Presentacion.Services
             CamionService camionService,
             ChoferService choferService)
         { // Si el valor de alguna de las variables es null, lanza la excepción
-            _viajeRepository = viajeRepository ?? throw new ArgumentNullException(nameof(viajeRepository)); // nameOf() devuelve el nombre del parametro cómo string
-            _camionService = camionService ?? throw new ArgumentNullException(nameof(camionService));
-            _choferService = choferService ?? throw new ArgumentNullException(nameof(choferService));
+            _viajeRepository = viajeRepository ?? throw new ArgumentNullException(nameof(viajeRepository)); // ?? es el operador que remplaza null por el valor de la derecha
+            _camionService = camionService ?? throw new ArgumentNullException(nameof(camionService)); // nameOf() devuelve el nombre del parametro cómo string
+            _choferService = choferService ?? throw new ArgumentNullException(nameof(choferService)); 
         }
 
         // Clase Task: representa una operación que está en progreso o que se completará en el futuro, parecidas a las promesas
-        public async Task<Result<int>> CrearViaje(Camion viaje)
+        public async Task<Result<int>> CrearViaje(Viaje viaje)
         {
-            if (viaje == null)
-                return Result<int>.Failure("¡El viaje no puede ser null!");
+            ValidadorViaje validador = new ValidadorViaje(viaje);
 
-            if (viaje.FechaEntrega < DateTime.Now)
-                return Result<int>.Failure("No puedes crear viajes en el pasado");
+            Result<bool> resultadoValidacion = validador.ValidarCompleto();
 
-            if (viaje.FechaEntrega <= viaje.FechaInicio)
-                return Result<int>.Failure("La fecha de entrega debe ser posterior a la fecha de inicio");
-
-
-            // Validar el peso de la carga contra la capacidad del camión
-            Camion camion = await _camionService.ObtenerCamionAsync(viaje.CamionId);
-            if (viaje.KilosCarga > camion.CapacidadMaxima)
-                return Result<int>.Failure($"¡La carga excede la capacidad! Máximo permitido: {camion.CapacidadMaxima}kg");
-
+            if (!resultadoValidacion.IsSuccess)
+                return Result<int>.Failure(resultadoValidacion.Error);
 
             try
             {
                 // Intentar insertar en la base de datos
-                int idViaje = await _viajeRepository.InsertarViajeAsync(viaje);
+                int idViaje = await _viajeRepository.Insertar(viaje);
                 return Result<int>.Success(idViaje);
             }
             catch (Exception ex)
@@ -60,11 +51,11 @@ namespace Proyecto_Marcos.Presentacion.Services
         public async Task<Result<Viaje>> ObtenerViaje(int id)
         {
             if (id <= 0)
-                return Result<Viaje>.Failure(ErrorMessages.InvalidId("Viaje"));
+                return Result<Viaje>.Failure(MensajeError.idInvalido("Viaje"));
 
             try
             {
-                var viaje = await _viajeRepository.ObtenerViajeAsync(id);
+                var viaje = await _viajeRepository.ObtenerPorId(id);
 
                 if (viaje == null)
                     return Result<Viaje>.Failure($"No se encontró ningún viaje con el ID {id}");
@@ -88,7 +79,7 @@ namespace Proyecto_Marcos.Presentacion.Services
         {
             try
             {
-                var viajes = await _viajeRepository.ObtenerViajesAsync(fechaInicio, fechaFin, choferId, camionId, estado);
+                var viajes = await _viajeRepository.ObtenerPorFiltro(fechaInicio, fechaFin, choferId, camionId, estado);
 
                 if (viajes == null || viajes.Count == 0)
                     return Result<List<Viaje>>.Success(new List<Viaje>()); // Devolver lista vacía, no es un error
@@ -101,7 +92,5 @@ namespace Proyecto_Marcos.Presentacion.Services
                 return Result<List<Viaje>>.Failure("Ocurrió un error al obtener la lista de viajes");
             }
         }
-
-
     }
 }

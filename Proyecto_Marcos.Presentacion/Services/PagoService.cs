@@ -27,7 +27,7 @@ namespace Proyecto_Marcos.Presentacion.Services
             return Result<Pago>.Success(Pago);
         }
 
-        internal async Task<Result<bool>> eliminarChequeAsync(int pagoId)
+        internal async Task<Result<bool>> EliminarChequeAsync(int pagoId)
         {
             if (pagoId <= 0) return Result<bool>.Failure("El id no puede ser menor a 0");
 
