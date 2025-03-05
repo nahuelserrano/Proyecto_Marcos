@@ -8,7 +8,7 @@ namespace Proyecto_Marcos.Presentacion.Services
     class ChequeService
     {
         private ChequeRepository _chequeRepository;
-
+        private Validador _validador;
         public ChequeService(ChequeRepository chequeR)
         {
             this._chequeRepository = chequeR ?? throw new ArgumentNullException(nameof(chequeR));
@@ -16,8 +16,7 @@ namespace Proyecto_Marcos.Presentacion.Services
 
         public async Task<Result<Cheque>> GetByIdAsync(int id)
         {
-            if (id <= 0)
-                return Result<Cheque>.Failure("El id no puede ser menor a 0");
+           this.ValidarId(id);
 
             Cheque cheque = await this._chequeRepository.getById(id);
 
