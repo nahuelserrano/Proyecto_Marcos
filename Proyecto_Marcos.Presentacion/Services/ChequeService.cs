@@ -61,12 +61,12 @@ namespace Proyecto_Marcos.Presentacion.Services
         public async Task<Result<int>> EditarChequeAsync(int id, Cliente cliente = null, DateTime? FechaIngresoCheque = null, int? NumeroCheque = null, float? Monto = null, string Banco = null, DateTime? FechaCobro = null)
         {
             if (id <= 0)
-                return Result<int>.Failure("ID de cheque inválido.");
+                return Result<int>.Failure(MensajeError.idInvalido(id));
 
             var chequeExistente = await _chequeRepository.ObtenerPorIdAsync(id);
 
             if (chequeExistente == null)
-                return Result<int>.Failure("El cheque no existe.");
+                return Result<int>.Failure(MensajeError.objetoNulo(nameof(chequeExistente)));
 
           
             if (cliente != null)
@@ -88,7 +88,7 @@ namespace Proyecto_Marcos.Presentacion.Services
                 chequeExistente.FechaCobro = FechaCobro.Value;
 
             if (chequeExistente.FechaIngresoCheque > chequeExistente.FechaCobro)
-                return Result<int>.Failure("La fecha de ingreso del cheque no puede ser posterior a la fecha de cobro.");
+                return Result<int>.Failure(MensajeError.fechaInvalida(nameof(cliente)));
 
             try
             {

@@ -1,62 +1,114 @@
 ﻿using System;
+using System.Collections.Generic;
 using Proyecto_Marcos.Presentacion.Models;
 
 namespace Proyecto_Marcos.Presentacion.Utils
 {
 
-    public static class ValidadorViaje
+    public class ValidadorViaje 
     {
-        public static string NOMBRE_CLASE = "Viaje";
-        
-        // Validaciones específicas para Viaje
-        public static Result<bool> ValidarFechas(Viaje viaje)
+        private readonly Viaje _viaje;
+        private List<string> _errores;
+
+        public ValidadorViaje(Viaje viaje)
         {
-            if (viaje == null) return Result<bool>.Failure(MensajeError.objetoNulo(NOMBRE_CLASE));
-
-            if (viaje.FechaEntrega < viaje.FechaInicio)
-                return Result<bool>.Failure(MensajeError.fechaInvalida(nameof(viaje.FechaEntrega)));
-
-
-            return Result<bool>.Success(true);
+            _viaje = viaje;
+            _errores = new List<string>();
         }
 
-        public Result<bool> ValidarCliente(Viaje viaje)
+        // Método para iniciar la validación - verifica si el objeto es nulo
+        public ValidadorViaje Validar()
         {
-            if (viaje.Cliente == null)
-                return Result<bool>.Failure(MensajeError.objetoNulo(CLIENTE));
+            _errores.Clear();
 
-            return Result<bool>.Success(true);
+            if (_viaje == null)
+            {
+                _errores.Add(MensajeError.objetoNulo(nameof(Viaje)));
+            }
+
+            return this; // Para permitir encadenamiento
         }
 
-        public ViajeValidator ValidarCarga()
+        public ValidadorViaje ValidarFechas()
         {
-            if (_viaje == null) return thisaaawssd;
+            if (_viaje == null) return this; // Evitamos NullException
+
+            if (_viaje.FechaEntrega < _viaje.FechaInicio)
+                _errores.Add(MensajeError.fechaInvalida(nameof(_viaje.FechaEntrega)));
+
+            return this;
+        }
+
+        // Validación específica para entidades relacionadas
+        public ValidadorViaje ValidarEntidadesRelacionadas()
+        {
+            if (_viaje == null) return this;
+
+            if (_viaje.Cliente == null)
+                _errores.Add(MensajeError.objetoNulo(nameof(Cliente)));
+
+            if (_viaje.Camion == null)
+                _errores.Add(MensajeError.objetoNulo(nameof(Camion)));
+
+            if (_viaje.Chofer == null)
+                _errores.Add(MensajeError.objetoNulo(nameof(Chofer)));
+
+            return this;
+        }
+
+        public ValidadorViaje ValidarCarga()
+        {
+            if (_viaje == null || _viaje.Camion == null) return this;
 
             if (_viaje.KilosCarga <= 0)
-                AddError("Los kilos de carga deben ser mayores a cero");
+                _errores.Add("El peso de la carga debe ser mayor que cero");
+
+            // Verificamos que el camión pueda soportar la carga
+            if (!_viaje.Camion.chequeo_peso_maximo(_viaje.KilosCarga))
+                _errores.Add($"La carga supera la capacidad máxima del camión ({_viaje.Camion.CapacidadMax}kg)");
 
             return this;
         }
 
-        // Método para validación personalizada con predicado
-        public ViajeValidator Validate(Func<Viaje, bool> predicate, string errorMessage)
+        public ValidadorViaje ValidarRuta()
         {
-            if (_viaje != null && !predicate(_viaje))
-                AddError(errorMessage);
+            if (_viaje == null) return this; 
+
+            if (string.IsNullOrWhiteSpace(_viaje.LugarPartida))
+                _errores.Add("El lugar de partida es requerido");
+
+            if (string.IsNullOrWhiteSpace(_viaje.Destino))
+                _errores.Add("El destino es requerido");
+
+            if (_viaje.LugarPartida == _viaje.Destino)
+                _errores.Add("El origen y destino no pueden ser iguales");
 
             return this;
         }
 
-        // Validación completa en un solo método
-        public ViajeValidator ValidarCompleto()
+        // Obtener el resultado final
+        public Result<bool> ObtenerResultado()
         {
-            return NotNull()
+            return _errores.Count == 0
+                ? Result<bool>.Success(true)
+                : Result<bool>.Failure(ObtenerMensajeError());
+        }
+
+        // Esta función ayuda a mantener todas las validaciones en un solo llamado
+        public Result<bool> ValidarCompleto()
+        {
+            return Validar()
                 .ValidarFechas()
-                .ValidarCliente()
+                .ValidarEntidadesRelacionadas()
                 .ValidarCarga()
-                .Validate(v => v.Tarifa > 0, "La tarifa debe ser mayor a cero")
-                .Validate(v => v.ChoferId > 0, "Debe seleccionar un chofer válido")
-                .Validate(v => v.CamionId > 0, "Debe seleccionar un camión válido");
+                .ValidarRuta()
+                .ObtenerResultado();
+        }
+
+        // Método auxiliar para formatear los errores
+        private string ObtenerMensajeError()
+        {
+            return string.Join(Environment.NewLine, _errores);
         }
     }
 }

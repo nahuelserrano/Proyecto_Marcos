@@ -8,15 +8,15 @@ namespace Proyecto_Marcos.Presentacion.Models
 {
     public class Cliente
     {
-        public String Nombre { get; set; }
-        public String Apellido { get; set; }
+        public String nombre { get; set; }
+        public String apellido { get; set; }
         public int dni { get; set; }
 
         public Cliente(Camion viaje, String nombre, String apellido, int dni)
         {
          
-            this.Nombre = nombre;
-            this.Apellido = apellido;
+            this.nombre = nombre;
+            this.apellido = apellido;
             this.dni = dni;
 
         }

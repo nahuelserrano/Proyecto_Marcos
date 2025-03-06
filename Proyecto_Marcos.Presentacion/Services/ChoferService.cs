@@ -16,23 +16,23 @@ public class ChoferService
     public async Task<Result<int>> getByIdAsync(int id)
     {
         if (id <= 0)
-            return Result<int>.Failure("El id no puede ser menor a 0");
+            return Result<int>.Failure(MensajeError.idInvalido(id));
 
         Chofer chofer = await this._choferRepository.getById(id);
 
         if (chofer == null)
-            return Result<int>.Failure("El chofer con el id " + id + " No existe");
+            return Result<int>.Failure(MensajeError.objetoNulo(nameof(chofer)));
         
         return Result<int>.Success(id);
     }
 
     internal async Task<Result<bool>> eliminarCamionAsync(int choferId)
     {
-        if (choferId <= 0) return Result<bool>.Failure("El id no puede ser menor a 0");
+        if (choferId <= 0) return Result<bool>.Failure(MensajeError.idInvalido(choferId));
 
         Camion camion = await this._choferRepository.getById(choferId);
 
-        if (camion == null) return Result<bool>.Failure("El camion con el id " + choferId + " No existe");
+        if (camion == null) return Result<bool>.Failure(MensajeError.objetoNulo(nameof(camion)));
 
         this._choferRepository.eliminarChofer(choferId);
 
@@ -41,12 +41,12 @@ public class ChoferService
 
     public async Task<Result<int>> CrearChoferAsync(Chofer chofer)
     {
-        if (chofer == null)
-            return Result<int>.Failure("El objeto chofer no puede ser nulo");
-
         
-        if (string.IsNullOrWhiteSpace(chofer.nombre) || string.IsNullOrWhiteSpace(chofer.apellido))
-            return Result<int>.Failure("¡Datos incompletos! El nombre y el apellido son obligatorios.");
+        ValidadorChofer validador = new ValidadorChofer(chofer);
+        Result<bool> resultadoValidacion = validador.ValidarCompleto();
+        if (!resultadoValidacion.IsSuccess)
+            return Result<int>.Failure(resultadoValidacion.Error);
+
 
         try
         {
@@ -62,12 +62,12 @@ public class ChoferService
     public async Task<Result<int>> EditarChoferAsync(int id,string nombre = null,String apellido = null)
     {
         if (id <= 0)
-            return Result<int>.Failure("ID de chofer inválido.");
+            return Result<int>.Failure(MensajeError.idInvalido(id));
 
         var vehiculoExistente = await _choferRepository.ObtenerPorIdAsync(id);
 
         if (vehiculoExistente == null)
-            return Result<int>.Failure("El vehículo no existe.");
+            return Result<int>.Failure(MensajeError.objetoNulo(nameof(vehiculoExistente)));
 
         if (!string.IsNullOrWhiteSpace(nombre))
             vehiculoExistente.Patente = nombre;

@@ -15,7 +15,7 @@ namespace Proyecto_Marcos.Presentacion.Services
             this._clienteRepository = _clienteRepository ?? throw new ArgumentNullException(nameof(_clienteRepository));
         }
 
-        public async Task<Result<int>> getByIdAsync(int id)
+        public async Task<Result<int>> GetByIdAsync(int id)
         {
             if (id <= 0)
                 return Result<int>.Failure("El id no puede ser menor a 0");
@@ -29,7 +29,7 @@ namespace Proyecto_Marcos.Presentacion.Services
         }
 
 
-        internal async Task<Result<bool>> eliminarClienteAsync(int clienteId)
+        internal async Task<Result<bool>> EliminarClienteAsync(int clienteId)
         {
             if (clienteId <= 0) return Result<bool>.Failure("El id no puede ser menor a 0");
 
@@ -43,16 +43,13 @@ namespace Proyecto_Marcos.Presentacion.Services
 
         }
 
-        public async Task<Result<int>> CrearChoferAsync(Cliente cliente)
+        public async Task<Result<int>> CrearClienteAsync(Cliente cliente)
         {
-            if (cliente == null)
-                return Result<int>.Failure("El objeto chofer no puede ser nulo");
 
-
-            if (string.IsNullOrWhiteSpace(cliente.Nombre) || string.IsNullOrWhiteSpace(cliente.Apellido)|| cliente.dni==null)
-                return Result<int>.Failure("¡Datos incompletos! El nombre y el apellido son obligatorios.");
-
-            try
+            ValidadorCliente validador = new ValidadorCliente(cliente);
+            Result<bool> resultadoValidacion = validador.ValidarCompleto();
+            if (!resultadoValidacion.IsSuccess)
+                return Result<int>.Failure(resultadoValidacion.Error);
             {
 
                 int idCliente = await _clienteRepository.insertarChoferAsync(cliente);

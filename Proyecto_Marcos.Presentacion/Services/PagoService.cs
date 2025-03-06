@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Proyecto_Marcos.Presentacion.Models;
 using Proyecto_Marcos.Presentacion.Utils;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace Proyecto_Marcos.Presentacion.Services
 {
@@ -17,23 +18,23 @@ namespace Proyecto_Marcos.Presentacion.Services
         public async Task<Result<Pago>> GetByIdAsync(int id)
         {
             if (id <= 0)
-                return Result<Pago>.Failure("El id no puede ser menor a 0");
+                return Result<Pago>.Failure(MensajeError.idInvalido(id));
 
             Pago Pago = await this._pagoRepository.getById(id);
 
             if (Pago == null)
-                return Result<Pago>.Failure("El cheque con el id " + id + " No existe");
+                return Result<Pago>.Failure(MensajeError.objetoNulo(nameof(Pago)));
 
             return Result<Pago>.Success(Pago);
         }
 
-        internal async Task<Result<bool>> eliminarChequeAsync(int pagoId)
+        internal async Task<Result<bool>> EliminarChequeAsync(int pagoId)
         {
-            if (pagoId <= 0) return Result<bool>.Failure("El id no puede ser menor a 0");
+            if (pagoId <= 0) return Result<bool>.Failure(MensajeError.idInvalido(pagoId));
 
             Pago pago = await this._pagoRepository.getById(pagoId);
 
-            if (pago == null) return Result<bool>.Failure("El cheque con el id " + pagoId + " No existe");
+            if (pago == null) return Result<bool>.Failure(MensajeError.objetoNulo(nameof(pago)));
 
             this._pagoRepository.eliminarcheque(pagoId);
 
@@ -43,10 +44,13 @@ namespace Proyecto_Marcos.Presentacion.Services
 
         public async Task<Result<int>> CrearPagoAsync(Pago pago)
         {
-            if (pago.Monto == null || pago.Pagado == null) return Result<int>.Failure("¡datos incompletos!");
 
+            ValidadorPago validador = new ValidadorPago(pago);
 
-            if (pago.Monto < 0) return Result<int>.Failure("La fecha de ingreso del cheque no puede ser posterior a la fecha de cobro.");
+            Result<bool> resultadoValidacion = validador.ValidarCompleto();
+
+            if (!resultadoValidacion.IsSuccess)
+                return Result<int>.Failure(resultadoValidacion.Error);
 
             try
             {
@@ -63,12 +67,12 @@ namespace Proyecto_Marcos.Presentacion.Services
         public async Task<Result<int>> EditarPagoAsync(int id, float? monto = null, bool? pagado = null)
         {
             if (id <= 0)
-                return Result<int>.Failure("ID de pago inválido.");
+                return Result<int>.Failure(MensajeError.idInvalido(id));
 
             var pagarExistente = await _pagoRepository.ObtenerPorIdAsync(id);
 
             if (pagarExistente == null)
-                return Result<int>.Failure("El pago no existe.");
+                return Result<int>.Failure(MensajeError.objetoNulo(nameof(pagarExistente)));
 
 
             if (monto.HasValue)
