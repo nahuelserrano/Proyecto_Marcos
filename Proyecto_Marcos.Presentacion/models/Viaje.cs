@@ -55,13 +55,15 @@ namespace Proyecto_Marcos.Presentacion.Models
             get { return _chofer; }
             set
             {
-                if (ValidadorChofer.validarCompleto(value).isSuccess)
+                ValidadorChofer validador = new ValidadorChofer(Chofer);
+
+                if (validador.ValidarCompleto().IsSuccess)
                 {
                     _chofer = value;
                 }
                 else
                 {
-                    throw new Exception("El chofer no puede ser nulo");
+                    throw new Exception(validador.ObtenerResultado().Error);
                 }
             }
         }
@@ -82,10 +84,16 @@ namespace Proyecto_Marcos.Presentacion.Models
                 }
             }
         }
-        public DateTime FechaInicio { get; internal set; }
-        public DateTime FechaEntrega { get; internal set; }
-        public int KilosCarga { get; internal set; }
-        public object CamionId { get; internal set; }
+        public DateTime FechaInicio { get;  set; }
+        public DateTime FechaEntrega { get;  set; }
+        public int KilosCarga { get;  set; }
+        public int CamionId { get;  set; }
+
+        public string Estado
+        {
+            get => "finalizado"; // A implementar
+            set => Estado = value;
+        }
 
         public Viaje(DateTime fechaPartida, String destino, String lugarPartida, float _peso, int remito, float _precio_kilo, float carga, Chofer chofer, Cliente cliente)
         {

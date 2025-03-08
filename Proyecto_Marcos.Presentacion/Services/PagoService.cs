@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Proyecto_Marcos.Presentacion.Models;
+using Proyecto_Marcos.Presentacion.Repositories;
 using Proyecto_Marcos.Presentacion.Utils;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace Proyecto_Marcos.Presentacion.Services
 {
@@ -15,12 +15,12 @@ namespace Proyecto_Marcos.Presentacion.Services
             this._pagoRepository = pagosR ?? throw new ArgumentNullException(nameof(pagosR));
         }
 
-        public async Task<Result<Pago>> GetByIdAsync(int id)
+        public async Task<Result<Pago>> ObtenerPorId(int id)
         {
             if (id <= 0)
                 return Result<Pago>.Failure(MensajeError.idInvalido(id));
 
-            Pago Pago = await this._pagoRepository.getById(id);
+            Pago Pago = await this._pagoRepository.ObtenerPorId(id);
 
             if (Pago == null)
                 return Result<Pago>.Failure(MensajeError.objetoNulo(nameof(Pago)));
@@ -28,21 +28,21 @@ namespace Proyecto_Marcos.Presentacion.Services
             return Result<Pago>.Success(Pago);
         }
 
-        internal async Task<Result<bool>> EliminarChequeAsync(int pagoId)
+        internal async Task<Result<bool>> EliminarCheque(int pagoId)
         {
             if (pagoId <= 0) return Result<bool>.Failure(MensajeError.idInvalido(pagoId));
 
-            Pago pago = await this._pagoRepository.getById(pagoId);
+            Pago pago = await this._pagoRepository.ObtenerPorId(pagoId);
 
             if (pago == null) return Result<bool>.Failure(MensajeError.objetoNulo(nameof(pago)));
 
-            this._pagoRepository.eliminarcheque(pagoId);
+            // this._pagoRepository.EliminarCheque(pagoId); A implemenar en el repositorio
 
             return Result<bool>.Success(true);
 
         }
 
-        public async Task<Result<int>> CrearPagoAsync(Pago pago)
+        public async Task<Result<int>> Crear(Pago pago)
         {
 
             ValidadorPago validador = new ValidadorPago(pago);
@@ -55,7 +55,7 @@ namespace Proyecto_Marcos.Presentacion.Services
             try
             {
                 // Intentar insertar en la base de datos
-                int idPago = await _pagoRepository.insertarchequeAsync(pago);
+                int idPago = await _pagoRepository.Insertar(pago);
                 return Result<int>.Success(idPago);
             }
             catch (Exception ex)
@@ -64,12 +64,12 @@ namespace Proyecto_Marcos.Presentacion.Services
             }
         }
 
-        public async Task<Result<int>> EditarPagoAsync(int id, float? monto = null, bool? pagado = null)
+        public async Task<Result<int>> Actualizar(int id, float? monto = null, bool? pagado = null)
         {
             if (id <= 0)
                 return Result<int>.Failure(MensajeError.idInvalido(id));
 
-            var pagarExistente = await _pagoRepository.ObtenerPorIdAsync(id);
+            var pagarExistente = await _pagoRepository.ObtenerPorId(id);
 
             if (pagarExistente == null)
                 return Result<int>.Failure(MensajeError.objetoNulo(nameof(pagarExistente)));
@@ -84,7 +84,7 @@ namespace Proyecto_Marcos.Presentacion.Services
             try
             {
 
-                await _pagoRepository.ActualizarAsync(pagarExistente);
+                await _pagoRepository.Actualizar(pagarExistente);
                 return Result<int>.Success(id);
             }
             catch (Exception ex)

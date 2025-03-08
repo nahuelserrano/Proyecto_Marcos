@@ -8,20 +8,20 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 namespace Proyecto_Marcos.Presentacion.Utils
 {
 
-    public class validadorCheque
+    public class ValidadorCheque
     {
         private readonly Cheque _cheque;
         private List<string> _errores;
 
 
-        public validadorCheque(Cheque cheque)
+        public ValidadorCheque(Cheque cheque)
         {
             _cheque = cheque;
             _errores = new List<string>();
         }
 
         // Método para iniciar la validación - verifica si el objeto es nulo
-        public validadorCheque Validar()
+        public ValidadorCheque Validar()
         {
             _errores.Clear();
 
@@ -33,7 +33,7 @@ namespace Proyecto_Marcos.Presentacion.Utils
             return this; // Para permitir encadenamiento
         }
 
-        public validadorCheque ValidarDatos()
+        public ValidadorCheque ValidarDatos()
         {
                 if (_cheque.Monto < 0)
                      _errores.Add(MensajeError.valorInvalido(nameof(_cheque.Monto)));
@@ -42,7 +42,7 @@ namespace Proyecto_Marcos.Presentacion.Utils
 
             return this;
         }
-        public validadorCheque ValidarFechas()
+        public ValidadorCheque ValidarFechas()
         {
 
             if (_cheque.FechaIngresoCheque > _cheque.FechaCobro) return this; // Evitamos NullException
@@ -52,7 +52,7 @@ namespace Proyecto_Marcos.Presentacion.Utils
 
             return this;
         }
-        public validadorCheque ValidarEntidadesRelacionadas()
+        public ValidadorCheque ValidarEntidadesRelacionadas()
         {
             if (_cheque == null) return this;
 

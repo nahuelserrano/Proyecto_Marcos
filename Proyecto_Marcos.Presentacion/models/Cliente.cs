@@ -12,13 +12,11 @@ namespace Proyecto_Marcos.Presentacion.Models
         public String apellido { get; set; }
         public int dni { get; set; }
 
-        public Cliente(Camion viaje, String nombre, String apellido, int dni)
+        public Cliente(String nombre, String apellido, int dni)
         {
-         
             this.nombre = nombre;
             this.apellido = apellido;
             this.dni = dni;
-
         }
     }
 }

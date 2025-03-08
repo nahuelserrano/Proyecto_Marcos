@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Proyecto_Marcos.Presentacion.Models;
+using Proyecto_Marcos.Presentacion.Repositories;
 using Proyecto_Marcos.Presentacion.Utils;
 
 namespace Proyecto_Marcos.Presentacion.Services
@@ -14,11 +15,11 @@ namespace Proyecto_Marcos.Presentacion.Services
             this._chequeRepository = chequeR ?? throw new ArgumentNullException(nameof(chequeR));
         }
 
-        public async Task<Result<Cheque>> GetByIdAsync(int id)
+        public async Task<Result<Cheque>> ObtenerPorId(int id)
         {
            this.ValidarId(id);
 
-            Cheque cheque = await this._chequeRepository.getById(id);
+            Cheque cheque = await this._chequeRepository.ObtenerPorId(id);
 
             if (cheque == null)
                 return Result<Cheque>.Failure("El cheque con el id " + id + " No existe");
@@ -26,20 +27,20 @@ namespace Proyecto_Marcos.Presentacion.Services
             return Result<Cheque>.Success(cheque);
         }
 
-        internal async Task<Result<bool>> eliminarChequeAsync(int chequeId)
+        internal async Task<Result<bool>> Eliminar(int chequeId)
         {
             if (chequeId <= 0) return Result<bool>.Failure("El id no puede ser menor a 0");
 
-            Cheque cheque = await this._chequeRepository.getById(chequeId);
+            Cheque cheque = await this._chequeRepository.ObtenerPorId(chequeId);
 
             if (cheque == null) return Result<bool>.Failure("El cheque con el id " + chequeId + " No existe");
 
-            this._chequeRepository.eliminarcheque(chequeId);
+            this._chequeRepository.Eliminar(chequeId);
 
             return Result<bool>.Success(true);
         }
 
-        public async Task<Result<int>> CrearChequeAsync(Cheque cheque)
+        public async Task<Result<int>> Crear(Cheque cheque)
         {
             if (cheque.Cliente_Dueño_Cheque == null || cheque.FechaIngresoCheque == null || cheque.NumeroCheque == null || cheque.Monto == null || cheque.Banco == null || cheque.FechaCobro == null) return Result<int>.Failure("¡datos incompletos!");
 
@@ -48,7 +49,7 @@ namespace Proyecto_Marcos.Presentacion.Services
             try
             {
                 // Intentar insertar en la base de datos
-                int idcheque = await _chequeRepository.insertarchequeAsync(cheque);
+                int idcheque = await _chequeRepository.Insertar(cheque);
                 return Result<int>.Success(idcheque);
             }
             catch (Exception ex)
@@ -58,12 +59,12 @@ namespace Proyecto_Marcos.Presentacion.Services
             }
         }
 
-        public async Task<Result<int>> EditarChequeAsync(int id, Cliente cliente = null, DateTime? FechaIngresoCheque = null, int? NumeroCheque = null, float? Monto = null, string Banco = null, DateTime? FechaCobro = null)
+        public async Task<Result<int>> Actualizar(int id, Cliente cliente = null, DateTime? FechaIngresoCheque = null, int? NumeroCheque = null, float? Monto = null, string Banco = null, DateTime? FechaCobro = null)
         {
             if (id <= 0)
                 return Result<int>.Failure(MensajeError.idInvalido(id));
 
-            var chequeExistente = await _chequeRepository.ObtenerPorIdAsync(id);
+            var chequeExistente = await _chequeRepository.ObtenerPorId(id);
 
             if (chequeExistente == null)
                 return Result<int>.Failure(MensajeError.objetoNulo(nameof(chequeExistente)));
@@ -92,7 +93,7 @@ namespace Proyecto_Marcos.Presentacion.Services
 
             try
             {
-                await _chequeRepository.ActualizarAsync(chequeExistente);
+                await _chequeRepository.Actualizar(chequeExistente);
                 return Result<int>.Success(id);
             }
             catch (Exception ex)

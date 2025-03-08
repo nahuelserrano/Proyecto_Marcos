@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Proyecto_Marcos.Presentacion.Models;
+using Proyecto_Marcos.Presentacion.Repositories;
 using Proyecto_Marcos.Presentacion.Utils;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
-
 
 public class CamionService
 {
@@ -15,12 +14,12 @@ public class CamionService
         this._camionRepository = camionR ?? throw new ArgumentNullException(nameof(camionR));
     }
 
-    public async Task<Result<Camion>> GetByIdAsync(int id)
+    public async Task<Result<Camion>> ObtenerPorId(int id)
     {
         if (id <= 0)
             return Result<Camion>.Failure(MensajeError.idInvalido(id));
 
-        Camion camion = await this._camionRepository.getById(id);
+        Camion camion = await this._camionRepository.ObtenerPorId(id);
 
         if (camion == null)
             return Result<Camion>.Failure(MensajeError.objetoNulo(nameof(camion)));
@@ -28,15 +27,15 @@ public class CamionService
         return Result<Camion>.Success(camion);
     }
 
-    internal async Task<Result<bool>> eliminarCamionAsync(int camionId)
+    internal async Task<Result<bool>> Eliminar(int camionId)
     {
         if (camionId <= 0) return Result<bool>.Failure(MensajeError.idInvalido(camionId));
 
-        Camion camion = await this._camionRepository.getById(camionId);
+        Camion camion = await this._camionRepository.ObtenerPorId(camionId);
        
         if (camion == null) return Result<bool>.Failure(MensajeError.objetoNulo(nameof(camion)));
 
-        this._camionRepository.eliminarCamion(camionId);
+        this._camionRepository.Eliminar(camionId);
        
         return Result<bool>.Success(true);
 
@@ -44,14 +43,13 @@ public class CamionService
 
     public async Task<Result<int>> CrearcamionAsync(Camion camion)
     {
-
-
         ValidadorCamion validador = new ValidadorCamion(camion);
       
         Result<bool> resultadoValidacion = validador.ValidarCompleto();
 
         if (!resultadoValidacion.IsSuccess)
             return Result<int>.Failure(resultadoValidacion.Error);
+
         try
         {
             // Intentar insertar en la base de datos
@@ -66,12 +64,12 @@ public class CamionService
         }
     }
 
-    public async Task<Result<int>> EditarCamionAsync(int id, float? capacidadMax = null, float? tara = null, string patente = null)
+    public async Task<Result<int>> Actualizar(int id, float? capacidadMax = null, float? tara = null, string patente = null)
     {
         if (id <= 0)
             return Result<int>.Failure("ID de vehículo inválido.");
 
-        var vehiculoExistente = await _camionRepository.ObtenerPorIdAsync(id);
+        var vehiculoExistente = await _camionRepository.ObtenerPorId(id);
 
         if (vehiculoExistente == null)
             return Result<int>.Failure(MensajeError.objetoNulo(nameof(vehiculoExistente)));
@@ -85,7 +83,7 @@ public class CamionService
         if (!string.IsNullOrWhiteSpace(patente))
             vehiculoExistente.Patente = patente;
 
-        await _camionRepository.ActualizarAsync(vehiculoExistente);
+        await _camionRepository.Actualizar(vehiculoExistente);
 
         return Result<int>.Success(id);
     }
