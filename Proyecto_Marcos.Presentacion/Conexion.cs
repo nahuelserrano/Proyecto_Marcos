@@ -1,38 +1,82 @@
 ﻿using System;
-using System.Data.SQLite;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using MySql.Data;
+using MySql.Data.MySqlClient;
 
-class Conexion
+namespace Proyecto_Marcos.Presentacion
 {
-    static void Main()
+    class Conexion
     {
-        string connectionString = "Data Source=truck_manager_db.db;Version=3;";
-        using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+        private string Base;
+        private string Servidor;
+        private string Puerto;
+        private string Usuario;
+        private string Clave;
+
+        private static Conexion Con = null;
+
+        private Conexion()
         {
-            connection.Open();
+            this.Base = "truck_manager_project";
+            this.Servidor = "localhost";
+            this.Puerto = "3306";
+            this.Usuario = "root";
+            this.Clave = "";
+        }
 
-            // Crear la tabla 'users' si no existe
-            string createTableSql = "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT, age INTEGER)";
-            using (SQLiteCommand createCommand = new SQLiteCommand(createTableSql, connection))
+
+        //definimos datos de conexión con la base
+        public MySqlConnection CrearConexion()
+        {
+            MySqlConnection cadena = new MySqlConnection();
+            try
             {
-                createCommand.ExecuteNonQuery();
+                cadena.ConnectionString = "datasource=" + this.Servidor +
+                                        ";port=" + this.Puerto +
+                                        ";username=" + this.Usuario +
+                                        ";password=" + this.Clave +
+                                        ";Database=" + this.Base;
+            }catch(Exception e)
+            {
+                cadena = null;
+                throw e;
             }
+            return cadena;
+        }
 
-            Console.WriteLine("Base de datos y tabla 'users' creadas exitosamente.");
-
-            // Listar todas las tablas en la base de datos
-            string listTablesSql = "SELECT name FROM truck_manager_db.db WHERE type='table';";
-            using (SQLiteCommand listCommand = new SQLiteCommand(listTablesSql, connection))
+        //obtenemos la instancia de la conexión con mysql
+        public static Conexion getInstancia()
+        {
+            if(Con == null)
             {
-                using (SQLiteDataReader reader = listCommand.ExecuteReader())
+                Con = new Conexion();
+            }
+            return Con;
+        }
+
+
+        //testeamos que se haga bien la conexión
+        public bool TestConexion()
+        {
+            try
+            {
+                using (MySqlConnection conexion = CrearConexion())
                 {
-                    Console.WriteLine("Tablitassss en la base de datos:");
-                    while (reader.Read())
-                    {
-                        Console.WriteLine("- " + reader["name"]);
-                    }
+                    conexion.Open();  // Intenta abrir la conexión
+                    Console.WriteLine("Conexión exitosa.");
+                    return true;
                 }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error de conexión: " + ex.Message);
+                return false;
+            }
         }
+
+
     }
 }
-
