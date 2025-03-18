@@ -49,22 +49,41 @@
   <ItemGroup>
     <Compile Include="Conexion.cs" />
     <Compile Include="Datos_pagos.cs" />
-    <Compile Include="Formulario_Viajes.cs">
+    <Compile Include="Forms\Formulario_Viajes.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Formulario_Viajes.Designer.cs">
+    <Compile Include="Forms\Formulario_Viajes.Designer.cs">
       <DependentUpon>Formulario_Viajes.cs</DependentUpon>
     </Compile>
-    <Compile Include="models\Camion.cs" />
-    <Compile Include="models\Chofer.cs" />
-    <Compile Include="models\cheque.cs" />
-    <Compile Include="models\Cliente.cs" />
-    <Compile Include="models\Pagos.cs" />
-    <Compile Include="models\Viaje.cs" />
+    <Compile Include="Models\Camion.cs" />
+    <Compile Include="Models\Cheque.cs" />
+    <Compile Include="Models\Chofer.cs" />
+    <Compile Include="Models\Cliente.cs" />
+    <Compile Include="Models\Pago.cs" />
+    <Compile Include="Models\Viaje.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Pago.cs" />
-    <EmbeddedResource Include="Formulario_Viajes.resx">
+    <Compile Include="Repositories\CamionRepository.cs" />
+    <Compile Include="Repositories\ChequeRepository.cs" />
+    <Compile Include="Repositories\ChoferRepository.cs" />
+    <Compile Include="Repositories\ClienteRepository.cs" />
+    <Compile Include="Repositories\PagoRepository.cs" />
+    <Compile Include="Repositories\ViajeRepository.cs" />
+    <Compile Include="Services\CamionService.cs" />
+    <Compile Include="Services\ChequeService.cs" />
+    <Compile Include="Services\ChoferService.cs" />
+    <Compile Include="Services\ClienteService.cs" />
+    <Compile Include="Services\PagoService.cs" />
+    <Compile Include="Services\ViajeService.cs" />
+    <Compile Include="Utils\MensajesError\MensajeError.cs" />
+    <Compile Include="Utils\Validadores\ValidadorCheque.cs" />
+    <Compile Include="Utils\Result.cs" />
+    <Compile Include="Utils\Validadores\ValidadorCamion.cs" />
+    <Compile Include="Utils\Validadores\ValidadorChofer.cs" />
+    <Compile Include="Utils\Validadores\ValidadorCliente.cs" />
+    <Compile Include="Utils\Validadores\ValidadorPago.cs" />
+    <Compile Include="Utils\Validadores\ValidadorViaje.cs" />
+    <EmbeddedResource Include="Forms\Formulario_Viajes.resx">
       <DependentUpon>Formulario_Viajes.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -89,5 +108,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

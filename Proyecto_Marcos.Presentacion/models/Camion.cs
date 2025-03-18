@@ -4,31 +4,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proyecto_Marcos.Presentacion.models
+namespace Proyecto_Marcos.Presentacion.Models
 {
-    class Camion
+    public class Camion
     {
-        private float _capaciadaMax { get; set; }
-       
-        private float _tara { get ; set; }
+        public float CapacidadMax { get; set; }
+        public float Tara { get ; set; }
+        public int Id { get; set; }
+        public String Patente { get; set; }
 
-        
-        
-       public Camion(float capMax, float tara)
+        public Camion(float capMax, float tara, String patente)
         {
-            this._capaciadaMax = capMax;
-            this._tara = tara;
+            this.CapacidadMax = capMax;
+            this.Tara = tara;
+            this.Patente = patente;
         }
 
         public bool chequeo_peso_maximo(float peso)
         {
-            if (this._tara+peso>this._capaciadaMax)
-            {
-                return false;
-            }
-            return true;
+            return peso + this.Tara <= this.CapacidadMax;
         }
-        
-        
     }
 }

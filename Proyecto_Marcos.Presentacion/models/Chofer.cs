@@ -6,28 +6,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 
-namespace Proyecto_Marcos.Presentacion.models
-
-
+namespace Proyecto_Marcos.Presentacion.Models
 {
-    class Chofer
+    public class Chofer
     {
-        private String nombre { get; set; }
-        private String apellido { get; set; }
-        private List<Pagos> pagos;
-        
+        public String nombre { get; set; }
+        public String apellido { get; set; }
+       
         public Chofer (String nombre, String apellido)
         {
             this.nombre = nombre;
             this.apellido = apellido;
-            this.pagos = new List<Pagos>();
+           
         }
-       
-
-        public void addPagos(Pagos p)
-        {
-            pagos.Add(p);
-        }
-   
     }
 }
