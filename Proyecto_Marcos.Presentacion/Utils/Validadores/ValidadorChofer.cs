@@ -11,7 +11,7 @@ namespace Proyecto_Marcos.Presentacion.Utils
     {
         private readonly Chofer _chofer;
         private List<string> _errores;
-        private int pesominimo = 1;
+
 
         public ValidadorChofer(Chofer chofer)
         {

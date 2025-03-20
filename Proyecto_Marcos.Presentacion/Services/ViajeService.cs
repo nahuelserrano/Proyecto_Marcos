@@ -39,7 +39,7 @@ namespace Proyecto_Marcos.Presentacion.Services
                 int idViaje = await _viajeRepository.Insertar(viaje);
                 return Result<int>.Success(idViaje);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Si algo sale mal, registrar el error y devolver un mensaje amigable
                 //Logger.LogError($"Error al crear viaje: {ex.Message}"); 
@@ -50,7 +50,7 @@ namespace Proyecto_Marcos.Presentacion.Services
         public async Task<Result<Viaje>> ObtenerViaje(int id)
         {
             if (id <= 0)
-                return Result<Viaje>.Failure(MensajeError.idInvalido("Viaje"));
+                return Result<Viaje>.Failure(MensajeError.idInvalido(id));
 
             try
             {
@@ -61,7 +61,7 @@ namespace Proyecto_Marcos.Presentacion.Services
 
                 return Result<Viaje>.Success(viaje);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Logger.LogError($"Error al obtener viaje {id}: {ex.Message}");
                 return Result<Viaje>.Failure($"Ocurrió un error al obtener el viaje con ID {id}");
@@ -100,16 +100,18 @@ namespace Proyecto_Marcos.Presentacion.Services
             int? camionId = null,
             string estado = null)
         {
+
+
             if (id <= 0)
-                return Result<bool>.Failure("ID de viaje inválido.");
+                return Result<bool>.Failure(MensajeError.idInvalido(id));
 
             if (fechaInicio == null && fechaEntrega == null && choferId == null && camionId == null && estado == null)
                 return Result<bool>.Failure("No se especificó ningún campo para editar");
 
-            Viaje viaje = _viajeRepository.ObtenerPorId(id).Result;
+            Viaje viaje =  await _viajeRepository.ObtenerPorId(id);
 
             if (viaje == null)
-                return Result<bool>.Failure("El viaje no existe.");
+                return Result<bool>.Failure(MensajeError.objetoNulo(nameof(viaje)));
 
             ValidadorViaje validador = new ValidadorViaje(viaje);
 

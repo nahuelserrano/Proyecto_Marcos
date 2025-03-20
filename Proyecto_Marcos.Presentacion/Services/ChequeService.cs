@@ -9,7 +9,7 @@ namespace Proyecto_Marcos.Presentacion.Services
     class ChequeService
     {
         private ChequeRepository _chequeRepository;
-        private Validador _validador;
+    
         public ChequeService(ChequeRepository chequeR)
         {
             this._chequeRepository = chequeR ?? throw new ArgumentNullException(nameof(chequeR));
@@ -17,42 +17,42 @@ namespace Proyecto_Marcos.Presentacion.Services
 
         public async Task<Result<Cheque>> ObtenerPorId(int id)
         {
-           this.ValidarId(id);
+           if(id < 0)
+            {
+                  return Result<Cheque>.Failure(MensajeError.idInvalido(id));
+            }
 
             Cheque cheque = await this._chequeRepository.ObtenerPorId(id);
 
             if (cheque == null)
-                return Result<Cheque>.Failure("El cheque con el id " + id + " No existe");
+                return Result<Cheque>.Failure(MensajeError.objetoNulo(nameof(cheque)));
 
             return Result<Cheque>.Success(cheque);
         }
 
-        internal async Task<Result<bool>> Eliminar(int chequeId)
+        internal async Task<Result<bool>> Eliminar(int id)
         {
-            if (chequeId <= 0) return Result<bool>.Failure("El id no puede ser menor a 0");
+            if (id <= 0) return Result<bool>.Failure(MensajeError.idInvalido(id));
 
-            Cheque cheque = await this._chequeRepository.ObtenerPorId(chequeId);
+            Cheque cheque = await this._chequeRepository.ObtenerPorId(id);
 
-            if (cheque == null) return Result<bool>.Failure("El cheque con el id " + chequeId + " No existe");
+            if (cheque == null) return Result<bool>.Failure(MensajeError.objetoNulo(nameof(cheque)));
 
-            this._chequeRepository.Eliminar(chequeId);
+            await _chequeRepository.Eliminar(id);
 
             return Result<bool>.Success(true);
         }
 
         public async Task<Result<int>> Crear(Cheque cheque)
         {
-            if (cheque.Cliente_Dueño_Cheque == null || cheque.FechaIngresoCheque == null || cheque.NumeroCheque == null || cheque.Monto == null || cheque.Banco == null || cheque.FechaCobro == null) return Result<int>.Failure("¡datos incompletos!");
-
-            if (cheque.FechaIngresoCheque.Date > cheque.FechaCobro.Date)  return Result<int>.Failure("La fecha de ingreso del cheque no puede ser posterior a la fecha de cobro.");
-
+           
             try
             {
                 // Intentar insertar en la base de datos
                 int idcheque = await _chequeRepository.Insertar(cheque);
                 return Result<int>.Success(idcheque);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 
                 return Result<int>.Failure("Hubo un error al crear el cheque");

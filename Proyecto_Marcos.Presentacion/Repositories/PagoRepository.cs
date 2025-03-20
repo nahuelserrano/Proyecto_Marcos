@@ -43,7 +43,7 @@ namespace Proyecto_Marcos.Presentacion.Repositories
         public async Task Actualizar(Pago pago)
         {
             // Simulamos actualización
-            int indice = _pagos.FindIndex(p => p.id == pago.id);
+            int indice = _pagos.FindIndex(p => p.Id == pago.Id);
             if (indice >= 0)
             {
                 _pagos[indice] = pago;
@@ -53,7 +53,7 @@ namespace Proyecto_Marcos.Presentacion.Repositories
         public async Task Eliminar(int id)
         {
             // Simulamos eliminación
-            _pagos.RemoveAll(p => p.id == id);
+            _pagos.RemoveAll(p => p.Id == id);
         }
     }
 }

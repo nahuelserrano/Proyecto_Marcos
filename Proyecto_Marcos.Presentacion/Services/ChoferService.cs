@@ -26,20 +26,19 @@ namespace Proyecto_Marcos.Presentacion.Services
             if (chofer == null)
                 return Result<Chofer>.Failure(MensajeError.objetoNulo(nameof(chofer)));
 
-            return Result<C>.Success(id);
+            return Result<Chofer>.Success(chofer);
         }
 
-        internal async Task<Result<bool>> EliminarCamionAsync(int choferId)
+        internal async Task<Result<bool>> EliminarChoferAsync(int id)
         {
-            if (choferId <= 0) return Result<bool>.Failure(MensajeError.idInvalido(choferId));
+            if (id <= 0) return Result<bool>.Failure(MensajeError.idInvalido(id));
 
-            Chofer chofer = await this._choferRepository.ObtenerPorId(choferId);
+            Chofer chofer = await this._choferRepository.ObtenerPorId(id);
 
-            Camion camion = await this._camionService.ObtenerPorId(chofer.Camion);
 
-            if (camion == null) return Result<bool>.Failure(MensajeError.objetoNulo(nameof(camion)));
+            if (chofer == null) return Result<bool>.Failure(MensajeError.objetoNulo(nameof(chofer)));
 
-            this._choferRepository.Eliminar(choferId);
+            this._choferRepository.Eliminar(id);
 
             return Result<bool>.Success(true);
         }
@@ -55,7 +54,7 @@ namespace Proyecto_Marcos.Presentacion.Services
 
             try
             {
-                int idChofer = await _choferRepository.InsertarChoferAsync(chofer);
+                int idChofer = await _choferRepository.Insertar(chofer);
                 return Result<int>.Success(idChofer);
             }
             catch (Exception ex)
@@ -69,18 +68,18 @@ namespace Proyecto_Marcos.Presentacion.Services
             if (id <= 0)
                 return Result<int>.Failure(MensajeError.idInvalido(id));
 
-            var vehiculoExistente = await _choferRepository.ObtenerPorIdAsync(id);
+            var chofer = await _choferRepository.ObtenerPorId(id);
 
-            if (vehiculoExistente == null)
-                return Result<int>.Failure(MensajeError.objetoNulo(nameof(vehiculoExistente)));
+            if (chofer == null)
+                return Result<int>.Failure(MensajeError.objetoNulo(nameof(chofer)));
 
             if (!string.IsNullOrWhiteSpace(nombre))
-                vehiculoExistente.Patente = nombre;
+                chofer.nombre = nombre;
 
             if (!string.IsNullOrWhiteSpace(apellido))
-                vehiculoExistente.Patente = apellido;
+                chofer.apellido = apellido;
 
-            await _choferRepository.ActualizarAsync(vehiculoExistente);
+            await _choferRepository.Actualizar(chofer);
 
             return Result<int>.Success(id);
         }

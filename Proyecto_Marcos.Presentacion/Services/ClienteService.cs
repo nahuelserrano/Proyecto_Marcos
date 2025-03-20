@@ -20,12 +20,12 @@ namespace Proyecto_Marcos.Presentacion.Services
         public async Task<Result<int>> GetByIdAsync(int id)
         {
             if (id <= 0)
-                return Result<int>.Failure("El id no puede ser menor a 0");
+                return Result<int>.Failure(MensajeError.idInvalido(id));
 
             Cliente cliente = await this._clienteRepository.ObtenerPorId(id);
 
             if (cliente == null)
-                return Result<int>.Failure("El chofer con el id " + id + " No existe");
+                return Result<int>.Failure(MensajeError.objetoNulo(nameof(cliente)));
 
             return Result<int>.Success(id);
         }
@@ -33,17 +33,17 @@ namespace Proyecto_Marcos.Presentacion.Services
 
         public async Task<Result<bool>> Eliminar(int clienteId)
         {
-            if (clienteId <= 0) return Result<bool>.Failure("El id no puede ser menor a 0");
+            if (clienteId <= 0) return Result<bool>.Failure(MensajeError.idInvalido(clienteId));
 
             // int idCamion = await this._clienteRepository.ObtenerIdCamion(clienteId); A implmentar en el repositorio
 
             int idCamion = 1; // Simulamos el id del camion
 
-            Camion camion = await this._camionService.ObtenerPorId(idCamion).Result; // error await
+            Result<Camion> camion = await this._camionService.ObtenerPorId(idCamion); // error await
 
-            if (camion == null) return Result<bool>.Failure("El camion con el id " + clienteId + " No existe");
+            if (camion.Value == null) return Result<bool>.Failure(MensajeError.objetoNulo(nameof(camion)));
 
-            this._clienteRepository.Eliminar(clienteId);
+            await this._clienteRepository.Eliminar(clienteId);
 
             return Result<bool>.Success(true);
 
@@ -73,23 +73,23 @@ namespace Proyecto_Marcos.Presentacion.Services
         public async Task<Result<int>> Actualizar(int id,Camion viaje, String nombre, String apellido, int dni)
         {
             if (id <= 0)
-                return Result<int>.Failure("ID de chofer inválido.");
+                return Result<int>.Failure(MensajeError.idInvalido(id));
 
 
             var clienteExistente = await _clienteRepository.ObtenerPorId(id);
 
             if (clienteExistente == null)
-                return Result<int>.Failure("El vehículo no existe.");
+                return Result<int>.Failure(MensajeError.objetoNulo(nameof(clienteExistente)));
 
 
 
 
             if (!string.IsNullOrWhiteSpace(nombre))
-                clienteExistente.Patente = nombre;
+                clienteExistente.nombre = nombre;
 
 
             if (!string.IsNullOrWhiteSpace(apellido))
-                clienteExistente.Patente = apellido;
+                clienteExistente.apellido = apellido;
 
             await _clienteRepository.Actualizar(clienteExistente);
 

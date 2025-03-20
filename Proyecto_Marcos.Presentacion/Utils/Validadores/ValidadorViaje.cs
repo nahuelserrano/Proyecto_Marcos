@@ -4,8 +4,7 @@ using Proyecto_Marcos.Presentacion.Models;
 
 namespace Proyecto_Marcos.Presentacion.Utils
 {
-
-    public class ValidadorViaje 
+    public class ValidadorViaje
     {
         private readonly Viaje _viaje;
         private List<string> _errores;
@@ -16,30 +15,29 @@ namespace Proyecto_Marcos.Presentacion.Utils
             _errores = new List<string>();
         }
 
-        // Método para iniciar la validación - verifica si el objeto es nulo
         public ValidadorViaje Validar()
         {
             _errores.Clear();
 
             if (_viaje == null)
-            {
                 _errores.Add(MensajeError.objetoNulo(nameof(Viaje)));
-            }
-
-            return this; // Para permitir encadenamiento
-        }
-
-        public ValidadorViaje ValidarFechas()
-        {
-            if (_viaje == null) return this; // Evitamos NullException
-
-            if (_viaje.FechaEntrega < _viaje.FechaInicio)
-                _errores.Add(MensajeError.fechaInvalida(nameof(_viaje.FechaEntrega)));
 
             return this;
         }
 
-        // Validación específica para entidades relacionadas
+        public ValidadorViaje ValidarFechas()
+        {
+            if (_viaje == null) return this;
+
+            if (_viaje.FechaEntrega < DateTime.Now)
+                _errores.Add("La fecha de partida no puede ser en el pasado");
+
+            if (_viaje.FechaEntrega < _viaje.FechaInicio)
+                _errores.Add("La fecha de entrega no puede ser anterior a la fecha de inicio");
+
+            return this;
+        }
+
         public ValidadorViaje ValidarEntidadesRelacionadas()
         {
             if (_viaje == null) return this;
@@ -63,8 +61,7 @@ namespace Proyecto_Marcos.Presentacion.Utils
             if (_viaje.KilosCarga <= 0)
                 _errores.Add("El peso de la carga debe ser mayor que cero");
 
-            // Verificamos que el camión pueda soportar la carga
-            if (!_viaje.Camion.chequeo_peso_maximo(_viaje.KilosCarga))
+            if (_viaje.Carga + _viaje.Camion.Tara > _viaje.Camion.CapacidadMax)
                 _errores.Add($"La carga supera la capacidad máxima del camión ({_viaje.Camion.CapacidadMax}kg)");
 
             return this;
@@ -72,7 +69,7 @@ namespace Proyecto_Marcos.Presentacion.Utils
 
         public ValidadorViaje ValidarRuta()
         {
-            if (_viaje == null) return this; 
+            if (_viaje == null) return this;
 
             if (string.IsNullOrWhiteSpace(_viaje.LugarPartida))
                 _errores.Add("El lugar de partida es requerido");
@@ -86,7 +83,31 @@ namespace Proyecto_Marcos.Presentacion.Utils
             return this;
         }
 
-        // Obtener el resultado final
+        public ValidadorViaje ValidarPrecioYRemito()
+        {
+            if (_viaje == null) return this;
+
+            if (_viaje.PrecioPorKilo <= 0)
+                _errores.Add("El precio por kilo debe ser mayor a cero");
+
+            if (_viaje.Remito <= 0)
+                _errores.Add("El número de remito debe ser válido y mayor a cero");
+
+            return this;
+        }
+
+        public ValidadorViaje ValidarEstado()
+        {
+            if (_viaje == null) return this;
+
+            var estadosValidos = new HashSet<string> { "Pendiente", "En tránsito", "Finalizado" };
+
+            if (!estadosValidos.Contains(_viaje.Estado))
+                _errores.Add($"Estado inválido: {_viaje.Estado}. Debe ser 'Pendiente', 'En tránsito' o 'Finalizado'.");
+
+            return this;
+        }
+
         public Result<bool> ObtenerResultado()
         {
             return _errores.Count == 0
@@ -94,7 +115,6 @@ namespace Proyecto_Marcos.Presentacion.Utils
                 : Result<bool>.Failure(ObtenerMensajeError());
         }
 
-        // Esta función ayuda a mantener todas las validaciones en un solo llamado
         public Result<bool> ValidarCompleto()
         {
             return Validar()
@@ -102,14 +122,14 @@ namespace Proyecto_Marcos.Presentacion.Utils
                 .ValidarEntidadesRelacionadas()
                 .ValidarCarga()
                 .ValidarRuta()
+                .ValidarPrecioYRemito()
+                .ValidarEstado()
                 .ObtenerResultado();
         }
 
-        // Método auxiliar para formatear los errores
         private string ObtenerMensajeError()
         {
             return string.Join(Environment.NewLine, _errores);
         }
     }
 }
-

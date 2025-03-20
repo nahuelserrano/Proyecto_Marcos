@@ -10,6 +10,7 @@ namespace Proyecto_Marcos.Presentacion.Repositories
     {
         private List<Viaje> _viajes;
         private int _siguienteId;
+        private DateTime fechaInicio;
 
         public ViajeRepository()
         {
@@ -17,21 +18,16 @@ namespace Proyecto_Marcos.Presentacion.Repositories
             _siguienteId = 1;
 
             // Creamos un viaje de prueba
-            DateTime fechaInicio = DateTime.Now;
-            DateTime fechaFin = fechaInicio.AddDays(3);
+            DateTime FechaInicio = DateTime.Now;
+            DateTime fechaFin = FechaInicio.AddDays(3);
 
             Chofer chofer = new Chofer("Carlos", "Rodríguez");
             Camion camion = new Camion(12000, 6000, "DEF456") { Id = 1 };
             Cliente cliente = new Cliente(null, "Empresa", 12345678);
 
-            Viaje viaje = new Viaje(fechaInicio, "Buenos Aires", "Córdoba", 5000, 12345, 10, 8000, chofer, cliente)
-            {
-                FechaInicio = fechaInicio,
-                FechaEntrega = fechaFin,
-                KilosCarga = 8000,
-                CamionId = camion.Id
-            };
-
+            Viaje viaje = new Viaje("olavarria","tandil",20,5,503,2000,chofer,cliente,camion,FechaInicio,fechaFin,8000,camion.Id);
+          
+            
             _viajes.Add(viaje);
         }
 
@@ -44,7 +40,7 @@ namespace Proyecto_Marcos.Presentacion.Repositories
         public async Task<List<Viaje>> ObtenerTodos()
         {
             // Devolvemos una copia de la lista
-            return new List<Viaje>(_viajes);
+            return  new List<Viaje>(_viajes);
         }
 
         public async Task<List<Viaje>> ObtenerPorFiltro()

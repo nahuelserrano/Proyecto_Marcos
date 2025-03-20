@@ -20,9 +20,6 @@ namespace Proyecto_Marcos.Presentacion.Models
             this.Patente = patente;
         }
 
-        public bool chequeo_peso_maximo(float peso)
-        {
-            return peso + this.Tara <= this.CapacidadMax;
-        }
+       
     }
 }

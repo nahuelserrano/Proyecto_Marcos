@@ -25,7 +25,7 @@ namespace Proyecto_Marcos.Presentacion.Utils
 
             if (_camion == null)
             {
-                _errores.Add(MensajeError.objetoNulo(nameof(Viaje)));
+                _errores.Add(MensajeError.objetoNulo(nameof(_camion)));
             }
 
             return this; // Para permitir encadenamiento

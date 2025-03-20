@@ -19,7 +19,7 @@ namespace Proyecto_Marcos.Presentacion.Utils
 
         public static string fechaInvalida(string nombreAtributo) =>
             $"La fecha de: {nombreAtributo} no es válida";
-        public static string objetoNulo(string nombreEntidad) =>
+        public static string objetoNulo( string nombreEntidad) =>
             $"El objeto: {nombreEntidad} no puede ser nulo";
 
          public static string numeroNoValido(string atributo) =>
