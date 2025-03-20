@@ -20,6 +20,7 @@ namespace Proyecto_Marcos.Presentacion
         #region "mis metodos"
         private void Formato_pagos() 
         {
+            
             sueldos.Columns[0].Width = 80;
             sueldos.Columns[0].HeaderText = "CODIGO";
             sueldos.Columns[1].Width = 80;
@@ -29,9 +30,10 @@ namespace Proyecto_Marcos.Presentacion
         }
         private void listado_pagos(String cTexto) 
         {
-            Datos_pagos Datos = new Datos_pagos();
+            /*Datos_pagos Datos = new Datos_pagos();
             sueldos.DataSource = Datos.Listado_pagos(cTexto);
             this.Formato_pagos();
+            */
         }
         private void Estado_texto(bool lEstado)
         {
