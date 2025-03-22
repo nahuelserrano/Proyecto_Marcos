@@ -25,7 +25,8 @@ namespace Proyecto_camiones.Presentacion.Utils
          public static string numeroNoValido(string atributo) =>
             $"El numero del campo: {atributo} no puede ser menor o igual que 0";
         
-
+        public static string NoExisteId(string nombreEntidad, int id) =>
+            $"No existe ningún {nombreEntidad} con el id: {id}";
         public static string ausenciaDeDatos(String nombreDatoAusente) =>
             $"El ID colocado: {nombreDatoAusente} no corresponde a ningun objeto";
         public static string PesoIncorrecto(float id) =>
