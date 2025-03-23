@@ -16,9 +16,9 @@ namespace Proyecto_camiones.Presentacion
         private string Usuario;
         private string Clave;
 
-        private static Conexion Con = null;
+        protected static Conexion Con = null;
 
-        private Conexion()
+        public Conexion()
         {
             this.Base = "truck_manager_project";
             this.Servidor = "localhost";

@@ -8,52 +8,41 @@ namespace Proyecto_camiones.Presentacion.Utils
 
     public class ValidadorCamion
     {
-        private readonly Camion _camion;
+        private readonly float peso;
+        private readonly float tara;
+        private readonly string patente;
         private List<string> _errores;
         private int pesominimo = 1;
 
-        public ValidadorCamion(Camion camion)
+        public ValidadorCamion(float peso, float tara, string patente)
         {
-            _camion = camion;
+            this.peso = peso;
+            this.tara = tara;
+            this.patente = patente;
             _errores = new List<string>();
         }
 
         // Método para iniciar la validación - verifica si el objeto es nulo
-        public ValidadorCamion Validar()
-        {
-            _errores.Clear();
-
-            if (_camion == null)
-            {
-                _errores.Add(MensajeError.objetoNulo(nameof(_camion)));
-            }
-
-            return this; // Para permitir encadenamiento
-        }
 
         public ValidadorCamion ValidarPesos()
         {
-            if (_camion == null) return this; // Evitamos NullException
 
-            if (_camion.Tara < this.pesominimo)
-                _errores.Add(MensajeError.PesoIncorrecto(_camion.Tara));
+            if (this.tara < this.pesominimo)
+                _errores.Add(MensajeError.PesoIncorrecto(this.tara));
 
-            if (_camion.CapacidadMax < this.pesominimo)
-                _errores.Add(MensajeError.PesoIncorrecto(_camion.CapacidadMax));
+            if (this.peso < this.pesominimo)
+                _errores.Add(MensajeError.PesoIncorrecto(this.peso));
 
-            if (_camion.Tara > _camion.CapacidadMax)
-                _errores.Add(MensajeError.PesoIncorrecto(_camion.Tara));
+            if (this.tara > this.peso)
+                _errores.Add(MensajeError.PesoIncorrecto(this.tara));
 
             return this;
         }
         public ValidadorCamion ValidarPatente ()
         {
-            if (_camion == null) return this; // Evitamos NullException
+            if (this.patente == null)
+                _errores.Add(MensajeError.ausenciaDeDatos(nameof(this.patente)));
 
-            if (_camion.Patente==null)
-                _errores.Add(MensajeError.ausenciaDeDatos(nameof(_camion.Patente)));
-
-            
             return this;
         }
 
@@ -68,8 +57,7 @@ namespace Proyecto_camiones.Presentacion.Utils
         // Esta función ayuda a mantener todas las validaciones en un solo llamado
         public Result<bool> ValidarCompleto()
         {
-            return Validar()
-                .ValidarPesos()
+            return ValidarPesos()
                 .ValidarPatente()
    
                 .ObtenerResultado();

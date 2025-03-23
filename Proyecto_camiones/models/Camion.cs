@@ -20,6 +20,9 @@ namespace Proyecto_camiones.Presentacion.Models
             this.Patente = patente;
         }
 
-       
+        public static implicit operator Task<object>(Camion v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

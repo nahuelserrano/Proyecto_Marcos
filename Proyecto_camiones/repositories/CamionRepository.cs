@@ -1,65 +1,75 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Threading.Tasks;
+using Microsoft.Build.Utilities;
+using MySql.Data.MySqlClient;
+using NPOI.SS.Formula.Functions;
 using Proyecto_camiones.Presentacion.Models;
+using Proyecto_camiones.Presentacion.Utils;
 
 namespace Proyecto_camiones.Presentacion.Repositories
 {
     public class CamionRepository
     {
-        private List<Camion> _camiones; // Lista para pruebas
-        private int _siguienteId;
+        private readonly ApplicationDbContext _context;
 
-        public CamionRepository()
+        public CamionRepository(ApplicationDbContext context)
         {
-            _camiones = new List<Camion>();
-            _siguienteId = 1;
-
-            // Agregamos algunos camiones de prueba
-            _camiones.Add(new Camion(10000, 5000, "ABC123") { Id = _siguienteId++ });
-            _camiones.Add(new Camion(15000, 7000, "XYZ789") { Id = _siguienteId++ });
+            _context = context;
         }
 
-        public async Task<Camion> ObtenerPorId(int id)
+        public async Task<bool> ProbarConexionAsync()
         {
-            // Simulamos una búsqueda
-            return _camiones.Find(c => c.Id == id);
-        }
-
-        public async Task<List<Camion>> ObtenerTodos()
-        {
-            // Devolvemos una copia de la lista
-            return new List<Camion>(_camiones);
-        }
-
-        public async Task<List<Camion>> ObtenerDisponibles(DateTime fecha)
-        {
-            // Simulamos que todos están disponibles
-            return new List<Camion>(_camiones);
-        }
-
-        public async Task<int> Insertar(Camion camion)
-        {
-            // Asignamos un ID y agregamos a la lista
-            camion.Id = _siguienteId++;
-            _camiones.Add(camion);
-            return camion.Id;
-        }
-
-        public async Task Actualizar(Camion camion)
-        {
-            // Simulamos actualización
-            int indice = _camiones.FindIndex(c => c.Id == camion.Id);
-            if (indice >= 0)
+            try
             {
-                _camiones[indice] = camion;
+                // Intentar comprobar si la conexión a la base de datos es exitosa
+                bool puedeConectar = await _context.Database.CanConnectAsync();
+
+                if (puedeConectar)
+                {
+                    Console.WriteLine("Conexión exitosa a la base de datos.");
+                }
+                else
+                {
+                    Console.WriteLine("No se puede conectar a la base de datos.");
+                }
+
+                return puedeConectar;
+            }
+            catch (Exception ex)
+            {
+                // Si ocurre un error (por ejemplo, si la base de datos no está disponible)
+                Console.WriteLine($"Error al intentar conectar: {ex.Message}");
+                return false;
             }
         }
 
-        public async Task Eliminar(int id)
+
+        public async Task<Camion> InsertarCamionAsync(float peso, float tara, string patente)
         {
-            // Simulamos eliminación
-            _camiones.RemoveAll(c => c.Id == id);
+            try
+            {
+
+                var camion = new Camion(peso, tara, patente);
+
+                // Agregar el camión a la base de datos (esto solo marca el objeto para insertar)
+                _context.Camiones.Add(camion);
+
+                // Guardar los cambios en la base de datos (aquí se genera el SQL real y se ejecuta)
+                int registrosAfectados = await _context.SaveChangesAsync();
+
+                if(registrosAfectados > 0)
+                {
+                    return camion;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // Aquí puedes manejar cualquier error, registrar log, etc.
+                return null;
+            }
         }
     }
 }

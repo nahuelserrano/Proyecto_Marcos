@@ -9,10 +9,16 @@
   </PropertyGroup>
   
   <ItemGroup>
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.13.9" />
     <PackageReference Include="MySql.Data" Version="8.0.32" />
+    <PackageReference Include="NPOI" Version="2.7.3" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0-preview.3.efcore.9.0.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.6.2" />
   </ItemGroup>
   
   <ItemGroup>
+    <Compile Include="ApplicationDbContext.cs" />
     <Compile Include="Conexion.cs" />
     <Compile Include="Datos_pagos.cs" />
     <Compile Include="Forms\Formulario_Viajes.cs">
@@ -26,6 +32,7 @@
     <Compile Include="Models\Chofer.cs" />
     <Compile Include="Models\Cliente.cs" />
     <Compile Include="Models\Pago.cs" />
+    <Compile Include="Models\Usuario.cs" />
     <Compile Include="Models\Viaje.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

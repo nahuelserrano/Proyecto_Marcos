@@ -38,8 +38,7 @@
               "RelativeToolTip": "Proyecto_camiones\\properties\\AssemblyInfo.cs",
               "ViewState": "AgIAABIAAAAAAAAAAAAAAB0AAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-23T19:29:44.115Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-23T19:29:44.115Z"
             },
             {
               "$type": "Document",
@@ -51,8 +50,7 @@
               "RelativeToolTip": "Proyecto_camiones\\repositories\\CamionRepository.cs",
               "ViewState": "AgIAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-23T19:29:35.829Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-23T19:29:35.829Z"
             },
             {
               "$type": "Document",
@@ -62,7 +60,7 @@
               "RelativeDocumentMoniker": "Proyecto_camiones\\Program.cs",
               "ToolTip": "C:\\Users\\Usuario\\source\\repos\\Proyecto_camiones\\Proyecto_camiones\\Program.cs",
               "RelativeToolTip": "Proyecto_camiones\\Program.cs",
-              "ViewState": "AgIAAB8AAAAAAAAAAAAmwCsAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAABwAAAAAAAAAAAAmwCsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-23T19:15:12.818Z",
               "EditorCaption": ""
@@ -77,8 +75,7 @@
               "RelativeToolTip": "Proyecto_camiones\\Conexion.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-23T19:14:50.836Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-23T19:14:50.836Z"
             }
           ]
         }
