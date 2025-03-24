@@ -8,17 +8,23 @@ namespace Proyecto_camiones.Presentacion.Models
 {
     public class Camion
     {
-        public float CapacidadMax { get; set; }
-        public float Tara { get ; set; }
         public int Id { get; set; }
+        public float peso_max { get; set; }
+        public float tara {get; set; }
         public String Patente { get; set; }
 
-        public Camion(float capMax, float tara, String patente)
+        public Camion(float peso_max, float tara, string Patente)
         {
-            this.CapacidadMax = capMax;
-            this.Tara = tara;
-            this.Patente = patente;
+            this.peso_max = peso_max;
+            this.tara = tara;
+            this.Patente = Patente;
         }
+
+        public Camion()
+        {
+            this.Patente = "x";
+        }
+
 
         public static implicit operator Task<object>(Camion v)
         {

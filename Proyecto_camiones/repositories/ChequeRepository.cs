@@ -18,7 +18,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             // Creamos un cheque de prueba
             Cliente cliente = new Cliente(null, "Empresa C", 33333333);
             Cheque cheque = new Cheque(
-                cliente,
+                1,
                 DateTime.Now,
                 123456,
                 5000.0f,

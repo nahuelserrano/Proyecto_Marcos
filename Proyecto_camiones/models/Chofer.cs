@@ -10,6 +10,7 @@ namespace Proyecto_camiones.Presentacion.Models
 {
     public class Chofer
     {
+        public int Id { get; set; }
         public String nombre { get; set; }
         public String apellido { get; set; }
        

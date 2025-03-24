@@ -39,9 +39,9 @@ namespace Proyecto_camiones.Presentacion.Services
 
             int idCamion = 1; // Simulamos el id del camion
 
-            Result<Camion> camion = await this._camionService.ObtenerPorId(idCamion); // error await
+            //Result<Camion> camion = await this._camionService.ObtenerPorId(idCamion); // error await
 
-            if (camion.Value == null) return Result<bool>.Failure(MensajeError.objetoNulo(nameof(camion)));
+            //if (camion.Value == null) return Result<bool>.Failure(MensajeError.objetoNulo(nameof(camion)));
 
             await this._clienteRepository.Eliminar(clienteId);
 

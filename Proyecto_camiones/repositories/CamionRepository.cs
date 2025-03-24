@@ -25,7 +25,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             {
                 // Intentar comprobar si la conexión a la base de datos es exitosa
                 bool puedeConectar = await _context.Database.CanConnectAsync();
-
+                Console.WriteLine("rompió acá no??");
                 if (puedeConectar)
                 {
                     Console.WriteLine("Conexión exitosa a la base de datos.");
@@ -46,12 +46,12 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
 
-        public async Task<Camion> InsertarCamionAsync(float peso, float tara, string patente)
+        public async Task<Camion> InsertarCamionAsync(float peso_max, float tara, string patente)
         {
             try
             {
 
-                var camion = new Camion(peso, tara, patente);
+                var camion = new Camion(peso_max, tara, patente);
 
                 // Agregar el camión a la base de datos (esto solo marca el objeto para insertar)
                 _context.Camiones.Add(camion);

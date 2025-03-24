@@ -14,21 +14,21 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
         public ViajeRepository()
         {
-            _viajes = new List<Viaje>();
-            _siguienteId = 1;
+            //_viajes = new List<Viaje>();
+            //_siguienteId = 1;
 
-            // Creamos un viaje de prueba
-            DateTime FechaInicio = DateTime.Now;
-            DateTime fechaFin = FechaInicio.AddDays(3);
+            //// Creamos un viaje de prueba
+            //DateTime FechaInicio = DateTime.Now;
+            //DateTime fechaFin = FechaInicio.AddDays(3);
 
-            Chofer chofer = new Chofer("Carlos", "Rodríguez");
-            Camion camion = new Camion(12000, 6000, "DEF456") { Id = 1 };
-            Cliente cliente = new Cliente(null, "Empresa", 12345678);
+            //Chofer chofer = new Chofer("Carlos", "Rodríguez");
+            //Camion camion = new Camion(12000, 6000, "DEF456") { Id = 1 };
+            //Cliente cliente = new Cliente(null, "Empresa", 12345678);
 
-            Viaje viaje = new Viaje("olavarria", "tandil", 20, 5, 503, 2000, chofer, cliente, camion, FechaInicio, fechaFin, 8000, camion.Id);
+            //Viaje viaje = new Viaje("olavarria", "tandil", 20, 5, 503, 2000, chofer, cliente, camion, FechaInicio, fechaFin, 8000, camion.Id);
 
 
-            _viajes.Add(viaje);
+            //_viajes.Add(viaje);
         }
 
         public async Task<Viaje> ObtenerPorId(int id)

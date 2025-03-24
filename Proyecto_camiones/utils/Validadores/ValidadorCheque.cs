@@ -56,8 +56,8 @@ namespace Proyecto_camiones.Presentacion.Utils
         {
             if (_cheque == null) return this;
 
-            if (_cheque.Cliente_Dueño_Cheque == null)
-                _errores.Add(MensajeError.objetoNulo(nameof(Cheque)));
+            //if (_cheque.Cliente_Dueño_Cheque == null)
+            //    _errores.Add(MensajeError.objetoNulo(nameof(Cheque)));
 
             return this;
         }

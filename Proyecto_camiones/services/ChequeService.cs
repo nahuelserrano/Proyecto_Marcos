@@ -71,7 +71,7 @@ namespace Proyecto_camiones.Presentacion.Services
 
 
             if (cliente != null)
-                chequeExistente.Cliente_Dueño_Cheque = cliente;
+                //chequeExistente.Cliente_Dueño_Cheque = cliente;
 
             if (FechaIngresoCheque.HasValue)
                 chequeExistente.FechaIngresoCheque = FechaIngresoCheque.Value;

@@ -44,7 +44,7 @@ namespace Proyecto_camiones.Presentacion.Services
 
         //}
 
-        public async Task<Result<int>> CrearcamionAsync(float peso, float tara, string patente)
+        public async Task<Result<int>> CrearCamionAsync(float peso, float tara, string patente)
         {
             ValidadorCamion validador = new ValidadorCamion(peso, tara, patente);
 

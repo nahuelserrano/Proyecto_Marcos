@@ -7,24 +7,12 @@
       "RelativeMoniker": "D:0:0:{8FD9A247-6129-4861-BC98-7FFA39CB8F7A}|Proyecto_camiones\\Proyecto_camiones.csproj|solutionrelative:proyecto_camiones\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8FD9A247-6129-4861-BC98-7FFA39CB8F7A}|Proyecto_camiones\\Proyecto_camiones.csproj|c:\\users\\usuario\\source\\repos\\proyecto_camiones\\proyecto_camiones\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8FD9A247-6129-4861-BC98-7FFA39CB8F7A}|Proyecto_camiones\\Proyecto_camiones.csproj|solutionrelative:proyecto_camiones\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{8FD9A247-6129-4861-BC98-7FFA39CB8F7A}|Proyecto_camiones\\Proyecto_camiones.csproj|c:\\users\\usuario\\source\\repos\\proyecto_camiones\\proyecto_camiones\\services\\camionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{8FD9A247-6129-4861-BC98-7FFA39CB8F7A}|Proyecto_camiones\\Proyecto_camiones.csproj|solutionrelative:proyecto_camiones\\services\\camionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8FD9A247-6129-4861-BC98-7FFA39CB8F7A}|Proyecto_camiones\\Proyecto_camiones.csproj|c:\\users\\usuario\\source\\repos\\proyecto_camiones\\proyecto_camiones\\models\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8FD9A247-6129-4861-BC98-7FFA39CB8F7A}|Proyecto_camiones\\Proyecto_camiones.csproj|solutionrelative:proyecto_camiones\\models\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{8FD9A247-6129-4861-BC98-7FFA39CB8F7A}|Proyecto_camiones\\Proyecto_camiones.csproj|c:\\users\\usuario\\source\\repos\\proyecto_camiones\\proyecto_camiones\\models\\camion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{8FD9A247-6129-4861-BC98-7FFA39CB8F7A}|Proyecto_camiones\\Proyecto_camiones.csproj|solutionrelative:proyecto_camiones\\models\\camion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8FD9A247-6129-4861-BC98-7FFA39CB8F7A}|Proyecto_camiones\\Proyecto_camiones.csproj|c:\\users\\usuario\\source\\repos\\proyecto_camiones\\proyecto_camiones\\repositories\\camionrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8FD9A247-6129-4861-BC98-7FFA39CB8F7A}|Proyecto_camiones\\Proyecto_camiones.csproj|solutionrelative:proyecto_camiones\\repositories\\camionrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,8 +22,34 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Camion.cs",
+              "DocumentMoniker": "C:\\Users\\Usuario\\source\\repos\\Proyecto_camiones\\Proyecto_camiones\\models\\Camion.cs",
+              "RelativeDocumentMoniker": "Proyecto_camiones\\models\\Camion.cs",
+              "ToolTip": "C:\\Users\\Usuario\\source\\repos\\Proyecto_camiones\\Proyecto_camiones\\models\\Camion.cs",
+              "RelativeToolTip": "Proyecto_camiones\\models\\Camion.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAwAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-24T00:22:11.753Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "CamionService.cs",
+              "DocumentMoniker": "C:\\Users\\Usuario\\source\\repos\\Proyecto_camiones\\Proyecto_camiones\\services\\CamionService.cs",
+              "RelativeDocumentMoniker": "Proyecto_camiones\\services\\CamionService.cs",
+              "ToolTip": "C:\\Users\\Usuario\\source\\repos\\Proyecto_camiones\\Proyecto_camiones\\services\\CamionService.cs",
+              "RelativeToolTip": "Proyecto_camiones\\services\\CamionService.cs",
+              "ViewState": "AgIAADMAAAAAAAAAAAAYwDwAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-23T23:43:35.747Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -44,74 +58,9 @@
               "RelativeDocumentMoniker": "Proyecto_camiones\\Program.cs",
               "ToolTip": "C:\\Users\\Usuario\\source\\repos\\Proyecto_camiones\\Proyecto_camiones\\Program.cs",
               "RelativeToolTip": "Proyecto_camiones\\Program.cs",
-              "ViewState": "AgIAAAcAAAAAAAAAAAAAABYAAABUAAAAAAAAAA==",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAAwBwAAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-23T21:47:30.853Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "Camion.cs",
-              "DocumentMoniker": "C:\\Users\\Usuario\\source\\repos\\Proyecto_camiones\\Proyecto_camiones\\models\\Camion.cs",
-              "RelativeDocumentMoniker": "Proyecto_camiones\\models\\Camion.cs",
-              "ToolTip": "C:\\Users\\Usuario\\source\\repos\\Proyecto_camiones\\Proyecto_camiones\\models\\Camion.cs",
-              "RelativeToolTip": "Proyecto_camiones\\models\\Camion.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-23T21:43:45.603Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Usuario.cs",
-              "DocumentMoniker": "C:\\Users\\Usuario\\source\\repos\\Proyecto_camiones\\Proyecto_camiones\\models\\Usuario.cs",
-              "RelativeDocumentMoniker": "Proyecto_camiones\\models\\Usuario.cs",
-              "ToolTip": "C:\\Users\\Usuario\\source\\repos\\Proyecto_camiones\\Proyecto_camiones\\models\\Usuario.cs",
-              "RelativeToolTip": "Proyecto_camiones\\models\\Usuario.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAALAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-23T21:43:07.645Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "ApplicationDbContext.cs",
-              "DocumentMoniker": "C:\\Users\\Usuario\\source\\repos\\Proyecto_camiones\\Proyecto_camiones\\ApplicationDbContext.cs",
-              "RelativeDocumentMoniker": "Proyecto_camiones\\ApplicationDbContext.cs",
-              "ToolTip": "C:\\Users\\Usuario\\source\\repos\\Proyecto_camiones\\Proyecto_camiones\\ApplicationDbContext.cs",
-              "RelativeToolTip": "Proyecto_camiones\\ApplicationDbContext.cs",
-              "ViewState": "AgIAABAAAAAAAAAAAAA/wB8AAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-23T20:57:48.163Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "CamionRepository.cs",
-              "DocumentMoniker": "C:\\Users\\Usuario\\source\\repos\\Proyecto_camiones\\Proyecto_camiones\\repositories\\CamionRepository.cs",
-              "RelativeDocumentMoniker": "Proyecto_camiones\\repositories\\CamionRepository.cs",
-              "ToolTip": "C:\\Users\\Usuario\\source\\repos\\Proyecto_camiones\\Proyecto_camiones\\repositories\\CamionRepository.cs",
-              "RelativeToolTip": "Proyecto_camiones\\repositories\\CamionRepository.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAA+wB8AAAARAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-23T20:42:15.55Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "CamionService.cs",
-              "DocumentMoniker": "C:\\Users\\Usuario\\source\\repos\\Proyecto_camiones\\Proyecto_camiones\\services\\CamionService.cs",
-              "RelativeDocumentMoniker": "Proyecto_camiones\\services\\CamionService.cs",
-              "ToolTip": "C:\\Users\\Usuario\\source\\repos\\Proyecto_camiones\\Proyecto_camiones\\services\\CamionService.cs",
-              "RelativeToolTip": "Proyecto_camiones\\services\\CamionService.cs",
-              "ViewState": "AgIAACoAAAAAAAAAAAAqwDMAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-23T19:48:28.589Z",
+              "WhenOpened": "2025-03-23T23:42:26.567Z",
               "EditorCaption": ""
             }
           ]
