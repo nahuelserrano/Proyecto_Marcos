@@ -51,10 +51,18 @@ namespace Proyecto_camiones.Presentacion.Repositories
             try
             {
 
+                if (!await _context.Database.CanConnectAsync())
+                {
+                    Console.WriteLine("No se puede conectar a la base de datos");
+                    return null;
+                }
+
                 var camion = new Camion(peso_max, tara, patente);
 
                 // Agregar el camión a la base de datos (esto solo marca el objeto para insertar)
                 _context.Camiones.Add(camion);
+
+                Console.WriteLine($"SQL a ejecutar: {_context.ChangeTracker.DebugView.LongView}");
 
                 // Guardar los cambios en la base de datos (aquí se genera el SQL real y se ejecuta)
                 int registrosAfectados = await _context.SaveChangesAsync();
@@ -63,11 +71,14 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 {
                     return camion;
                 }
+                Console.WriteLine("No se insertó ningún registro");
                 return null;
             }
             catch (Exception ex)
             {
-                // Aquí puedes manejar cualquier error, registrar log, etc.
+                Console.WriteLine($"Error al insertar camión: {ex.Message}");
+                // Para debuggear, también es útil ver la excepción completa:
+                Console.WriteLine($"Stack trace: {ex.StackTrace}");
                 return null;
             }
         }

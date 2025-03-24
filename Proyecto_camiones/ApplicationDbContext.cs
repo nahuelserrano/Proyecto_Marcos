@@ -20,17 +20,6 @@ public class ApplicationDbContext : DbContext
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options) { }
 
-    public ApplicationDbContext(DbSet<Camion> camiones, DbSet<Viaje> viajes, DbSet<Cheque> cheques, DbSet<Pago> pagos, DbSet<Chofer> choferes, DbSet<Cliente> clientes, DbSet<Usuario> usuarios)
-    {
-        Camiones = camiones;
-        Viajes = viajes;
-        Cheques = cheques;
-        Pagos = pagos;
-        Choferes = choferes;
-        Clientes = clientes;
-        Usuarios = usuarios;
-    }
-
 
 
     // Configurar la conexión a MySQL
@@ -54,6 +43,16 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Chofer>().ToTable("chofer");
         modelBuilder.Entity<Cliente>().ToTable("cliente");
         modelBuilder.Entity<Usuario>().ToTable("usuario");
+
+        modelBuilder.Entity<Camion>(entity =>
+        {
+            entity.ToTable("camion");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasColumnName("idcamion");
+            entity.Property(e => e.peso_max).HasColumnName("peso_max");
+            entity.Property(e => e.tara).HasColumnName("tara");
+            entity.Property(e => e.Patente).HasColumnName("patente");
+        });
 
         base.OnModelCreating(modelBuilder);
 
