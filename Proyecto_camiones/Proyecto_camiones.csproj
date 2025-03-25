@@ -19,7 +19,6 @@
   
   <ItemGroup>
     <Compile Include="ApplicationDbContext.cs" />
-    <Compile Include="Conexion.cs" />
     <Compile Include="Datos_pagos.cs" />
     <Compile Include="Forms\Formulario_Viajes.cs">
       <SubType>Form</SubType>

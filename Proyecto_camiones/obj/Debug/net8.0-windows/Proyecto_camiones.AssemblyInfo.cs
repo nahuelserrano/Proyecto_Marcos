@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Proyecto_camiones")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5390d3e38044e918527a8b775496eaef2fb0a40f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ac3d163c31427e61a8c0a9089610c150d5c3e53e")]
 [assembly: System.Reflection.AssemblyProductAttribute("Proyecto_camiones")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Proyecto_camiones")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
