@@ -67,3 +67,9 @@ C:\Users\Usuario\source\repos\Proyecto_camiones\Proyecto_camiones\bin\Debug\net8
 C:\Users\Usuario\source\repos\Proyecto_camiones\Proyecto_camiones\bin\Debug\net8.0-windows\runtimes\unix\lib\net8.0\System.Data.SqlClient.dll
 C:\Users\Usuario\source\repos\Proyecto_camiones\Proyecto_camiones\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Data.SqlClient.dll
 C:\Users\Usuario\source\repos\Proyecto_camiones\Proyecto_camiones\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
+C:\Users\Usuario\source\repos\Proyecto_camiones\Proyecto_camiones\bin\Debug\net8.0-windows\Microsoft.AspNetCore.Http.dll
+C:\Users\Usuario\source\repos\Proyecto_camiones\Proyecto_camiones\bin\Debug\net8.0-windows\Microsoft.AspNetCore.Http.Abstractions.dll
+C:\Users\Usuario\source\repos\Proyecto_camiones\Proyecto_camiones\bin\Debug\net8.0-windows\Microsoft.AspNetCore.Http.Features.dll
+C:\Users\Usuario\source\repos\Proyecto_camiones\Proyecto_camiones\bin\Debug\net8.0-windows\Microsoft.AspNetCore.WebUtilities.dll
+C:\Users\Usuario\source\repos\Proyecto_camiones\Proyecto_camiones\bin\Debug\net8.0-windows\Microsoft.Extensions.ObjectPool.dll
+C:\Users\Usuario\source\repos\Proyecto_camiones\Proyecto_camiones\bin\Debug\net8.0-windows\Microsoft.Net.Http.Headers.dll

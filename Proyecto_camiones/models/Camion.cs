@@ -30,5 +30,6 @@ namespace Proyecto_camiones.Presentacion.Models
         {
             throw new NotImplementedException();
         }
+
     }
 }

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Build.Utilities;
-using MySql.Data.MySqlClient;
-using NPOI.SS.Formula.Functions;
+using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Utils;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Proyecto_camiones.Presentacion.Repositories
 {
@@ -81,6 +82,27 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 Console.WriteLine($"Stack trace: {ex.StackTrace}");
                 return null;
             }
+        }
+
+        public async Task<List<CamionDTO>> ObtenerCamionesAsync()
+        {
+            try
+            {
+                var camiones = await _context.Camiones.Select(c => new CamionDTO
+                {
+                    peso_max = c.peso_max,
+                    tara = c.tara,
+                    Patente = c.Patente
+                }).ToListAsync();
+
+                return camiones;
+            } catch(Exception ex)
+            {
+                Console.WriteLine($"Error al insertar camión: {ex.Message}");
+                Console.WriteLine($"Stack trace: {ex.StackTrace}");
+                return null;
+            }
+            
         }
     }
 }

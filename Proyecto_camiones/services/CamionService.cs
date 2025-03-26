@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using NPOI.SS.Formula.Functions;
+using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Utils;
@@ -17,33 +19,20 @@ namespace Proyecto_camiones.Presentacion.Services
             this._camionRepository = camionR ?? throw new ArgumentNullException(nameof(camionR));
         }
 
-        //public async Task<Result<Camion>> ObtenerPorId(int id)
-        //{
-        //    if (id <= 0)
-        //        return Result<Camion>.Failure(MensajeError.idInvalido(id));
 
-        //    Camion camion = await this._camionRepository.ObtenerPorId(id);
+        //OBTENER TODOS LOS CAMIONES
+        public async Task<List<CamionDTO>> ObtenerCamionesAsync()
+        {
+            List<CamionDTO> camiones = await _camionRepository.ObtenerCamionesAsync();
+            if(camiones != null)
+            {
+                return camiones;
+            }
+            return new List<CamionDTO>();
+        }
 
-        //    if (camion == null)
-        //        return Result<Camion>.Failure(MensajeError.objetoNulo(nameof(camion)));
 
-        //    return Result<Camion>.Success(camion);
-        //}
-
-        //internal async Task<Result<bool>> Eliminar(int camionId)
-        //{
-        //    if (camionId <= 0) return Result<bool>.Failure(MensajeError.idInvalido(camionId));
-
-        //    Camion camion = await this._camionRepository.ObtenerPorId(camionId);
-
-        //    if (camion == null) return Result<bool>.Failure(MensajeError.objetoNulo(nameof(camion)));
-
-        //    _camionRepository.Eliminar(camionId);
-
-        //    return Result<bool>.Success(true);
-
-        //}
-
+        //CREAR CAMION
         public async Task<Result<int>> CrearCamionAsync(float peso, float tara, string patente)
         {
             ValidadorCamion validador = new ValidadorCamion(peso, tara, patente);
@@ -74,28 +63,5 @@ namespace Proyecto_camiones.Presentacion.Services
             }
         }
 
-        //public async Task<Result<int>> Actualizar(int id, float? capacidadMax = null, float? tara = null, string patente = null)
-        //{
-        //    if (id <= 0)
-        //        return Result<int>.Failure("ID de vehículo inválido.");
-
-        //    var vehiculoExistente = await _camionRepository.ObtenerPorId(id);
-
-        //    if (vehiculoExistente == null)
-        //        return Result<int>.Failure(MensajeError.objetoNulo(nameof(vehiculoExistente)));
-
-        //    if (capacidadMax.HasValue)
-        //        vehiculoExistente.CapacidadMax = capacidadMax.Value;
-
-        //    if (tara.HasValue)
-        //        vehiculoExistente.Tara = tara.Value;
-
-        //    if (!string.IsNullOrWhiteSpace(patente))
-        //        vehiculoExistente.Patente = patente;
-
-        //    await _camionRepository.Actualizar(vehiculoExistente);
-
-        //    return Result<int>.Success(id);
-        //}
     }
 }
