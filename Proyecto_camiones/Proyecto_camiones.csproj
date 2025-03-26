@@ -57,5 +57,7 @@
     <Compile Include="Utils\Validadores\ValidadorCliente.cs" />
     <Compile Include="Utils\Validadores\ValidadorPago.cs" />
     <Compile Include="Utils\Validadores\ValidadorViaje.cs" />
+    <Compile Include="ViewModels\CamionViewModel.cs" />
+    <Compile Include="ViewModels\General.cs" />
   </ItemGroup>
 </Project>

@@ -19,6 +19,13 @@ namespace Proyecto_camiones.Presentacion.Services
             this._camionRepository = camionR ?? throw new ArgumentNullException(nameof(camionR));
         }
 
+        //PROBAR CONEXION
+        public async Task<bool> ProbarConexionAsync()
+        {
+            bool result = await this._camionRepository.ProbarConexionAsync();
+            return result;
+        }
+
 
         //OBTENER TODOS LOS CAMIONES
         public async Task<List<CamionDTO>> ObtenerCamionesAsync()
