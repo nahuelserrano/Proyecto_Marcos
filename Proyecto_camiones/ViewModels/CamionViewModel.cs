@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MySqlX.XDevAPI.Common;
+using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Services;
+using Proyecto_camiones.Presentacion.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,6 +50,17 @@ namespace Proyecto_camiones.ViewModels
                 }
             }
             return -1; //provisorio, averiguar que tipo de respuesta da, un simil response entity de java
+        }
+
+        public async Task<List<CamionDTO>> ObtenerTodos() 
+        {
+            if (this.testearConexion().Result)
+            {
+                var camiones = await this._camionService.ObtenerCamionesAsync();
+                Console.WriteLine("no rompió ante la llamada");
+                return camiones;
+            }
+            return new List<CamionDTO>();
         }
 
 
