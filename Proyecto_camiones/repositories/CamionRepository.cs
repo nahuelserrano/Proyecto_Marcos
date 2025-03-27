@@ -104,5 +104,48 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
             
         }
+
+        public async Task<bool> Actualizar(int id, float? peso_max, float? tara, string? patente)
+        {
+            try
+            {
+                var camion = await _context.Camiones.FindAsync(id);
+                if(camion == null)
+                {
+                    return false;
+                }
+
+                if(peso_max != null)
+                {
+                    camion.peso_max = (float)peso_max;
+                }
+                if(tara != null)
+                {
+                    camion.tara = (float)tara;
+                }
+                if(patente != null)
+                {
+                    camion.Patente = patente;
+                }
+
+                await _context.SaveChangesAsync();
+                return true;
+            }catch(Exception ex)
+            {
+                Console.WriteLine($"Error al actualizar camión: {ex.Message}");
+                return false;
+            }
+        }
+
+        internal async Task<CamionDTO> ObtenerPorId(int id)
+        {
+            Camion camion = await _context.Camiones.FindAsync(id);
+            if(camion != null)
+            {
+                CamionDTO nuevo = new CamionDTO(camion.peso_max, camion.tara, camion.Patente);
+                return nuevo;
+            }
+            return null;
+        }
     }
 }

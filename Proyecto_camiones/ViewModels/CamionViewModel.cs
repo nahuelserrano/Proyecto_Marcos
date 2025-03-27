@@ -63,6 +63,19 @@ namespace Proyecto_camiones.ViewModels
             return new List<CamionDTO>();
         }
 
+        public async Task<CamionDTO> Actualizar(int id, float? peso_max, float? tara, string? patente)
+        {
+            if (this.testearConexion().Result)
+            {
+                CamionDTO camion = await this._camionService.Actualizar(id, peso_max, tara, patente);
+                if(camion != null)
+                {
+                    return camion;
+                }
+            }
+            return null;
+        }
+
 
     }
 }

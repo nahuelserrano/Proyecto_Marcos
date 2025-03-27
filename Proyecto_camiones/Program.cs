@@ -34,6 +34,10 @@ namespace Proyecto_camiones.Presentacion
                 Console.WriteLine(camion.ToString());
             }
 
+            //PRUEBA UPDATE CAMION
+            var camionUpdated = await cvm.Actualizar(2, 100, null, "HIJ429");
+            Console.WriteLine("camion actualizado a: " + camionUpdated.ToString());
+
         }
     }
 }
