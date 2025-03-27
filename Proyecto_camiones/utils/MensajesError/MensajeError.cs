@@ -30,7 +30,7 @@ namespace Proyecto_camiones.Presentacion.Utils
         public static string ausenciaDeDatos(String nombreDatoAusente) =>
             $"El ID colocado: {nombreDatoAusente} no corresponde a ningun objeto";
         public static string PesoIncorrecto(float id) =>
-            $"El peso colocado: {id} no corresponde a ningun objeto";
+            $"El peso colocado: {id} no es válido en el contexto";
 
   
     }

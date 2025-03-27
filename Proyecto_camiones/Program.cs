@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.ViewModels;
+using Proyecto_camiones.Presentacion.Utils;
 
 
 namespace Proyecto_camiones.Presentacion
@@ -24,19 +25,35 @@ namespace Proyecto_camiones.Presentacion
 
             CamionViewModel cvm = new CamionViewModel();
             //PRUEBA INSERCION
-            int id = cvm.InsertarCamion(220, 200, "hhh902").Result;
-            Console.WriteLine("se pudo agregar con el id: " + id);
+            //Result<int> id = cvm.InsertarCamion(180, 200, "PQJ123").Result;
+            //if (id.IsSuccess)
+            //{
+            //    Console.WriteLine("se pudo agregar con el id: " + id.Value);
+            //}
+            //else
+            //{
+            //    Console.WriteLine(id.Error);
+            //}
+            
 
             //PRUEBA SELECT ALL
-            var camiones = await cvm.ObtenerTodos();
-            foreach (var camion in camiones)
-            {
-                Console.WriteLine(camion.ToString());
-            }
+            //var camiones = await cvm.ObtenerTodos();
+            //if (camiones.IsSuccess)
+            //{
+            //    foreach (var camion in camiones.Value)
+            //    {
+            //        Console.WriteLine(camion.ToString());
+            //    }
+            //}
 
             //PRUEBA UPDATE CAMION
-            var camionUpdated = await cvm.Actualizar(2, 100, null, "HIJ429");
-            Console.WriteLine("camion actualizado a: " + camionUpdated.ToString());
+            //var camionUpdated = await cvm.Actualizar(2, 100, null, "HIJ429");
+            //if (camionUpdated.IsSuccess)
+            //{
+            //    CamionDTO camion = camionUpdated.Value;
+            //    Console.WriteLine("camion actualizado a: " + camion.ToString());
+            //}
+
 
         }
     }

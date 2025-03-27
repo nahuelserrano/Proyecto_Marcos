@@ -28,12 +28,12 @@ namespace Proyecto_camiones.ViewModels
             return await this._camionService.ProbarConexionAsync();
         }
 
-        public async Task<int> InsertarCamion(float peso_max, float tara, string patente)
+        public async Task<Result<int>> InsertarCamion(float peso_max, float tara, string patente)
         {
             if (this.testearConexion().Result)
             {
                 Console.WriteLine("omg entré!!");
-                var resultado = await this._camionService.CrearCamionAsync(150, 100, "WWW123");
+                var resultado = await this._camionService.CrearCamionAsync(peso_max, tara, patente);
 
                 // Ahora puedes acceder al resultado
                 if (resultado.IsSuccess)
@@ -41,39 +41,41 @@ namespace Proyecto_camiones.ViewModels
                     // La operación fue exitosa
                     int idCamion = resultado.Value;
                     Console.WriteLine($"Camión creado con ID: {idCamion}");
-                    return resultado.Value;
+                    return resultado;
                 }
                 else
                 {
                     // Si la operación falló, maneja el error
                     Console.WriteLine($"Error al crear el camión: {resultado.Error}");
+                    return Result<int>.Failure(resultado.Error);
                 }
             }
-            return -1; //provisorio, averiguar que tipo de respuesta da, un simil response entity de java
+            return Result<int>.Failure("La conexión no pude establecerse"); //provisorio, averiguar que tipo de respuesta da, un simil response entity de java
         }
 
-        public async Task<List<CamionDTO>> ObtenerTodos() 
+        public async Task<Result<List<CamionDTO>>> ObtenerTodos() 
         {
             if (this.testearConexion().Result)
             {
                 var camiones = await this._camionService.ObtenerCamionesAsync();
                 Console.WriteLine("no rompió ante la llamada");
-                return camiones;
+                return Result<List<CamionDTO>>.Success(camiones);
             }
-            return new List<CamionDTO>();
+            return Result<List<CamionDTO>>.Failure("La conexión no pudo establecerse");
         }
 
-        public async Task<CamionDTO> Actualizar(int id, float? peso_max, float? tara, string? patente)
+        public async Task<Result<CamionDTO>> Actualizar(int id, float? peso_max, float? tara, string? patente)
         {
             if (this.testearConexion().Result)
             {
-                CamionDTO camion = await this._camionService.Actualizar(id, peso_max, tara, patente);
-                if(camion != null)
+                Result<CamionDTO> camion = await this._camionService.Actualizar(id, peso_max, tara, patente);
+                if(camion.IsSuccess)
                 {
                     return camion;
                 }
+                return Result<CamionDTO>.Failure(camion.Error);
             }
-            return null;
+            return Result<CamionDTO>.Failure("No pudo establecerse la conexión");
         }
 
 

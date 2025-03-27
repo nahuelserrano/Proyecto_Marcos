@@ -70,15 +70,15 @@ namespace Proyecto_camiones.Presentacion.Services
             }
         }
 
-        internal async Task<CamionDTO> Actualizar(int id, float? peso_max, float? tara, string? patente)
+        internal async Task<Result<CamionDTO>> Actualizar(int id, float? peso_max, float? tara, string? patente)
         {
             bool success = await this._camionRepository.Actualizar(id, peso_max, tara, patente);
             if (success)
             {
                 CamionDTO result = await this._camionRepository.ObtenerPorId(id);
-                return result;
+                return Result<CamionDTO>.Success(result);
             }
-            return null;
+            return Result<CamionDTO>.Failure("No se pudo realizar la actualización");
         }
     }
 }
