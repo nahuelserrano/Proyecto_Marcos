@@ -1,0 +1,71 @@
+# Archivos compilados y binarios de .NET
+bin/
+obj/
+debug/
+release/
+x64/
+x86/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+**/obj/
+**/bin/
+
+# Archivos de Visual Studio
+.vs/
+.vscode/
+*.user
+*.userosscache
+*.suo
+*.userprefs
+*.sln.docstates
+*.dbmdl
+*.jfm
+*.pfx
+*.publishsettings
+
+# Archivos de Base de Datos
+*.mdf
+*.ldf
+*.ndf
+*.db
+*.sqlite
+*.sqlite3
+
+# Archivos de Respaldo
+*~
+*.bak
+*.swp
+*.tmp
+
+# Archivos de configuración local
+appsettings.Development.json
+appsettings.local.json
+appsettings.*.json
+!appsettings.json
+
+# Paquetes NuGet
+*.nupkg
+**/packages/*
+!**/packages/build/
+
+# Archivos de publicación
+*.[Pp]ublish.xml
+*.azurePubxml
+*.pubxml
+*.publishproj
+
+# ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# Archivos de caché
+.sass-cache/
+.nuget/
+
+# Archivos generados por herramientas
+Thumbs.db
+desktop.ini
+.DS_Store

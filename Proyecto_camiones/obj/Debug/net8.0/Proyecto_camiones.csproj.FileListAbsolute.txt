@@ -1,8 +1,0 @@
-C:\Users\Usuario\source\repos\Proyecto_camiones\Proyecto_camiones\obj\Debug\net8.0\Proyecto_camiones.csproj.AssemblyReference.cache
-C:\Users\Usuario\source\repos\Proyecto_camiones\Proyecto_camiones\obj\Debug\net8.0\Proyecto_camiones.forms.Formulario_Viajes.resources
-C:\Users\Usuario\source\repos\Proyecto_camiones\Proyecto_camiones\obj\Debug\net8.0\Proyecto_camiones.properties.Resources.resources
-C:\Users\Usuario\source\repos\Proyecto_camiones\Proyecto_camiones\obj\Debug\net8.0\Proyecto_camiones.csproj.GenerateResource.cache
-C:\Users\Usuario\source\repos\Proyecto_camiones\Proyecto_camiones\obj\Debug\net8.0\Proyecto_camiones.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\Usuario\source\repos\Proyecto_camiones\Proyecto_camiones\obj\Debug\net8.0\Proyecto_camiones.AssemblyInfoInputs.cache
-C:\Users\Usuario\source\repos\Proyecto_camiones\Proyecto_camiones\obj\Debug\net8.0\Proyecto_camiones.AssemblyInfo.cs
-C:\Users\Usuario\source\repos\Proyecto_camiones\Proyecto_camiones\obj\Debug\net8.0\Proyecto_camiones.csproj.CoreCompileInputs.cache
