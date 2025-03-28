@@ -6,78 +6,81 @@ namespace Proyecto_camiones.Presentacion.Utils
 {
     public class ValidadorViaje
     {
-        private readonly Viaje _viaje;
+        private readonly string _destino;
+        private readonly string _lugarPartida;
+        private readonly float _kg;
+        private readonly int _remito;
+        private readonly float _precioPorKilo;
+        private readonly int _chofer;
+        private readonly int _cliente;
+        private readonly int _camion;
+        private readonly DateTime _fechaInicio;
+        private readonly DateTime _fechaEntrega;
+        private readonly string _carga;
+        private readonly float _km;
         private List<string> _errores;
 
-        public ValidadorViaje(Viaje viaje)
+        public ValidadorViaje(
+            string destino,
+            string lugarPartida,
+            float kg,
+            int remito,
+            float precioPorKilo,
+            int chofer,
+            int cliente,
+            int camion,
+            DateTime fechaInicio,
+            DateTime fechaEntrega,
+            string carga,
+            float km)
         {
-            _viaje = viaje;
+            _destino = destino;
+            _lugarPartida = lugarPartida;
+            _kg = kg;
+            _remito = remito;
+            _precioPorKilo = precioPorKilo;
+            _chofer = chofer;
+            _cliente = cliente;
+            _camion = camion;
+            _fechaInicio = fechaInicio;
+            _fechaEntrega = fechaEntrega;
+            _carga = carga;
+            _km = km;
             _errores = new List<string>();
         }
 
-        public ValidadorViaje Validar()
-        {
-            _errores.Clear();
-
-            if (_viaje == null)
-                _errores.Add(MensajeError.objetoNulo(nameof(Viaje)));
-
-            return this;
-        }
 
         public ValidadorViaje ValidarFechas()
         {
-            if (_viaje == null) return this;
-
-            if (_viaje.FechaEntrega < DateTime.Now)
+            if (_fechaEntrega < DateTime.Now)
                 _errores.Add("La fecha de partida no puede ser en el pasado");
 
-            if (_viaje.FechaEntrega < _viaje.FechaInicio)
-                _errores.Add("La fecha de entrega no puede ser anterior a la fecha de inicio");
-
-            return this;
-        }
-
-        public ValidadorViaje ValidarEntidadesRelacionadas()
-        {
-            if (_viaje == null) return this;
-
-            if (_viaje.Cliente == null)
-                _errores.Add(MensajeError.objetoNulo(nameof(Cliente)));
-
-            if (_viaje.Camion == null)
-                _errores.Add(MensajeError.objetoNulo(nameof(Camion)));
-
-            if (_viaje.Chofer == null)
-                _errores.Add(MensajeError.objetoNulo(nameof(Chofer)));
+            if (_fechaEntrega < _fechaInicio)
+                _errores.Add(MensajeError.fechaInvalida(nameof(_fechaInicio)));
 
             return this;
         }
 
         public ValidadorViaje ValidarCarga()
         {
-            if (_viaje == null || _viaje.Camion == null) return this;
+            if (_kg <= 0)
+                _errores.Add(MensajeError.numeroNoValido(nameof(_kg)));
 
-            //if (_viaje.KilosCarga <= 0)
-            //    _errores.Add("El peso de la carga debe ser mayor que cero");
-
-            //if (_viaje.KilosCarga + _viaje.Camion.Tara > _viaje.Camion.CapacidadMax)
-            //    _errores.Add($"La carga supera la capacidad máxima del camión ({_viaje.Camion.CapacidadMax}kg)");
+            // Nota: Para validar la capacidad del camión necesitaríamos
+            // consultar la información del camión o recibir su capacidad
 
             return this;
         }
 
         public ValidadorViaje ValidarRuta()
         {
-            if (_viaje == null) return this;
-
-            if (string.IsNullOrWhiteSpace(_viaje.LugarPartida))
+            if (string.IsNullOrWhiteSpace(_lugarPartida))
                 _errores.Add("El lugar de partida es requerido");
 
-            if (string.IsNullOrWhiteSpace(_viaje.Destino))
+            if (string.IsNullOrWhiteSpace(_destino))
                 _errores.Add("El destino es requerido");
 
-            if (_viaje.LugarPartida == _viaje.Destino)
+            if (_lugarPartida == _destino)
                 _errores.Add("El origen y destino no pueden ser iguales");
 
             return this;
@@ -85,25 +88,11 @@ namespace Proyecto_camiones.Presentacion.Utils
 
         public ValidadorViaje ValidarPrecioYRemito()
         {
-            if (_viaje == null) return this;
+            if (_precioPorKilo <= 0)
+                _errores.Add(MensajeError.numeroNoValido(nameof(_precioPorKilo)));
 
-            if (_viaje.PrecioPorKilo <= 0)
-                _errores.Add("El precio por kilo debe ser mayor a cero");
-
-            if (_viaje.Remito <= 0)
-                _errores.Add("El número de remito debe ser válido y mayor a cero");
-
-            return this;
-        }
-
-        public ValidadorViaje ValidarEstado()
-        {
-            if (_viaje == null) return this;
-
-            var estadosValidos = new HashSet<string> { "Pendiente", "En tránsito", "Finalizado" };
-
-            if (!estadosValidos.Contains(_viaje.Estado))
-                _errores.Add($"Estado inválido: {_viaje.Estado}. Debe ser 'Pendiente', 'En tránsito' o 'Finalizado'.");
+            if (_remito <= 0)
+                _errores.Add(nameof(_remito));
 
             return this;
         }
@@ -117,13 +106,10 @@ namespace Proyecto_camiones.Presentacion.Utils
 
         public Result<bool> ValidarCompleto()
         {
-            return Validar()
-                .ValidarFechas()
-                .ValidarEntidadesRelacionadas()
+            return ValidarFechas()
                 .ValidarCarga()
                 .ValidarRuta()
                 .ValidarPrecioYRemito()
-                .ValidarEstado()
                 .ObtenerResultado();
         }
 
