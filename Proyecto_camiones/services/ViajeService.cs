@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Utils;
@@ -104,7 +105,6 @@ namespace Proyecto_camiones.Presentacion.Services
             }
             catch (Exception ex)
             {
-                // Logger.LogError($"Error al obtener lista de viajes: {ex.Message}");
                 return Result<List<Viaje>>.Failure("Ocurrió un error al obtener la lista de viajes");
             }
         }
@@ -225,6 +225,41 @@ namespace Proyecto_camiones.Presentacion.Services
             {
                 return Result<bool>.Failure("Hubo un error al eliminar el viaje");
             }
+        }
+
+        public async Task<Result<List<ViajeDTO>>> ObtenerViajesPorCamion(int idCamion)
+        {
+            if (idCamion <= 0)
+            {
+                return Result<List<ViajeDTO>>.Failure(MensajeError.idInvalido(idCamion));
+            }
+
+            //var viajes = await _viajeRepository.ObtenerPorCamion(idCamion);
+            List<ViajeDTO> viajes = null;
+
+            if (viajes == null || viajes.Count == 0)
+            {
+                return Result<List<ViajeDTO>>.Failure("No se encontraron viajes para el camión especificado");
+            }
+
+            return Result<List<ViajeDTO>>.Success(viajes);
+        }
+
+        public async Task<Result<List<ViajeDTO>>> ObtenerViajesPorChofer(int idChofer)
+        {
+            if (idChofer <= 0)
+            {
+                return Result<List<ViajeDTO>>.Failure(MensajeError.idInvalido(idChofer));
+            }
+
+            //var viajes = await _viajeRepository.ObtenerPorChofer(idChofer);
+            List<ViajeDTO> viajes = null;
+
+            if (viajes == null || viajes.Count == 0)
+            {
+                return Result<List<ViajeDTO>>.Failure("No se encontraron viajes para el chofer especificado");
+            }
+            return Result<List<ViajeDTO>>.Success(viajes);
         }
     }
 }

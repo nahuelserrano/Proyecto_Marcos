@@ -9,40 +9,25 @@ namespace Proyecto_camiones.Presentacion.Utils
 
     public class ValidadorChofer
     {
-        private readonly Chofer _chofer;
+        public readonly string Nombre;
+        public readonly string Apellido;
         private List<string> _errores;
 
 
-        public ValidadorChofer(Chofer chofer)
+        public ValidadorChofer(string nombre, string apellido)
         {
-            _chofer = chofer;
+            this.Nombre = nombre;
+            this.Apellido = apellido;
             _errores = new List<string>();
-        }
-
-        // Método para iniciar la validación - verifica si el objeto es nulo
-        public ValidadorChofer Validar()
-        {
-            _errores.Clear();
-
-            if (_chofer == null)
-            {
-                _errores.Add(MensajeError.objetoNulo(nameof(Chofer)));
-            }
-
-            return this; // Para permitir encadenamiento
         }
 
         public ValidadorChofer ValidarDatos ()
         {
-            if (_chofer == null) return this; // Evitamos NullException
+            if (string.IsNullOrWhiteSpace(Nombre))
+               _errores.Add(MensajeError.ausenciaDeDatos(nameof(Nombre)));
 
-            if (string.IsNullOrWhiteSpace(_chofer.nombre))
-               _errores.Add(MensajeError.ausenciaDeDatos(nameof(_chofer.nombre)));
-
-            if (string.IsNullOrWhiteSpace(_chofer.apellido))
-                _errores.Add(MensajeError.ausenciaDeDatos(nameof(_chofer.apellido)));
-
-            
+            if (string.IsNullOrWhiteSpace(Apellido))
+                _errores.Add(MensajeError.ausenciaDeDatos(nameof(Apellido)));
 
             return this;
         }
@@ -58,8 +43,7 @@ namespace Proyecto_camiones.Presentacion.Utils
         // Esta función ayuda a mantener todas las validaciones en un solo llamado
         public Result<bool> ValidarCompleto()
         {
-            return Validar()
-                .ValidarDatos()
+            return ValidarDatos()
                 .ObtenerResultado();
         }
 
