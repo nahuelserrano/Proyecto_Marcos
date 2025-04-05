@@ -55,7 +55,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
                 var chofer = new Chofer(nombre, apellido);
 
-                _context.Choferes.Add(chofer);
+                _context.Empleados.Add(chofer);
 
                 await _context.SaveChangesAsync();
 
@@ -74,9 +74,13 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                var choferes = await _context.Choferes.ToListAsync();
-
-                return choferes;
+                var choferes = await _context.Empleados.ToListAsync();
+                List<Chofer> response = new List<Chofer>;
+                foreach(var chofer in choferes)
+                {
+                    response.Add(new Chofer(chofer.nombre, chofer.apellido));
+                }
+                return response;
             }
             catch (Exception ex)
             {
@@ -97,7 +101,9 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     return null;
                 }
 
-                return await _context.Choferes.FindAsync(id);
+                var chofer = await _context.Empleados.FindAsync(id);
+                Chofer c = new Chofer(chofer.nombre, chofer.apellido);
+                return c;
             }
             catch (Exception ex)
             {
@@ -117,7 +123,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 }
 
                 // Verificar si el chofer existe
-                var choferExistente = await _context.Choferes.FindAsync(id);
+                var choferExistente = await _context.Empleados.FindAsync(id);
                 if (choferExistente == null)
                 {
                     return false;
@@ -149,14 +155,14 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 }
 
                 // Buscar el chofer
-                var chofer = await _context.Choferes.FindAsync(id);
+                var chofer = await _context.Empleados.FindAsync(id);
                 if (chofer == null)
                 {
                     return false;
                 }
 
                 // Eliminar el chofer
-                _context.Choferes.Remove(chofer);
+                _context.Empleados.Remove(chofer);
                 await _context.SaveChangesAsync();
                 return true;
             }

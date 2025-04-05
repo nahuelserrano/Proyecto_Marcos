@@ -12,7 +12,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Viaje> Viajes { get; set; }
     public DbSet<Cheque> Cheques { get; set; }
     public DbSet<Pago> Pagos { get; set; }
-    public DbSet<Chofer> Choferes { get; set; }
+    public DbSet<Empleado> Empleados { get; set; }
     public DbSet<Cliente> Clientes { get; set; }
     public DbSet<Usuario> Usuarios { get; set; }
 
@@ -40,7 +40,7 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Viaje>().ToTable("viaje");
         modelBuilder.Entity<Cheque>().ToTable("cheque");
         modelBuilder.Entity<Pago>().ToTable("pago");
-        modelBuilder.Entity<Chofer>().ToTable("chofer");
+        modelBuilder.Entity<Empleado>().ToTable("empleado");
         modelBuilder.Entity<Cliente>().ToTable("cliente");
         modelBuilder.Entity<Usuario>().ToTable("usuario");
 
@@ -52,6 +52,16 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.peso_max).HasColumnName("peso_max");
             entity.Property(e => e.tara).HasColumnName("tara");
             entity.Property(e => e.Patente).HasColumnName("patente");
+        });
+
+        modelBuilder.Entity<Empleado>(entity =>
+        {
+            entity.ToTable("empleado");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasColumnName("idempleado");
+            entity.Property(e => e.nombre).HasColumnName("nombre");
+            entity.Property(e => e.apellido).HasColumnName("apellido");
+            entity.Property(e => e.tipo_empleado).HasColumnName("tipo_empleado");
         });
 
         base.OnModelCreating(modelBuilder);

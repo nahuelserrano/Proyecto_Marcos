@@ -6,19 +6,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using Proyecto_camiones.DTOs;
+using Proyecto_camiones.Models;
+using NPOI.SS.UserModel;
 
 namespace Proyecto_camiones.Presentacion.Models
 {
-    public class Chofer
+    public class Chofer : Empleado
     {
-        public int Id { get; set; }
-        public string nombre { get; set; }
-        public string apellido { get; set; }
-       
-        public Chofer (string nombre, string apellido)
+        public float porcentaje_cobro { get; set; }
+
+        public Chofer(string nombre, string apellido) : base(nombre, apellido, "chofer")
         {
-            this.nombre = nombre;
-            this.apellido = apellido;
+            this.porcentaje_cobro = 18;
         }
 
         public ChoferDTO toDTO()
