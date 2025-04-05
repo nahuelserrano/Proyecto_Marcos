@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MySqlX.XDevAPI.Common;
+using Org.BouncyCastle.Asn1.Ocsp;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Services;
@@ -76,6 +77,15 @@ namespace Proyecto_camiones.ViewModels
                 return Result<CamionDTO>.Failure(camion.Error);
             }
             return Result<CamionDTO>.Failure("No pudo establecerse la conexión");
+        }
+
+        public async Task<Result<string>> Eliminar(int id)
+        {
+            if (this.testearConexion().Result)
+            {
+                return await this._camionService.Eliminar(id);
+            }
+            return Result<string>.Failure("error de conexión");
         }
 
 

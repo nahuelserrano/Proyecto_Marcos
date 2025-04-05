@@ -80,5 +80,16 @@ namespace Proyecto_camiones.Presentacion.Services
             }
             return Result<CamionDTO>.Failure("No se pudo realizar la actualización");
         }
+
+        public async Task<Result<string>> Eliminar(int id)
+        {
+            bool success = await this._camionRepository.EliminarCamionAsync(id);
+            if (success)
+            {
+                Console.WriteLine("holu ya se eliminó el camión");
+                return Result<string>.Success("el camion con el id " + id + " fue eliminado correctamente");
+            }
+            return Result<string>.Failure("el camion con el id " + id + " no pudo ser eliminado");
+        }
     }
 }

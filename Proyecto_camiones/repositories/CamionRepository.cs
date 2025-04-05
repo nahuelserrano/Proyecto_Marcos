@@ -68,7 +68,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 // Guardar los cambios en la base de datos (aquí se genera el SQL real y se ejecuta)
                 int registrosAfectados = await _context.SaveChangesAsync();
 
-                if(registrosAfectados > 0)
+                if (registrosAfectados > 0)
                 {
                     return camion;
                 }
@@ -96,13 +96,14 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 }).ToListAsync();
 
                 return camiones;
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine($"Error al insertar camión: {ex.Message}");
                 Console.WriteLine($"Stack trace: {ex.StackTrace}");
                 return null;
             }
-            
+
         }
 
         public async Task<bool> Actualizar(int id, float? peso_max, float? tara, string? patente)
@@ -110,27 +111,28 @@ namespace Proyecto_camiones.Presentacion.Repositories
             try
             {
                 var camion = await _context.Camiones.FindAsync(id);
-                if(camion == null)
+                if (camion == null)
                 {
                     return false;
                 }
 
-                if(peso_max != null)
+                if (peso_max != null)
                 {
                     camion.peso_max = (float)peso_max;
                 }
-                if(tara != null)
+                if (tara != null)
                 {
                     camion.tara = (float)tara;
                 }
-                if(patente != null)
+                if (patente != null)
                 {
                     camion.Patente = patente;
                 }
 
                 await _context.SaveChangesAsync();
                 return true;
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine($"Error al actualizar camión: {ex.Message}");
                 return false;
@@ -140,12 +142,33 @@ namespace Proyecto_camiones.Presentacion.Repositories
         internal async Task<CamionDTO> ObtenerPorId(int id)
         {
             Camion camion = await _context.Camiones.FindAsync(id);
-            if(camion != null)
+            if (camion != null)
             {
                 CamionDTO nuevo = new CamionDTO(camion.peso_max, camion.tara, camion.Patente);
                 return nuevo;
             }
             return null;
         }
+
+        public async Task<bool> EliminarCamionAsync(int id)
+        {
+            try
+            {
+                var camion = await _context.Camiones.FindAsync(id);
+
+                if (camion == null)
+                    return false;
+
+                _context.Camiones.Remove(camion);
+
+                await _context.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        } 
     }
 }

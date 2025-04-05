@@ -34,7 +34,7 @@ namespace Proyecto_camiones.Presentacion
             //{
             //    Console.WriteLine(id.Error);
             //}
-            
+
 
             //PRUEBA SELECT ALL
             //var camiones = await cvm.ObtenerTodos();
@@ -53,6 +53,10 @@ namespace Proyecto_camiones.Presentacion
             //    CamionDTO camion = camionUpdated.Value;
             //    Console.WriteLine("camion actualizado a: " + camion.ToString());
             //}
+
+            //PRUEBA ELIMINAR CAMION
+            //var response = await cvm.Eliminar(8);
+            //Console.WriteLine(response.Value);
 
 
         }
