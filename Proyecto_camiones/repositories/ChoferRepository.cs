@@ -74,8 +74,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                var choferes = await _context.Empleados.ToListAsync();
-                List<Chofer> response = new List<Chofer>;
+                var choferes = await _context.Empleados.Where(c=>c.tipo_empleado == "chofer").ToListAsync();
+                List<Chofer> response = new List<Chofer>();
                 foreach(var chofer in choferes)
                 {
                     response.Add(new Chofer(chofer.nombre, chofer.apellido));
