@@ -43,13 +43,19 @@ namespace Proyecto_camiones.Presentacion.Services
             return Result<bool>.Success(true);
         }
 
-        public async Task<Result<int>> Crear(Cheque cheque)
+        public async Task<Result<int>> Crear(int id_Cliente,DateTime FechaIngresoCheque, string NumeroCheque, float Monto, string Banco, DateTime FechaCobro)
         {
+            ValidadorCheque validador = new ValidadorCheque(id_Cliente, FechaIngresoCheque, NumeroCheque, Monto, Banco, FechaCobro);
+            Result<bool> resultadoValidacion = validador.ValidarCompleto();
 
+            if (!resultadoValidacion.IsSuccess)
+                return Result<int>.Failure(resultadoValidacion.Error);
+
+           
             try
             {
                 // Intentar insertar en la base de datos
-                int idcheque = await _chequeRepository.Insertar(cheque);
+                int idcheque = await _chequeRepository.Insertar(id_Cliente, FechaIngresoCheque, NumeroCheque, Monto,Banco, FechaCobro);
                 return Result<int>.Success(idcheque);
             }
             catch (Exception)
@@ -59,7 +65,7 @@ namespace Proyecto_camiones.Presentacion.Services
             }
         }
 
-        public async Task<Result<int>> Actualizar(int id, Cliente cliente = null, DateTime? FechaIngresoCheque = null, int? NumeroCheque = null, float? Monto = null, string Banco = null, DateTime? FechaCobro = null)
+        public async Task<Result<int>> Actualizar(int id, int? id_cliente = null, DateTime? FechaIngresoCheque = null, string? NumeroCheque = null, float? Monto = null, string? Banco = null, DateTime? FechaCobro = null)
         {
             if (id <= 0)
                 return Result<int>.Failure(MensajeError.idInvalido(id));
@@ -70,14 +76,14 @@ namespace Proyecto_camiones.Presentacion.Services
                 return Result<int>.Failure(MensajeError.objetoNulo(nameof(chequeExistente)));
 
 
-            if (cliente != null)
-                //chequeExistente.Cliente_Dueño_Cheque = cliente;
+            if (id_cliente.HasValue)
+                chequeExistente.id_Cliente = id_cliente.Value;
 
             if (FechaIngresoCheque.HasValue)
                 chequeExistente.FechaIngresoCheque = FechaIngresoCheque.Value;
 
-            if (NumeroCheque.HasValue)
-                chequeExistente.NumeroCheque = NumeroCheque.Value;
+            if (NumeroCheque!=null)
+                chequeExistente.NumeroCheque = NumeroCheque;
 
             if (Monto.HasValue)
                 chequeExistente.Monto = Monto.Value;
@@ -89,7 +95,7 @@ namespace Proyecto_camiones.Presentacion.Services
                 chequeExistente.FechaCobro = FechaCobro.Value;
 
             if (chequeExistente.FechaIngresoCheque > chequeExistente.FechaCobro)
-                return Result<int>.Failure(MensajeError.fechaInvalida(nameof(cliente)));
+                return Result<int>.Failure(MensajeError.fechaInvalida(nameof(Cliente)));
 
             try
             {

@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Models;
-using Proyecto_camiones.Presentacion.Utils;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
 namespace Proyecto_camiones.Presentacion.Repositories

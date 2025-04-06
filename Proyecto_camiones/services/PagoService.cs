@@ -42,10 +42,10 @@ namespace Proyecto_camiones.Presentacion.Services
 
         }
 
-        public async Task<Result<int>> Crear(Pago pago)
+        public async Task<Result<int>> Crear(float monto, bool pagado)
         {
 
-            ValidadorPago validador = new ValidadorPago(pago);
+            ValidadorPago validador = new ValidadorPago( monto,pagado);
 
             Result<bool> resultadoValidacion = validador.ValidarCompleto();
 
@@ -55,7 +55,7 @@ namespace Proyecto_camiones.Presentacion.Services
             try
             {
                 // Intentar insertar en la base de datos
-                int idPago = await _pagoRepository.Insertar(pago);
+                int idPago = await _pagoRepository.Insertar(monto, pagado);
                 return Result<int>.Success(idPago);
             }
             catch (Exception ex)

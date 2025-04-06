@@ -9,39 +9,37 @@ namespace Proyecto_camiones.Presentacion.Utils
 
     public class ValidadorCliente
     {
-        private readonly Cliente _cliente;
+        private readonly int Id_Cliente;
+        private readonly String Nombre;
+        private readonly string Dni;
+        private readonly String Apellido;
         private List<string> _errores;
    
 
-        public ValidadorCliente(Cliente cliente)
+        public ValidadorCliente( String Nombre, String Apellido, string Dni)
         {
-            _cliente = cliente;
+            //this.Id_Cliente = id;
+            this.Nombre = Nombre;
+            this.Apellido = Apellido;
+            this.Dni = Dni;
             _errores = new List<string>();
         }
 
-        // Método para iniciar la validación - verifica si el objeto es nulo
-        public ValidadorCliente Validar()
-        {
-            _errores.Clear();
-
-            if (_cliente == null)
-            {
-                _errores.Add(MensajeError.objetoNulo(nameof(Cliente)));
-            }
-
-            return this; // Para permitir encadenamiento
-        }
+       
 
         public ValidadorCliente ValidarDatos()
         {
 
-            if (_cliente == null) return this; // Evitamos NullException
+            //if (this.Id_Cliente <=0) return this; 
 
-            if (string.IsNullOrWhiteSpace(_cliente.nombre))
-                _errores.Add(MensajeError.ausenciaDeDatos(nameof(_cliente.nombre)));
+            if (string.IsNullOrWhiteSpace(this.Nombre))
+                _errores.Add(MensajeError.ausenciaDeDatos(nameof(this.Nombre)));
 
-            if (string.IsNullOrWhiteSpace(_cliente.apellido))
-                _errores.Add(MensajeError.ausenciaDeDatos(nameof(_cliente.apellido)));
+            if (string.IsNullOrWhiteSpace(this.Apellido))
+                _errores.Add(MensajeError.ausenciaDeDatos(nameof(this.Apellido)));
+
+            if (string.IsNullOrWhiteSpace(this.Dni))
+                _errores.Add(MensajeError.ausenciaDeDatos(nameof(this.Dni)));
 
 
 
@@ -59,8 +57,8 @@ namespace Proyecto_camiones.Presentacion.Utils
         // Esta función ayuda a mantener todas las validaciones en un solo llamado
         public Result<bool> ValidarCompleto()
         {
-            return Validar()
-                .ValidarDatos()
+            return 
+                 ValidarDatos()
                 .ObtenerResultado();
         }
 

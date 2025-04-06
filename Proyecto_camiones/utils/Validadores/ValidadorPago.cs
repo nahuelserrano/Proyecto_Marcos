@@ -8,36 +8,28 @@ namespace Proyecto_camiones.Presentacion.Utils
 {
 
     public class ValidadorPago
-    {
-        private readonly Pago _pago;
-        private List<string> _errores;
+    {  
+        private readonly float Monto;
+        private readonly bool Pagado;
+        private List<string> Errores;
 
 
-        public ValidadorPago(Pago pago)
+        public ValidadorPago(float monto,bool pagado)
         {
-            _pago = pago;
-            _errores = new List<string>();
+            this.Monto = monto;
+            this.Pagado = pagado;
+            Errores = new List<string>();
         }
 
-        // Método para iniciar la validación - verifica si el objeto es nulo
-        public ValidadorPago Validar()
-        {
-            _errores.Clear();
-
-            if (_pago == null)
-            {
-                _errores.Add(MensajeError.objetoNulo(nameof(Pago)));
-            }
-
-            return this; // Para permitir encadenamiento
-        }
+       
+       
 
         public ValidadorPago ValidarDatos()
         {
-            if (_pago == null) return this; // Evitamos NullException
+           
 
-            if (_pago.Monto < 0)
-                _errores.Add(MensajeError.valorInvalido(nameof(_pago.Monto)));
+            if (this.Monto < 0)
+                Errores.Add(MensajeError.valorInvalido(nameof(this.Monto)));
 
            
 
@@ -48,7 +40,7 @@ namespace Proyecto_camiones.Presentacion.Utils
 
         public Result<bool> ObtenerResultado()
         {
-            return _errores.Count == 0
+            return Errores.Count == 0
                 ? Result<bool>.Success(true)
                 : Result<bool>.Failure(ObtenerMensajeError());
         }
@@ -56,15 +48,15 @@ namespace Proyecto_camiones.Presentacion.Utils
         // Esta función ayuda a mantener todas las validaciones en un solo llamado
         public Result<bool> ValidarCompleto()
         {
-            return Validar()
-                .ValidarDatos()
+            return 
+                 ValidarDatos()
                 .ObtenerResultado();
         }
 
         // Método auxiliar para formatear los errores
         private string ObtenerMensajeError()
         {
-            return string.Join(Environment.NewLine, _errores);
+            return string.Join(Environment.NewLine, Errores);
         }
     }
 }

@@ -5,6 +5,7 @@ using Proyecto_camiones.Presentacion.Models;
 
 namespace Proyecto_camiones.Presentacion.Repositories
 {
+  
     public class ChequeRepository
     {
         private List<Cheque> _cheques;
