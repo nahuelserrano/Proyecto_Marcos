@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 08-04-2025 a las 23:17:12
+-- Tiempo de generación: 09-04-2025 a las 00:52:13
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -74,17 +74,16 @@ CREATE TABLE `cheque` (
 
 CREATE TABLE `cliente` (
   `idCliente` int(11) NOT NULL,
-  `nombre` varchar(45) NOT NULL,
-  `apellido` varchar(45) DEFAULT NULL
+  `nombre` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `cliente`
 --
 
-INSERT INTO `cliente` (`idCliente`, `nombre`, `apellido`) VALUES
-(1, 'Cliente1', 'ApellidoCliente1'),
-(2, 'Cliente1', 'ApellidoCliente1');
+INSERT INTO `cliente` (`idCliente`, `nombre`) VALUES
+(1, 'Cliente1'),
+(2, 'Cliente1');
 
 -- --------------------------------------------------------
 
@@ -98,15 +97,16 @@ CREATE TABLE `cuenta_corriente` (
   `nro_factura` int(11) NOT NULL,
   `adeuda` float NOT NULL,
   `importe_pagado` float NOT NULL,
-  `idCliente` int(11) NOT NULL
+  `idCliente` int(11) NOT NULL,
+  `saldo` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `cuenta_corriente`
 --
 
-INSERT INTO `cuenta_corriente` (`idcuenta_corriente`, `fecha_factura`, `nro_factura`, `adeuda`, `importe_pagado`, `idCliente`) VALUES
-(0, '2025-04-07', 3333, 2345, 2344, 2);
+INSERT INTO `cuenta_corriente` (`idcuenta_corriente`, `fecha_factura`, `nro_factura`, `adeuda`, `importe_pagado`, `idCliente`, `saldo`) VALUES
+(0, '2025-04-07', 3333, 2345, 2344, 2, '');
 
 -- --------------------------------------------------------
 
@@ -168,8 +168,7 @@ CREATE TABLE `viaje` (
   `idcliente` int(11) NOT NULL,
   `idcamion` int(11) NOT NULL,
   `km` float DEFAULT NULL,
-  `tarifa` float NOT NULL,
-  `porcentaje` float DEFAULT NULL
+  `tarifa` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --

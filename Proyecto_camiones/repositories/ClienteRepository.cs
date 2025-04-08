@@ -73,7 +73,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
         }
 
-        public async Task<Cliente> InsertarAsync(string nombre, string apellido)
+        public async Task<Cliente> InsertarAsync(string nombre)
         {
             try
             {
@@ -84,7 +84,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     return null;
                 }
 
-                var cliente = new Cliente(nombre, apellido);
+                var cliente = new Cliente(nombre);
 
                 // Agregar el camión a la base de datos (esto solo marca el objeto para insertar)
                 _context.Clientes.Add(cliente);
@@ -110,19 +110,15 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
         }
 
-        public async Task<Cliente> ActualizarAsync(int id, string? nombre, string? apellido)
+        public async Task<Cliente> ActualizarAsync(int id, string? nombre)
         {
             var cliente = await this._context.Clientes.FindAsync(id);
             if(cliente != null)
             {
-                if(nombre != null)
+                if (nombre != null)
                 {
                     cliente.Nombre = nombre;
-                } else if(apellido != null)
-                {
-                    cliente.Apellido = apellido;
                 }
-
                 await _context.SaveChangesAsync();
                 return cliente;
             }

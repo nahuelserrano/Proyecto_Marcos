@@ -27,12 +27,12 @@ namespace Proyecto_camiones.ViewModels
             return await this.clienteService.ProbarConexionAsync();
         }
 
-        public async Task<Result<int>> InsertarCliente(string nombre, string apellido)
+        public async Task<Result<int>> InsertarCliente(string nombre)
         {
             if (this.testearConexion().Result)
             {
                 Console.WriteLine("omg entré!!");
-                var resultado = await this.clienteService.InsertarAsync(nombre, apellido);
+                var resultado = await this.clienteService.InsertarAsync(nombre);
 
                 // Ahora puedes acceder al resultado
                 if (resultado.IsSuccess)

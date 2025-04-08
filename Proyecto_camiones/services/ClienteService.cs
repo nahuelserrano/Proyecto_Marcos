@@ -47,15 +47,15 @@ namespace Proyecto_camiones.Presentacion.Services
 
         }
 
-        public async Task<Result<int>> InsertarAsync(string nombre, string apellido)
+        public async Task<Result<int>> InsertarAsync(string nombre)
         {
-            ValidadorCliente validador = new ValidadorCliente(nombre, apellido);
+            ValidadorCliente validador = new ValidadorCliente(nombre);
             Result<bool> resultadoValidacion = validador.ValidarCompleto();
 
             if (!resultadoValidacion.IsSuccess)
                 return Result<int>.Failure(resultadoValidacion.Error);
 
-            Cliente cliente = await _clienteRepository.InsertarAsync(nombre, apellido);
+            Cliente cliente = await _clienteRepository.InsertarAsync(nombre);
             if(cliente != null)return Result<int>.Success(cliente.Id);
             return Result<int>.Failure("Error al insertar el cliente");
         }
@@ -69,7 +69,7 @@ namespace Proyecto_camiones.Presentacion.Services
             if (id < 0)
                 return Result<Cliente>.Failure("El id es inválido");
 
-           Cliente cliente = await _clienteRepository.ActualizarAsync(id, nombre, apellido);
+           Cliente cliente = await _clienteRepository.ActualizarAsync(id, nombre);
             if (cliente != null) return Result<Cliente>.Success(cliente);
 
             return Result<Cliente>.Failure("No existe un cliente con ese id");

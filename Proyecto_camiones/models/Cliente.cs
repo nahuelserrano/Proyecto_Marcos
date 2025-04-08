@@ -11,12 +11,10 @@ namespace Proyecto_camiones.Presentacion.Models
 
         public int Id { get; set; }
         public String Nombre { get; set; }
-        public String Apellido { get; set; }
 
-        public Cliente(String nombre, String apellido)
+        public Cliente(String nombre)
         {
             this.Nombre = nombre;
-            this.Apellido = apellido;
         }
     }
 }
