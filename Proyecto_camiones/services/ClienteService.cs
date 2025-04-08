@@ -49,62 +49,62 @@ namespace Proyecto_camiones.Presentacion.Services
 
         }
 
-        public async Task<Result<int>> Crear(String nombre, String apellido, string dni)
-        {
-            ValidadorCliente validador = new ValidadorCliente(nombre, apellido, dni);
-            Result<bool> resultadoValidacion = validador.ValidarCompleto();
+        //public async Task<Result<int>> Crear(String nombre, String apellido, string dni)
+        //{
+        //    ValidadorCliente validador = new ValidadorCliente(nombre, apellido, dni);
+        //    Result<bool> resultadoValidacion = validador.ValidarCompleto();
 
-            if (!resultadoValidacion.IsSuccess)
-                return Result<int>.Failure(resultadoValidacion.Error);
+        //    if (!resultadoValidacion.IsSuccess)
+        //        return Result<int>.Failure(resultadoValidacion.Error);
 
-            try
-            {
-                int idCliente = await _clienteRepository.Insertar(nombre, apellido, dni);  
-                return Result<int>.Success(idCliente);
-            }
-            catch (Exception ex)
-            {
-                return Result<int>.Failure("Hubo un error al crear el chofer: " + ex.Message);
-            }
-        }
+        //    //try
+        //    //{
+        //    //    int idCliente = await _clienteRepository.Insertar(nombre, apellido, dni);  
+        //    //    return Result<int>.Success(idCliente);
+        //    //}
+        //    //catch (Exception ex)
+        //    //{
+        //    //    return Result<int>.Failure("Hubo un error al crear el chofer: " + ex.Message);
+        //    //}
+        //}
 
 
 
-        public async Task<Result<int>> Actualizar(int id, String nombre, String apellido, string dni)
-        {
-           //lo dejo en para que lo chequeen, si mandamos el id para corregir a la funcion del
-           //validador tambien nos hace mandarlo en crear. por eso propongo dejar el chequeo aca
-            if(id <= 0)
-                return Result<int>.Failure(MensajeError.idInvalido(id));
+        //public async Task<Result<int>> Actualizar(int id, String nombre, String apellido, string dni)
+        //{
+        //   //lo dejo en para que lo chequeen, si mandamos el id para corregir a la funcion del
+        //   //validador tambien nos hace mandarlo en crear. por eso propongo dejar el chequeo aca
+        //    if(id <= 0)
+        //        return Result<int>.Failure(MensajeError.idInvalido(id));
 
-            ValidadorCliente validador = new ValidadorCliente( nombre, apellido, dni);
-            Result<bool> resultadoValidacion = validador.ValidarCompleto();
+        //    ValidadorCliente validador = new ValidadorCliente( nombre, apellido, dni);
+        //    Result<bool> resultadoValidacion = validador.ValidarCompleto();
             
-            if (!resultadoValidacion.IsSuccess)
-                return Result<int>.Failure(resultadoValidacion.Error);
+        //    if (!resultadoValidacion.IsSuccess)
+        //        return Result<int>.Failure(resultadoValidacion.Error);
 
 
-            var clienteExistente = await _clienteRepository.ObtenerPorId(id);
+        //    var clienteExistente = await _clienteRepository.ObtenerPorId(id);
 
-            if (clienteExistente == null)
-                return Result<int>.Failure(MensajeError.objetoNulo(nameof(clienteExistente)));
-
-
-
-            if (!string.IsNullOrWhiteSpace(dni))
-                clienteExistente.Dni = dni;
-
-            if (!string.IsNullOrWhiteSpace(nombre))
-                clienteExistente.Nombre = nombre;
+        //    if (clienteExistente == null)
+        //        return Result<int>.Failure(MensajeError.objetoNulo(nameof(clienteExistente)));
 
 
-            if (!string.IsNullOrWhiteSpace(apellido))
-                clienteExistente.Apellido = apellido;
 
-            await _clienteRepository.Actualizar(id, nombre, apellido, dni);
+        //    if (!string.IsNullOrWhiteSpace(dni))
+        //        clienteExistente.Dni = dni;
 
-            return Result<int>.Success(id);
-        }
+        //    if (!string.IsNullOrWhiteSpace(nombre))
+        //        clienteExistente.Nombre = nombre;
+
+
+        //    if (!string.IsNullOrWhiteSpace(apellido))
+        //        clienteExistente.Apellido = apellido;
+
+        //    await _clienteRepository.Actualizar(id, nombre, apellido, dni);
+
+        //    return Result<int>.Success(id);
+        //}
 
     }
 }

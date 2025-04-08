@@ -46,7 +46,13 @@ namespace Proyecto_camiones.Services
 
         public async Task<int> Insertar(int idCliente, DateOnly fecha, int nro, float adeuda, float pagado)
         {
+            //Cliente c = await clienteRepository.ObtenerPorId(idCliente);
+            //if (c == null)
+            //{
+            //    return -1;
+            //}
             CuentaCorriente result = await ccRepository.InsertarCuentaCorriente(idCliente, fecha, nro, adeuda, pagado);
+            Console.WriteLine("superado 1");
             if(result != null)
             {
                 return result.Id;

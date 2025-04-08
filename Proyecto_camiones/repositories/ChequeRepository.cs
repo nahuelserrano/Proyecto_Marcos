@@ -17,17 +17,17 @@ namespace Proyecto_camiones.Presentacion.Repositories
             _siguienteId = 1;
 
             // Creamos un cheque de prueba
-            Cliente cliente = new Cliente(null, "Empresa C", 33333333);
-            Cheque cheque = new Cheque(
-                1,
-                DateTime.Now,
-                123456,
-                5000.0f,
-                "Banco Nacional",
-                DateTime.Now.AddDays(30)
-            );
+            //Cliente cliente = new Cliente(null, "Empresa C", 33333333);
+            //Cheque cheque = new Cheque(
+            //    1,
+            //    DateTime.Now,
+            //    123456,
+            //    5000.0f,
+            //    "Banco Nacional",
+            //    DateTime.Now.AddDays(30)
+            //);
 
-            _cheques.Add(cheque);
+            //_cheques.Add(cheque);
         }
 
         public async Task<Cheque> ObtenerPorId(int id)

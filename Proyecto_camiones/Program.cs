@@ -58,6 +58,16 @@ namespace Proyecto_camiones.Presentacion
             //var response = await cvm.Eliminar(8);
             //Console.WriteLine(response.Value);
 
+            CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
+
+            //INSERCION
+
+            var cuenta = await ccvm.Insertar(2, new DateOnly(2025, 4, 7), 3333, 2345, 2344);
+            if (cuenta.IsSuccess)
+            {
+                Console.WriteLine("Id insertado: " + cuenta.Value);
+            }
+            Console.WriteLine(cuenta.Value);
 
         }
     }

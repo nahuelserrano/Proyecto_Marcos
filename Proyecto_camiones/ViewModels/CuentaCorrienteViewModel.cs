@@ -33,7 +33,7 @@ namespace Proyecto_camiones.ViewModels
             if (this.testearConexion().Result)
             {
                 int id = await cs.Insertar(idCliente, fecha, nro, adeuda, pagado);
-                if (id > 0) return Result<int>.Success(id);
+                if (id > -1) return Result<int>.Success(id);
                 return Result<int>.Failure("No se pudo crear el nuevo registro");
             }
             return Result<int>.Failure("no se pudo establecer la conexion");

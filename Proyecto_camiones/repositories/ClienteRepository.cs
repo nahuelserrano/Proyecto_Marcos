@@ -16,8 +16,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
             _siguienteId = 1;
 
             // Agregamos clientes de prueba
-            _clientes.Add(new Cliente(null, "Empresa A", 11111111));
-            _clientes.Add(new Cliente(null, "Empresa B", 22222222));
+            //_clientes.Add(new Cliente(null, "Empresa A", 11111111));
+            //_clientes.Add(new Cliente(null, "Empresa B", 22222222));
         }
 
         public async Task<Cliente> ObtenerPorId(int id)

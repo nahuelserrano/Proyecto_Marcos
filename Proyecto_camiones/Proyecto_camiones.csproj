@@ -35,6 +35,7 @@
     <Compile Include="Models\Cheque.cs" />
     <Compile Include="Models\Chofer.cs" />
     <Compile Include="Models\Cliente.cs" />
+    <Compile Include="Models\CuentaCorriente.cs" />
     <Compile Include="Models\Empleado.cs" />
     <Compile Include="Models\Flete.cs" />
     <Compile Include="Models\Pago.cs" />
@@ -46,12 +47,14 @@
     <Compile Include="Repositories\ChequeRepository.cs" />
     <Compile Include="Repositories\ChoferRepository.cs" />
     <Compile Include="Repositories\ClienteRepository.cs" />
+    <Compile Include="Repositories\CuentaCorrienteRepository.cs" />
     <Compile Include="Repositories\PagoRepository.cs" />
     <Compile Include="Repositories\ViajeRepository.cs" />
     <Compile Include="Services\CamionService.cs" />
     <Compile Include="Services\ChequeService.cs" />
     <Compile Include="Services\ChoferService.cs" />
     <Compile Include="Services\ClienteService.cs" />
+    <Compile Include="Services\CuentaCorrienteService.cs" />
     <Compile Include="Services\PagoService.cs" />
     <Compile Include="Services\ViajeService.cs" />
     <Compile Include="Utils\MensajesError\MensajeError.cs" />
@@ -64,6 +67,7 @@
     <Compile Include="Utils\Validadores\ValidadorViaje.cs" />
     <Compile Include="ViewModels\CamionViewModel.cs" />
     <Compile Include="ViewModels\ChoferViewModel.cs" />
+    <Compile Include="ViewModels\CuentaCorrienteViewModel.cs" />
     <Compile Include="ViewModels\General.cs" />
   </ItemGroup>
 </Project>

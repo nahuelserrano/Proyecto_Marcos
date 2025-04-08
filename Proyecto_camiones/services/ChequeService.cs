@@ -43,27 +43,27 @@ namespace Proyecto_camiones.Presentacion.Services
             return Result<bool>.Success(true);
         }
 
-        public async Task<Result<int>> Crear(int id_Cliente,DateTime FechaIngresoCheque, string NumeroCheque, float Monto, string Banco, DateTime FechaCobro)
-        {
-            ValidadorCheque validador = new ValidadorCheque(id_Cliente, FechaIngresoCheque, NumeroCheque, Monto, Banco, FechaCobro);
-            Result<bool> resultadoValidacion = validador.ValidarCompleto();
+        //public async Task<Result<int>> Crear(int id_Cliente,DateTime FechaIngresoCheque, string NumeroCheque, float Monto, string Banco, DateTime FechaCobro)
+        //{
+        //    ValidadorCheque validador = new ValidadorCheque(id_Cliente, FechaIngresoCheque, NumeroCheque, Monto, Banco, FechaCobro);
+        //    Result<bool> resultadoValidacion = validador.ValidarCompleto();
 
-            if (!resultadoValidacion.IsSuccess)
-                return Result<int>.Failure(resultadoValidacion.Error);
+        //    if (!resultadoValidacion.IsSuccess)
+        //        return Result<int>.Failure(resultadoValidacion.Error);
 
            
-            try
-            {
-                // Intentar insertar en la base de datos
-                int idcheque = await _chequeRepository.Insertar(id_Cliente, FechaIngresoCheque, NumeroCheque, Monto,Banco, FechaCobro);
-                return Result<int>.Success(idcheque);
-            }
-            catch (Exception)
-            {
+        //    try
+        //    {
+        //        // Intentar insertar en la base de datos
+        //        //int idcheque = await _chequeRepository.Insertar(id_Cliente, FechaIngresoCheque, NumeroCheque, Monto,Banco, FechaCobro);
+        //        //return Result<int>.Success(idcheque);
+        //    }
+        //    catch (Exception)
+        //    {
 
-                return Result<int>.Failure("Hubo un error al crear el cheque");
-            }
-        }
+        //        return Result<int>.Failure("Hubo un error al crear el cheque");
+        //    }
+        //}
 
         public async Task<Result<int>> Actualizar(int id, int? id_cliente = null, DateTime? FechaIngresoCheque = null, string? NumeroCheque = null, float? Monto = null, string? Banco = null, DateTime? FechaCobro = null)
         {
