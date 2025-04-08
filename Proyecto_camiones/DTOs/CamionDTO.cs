@@ -8,6 +8,8 @@ namespace Proyecto_camiones.DTOs
 {
     public class CamionDTO
     {
+       
+
         public float? peso_max { get; set; }
         public float? tara { get; set; }
         public String Patente { get; set; }

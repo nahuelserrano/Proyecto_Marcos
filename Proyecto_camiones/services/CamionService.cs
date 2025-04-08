@@ -72,6 +72,21 @@ namespace Proyecto_camiones.Presentacion.Services
 
         internal async Task<Result<CamionDTO>> Actualizar(int id, float? peso_max, float? tara, string? patente)
         {
+            if (id <= 0)
+                return Result<CamionDTO>.Failure(MensajeError.idInvalido(id));
+            if (peso_max == null && tara == null && patente == null)
+                return Result<CamionDTO>.Failure("No se han proporcionado datos para actualizar");
+            var camionExistente = await _camionRepository.ObtenerPorId(id);
+
+            if (camionExistente == null) { 
+            return Result<CamionDTO>.Failure(MensajeError.objetoNulo(nameof(camionExistente)));
+            }
+
+            if (peso_max != null && peso_max <= 0||tara!=null && peso_max<tara) {
+
+                return Result<CamionDTO>.Failure(MensajeError.PesoIncorrecto(nameof(peso_max)));
+            }
+
             bool success = await this._camionRepository.Actualizar(id, peso_max, tara, patente);
             if (success)
             {

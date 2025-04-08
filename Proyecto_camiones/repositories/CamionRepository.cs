@@ -43,17 +43,17 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
         }
 
-
-        public async Task<Camion> InsertarCamionAsync(float peso_max, float tara, string patente)
+        //agrego el signo de pregunta luego de Camion para decir que el result puede ser null
+        public async Task<Camion?> InsertarCamionAsync(float peso_max, float tara, string patente)
         {
             try
             {
 
-                if (!await _context.Database.CanConnectAsync())
-                {
-                    Console.WriteLine("No se puede conectar a la base de datos");
-                    return null;
-                }
+                    if (!await _context.Database.CanConnectAsync())
+                    {
+                        Console.WriteLine("No se puede conectar a la base de datos");
+                        return null;
+                    }
 
                 var camion = new Camion(peso_max, tara, patente);
 
@@ -81,7 +81,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
         }
 
-        public async Task<List<CamionDTO>> ObtenerCamionesAsync()
+        public async Task<List<CamionDTO>?> ObtenerCamionesAsync()
         {
             try
             {
@@ -108,26 +108,28 @@ namespace Proyecto_camiones.Presentacion.Repositories
             try
             {
                 var camion = await _context.Camiones.FindAsync(id);
-                if (camion == null)
+                
+
+                if (peso_max.HasValue)  // Mejor usar HasValue para tipos nullable
                 {
-                    return false;
+                    camion.peso_max = peso_max.Value; 
                 }
 
-                if (peso_max != null)
+                if (tara.HasValue)
                 {
-                    camion.peso_max = (float)peso_max;
+                    camion.tara = tara.Value;
                 }
-                if (tara != null)
-                {
-                    camion.tara = (float)tara;
-                }
-                if (patente != null)
+
+                if (!string.IsNullOrEmpty(patente))  // Mejor verificación para strings
                 {
                     camion.Patente = patente;
                 }
 
+              
                 await _context.SaveChangesAsync();
                 return true;
+
+               
             }
             catch (Exception ex)
             {
@@ -136,7 +138,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
         }
 
-        internal async Task<CamionDTO> ObtenerPorId(int id)
+        internal async Task<CamionDTO?> ObtenerPorId(int id)
         {
             Camion camion = await _context.Camiones.FindAsync(id);
             if (camion != null)
