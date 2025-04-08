@@ -110,11 +110,24 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
         }
 
-        //NECESARIO? 
-        //public async Task Actualizar(Cliente cliente)
-        //{
-        //    // Simulamos actualización (no hacemos nada real en la maqueta)
-        //}
+        public async Task<Cliente> ActualizarAsync(int id, string? nombre, string? apellido)
+        {
+            var cliente = await this._context.Clientes.FindAsync(id);
+            if(cliente != null)
+            {
+                if(nombre != null)
+                {
+                    cliente.Nombre = nombre;
+                } else if(apellido != null)
+                {
+                    cliente.Apellido = apellido;
+                }
+
+                await _context.SaveChangesAsync();
+                return cliente;
+            }
+            return null;
+        }
 
 
         public async Task<bool> Eliminar(int id)
