@@ -16,17 +16,23 @@ namespace Proyecto_camiones.Presentacion.Services
             this._clienteRepository = _clienteRepository ?? throw new ArgumentNullException(nameof(_clienteRepository));
         }
 
-        public async Task<Result<int>> GetByIdAsync(int id)
+        public async Task<bool> ProbarConexionAsync()
+        {
+            bool result = await this._clienteRepository.ProbarConexionAsync();
+            return result;
+        }
+
+        public async Task<Result<Cliente>> ObtenerByIdAsync(int id)
         {
             if (id < 0)
-                return Result<int>.Failure(MensajeError.idInvalido(id));
+                return Result<Cliente>.Failure(MensajeError.idInvalido(id));
 
             Cliente cliente = await this._clienteRepository.ObtenerPorId(id);
 
             if (cliente == null)
-                return Result<int>.Failure(MensajeError.objetoNulo(nameof(cliente)));
+                return Result<Cliente>.Failure(MensajeError.objetoNulo(nameof(cliente)));
 
-            return Result<int>.Success(id);
+            return Result<Cliente>.Success(cliente);
         }
 
 

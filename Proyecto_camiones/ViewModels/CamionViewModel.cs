@@ -51,7 +51,7 @@ namespace Proyecto_camiones.ViewModels
                     return Result<int>.Failure(resultado.Error);
                 }
             }
-            return Result<int>.Failure("La conexión no pude establecerse"); //provisorio, averiguar que tipo de respuesta da, un simil response entity de java
+            return Result<int>.Failure("La conexión no pude establecerse");
         }
 
         public async Task<Result<List<CamionDTO>>> ObtenerTodos() 
