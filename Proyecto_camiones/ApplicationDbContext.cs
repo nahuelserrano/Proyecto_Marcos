@@ -78,6 +78,15 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.IdCliente).HasColumnName("idCliente");
         });
 
+        modelBuilder.Entity<Cliente>(entity =>
+        {
+            entity.ToTable("cliente");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasColumnName("idCliente");
+            entity.Property(e => e.Nombre).HasColumnName("nombre");
+            entity.Property(e => e.Apellido).HasColumnName("apellido");
+        })
+
         base.OnModelCreating(modelBuilder);
 
     }

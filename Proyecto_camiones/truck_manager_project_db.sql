@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-04-2025 a las 03:10:49
+-- Tiempo de generación: 08-04-2025 a las 23:17:12
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -75,9 +75,16 @@ CREATE TABLE `cheque` (
 CREATE TABLE `cliente` (
   `idCliente` int(11) NOT NULL,
   `nombre` varchar(45) NOT NULL,
-  `apellido` varchar(45) DEFAULT NULL,
-  `dni` int(11) DEFAULT NULL
+  `apellido` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `cliente`
+--
+
+INSERT INTO `cliente` (`idCliente`, `nombre`, `apellido`) VALUES
+(1, 'Cliente1', 'ApellidoCliente1'),
+(2, 'Cliente1', 'ApellidoCliente1');
 
 -- --------------------------------------------------------
 
@@ -89,9 +96,17 @@ CREATE TABLE `cuenta_corriente` (
   `idcuenta_corriente` int(11) NOT NULL,
   `fecha_factura` date NOT NULL,
   `nro_factura` int(11) NOT NULL,
-  `importe` float NOT NULL,
-  `pagado` float NOT NULL
+  `adeuda` float NOT NULL,
+  `importe_pagado` float NOT NULL,
+  `idCliente` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `cuenta_corriente`
+--
+
+INSERT INTO `cuenta_corriente` (`idcuenta_corriente`, `fecha_factura`, `nro_factura`, `adeuda`, `importe_pagado`, `idCliente`) VALUES
+(0, '2025-04-07', 3333, 2345, 2344, 2);
 
 -- --------------------------------------------------------
 
@@ -115,7 +130,9 @@ CREATE TABLE `empleado` (
 CREATE TABLE `pago` (
   `idpago` int(11) NOT NULL,
   `monto` varchar(45) NOT NULL,
-  `idchofer` int(11) DEFAULT NULL
+  `idchofer` int(11) NOT NULL,
+  `fecha_pagado` date DEFAULT NULL,
+  `fecha_viaje` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -183,7 +200,8 @@ ALTER TABLE `cliente`
 -- Indices de la tabla `cuenta_corriente`
 --
 ALTER TABLE `cuenta_corriente`
-  ADD PRIMARY KEY (`idcuenta_corriente`);
+  ADD PRIMARY KEY (`idcuenta_corriente`),
+  ADD KEY `cc_cliente_fk_idx` (`idCliente`);
 
 --
 -- Indices de la tabla `empleado`
@@ -233,7 +251,7 @@ ALTER TABLE `cheque`
 -- AUTO_INCREMENT de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `idCliente` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idCliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `empleado`
@@ -274,6 +292,12 @@ ALTER TABLE `camion`
 --
 ALTER TABLE `cheque`
   ADD CONSTRAINT `cheque_cliente_fk` FOREIGN KEY (`idCliente`) REFERENCES `cliente` (`idCliente`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `cuenta_corriente`
+--
+ALTER TABLE `cuenta_corriente`
+  ADD CONSTRAINT `cc_cliente_fk` FOREIGN KEY (`idCliente`) REFERENCES `cliente` (`idCliente`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `pago`
