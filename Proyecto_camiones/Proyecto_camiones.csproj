@@ -35,6 +35,8 @@
     <Compile Include="Models\Cheque.cs" />
     <Compile Include="Models\Chofer.cs" />
     <Compile Include="Models\Cliente.cs" />
+    <Compile Include="Models\Empleado.cs" />
+    <Compile Include="Models\Flete.cs" />
     <Compile Include="Models\Pago.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Models\Viaje.cs" />
