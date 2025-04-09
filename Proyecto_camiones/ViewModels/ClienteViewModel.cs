@@ -60,5 +60,14 @@ namespace Proyecto_camiones.ViewModels
             }
             return Result<Cliente>.Failure("No se pudo establecer la conexion");
         }
+
+        public async Task<Result<bool>> Eliminar(int id)
+        {
+            if (this.testearConexion().Result)
+            {
+                return await this.clienteService.Eliminar(id);
+            }
+            return Result<bool>.Failure("No se pudo establecer la conexión");
+        } 
     }
 }

@@ -16,5 +16,10 @@ namespace Proyecto_camiones.Presentacion.Models
         {
             this.Nombre = nombre;
         }
+        override
+        public String ToString()
+        {
+            return "Id: " + this.Id + "Nombre: "+this.Nombre;
+        }
     }
 }

@@ -25,15 +25,15 @@ namespace Proyecto_camiones.Presentacion
 
             CamionViewModel cvm = new CamionViewModel();
             //PRUEBA INSERCION
-            Result<int> id = cvm.InsertarCamion(200, 20, "HJK092").Result;
-            if (id.IsSuccess)
-            {
-                Console.WriteLine("se pudo agregar con el id: " + id.Value);
-            }
-            else
-            {
-                Console.WriteLine(id.Error);
-            }
+            //Result<int> id = cvm.InsertarCamion(200, 20, "HJK092").Result;
+            //if (id.IsSuccess)
+            //{
+            //    Console.WriteLine("se pudo agregar con el id: " + id.Value);
+            //}
+            //else
+            //{
+            //    Console.WriteLine(id.Error);
+            //}
 
 
             //PRUEBA SELECT ALL
@@ -68,6 +68,27 @@ namespace Proyecto_camiones.Presentacion
             //    Console.WriteLine("Id insertado: " + cuenta.Value);
             //}
             //Console.WriteLine(cuenta.Value);
+
+            ClienteViewModel clvm = new ClienteViewModel();
+
+            //INSERCION
+            //var cliente = await clvm.InsertarCliente("MACHACA");
+            //if (cliente.IsSuccess)
+            //{
+            //    Console.WriteLine("Cliente insertado con el id: " + cliente.Value);
+            //}
+
+            //OBTENER BY ID
+            //var cliente = await clvm.ObtenerById(4);
+            //if (cliente.IsSuccess)
+            //{
+            //    Console.WriteLine(cliente.Value);
+            //}
+
+            //ELIMINAR 
+            //var result = await clvm.Eliminar(1);
+            //Console.WriteLine(result.Value);
+
 
         }
     }
