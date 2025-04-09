@@ -70,12 +70,13 @@ public class ApplicationDbContext : DbContext
         {
             entity.ToTable("cuenta_corriente");
             entity.HasKey(e => e.Id);
-            entity.Property(e => e.Id).HasColumnName("idcuenta_corriente");
+            entity.Property(e => e.Id).HasColumnName("idcuenta_corriente").ValueGeneratedOnAdd();
             entity.Property(e => e.Nro_factura).HasColumnName("nro_factura");
             entity.Property(e => e.Fecha_factura).HasColumnName("fecha_factura");
-            entity.Property(e => e.Adeuda).HasColumnName("importe");
-            entity.Property(e => e.Pagado).HasColumnName("pagado");
+            entity.Property(e => e.Adeuda).HasColumnName("adeuda");
+            entity.Property(e => e.Pagado).HasColumnName("importe_pagado");
             entity.Property(e => e.IdCliente).HasColumnName("idCliente");
+            entity.Property(e => e.Saldo_Total).HasColumnName("saldo");
         });
 
         modelBuilder.Entity<Cliente>(entity =>

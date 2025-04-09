@@ -15,6 +15,8 @@ namespace Proyecto_camiones.Models
         public float Adeuda { get; set; }
         public float Pagado { get; set; }
 
+        public float Saldo_Total { get; set; }
+
         public CuentaCorriente(int idCliente, DateOnly fecha, int nro, float adeuda, float pagado)
         {
             this.IdCliente = idCliente;
@@ -22,10 +24,17 @@ namespace Proyecto_camiones.Models
             this.Nro_factura = nro;
             this.Adeuda = adeuda;
             this.Pagado = pagado;
+            this.Saldo_Total = this.Adeuda - Pagado;
         }
 
         public CuentaCorriente()
         {
+        }
+
+        override
+            public String ToString()
+        {
+            return "Cliente: " + this.IdCliente + " Adeuda: " + this.Adeuda + " Pagado: " + this.Pagado + " Saldo Total: " + this.Saldo_Total;
         }
     }
 }

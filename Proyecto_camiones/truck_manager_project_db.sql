@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-04-2025 a las 00:52:13
+-- Tiempo de generación: 09-04-2025 a las 04:39:05
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -45,7 +45,9 @@ INSERT INTO `camion` (`idcamion`, `peso_max`, `tara`, `patente`, `idchofer`) VAL
 (4, 150, 100, 'WWW123', NULL),
 (5, 150, 100, 'WWW123', NULL),
 (6, 150, 100, 'WWW123', NULL),
-(7, 150, 100, 'WWW123', NULL);
+(7, 150, 100, 'WWW123', NULL),
+(10, 200, 20, 'HJK092', NULL),
+(11, 200, 20, 'HJK092', NULL);
 
 -- --------------------------------------------------------
 
@@ -82,8 +84,10 @@ CREATE TABLE `cliente` (
 --
 
 INSERT INTO `cliente` (`idCliente`, `nombre`) VALUES
-(1, 'Cliente1'),
-(2, 'Cliente1');
+(2, 'Cliente1'),
+(3, 'COOPERATIVA'),
+(4, 'COOPERATIVA'),
+(5, 'MACHACA');
 
 -- --------------------------------------------------------
 
@@ -98,7 +102,7 @@ CREATE TABLE `cuenta_corriente` (
   `adeuda` float NOT NULL,
   `importe_pagado` float NOT NULL,
   `idCliente` int(11) NOT NULL,
-  `saldo` varchar(45) NOT NULL
+  `saldo` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -106,7 +110,9 @@ CREATE TABLE `cuenta_corriente` (
 --
 
 INSERT INTO `cuenta_corriente` (`idcuenta_corriente`, `fecha_factura`, `nro_factura`, `adeuda`, `importe_pagado`, `idCliente`, `saldo`) VALUES
-(0, '2025-04-07', 3333, 2345, 2344, 2, '');
+(1, '2025-04-07', 3333, 2345, 2344, 2, 0),
+(2, '2025-04-07', 89, 5678, 899, 5, 4779),
+(3, '2025-04-07', 8383, 99, 22, 5, 77);
 
 -- --------------------------------------------------------
 
@@ -238,7 +244,7 @@ ALTER TABLE `viaje`
 -- AUTO_INCREMENT de la tabla `camion`
 --
 ALTER TABLE `camion`
-  MODIFY `idcamion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `idcamion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `cheque`
@@ -250,7 +256,13 @@ ALTER TABLE `cheque`
 -- AUTO_INCREMENT de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `idCliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idCliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de la tabla `cuenta_corriente`
+--
+ALTER TABLE `cuenta_corriente`
+  MODIFY `idcuenta_corriente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `empleado`

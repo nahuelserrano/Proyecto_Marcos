@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.ViewModels;
 using Proyecto_camiones.Presentacion.Utils;
+using Proyecto_camiones.Models;
 
 
 namespace Proyecto_camiones.Presentacion
@@ -62,14 +63,37 @@ namespace Proyecto_camiones.Presentacion
 
             //INSERCION
 
-            //var cuenta = await ccvm.Insertar(2, new DateOnly(2025, 4, 7), 3333, 2345, 2344);
+            //var cuenta = await ccvm.Insertar(5, new DateOnly(2025, 4, 7), 89, 5678, 899);
             //if (cuenta.IsSuccess)
             //{
             //    Console.WriteLine("Id insertado: " + cuenta.Value);
             //}
             //Console.WriteLine(cuenta.Value);
 
-            ClienteViewModel clvm = new ClienteViewModel();
+            //var cuenta2 = await ccvm.Insertar(5, new DateOnly(2025, 4, 7), 8383, 99, 22);
+            //if (cuenta2.IsSuccess)
+            //{
+            //    Console.WriteLine("Id insertado: " + cuenta2.Value);
+            //}
+            //Console.WriteLine(cuenta2.Value);
+
+
+            //OBTENER CUENTAS DE UN CLIENTE
+            //var cuentasCliente5 = await ccvm.ObtenerCuentasByClienteId(5);
+            //if (cuentasCliente5.IsSuccess)
+            //{
+            //    foreach(CuentaCorriente c in cuentasCliente5.Value)
+            //    {
+            //        Console.WriteLine(c);
+            //    }
+            //}
+            //else
+            //{
+            //    Console.WriteLine(cuentasCliente5.Error);
+            //}
+
+
+             ClienteViewModel clvm = new ClienteViewModel();
 
             //INSERCION
             //var cliente = await clvm.InsertarCliente("MACHACA");
@@ -78,6 +102,7 @@ namespace Proyecto_camiones.Presentacion
             //    Console.WriteLine("Cliente insertado con el id: " + cliente.Value);
             //}
 
+
             //OBTENER BY ID
             //var cliente = await clvm.ObtenerById(4);
             //if (cliente.IsSuccess)
@@ -85,9 +110,11 @@ namespace Proyecto_camiones.Presentacion
             //    Console.WriteLine(cliente.Value);
             //}
 
+
             //ELIMINAR 
             //var result = await clvm.Eliminar(1);
             //Console.WriteLine(result.Value);
+
 
 
         }

@@ -58,7 +58,7 @@ namespace Proyecto_camiones.Repositories
                 }
 
                 var cuenta = new CuentaCorriente(idCliente, fecha, nro, adeuda, pagado);
-                _context.Cuentas.Add(cuenta);
+                await _context.Cuentas.AddAsync(cuenta);
                 int registrosAfectados = await _context.SaveChangesAsync();
 
                 if (registrosAfectados > 0)
@@ -70,7 +70,7 @@ namespace Proyecto_camiones.Repositories
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine(e.InnerException?.Message);
                 return null;
             }
 
@@ -115,6 +115,31 @@ namespace Proyecto_camiones.Repositories
                 if (cuentas != null) return cuentas;
                 return null;
             } catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+            }
+        }
+
+        internal async Task<List<CuentaCorriente>> ObtenerCuentasByIdCliente(int id)
+        {
+            try
+            {
+                if (!await _context.Database.CanConnectAsync())
+                {
+                    Console.WriteLine("No se puede conectar a la base de datos");
+                    return null;
+                }
+
+                List<CuentaCorriente> result = new List<CuentaCorriente>();
+                var cuentas = await this._context.Cuentas.Where(c => c.IdCliente == id).ToListAsync();
+                foreach(var c in cuentas)
+                {
+                    CuentaCorriente cuenta = new CuentaCorriente(c.IdCliente, c.Fecha_factura, c.Nro_factura, c.Adeuda, c.Pagado);
+                    result.Add(cuenta);
+                }
+                return result;
+            }catch(Exception e)
             {
                 Console.WriteLine(e.Message);
                 return null;

@@ -66,5 +66,14 @@ namespace Proyecto_camiones.ViewModels
             }
             return Result<List<CuentaCorriente>>.Failure("No se pudo establecer la conexion");
         }
+
+        public async Task<Result<List<CuentaCorriente>>> ObtenerCuentasByClienteId(int id)
+        {
+            if (this.testearConexion().Result)
+            {
+                return await this.cs.ObtenerCuentasByIdCliente(id);
+            }
+            return Result<List<CuentaCorriente>>.Failure("No se pudo establecer la conexion");
+        }
     }
 }
