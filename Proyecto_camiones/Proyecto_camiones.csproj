@@ -67,6 +67,7 @@
     <Compile Include="Utils\Validadores\ValidadorViaje.cs" />
     <Compile Include="ViewModels\CamionViewModel.cs" />
     <Compile Include="ViewModels\ChoferViewModel.cs" />
+    <Compile Include="ViewModels\ClienteViewModel.cs" />
     <Compile Include="ViewModels\CuentaCorrienteViewModel.cs" />
     <Compile Include="ViewModels\General.cs" />
   </ItemGroup>

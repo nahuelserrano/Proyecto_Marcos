@@ -25,15 +25,15 @@ namespace Proyecto_camiones.Presentacion
 
             CamionViewModel cvm = new CamionViewModel();
             //PRUEBA INSERCION
-            //Result<int> id = cvm.InsertarCamion(180, 200, "PQJ123").Result;
-            //if (id.IsSuccess)
-            //{
-            //    Console.WriteLine("se pudo agregar con el id: " + id.Value);
-            //}
-            //else
-            //{
-            //    Console.WriteLine(id.Error);
-            //}
+            Result<int> id = cvm.InsertarCamion(200, 20, "HJK092").Result;
+            if (id.IsSuccess)
+            {
+                Console.WriteLine("se pudo agregar con el id: " + id.Value);
+            }
+            else
+            {
+                Console.WriteLine(id.Error);
+            }
 
 
             //PRUEBA SELECT ALL

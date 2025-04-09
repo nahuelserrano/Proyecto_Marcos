@@ -84,7 +84,7 @@ namespace Proyecto_camiones.Presentacion.Services
 
             if (peso_max != null && peso_max <= 0||tara!=null && peso_max<tara) {
 
-                return Result<CamionDTO>.Failure(MensajeError.PesoIncorrecto(nameof(peso_max)));
+                return Result<CamionDTO>.Failure("El peso es inválido");
             }
 
             bool success = await this._camionRepository.Actualizar(id, peso_max, tara, patente);

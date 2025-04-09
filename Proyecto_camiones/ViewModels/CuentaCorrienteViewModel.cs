@@ -20,7 +20,7 @@ namespace Proyecto_camiones.ViewModels
         {
             var dbContext = General.obtenerInstancia();
             var cr = new CuentaCorrienteRepository(dbContext);
-            this.cs = new CuentaCorrienteService(cr, new ClienteRepository());
+            this.cs = new CuentaCorrienteService(cr, new ClienteRepository(dbContext));
         }
 
         public async Task<bool> testearConexion()
