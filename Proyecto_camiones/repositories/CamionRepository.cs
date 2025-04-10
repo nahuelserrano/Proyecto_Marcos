@@ -43,7 +43,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
         //agrego el signo de pregunta luego de Camion para decir que el result puede ser null
-        public async Task<Camion?> InsertarCamionAsync(float peso_max, float tara, string patente)
+        public async Task<Camion?> InsertarCamionAsync(float peso_max, float tara, string patente, string nombre)
         {
             try
             {
@@ -54,7 +54,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                         return null;
                     }
 
-                var camion = new Camion(peso_max, tara, patente);
+                var camion = new Camion(peso_max, tara, patente, nombre);
 
                 // Agregar el camión a la base de datos (esto solo marca el objeto para insertar)
                 _context.Camiones.Add(camion);
@@ -88,7 +88,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 {
                     peso_max = c.peso_max,
                     tara = c.tara,
-                    Patente = c.Patente
+                    Patente = c.Patente,
+                    Nombre_Chofer = c.nombre_chofer
                 }).ToListAsync();
 
                 return camiones;
@@ -102,11 +103,12 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
         }
 
-        public async Task<bool> Actualizar(int id, float? peso_max, float? tara, string? patente)
+        public async Task<bool> Actualizar(int id, float? peso_max, float? tara, string? patente, string? nombre)
         {
             try
             {
                 var camion = await _context.Camiones.FindAsync(id);
+                if (camion == null) return false;
                 
 
                 if (peso_max.HasValue)  // Mejor usar HasValue para tipos nullable
@@ -124,7 +126,12 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     camion.Patente = patente;
                 }
 
-              
+                if(!string.IsNullOrEmpty(nombre))  // Mejor verificación para strings
+                {
+                    camion.nombre_chofer = nombre;
+                }
+
+
                 await _context.SaveChangesAsync();
                 return true;
 
@@ -142,7 +149,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             Camion camion = await _context.Camiones.FindAsync(id);
             if (camion != null)
             {
-                CamionDTO nuevo = new CamionDTO(camion.peso_max, camion.tara, camion.Patente);
+                CamionDTO nuevo = new CamionDTO(camion.peso_max, camion.tara, camion.Patente, camion.nombre_chofer);
                 return nuevo;
             }
             return null;

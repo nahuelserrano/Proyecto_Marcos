@@ -11,14 +11,16 @@ namespace Proyecto_camiones.Presentacion.Utils
         private readonly float peso;
         private readonly float tara;
         private readonly string patente;
+        private readonly string nombre;
         private List<string> _errores;
         private int pesominimo = 1;
 
-        public ValidadorCamion(float peso, float tara, string patente)
+        public ValidadorCamion(float peso, float tara, string patente, string nombre)
         {
             this.peso = peso;
             this.tara = tara;
             this.patente = patente;
+            this.nombre = nombre;
             _errores = new List<string>();
         }
 
@@ -46,6 +48,14 @@ namespace Proyecto_camiones.Presentacion.Utils
             return this;
         }
 
+        public ValidadorCamion ValidarChofer()
+        {
+            if (this.nombre == null)
+                _errores.Add(MensajeError.ausenciaDeDatos(nameof(this.nombre)));
+
+            return this;
+        }
+
 
         public Result<bool> ObtenerResultado()
         {
@@ -59,6 +69,7 @@ namespace Proyecto_camiones.Presentacion.Utils
         {
             return ValidarPesos()
                 .ValidarPatente()
+                .ValidarChofer()
    
                 .ObtenerResultado();
         }

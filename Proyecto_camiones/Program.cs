@@ -26,15 +26,15 @@ namespace Proyecto_camiones.Presentacion
 
             CamionViewModel cvm = new CamionViewModel();
             //PRUEBA INSERCION
-            //Result<int> id = cvm.InsertarCamion(200, 20, "HJK092").Result;
-            //if (id.IsSuccess)
-            //{
-            //    Console.WriteLine("se pudo agregar con el id: " + id.Value);
-            //}
-            //else
-            //{
-            //    Console.WriteLine(id.Error);
-            //}
+            Result<int> id = cvm.InsertarCamion(120, 40, "MLA126", "Pepito").Result;
+            if (id.IsSuccess)
+            {
+                Console.WriteLine("se pudo agregar con el id: " + id.Value);
+            }
+            else
+            {
+                Console.WriteLine(id.Error);
+            }
 
 
             //PRUEBA SELECT ALL
@@ -48,7 +48,7 @@ namespace Proyecto_camiones.Presentacion
             //}
 
             //PRUEBA UPDATE CAMION
-            //var camionUpdated = await cvm.Actualizar(2, 100, null, "HIJ429");
+            //var camionUpdated = await cvm.Actualizar(2, 100, null, "HIJ429", "JUAN");
             //if (camionUpdated.IsSuccess)
             //{
             //    CamionDTO camion = camionUpdated.Value;
@@ -59,20 +59,19 @@ namespace Proyecto_camiones.Presentacion
             //var response = await cvm.Eliminar(8);
             //Console.WriteLine(response.Value);
 
-<<<<<<< HEAD
             EmpleadoViewModel evm = new EmpleadoViewModel();
             //PRUEBA INSERCION
-            Result<int> id = evm.InsertarEmpleado("Juan").Result;
-            if (id.IsSuccess)
-            {
-                Console.WriteLine("se pudo agregar con el id: " + id.Value);
-            }
-            else
-            {
-                Console.WriteLine(id.Error);
-            }
+            //Result<int> idempleado = evm.InsertarEmpleado("Juan").Result;
+            //if (id.IsSuccess)
+            //{
+            //    Console.WriteLine("se pudo agregar con el id: " + idempleado.Value);
+            //}
+            //else
+            //{
+            //    Console.WriteLine(id.Error);
+            //}
             //PRUEBA SELECT ALL
-=======
+
             CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
 
             //INSERCION
@@ -131,7 +130,6 @@ namespace Proyecto_camiones.Presentacion
 
 
 
->>>>>>> d5a916ea94732eaeeb855405b77552168c389cd3
         }
     }
 }

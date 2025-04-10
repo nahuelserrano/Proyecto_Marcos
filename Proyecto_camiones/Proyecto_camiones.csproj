@@ -38,7 +38,6 @@
     <Compile Include="Models\Cliente.cs" />
     <Compile Include="Models\CuentaCorriente.cs" />
     <Compile Include="Models\Empleado.cs" />
-    <Compile Include="Models\Flete.cs" />
     <Compile Include="Models\Pago.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Models\Viaje.cs" />
@@ -68,7 +67,6 @@
     <Compile Include="Utils\Validadores\ValidadorViaje.cs" />
     <Compile Include="ViewModels\CamionViewModel.cs" />
     <Compile Include="ViewModels\EmpleadoViewModel.cs" />
-    <Compile Include="ViewModels\ChoferViewModel.cs" />
     <Compile Include="ViewModels\ClienteViewModel.cs" />
     <Compile Include="ViewModels\CuentaCorrienteViewModel.cs" />
     <Compile Include="ViewModels\General.cs" />

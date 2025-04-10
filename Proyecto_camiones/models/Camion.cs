@@ -13,16 +13,20 @@ namespace Proyecto_camiones.Presentacion.Models
         public float tara {get; set; }
         public String Patente { get; set; }
 
-        public Camion(float peso_max, float tara, string Patente)
+        public string nombre_chofer { get; set; }
+
+        public Camion(float peso_max, float tara, string Patente, string nombre)
         {
             this.peso_max = peso_max;
             this.tara = tara;
             this.Patente = Patente;
+            this.nombre_chofer = nombre;
         }
 
         public Camion()
         {
             this.Patente = "x";
+            this.nombre_chofer = "undefined";
         }
 
 
