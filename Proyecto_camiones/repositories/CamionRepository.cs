@@ -23,7 +23,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
             {
                 // Intentar comprobar si la conexión a la base de datos es exitosa
                 bool puedeConectar = await _context.Database.CanConnectAsync();
-                Console.WriteLine("rompió acá no??");
                 if (puedeConectar)
                 {
                     Console.WriteLine("Conexión exitosa a la base de datos.");
