@@ -7,27 +7,22 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 namespace Proyecto_camiones.Presentacion.Utils
 {
 
-    public class ValidadorChofer
+    public class ValidadorEmpleado
     {
         public readonly string Nombre;
-        public readonly string Apellido;
         private List<string> _errores;
 
-
-        public ValidadorChofer(string nombre, string apellido)
+        public ValidadorEmpleado(string nombre)
         {
             this.Nombre = nombre;
-            this.Apellido = apellido;
             _errores = new List<string>();
         }
 
-        public ValidadorChofer ValidarDatos ()
+        public ValidadorEmpleado ValidarDatos()
         {
             if (string.IsNullOrWhiteSpace(Nombre))
                _errores.Add(MensajeError.ausenciaDeDatos(nameof(Nombre)));
 
-            if (string.IsNullOrWhiteSpace(Apellido))
-                _errores.Add(MensajeError.ausenciaDeDatos(nameof(Apellido)));
 
             return this;
         }
