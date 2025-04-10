@@ -6,19 +6,16 @@ using System.Threading.Tasks;
 
 namespace Proyecto_camiones.DTOs
 {
-    public class ChoferDTO : EmpleadoDTO
+    public class EmpleadoDTO
     {
         public string Nombre;
-        public string Apellido;
-        public ChoferDTO(string nombre, string apellido)
+        public EmpleadoDTO(string nombre)
         {
             Nombre = nombre;
-            Apellido = apellido;
         }
-        public ChoferDTO()
+        public EmpleadoDTO()
         {
             Nombre = "default";
-            Apellido = "default";
             // Constructor vacío
         }
     }

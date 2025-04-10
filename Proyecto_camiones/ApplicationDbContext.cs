@@ -60,8 +60,6 @@ public class ApplicationDbContext : DbContext
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Id).HasColumnName("idempleado");
             entity.Property(e => e.nombre).HasColumnName("nombre");
-            entity.Property(e => e.apellido).HasColumnName("apellido");
-            entity.Property(e => e.tipo_empleado).HasColumnName("tipo_empleado");
         });
 
         base.OnModelCreating(modelBuilder);

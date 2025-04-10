@@ -6,20 +6,25 @@ using System.Threading.Tasks;
 
 namespace Proyecto_camiones.DTOs
 {
-    public class ChoferDTO : EmpleadoDTO
+    class FleteDTO : EmpleadoDTO
     {
         public string Nombre;
         public string Apellido;
-        public ChoferDTO(string nombre, string apellido)
+        public FleteDTO(string nombre, string apellido)
         {
             Nombre = nombre;
             Apellido = apellido;
         }
-        public ChoferDTO()
+        public FleteDTO()
         {
             Nombre = "default";
             Apellido = "default";
             // Constructor vacío
+        }
+
+        public float getSaldo()
+        {
+            return 0.0f; //provisorio
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Proyecto_camiones.DTOs;
+using Proyecto_camiones.Models;
 using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Utils;
@@ -12,20 +13,20 @@ namespace Proyecto_camiones.Presentacion.Services
     {
         private readonly ViajeRepository _viajeRepository;
         private readonly CamionService _camionService;
-        private readonly ChoferService _choferService;
+        private readonly EmpleadoService _empleadoService;
 
         public ViajeService(
             ViajeRepository viajeRepository,
             CamionService camionService,
-            ChoferService choferService)
-        { // Si el valor de alguna de las variables es null, lanza la excepción
-            _viajeRepository = viajeRepository ?? throw new ArgumentNullException(nameof(viajeRepository)); // ?? es el operador que remplaza null por el valor de la derecha
-            _camionService = camionService ?? throw new ArgumentNullException(nameof(camionService)); // nameOf() devuelve el nombre del parametro cómo string
-            _choferService = choferService ?? throw new ArgumentNullException(nameof(choferService));
+            EmpleadoService empleadoService)
+        {
+            _viajeRepository = viajeRepository ?? throw new ArgumentNullException(nameof(viajeRepository));
+            _camionService = camionService ?? throw new ArgumentNullException(nameof(camionService));
+            _empleadoService = empleadoService ?? throw new ArgumentNullException(nameof(empleadoService));
         }
 
         // Clase Task: representa una operación que está en progreso o que se completará en el futuro, parecidas a las promesas
-        public async Task<Result<int>> CrearViaje(
+        public async Task<Result<int>> CrearViajeAsync(
             string destino,
             string lugarPartida,
             float kg,
@@ -64,14 +65,14 @@ namespace Proyecto_camiones.Presentacion.Services
             }
         }
 
-        public async Task<Result<Viaje>> ObtenerViaje(int id)
+        public async Task<Result<Viaje>> ObtenerViajeAsync(int id)
         {
             if (id <= 0)
                 return Result<Viaje>.Failure(MensajeError.idInvalido(id));
 
             try
             {
-                var viaje = await _viajeRepository.ObtenerPorId(id);
+                var viaje = await _viajeRepository.ObtenerPorIdAsync(id);
 
                 if (viaje == null)
                     return Result<Viaje>.Failure($"No se encontró ningún viaje con el ID {id}");
@@ -86,7 +87,7 @@ namespace Proyecto_camiones.Presentacion.Services
         }
 
         // READ - Obtener todos los viajes con filtros opcionales
-        public async Task<Result<List<Viaje>>> ObtenerViajes(
+        public async Task<Result<List<Viaje>>> ObtenerViajesAsync(
             DateTime? fechaInicio = null, // <tipo>? significa que el valor puede ser null
             DateTime? fechaFin = null,
             int? choferId = null,
@@ -96,7 +97,7 @@ namespace Proyecto_camiones.Presentacion.Services
             try
             {
                 //var viajes = await _viajeRepository.ObtenerPorFiltro(fechaInicio, fechaFin, choferId, camionId, estado); a implementar en el repositorio
-                var viajes = await _viajeRepository.ObtenerTodos();
+                var viajes = await _viajeRepository.ObtenerTodosAsync();
 
                 if (viajes == null || viajes.Count == 0)
                     return Result<List<Viaje>>.Success(new List<Viaje>()); // Devolver lista vacía, no es un error
@@ -109,14 +110,14 @@ namespace Proyecto_camiones.Presentacion.Services
             }
         }
 
-        public async Task<Result<bool>> EditarViaje(
+        public async Task<Result<bool>> EditarViajeAsync(
            int id,
            string destino = null,
            string lugarPartida = null,
            float? kg = null,
            int? remito = null,
            float? precioPorKilo = null,
-           int? chofer = null,
+           int? empleado = null,
            int? cliente = null,
            int? camion = null,
            DateTime? fechaInicio = null,
@@ -129,7 +130,7 @@ namespace Proyecto_camiones.Presentacion.Services
 
             // Verificamos que al menos un parámetro sea diferente de null
             if (destino == null && lugarPartida == null && kg == null && remito == null &&
-                precioPorKilo == null && chofer == null && cliente == null && camion == null &&
+                precioPorKilo == null && empleado == null && cliente == null && camion == null &&
                 fechaInicio == null && fechaEntrega == null && carga == null && km == null)
             {
                 return Result<bool>.Failure("No se especificó ningún campo para editar");
@@ -137,7 +138,7 @@ namespace Proyecto_camiones.Presentacion.Services
 
             try
             {
-                var viajeActual = await _viajeRepository.ObtenerPorId(id);
+                var viajeActual = await _viajeRepository.ObtenerPorIdAsync(id);
 
                 if (viajeActual == null)
                     return Result<bool>.Failure(MensajeError.NoExisteId(nameof(Viaje), id));
@@ -149,7 +150,7 @@ namespace Proyecto_camiones.Presentacion.Services
                     kg ?? viajeActual.Kg,
                     remito ?? viajeActual.Remito,
                     precioPorKilo ?? viajeActual.PrecioPorKilo,
-                    chofer ?? viajeActual.Chofer,
+                    empleado ?? viajeActual.Empleado,
                     cliente ?? viajeActual.Cliente,
                     camion ?? viajeActual.Camion,
                     fechaInicio ?? viajeActual.FechaInicio,
@@ -165,7 +166,7 @@ namespace Proyecto_camiones.Presentacion.Services
                     viajeModificado.Kg,
                     viajeModificado.Remito,
                     viajeModificado.PrecioPorKilo,
-                    viajeModificado.Chofer,
+                    viajeModificado.Empleado,
                     viajeModificado.Cliente,
                     viajeModificado.Camion,
                     viajeModificado.FechaInicio,
@@ -196,7 +197,9 @@ namespace Proyecto_camiones.Presentacion.Services
                 if (!resultadoValidacion.IsSuccess)
                     return Result<bool>.Failure(resultadoValidacion.Error);
 
-                await _viajeRepository.Actualizar(id, viajeModificado);
+                await _viajeRepository.ActualizarAsync(id, destino, lugarPartida, kg, remito, 
+                    precioPorKilo, empleado, cliente, camion, 
+                    fechaInicio, fechaEntrega, carga, km);
                 return Result<bool>.Success(true);
             }
             catch (Exception)
@@ -205,12 +208,12 @@ namespace Proyecto_camiones.Presentacion.Services
             }
         }
 
-        public async Task<Result<bool>> EliminarViaje(int id)
+        public async Task<Result<bool>> EliminarViajeAsync(int id)
         {
             if (id <= 0)
                 return Result<bool>.Failure("ID de viaje inválido.");
 
-            Viaje viaje = _viajeRepository.ObtenerPorId(id).Result;
+            Viaje viaje = _viajeRepository.ObtenerPorIdAsync(id).Result;
 
             if (viaje == null)
                 return Result<bool>.Failure("El viaje no existe.");
@@ -218,7 +221,7 @@ namespace Proyecto_camiones.Presentacion.Services
             try
             {
                 // Intentar insertar en la base de datos
-                await _viajeRepository.Eliminar(id);
+                await _viajeRepository.EliminarAsync(id);
                 return Result<bool>.Success(true);
             }
             catch (Exception ex)
@@ -227,7 +230,7 @@ namespace Proyecto_camiones.Presentacion.Services
             }
         }
 
-        public async Task<Result<List<ViajeDTO>>> ObtenerViajesPorCamion(int idCamion)
+        public async Task<Result<List<ViajeDTO>>> ObtenerViajesPorCamionAsync(int idCamion)
         {
             if (idCamion <= 0)
             {
@@ -245,11 +248,11 @@ namespace Proyecto_camiones.Presentacion.Services
             return Result<List<ViajeDTO>>.Success(viajes);
         }
 
-        public async Task<Result<List<ViajeDTO>>> ObtenerViajesPorChofer(int idChofer)
+        public async Task<Result<List<ViajeDTO>>> ObtenerViajesPorEmpleado(int idEmpleado)
         {
-            if (idChofer <= 0)
+            if (idEmpleado <= 0)
             {
-                return Result<List<ViajeDTO>>.Failure(MensajeError.idInvalido(idChofer));
+                return Result<List<ViajeDTO>>.Failure(MensajeError.idInvalido(idEmpleado));
             }
 
             //var viajes = await _viajeRepository.ObtenerPorChofer(idChofer);

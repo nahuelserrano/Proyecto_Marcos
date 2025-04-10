@@ -24,6 +24,8 @@
     <Compile Include="Datos_pagos.cs" />
     <Compile Include="DTOs\CamionDTO.cs" />
     <Compile Include="DTOs\ChoferDTO.cs" />
+    <Compile Include="DTOs\EmpleadoDTO.cs" />
+    <Compile Include="DTOs\FleteDTO.cs" />
     <Compile Include="DTOs\ViajeDTO.cs" />
     <Compile Include="Forms\Formulario_Viajes.cs">
       <SubType>Form</SubType>
@@ -33,8 +35,8 @@
     </Compile>
     <Compile Include="Models\Camion.cs" />
     <Compile Include="Models\Cheque.cs" />
-    <Compile Include="Models\Chofer.cs" />
     <Compile Include="Models\Cliente.cs" />
+    <Compile Include="Models\Empleado.cs" />
     <Compile Include="Models\Pago.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Models\Viaje.cs" />
@@ -42,13 +44,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\CamionRepository.cs" />
     <Compile Include="Repositories\ChequeRepository.cs" />
-    <Compile Include="Repositories\ChoferRepository.cs" />
+    <Compile Include="Repositories\EmpleadoRepository.cs" />
     <Compile Include="Repositories\ClienteRepository.cs" />
     <Compile Include="Repositories\PagoRepository.cs" />
     <Compile Include="Repositories\ViajeRepository.cs" />
     <Compile Include="Services\CamionService.cs" />
     <Compile Include="Services\ChequeService.cs" />
-    <Compile Include="Services\ChoferService.cs" />
+    <Compile Include="Services\EmpleadoService.cs" />
     <Compile Include="Services\ClienteService.cs" />
     <Compile Include="Services\PagoService.cs" />
     <Compile Include="Services\ViajeService.cs" />
@@ -56,12 +58,12 @@
     <Compile Include="Utils\Validadores\ValidadorCheque.cs" />
     <Compile Include="Utils\Result.cs" />
     <Compile Include="Utils\Validadores\ValidadorCamion.cs" />
-    <Compile Include="Utils\Validadores\ValidadorChofer.cs" />
+    <Compile Include="Utils\Validadores\ValidadorEmpleado.cs" />
     <Compile Include="Utils\Validadores\ValidadorCliente.cs" />
     <Compile Include="Utils\Validadores\ValidadorPago.cs" />
     <Compile Include="Utils\Validadores\ValidadorViaje.cs" />
     <Compile Include="ViewModels\CamionViewModel.cs" />
-    <Compile Include="ViewModels\ChoferViewModel.cs" />
+    <Compile Include="ViewModels\EmpleadoViewModel.cs" />
     <Compile Include="ViewModels\General.cs" />
   </ItemGroup>
 </Project>

@@ -58,7 +58,18 @@ namespace Proyecto_camiones.Presentacion
             //var response = await cvm.Eliminar(8);
             //Console.WriteLine(response.Value);
 
-
+            EmpleadoViewModel evm = new EmpleadoViewModel();
+            //PRUEBA INSERCION
+            Result<int> id = evm.InsertarEmpleado("Juan").Result;
+            if (id.IsSuccess)
+            {
+                Console.WriteLine("se pudo agregar con el id: " + id.Value);
+            }
+            else
+            {
+                Console.WriteLine(id.Error);
+            }
+            //PRUEBA SELECT ALL
         }
     }
 }

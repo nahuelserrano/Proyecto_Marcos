@@ -13,7 +13,7 @@ namespace Proyecto_camiones.Presentacion.Models
         public string Destino { get; set; }
         public float Kg { get; set; }
         public int Remito { get; set; }
-        public int Chofer { get; set; }
+        public int Empleado { get; set; }
         public int Cliente { get; set; }
         public DateTime FechaInicio { get; set; }
         public DateTime FechaEntrega { get; set; }
@@ -24,20 +24,19 @@ namespace Proyecto_camiones.Presentacion.Models
 
 
         public Viaje( string destino, string lugarPartida, float kg, int remito,
-                     float precioPorKilo, int chofer, int cliente, int camion,
-                     DateTime fechaInicio, DateTime fechaEntrega, string carga, float km, string estado = "Pendiente")
+                     float precioPorKilo, int empleado, int cliente, int camion,
+                     DateTime fechaInicio, DateTime fechaEntrega, string carga, float km)
         {
      
             Destino = destino;
             LugarPartida = lugarPartida;
             Kg = kg;
             Remito = remito;
-            Chofer = chofer;
+            Empleado = empleado;
             Cliente = cliente;
             Camion = camion;
             FechaInicio = fechaInicio;
             FechaEntrega = fechaEntrega;
-            Estado = estado;
             Carga = carga;
             PrecioPorKilo = precioPorKilo;
             Km = km;
