@@ -11,6 +11,7 @@ namespace Proyecto_camiones.Presentacion.Models
         
         public float Monto { get; set; }
         public bool Pagado { get; set; }
+        
 
         public Pago( float monto, bool pagado)
         {

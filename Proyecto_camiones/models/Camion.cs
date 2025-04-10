@@ -11,10 +11,12 @@ namespace Proyecto_camiones.Presentacion.Models
         public int Id { get; set; }
         public float peso_max { get; set; }
         public float tara {get; set; }
-        public String Patente { get; set; }
+        public string Patente { get; set; }
+        public string ManejadoPor { get; set; }
 
-        public Camion(float peso_max, float tara, string Patente)
+        public Camion(float peso_max, float tara, string Patente,string manejadoPor)
         {
+            this.ManejadoPor = manejadoPor;
             this.peso_max = peso_max;
             this.tara = tara;
             this.Patente = Patente;

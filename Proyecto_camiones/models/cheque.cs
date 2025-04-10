@@ -10,13 +10,13 @@ namespace Proyecto_camiones.Presentacion.Models
     {
         public int Id { get; set; }
         public int id_Cliente { get; set; }
-        public DateTime FechaIngresoCheque { get; set; }
+        public DateOnly FechaIngresoCheque { get; set; }
         public string NumeroCheque { get; set; }
         public float Monto { get; set; }
         public String Banco { get; set; }
-        public DateTime FechaCobro { get; set; }
+        public DateOnly FechaCobro { get; set; }
 
-        public Cheque(int id_Cliente, DateTime FechaIngresoCheque, string NumeroCheque, float Monto, String Banco, DateTime FechaCobro)
+        public Cheque(int id_Cliente, DateOnly FechaIngresoCheque, string NumeroCheque, float Monto, String Banco, DateOnly FechaCobro)
         {
             this.id_Cliente = id_Cliente;
             this.FechaIngresoCheque = FechaIngresoCheque;

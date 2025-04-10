@@ -14,15 +14,15 @@ namespace Proyecto_camiones.Presentacion.Utils
        
         private List<string> _errores;
         private readonly int Id_cliente;
-        private readonly DateTime FechaIngresoCheque;
+        private readonly DateOnly FechaIngresoCheque;
         private readonly string NumeroCheque;
         private readonly float Monto;
         private readonly string Banco;
-        private readonly DateTime FechaCobro;
+        private readonly DateOnly FechaCobro;
 
 
 
-        public ValidadorCheque(int id_Cliente, DateTime FechaIngresoCheque, string NumeroCheque, float Monto, string Banco, DateTime FechaCobro)
+        public ValidadorCheque(int id_Cliente, DateOnly FechaIngresoCheque, string NumeroCheque, float Monto, string Banco, DateOnly FechaCobro)
         {
             this.Banco = Banco;
             this.Id_cliente = id_Cliente;

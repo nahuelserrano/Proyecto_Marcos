@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using MySqlX.XDevAPI.Common;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Models;
+using Proyecto_camiones.Presentacion.Utils;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace Proyecto_camiones.Presentacion.Repositories
@@ -49,14 +52,14 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
 
 
-        public async Task<Cheque?> Insertar(int id_Cliente, DateTime FechaIngresoCheque, string NumeroCheque, float Monto, string Banco, DateTime FechaCobro)
+        public async Task<int> Insertar(int id_Cliente, DateOnly FechaIngresoCheque, string NumeroCheque, float Monto, string Banco, DateOnly FechaCobro)
         {
             try
             {
                 if (!await _context.Database.CanConnectAsync())
                 {
                     Console.WriteLine("No se puede conectar a la base de datos");
-                    return null;
+                    return -1;
                 }
 
 
@@ -72,10 +75,10 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
                 if (registrosAfectados > 0)
                 {
-                    return cheque;
+                    return 1;
                 }
                 Console.WriteLine("No se insertó ningún registro");
-                return null;
+                return -1;
             
               
             }
@@ -84,11 +87,11 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 Console.WriteLine($"Error al insertar camión: {ex.Message}");
    
                 Console.WriteLine($"Stack trace: {ex.StackTrace}");
-                return null;
+                return -1;
             }
         }
 
-        public async Task<List<Cheque>?> ObtenerTodos()
+        public async Task<List<ChequeDTO>?> ObtenerTodos()
         {
             try
             {
@@ -97,7 +100,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
                 var cheques = await _context.Cheques.Select(c => new ChequeDTO
                 {
-                    id_Cliente = c.id_Cliente,
+                    Id_cliente = c.id_Cliente,
                     FechaIngresoCheque = c.FechaIngresoCheque,
                     NumeroCheque = c.NumeroCheque,
                     Monto = c.Monto,
@@ -121,7 +124,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                                            NumeroCheque = null,decimal? Monto = null,string? Banco = null,DateTime? FechaCobro = null)
         {
             try {
-                var cheque = await _context.Cheque.FindAsync(id);
+                var cheque = await _context.Cheques.FindAsync(id);
 
                 // Actualizar solo los campos proporcionados
                 if (id_Cliente.HasValue)
@@ -134,7 +137,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     cheque.NumeroCheque = NumeroCheque;
 
                 if (Monto.HasValue)
-                    cheque.Monto = Monto.Value;
+                    cheque.Monto = (float)Monto.Value;
 
                 if (!string.IsNullOrEmpty(Banco))
                     cheque.Banco = Banco;
@@ -153,25 +156,15 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
         }
 
-        public async Task<bool> ObtenerPorId(int id)
+        public async Task<ChequeDTO?> ObtenerPorId(int id)
         {
-            try
+            Cheque cheque = await _context.Cheques.FindAsync(id);
+            if (cheque != null)
             {
-                var cheque = await _context.Cheque.FindAsync(id);
-
-                if (cheque == null)
-                    return false;
-
-                _context.Camiones.Remove(cheque);
-
-                await _context.SaveChangesAsync();
-
-                return true;
+                ChequeDTO nuevo = new ChequeDTO(cheque.id_Cliente, cheque.FechaIngresoCheque, cheque.NumeroCheque, cheque.Monto, cheque.Banco, cheque.FechaCobro);
+                return nuevo;
             }
-            catch (Exception)
-            {
-                return false;
-            }
+            return null;
         }
 
 
@@ -180,12 +173,12 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                var cheque = await _context.Cheque.FindAsync(id);
+                var cheque = await _context.Cheques.FindAsync(id);
 
                 if (cheque == null)
                     return false;
 
-                _context.Camiones.Remove(cheque);
+                _context.Cheques.Remove(cheque);
 
                 await _context.SaveChangesAsync();
 
