@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-04-2025 a las 03:10:49
+-- Tiempo de generación: 09-04-2025 a las 04:39:05
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -45,7 +45,9 @@ INSERT INTO `camion` (`idcamion`, `peso_max`, `tara`, `patente`, `idchofer`) VAL
 (4, 150, 100, 'WWW123', NULL),
 (5, 150, 100, 'WWW123', NULL),
 (6, 150, 100, 'WWW123', NULL),
-(7, 150, 100, 'WWW123', NULL);
+(7, 150, 100, 'WWW123', NULL),
+(10, 200, 20, 'HJK092', NULL),
+(11, 200, 20, 'HJK092', NULL);
 
 -- --------------------------------------------------------
 
@@ -74,10 +76,18 @@ CREATE TABLE `cheque` (
 
 CREATE TABLE `cliente` (
   `idCliente` int(11) NOT NULL,
-  `nombre` varchar(45) NOT NULL,
-  `apellido` varchar(45) DEFAULT NULL,
-  `dni` int(11) DEFAULT NULL
+  `nombre` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `cliente`
+--
+
+INSERT INTO `cliente` (`idCliente`, `nombre`) VALUES
+(2, 'Cliente1'),
+(3, 'COOPERATIVA'),
+(4, 'COOPERATIVA'),
+(5, 'MACHACA');
 
 -- --------------------------------------------------------
 
@@ -89,9 +99,20 @@ CREATE TABLE `cuenta_corriente` (
   `idcuenta_corriente` int(11) NOT NULL,
   `fecha_factura` date NOT NULL,
   `nro_factura` int(11) NOT NULL,
-  `importe` float NOT NULL,
-  `pagado` float NOT NULL
+  `adeuda` float NOT NULL,
+  `importe_pagado` float NOT NULL,
+  `idCliente` int(11) NOT NULL,
+  `saldo` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `cuenta_corriente`
+--
+
+INSERT INTO `cuenta_corriente` (`idcuenta_corriente`, `fecha_factura`, `nro_factura`, `adeuda`, `importe_pagado`, `idCliente`, `saldo`) VALUES
+(1, '2025-04-07', 3333, 2345, 2344, 2, 0),
+(2, '2025-04-07', 89, 5678, 899, 5, 4779),
+(3, '2025-04-07', 8383, 99, 22, 5, 77);
 
 -- --------------------------------------------------------
 
@@ -115,7 +136,9 @@ CREATE TABLE `empleado` (
 CREATE TABLE `pago` (
   `idpago` int(11) NOT NULL,
   `monto` varchar(45) NOT NULL,
-  `idchofer` int(11) DEFAULT NULL
+  `idchofer` int(11) NOT NULL,
+  `fecha_pagado` date DEFAULT NULL,
+  `fecha_viaje` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -151,8 +174,7 @@ CREATE TABLE `viaje` (
   `idcliente` int(11) NOT NULL,
   `idcamion` int(11) NOT NULL,
   `km` float DEFAULT NULL,
-  `tarifa` float NOT NULL,
-  `porcentaje` float DEFAULT NULL
+  `tarifa` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -183,7 +205,8 @@ ALTER TABLE `cliente`
 -- Indices de la tabla `cuenta_corriente`
 --
 ALTER TABLE `cuenta_corriente`
-  ADD PRIMARY KEY (`idcuenta_corriente`);
+  ADD PRIMARY KEY (`idcuenta_corriente`),
+  ADD KEY `cc_cliente_fk_idx` (`idCliente`);
 
 --
 -- Indices de la tabla `empleado`
@@ -221,7 +244,7 @@ ALTER TABLE `viaje`
 -- AUTO_INCREMENT de la tabla `camion`
 --
 ALTER TABLE `camion`
-  MODIFY `idcamion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `idcamion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `cheque`
@@ -233,7 +256,13 @@ ALTER TABLE `cheque`
 -- AUTO_INCREMENT de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `idCliente` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idCliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de la tabla `cuenta_corriente`
+--
+ALTER TABLE `cuenta_corriente`
+  MODIFY `idcuenta_corriente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `empleado`
@@ -274,6 +303,12 @@ ALTER TABLE `camion`
 --
 ALTER TABLE `cheque`
   ADD CONSTRAINT `cheque_cliente_fk` FOREIGN KEY (`idCliente`) REFERENCES `cliente` (`idCliente`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `cuenta_corriente`
+--
+ALTER TABLE `cuenta_corriente`
+  ADD CONSTRAINT `cc_cliente_fk` FOREIGN KEY (`idCliente`) REFERENCES `cliente` (`idCliente`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `pago`

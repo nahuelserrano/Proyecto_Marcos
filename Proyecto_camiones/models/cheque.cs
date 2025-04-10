@@ -9,16 +9,16 @@ namespace Proyecto_camiones.Presentacion.Models
     public class Cheque
     {
         public int Id { get; set; }
-        public int Cliente { get; set; }
+        public int id_Cliente { get; set; }
         public DateTime FechaIngresoCheque { get; set; }
-        public int NumeroCheque { get; set; }
+        public string NumeroCheque { get; set; }
         public float Monto { get; set; }
         public String Banco { get; set; }
         public DateTime FechaCobro { get; set; }
 
-        public Cheque(int Cliente, DateTime FechaIngresoCheque, int NumeroCheque, float Monto, String Banco, DateTime FechaCobro)
+        public Cheque(int id_Cliente, DateTime FechaIngresoCheque, string NumeroCheque, float Monto, String Banco, DateTime FechaCobro)
         {
-            this.Cliente = Cliente;
+            this.id_Cliente = id_Cliente;
             this.FechaIngresoCheque = FechaIngresoCheque;
             this.NumeroCheque = NumeroCheque;
             this.Monto = Monto;
@@ -28,7 +28,7 @@ namespace Proyecto_camiones.Presentacion.Models
 
         public Cheque()
         {
-            this.Cliente = 1;
+            this.id_Cliente = 1;
             this.Banco = "bna";
         }
     }

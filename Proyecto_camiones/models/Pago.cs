@@ -12,9 +12,9 @@ namespace Proyecto_camiones.Presentacion.Models
         public float Monto { get; set; }
         public bool Pagado { get; set; }
 
-        public Pago(int id, float monto, bool pagado)
+        public Pago( float monto, bool pagado)
         {
-            this.Id = id;
+          
             this.Monto = monto;
             this.Pagado = pagado;
         }

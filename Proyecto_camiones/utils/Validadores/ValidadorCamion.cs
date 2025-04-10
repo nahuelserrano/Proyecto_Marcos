@@ -26,8 +26,8 @@ namespace Proyecto_camiones.Presentacion.Utils
 
         public ValidadorCamion ValidarPesos()
         {
-
-            if (this.tara < this.pesominimo)
+            //no nos acordamo cuanto es el peso minimo de un viaje, debemos chequearlo
+            if (this.pesominimo==1000)
                 _errores.Add(MensajeError.PesoIncorrecto(this.tara));
 
             if (this.peso < this.pesominimo)

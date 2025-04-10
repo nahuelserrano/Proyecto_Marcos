@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Proyecto_camiones.Presentacion.Models;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
@@ -10,57 +11,53 @@ namespace Proyecto_camiones.Presentacion.Utils
 
     public class ValidadorCheque
     {
-        private readonly Cheque _cheque;
+       
         private List<string> _errores;
+        private readonly int Id_cliente;
+        private readonly DateTime FechaIngresoCheque;
+        private readonly string NumeroCheque;
+        private readonly float Monto;
+        private readonly string Banco;
+        private readonly DateTime FechaCobro;
 
 
-        public ValidadorCheque(Cheque cheque)
+
+        public ValidadorCheque(int id_Cliente, DateTime FechaIngresoCheque, string NumeroCheque, float Monto, string Banco, DateTime FechaCobro)
         {
-            _cheque = cheque;
-            _errores = new List<string>();
+            this.Banco = Banco;
+            this.Id_cliente = id_Cliente;
+            this.FechaIngresoCheque = FechaIngresoCheque;
+            this.NumeroCheque = NumeroCheque;
+            this.Monto = Monto;
+            this.FechaCobro = FechaCobro;
+            _errores = new List<string>();  
+
         }
 
-        // Método para iniciar la validación - verifica si el objeto es nulo
-        public ValidadorCheque Validar()
-        {
-            _errores.Clear();
-
-            if (_cheque == null)
-            {
-                _errores.Add(MensajeError.objetoNulo(nameof(Cheque)));
-            }
-
-            return this; // Para permitir encadenamiento
-        }
-
+           
         public ValidadorCheque ValidarDatos()
         {
-                if (_cheque.Monto < 0)
-                     _errores.Add(MensajeError.valorInvalido(nameof(_cheque.Monto)));
-            if (_cheque.Banco == null)
-                _errores.Add(MensajeError.ausenciaDeDatos(nameof(_cheque.Banco)));
+                if (this.Monto < 0)
+                     _errores.Add(MensajeError.valorInvalido(nameof(this.Monto)));
+                if (this.Banco == null)
+                _errores.Add(MensajeError.ausenciaDeDatos(nameof(this.Banco)));
+
+                if (this.NumeroCheque!=null)
+                    _errores.Add(MensajeError.ausenciaDeDatos(nameof(this.Banco)));
 
             return this;
         }
         public ValidadorCheque ValidarFechas()
         {
 
-            if (_cheque.FechaIngresoCheque > _cheque.FechaCobro) return this; // Evitamos NullException
+            if (this.FechaIngresoCheque > this.FechaCobro) return this; // Evitamos NullException
             _errores.Add(MensajeError.fechaInvalida(nameof(Cheque)));
 
 
 
             return this;
         }
-        public ValidadorCheque ValidarEntidadesRelacionadas()
-        {
-            if (_cheque == null) return this;
-
-            //if (_cheque.Cliente_Dueño_Cheque == null)
-            //    _errores.Add(MensajeError.objetoNulo(nameof(Cheque)));
-
-            return this;
-        }
+        
 
 
         public Result<bool> ObtenerResultado()
@@ -73,10 +70,9 @@ namespace Proyecto_camiones.Presentacion.Utils
         // Esta función ayuda a mantener todas las validaciones en un solo llamado
         public Result<bool> ValidarCompleto()
         {
-            return Validar()
-                .ValidarDatos()
+            return
+                 ValidarDatos()
                 .ValidarFechas()
-                .ValidarEntidadesRelacionadas()
                 .ObtenerResultado();
         }
 

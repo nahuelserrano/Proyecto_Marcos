@@ -42,27 +42,27 @@ namespace Proyecto_camiones.Presentacion.Services
 
         }
 
-        public async Task<Result<int>> Crear(Pago pago)
-        {
+        //public async Task<Result<int>> Crear(float monto, bool pagado)
+        //{
 
-            ValidadorPago validador = new ValidadorPago(pago);
+        //    ValidadorPago validador = new ValidadorPago( monto,pagado);
 
-            Result<bool> resultadoValidacion = validador.ValidarCompleto();
+        //    Result<bool> resultadoValidacion = validador.ValidarCompleto();
 
-            if (!resultadoValidacion.IsSuccess)
-                return Result<int>.Failure(resultadoValidacion.Error);
+        //    if (!resultadoValidacion.IsSuccess)
+        //        return Result<int>.Failure(resultadoValidacion.Error);
 
-            try
-            {
-                // Intentar insertar en la base de datos
-                int idPago = await _pagoRepository.Insertar(pago);
-                return Result<int>.Success(idPago);
-            }
-            catch (Exception ex)
-            {
-                return Result<int>.Failure("Hubo un error al crear el cheque");
-            }
-        }
+        //    try
+        //    {
+        //        // Intentar insertar en la base de datos
+        //        int idPago = await _pagoRepository.Insertar(monto, pagado);
+        //        return Result<int>.Success(idPago);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Result<int>.Failure("Hubo un error al crear el cheque");
+        //    }
+        //}
 
         public async Task<Result<int>> Actualizar(int id, float? monto = null, bool? pagado = null)
         {

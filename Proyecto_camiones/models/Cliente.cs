@@ -10,15 +10,16 @@ namespace Proyecto_camiones.Presentacion.Models
     {
 
         public int Id { get; set; }
-        public String nombre { get; set; }
-        public String apellido { get; set; }
-        public int dni { get; set; }
+        public String Nombre { get; set; }
 
-        public Cliente(String nombre, String apellido, int dni)
+        public Cliente(String nombre)
         {
-            this.nombre = nombre;
-            this.apellido = apellido;
-            this.dni = dni;
+            this.Nombre = nombre;
+        }
+        override
+        public String ToString()
+        {
+            return "Id: " + this.Id + "Nombre: "+this.Nombre;
         }
     }
 }

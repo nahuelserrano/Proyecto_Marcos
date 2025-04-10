@@ -15,6 +15,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Empleado> Empleados { get; set; }
     public DbSet<Cliente> Clientes { get; set; }
     public DbSet<Usuario> Usuarios { get; set; }
+    public DbSet<CuentaCorriente> Cuentas { get; set; }
 
     // Constructor para pasar opciones (útil para pruebas o configuración)
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -43,6 +44,7 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Empleado>().ToTable("empleado");
         modelBuilder.Entity<Cliente>().ToTable("cliente");
         modelBuilder.Entity<Usuario>().ToTable("usuario");
+        modelBuilder.Entity<CuentaCorriente>().ToTable("cuenta_corriente");
 
         modelBuilder.Entity<Camion>(entity =>
         {
@@ -60,6 +62,27 @@ public class ApplicationDbContext : DbContext
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Id).HasColumnName("idempleado");
             entity.Property(e => e.nombre).HasColumnName("nombre");
+        });
+
+        modelBuilder.Entity<CuentaCorriente>(entity =>
+        {
+            entity.ToTable("cuenta_corriente");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasColumnName("idcuenta_corriente").ValueGeneratedOnAdd();
+            entity.Property(e => e.Nro_factura).HasColumnName("nro_factura");
+            entity.Property(e => e.Fecha_factura).HasColumnName("fecha_factura");
+            entity.Property(e => e.Adeuda).HasColumnName("adeuda");
+            entity.Property(e => e.Pagado).HasColumnName("importe_pagado");
+            entity.Property(e => e.IdCliente).HasColumnName("idCliente");
+            entity.Property(e => e.Saldo_Total).HasColumnName("saldo");
+        });
+
+        modelBuilder.Entity<Cliente>(entity =>
+        {
+            entity.ToTable("cliente");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasColumnName("idCliente");
+            entity.Property(e => e.Nombre).HasColumnName("nombre");
         });
 
         base.OnModelCreating(modelBuilder);

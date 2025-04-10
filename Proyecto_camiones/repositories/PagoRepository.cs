@@ -16,8 +16,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
             _siguienteId = 1;
 
             // Creamos pagos de prueba
-            _pagos.Add(new Pago(1, 1000.0f, true));
-            _pagos.Add(new Pago(2, 2000.0f, false));
+            //_pagos.Add(new Pago(1, 1000.0f, true));
+            //_pagos.Add(new Pago(2, 2000.0f, false));
         }
 
         public async Task<Pago> ObtenerPorId(int id)
@@ -32,28 +32,28 @@ namespace Proyecto_camiones.Presentacion.Repositories
             return new List<Pago>(_pagos);
         }
 
-        public async Task<int> Insertar(Pago pago)
-        {
-            // Asignamos un ID y agregamos a la lista
-            pago.Id = _siguienteId++;
-            _pagos.Add(pago);
-            return pago.Id;
-        }
+        //public async Task<int> Insertar(Pago pago)
+        //{
+        //    // Asignamos un ID y agregamos a la lista
+        //    //pago.Id = _siguienteId++;
+        //    //_pagos.Add(pago);
+        //    //return pago.Id;
+        //}
 
         public async Task Actualizar(Pago pago)
         {
-            // Simulamos actualización
-            int indice = _pagos.FindIndex(p => p.Id == pago.Id);
-            if (indice >= 0)
-            {
-                _pagos[indice] = pago;
-            }
+            //// Simulamos actualización
+            //int indice = _pagos.FindIndex(p => p.Id == pago.Id);
+            //if (indice >= 0)
+            //{
+            //    _pagos[indice] = pago;
+            //}
         }
 
         public async Task Eliminar(int id)
         {
-            // Simulamos eliminación
-            _pagos.RemoveAll(p => p.Id == id);
+            //// Simulamos eliminación
+            //_pagos.RemoveAll(p => p.Id == id);
         }
     }
 }
