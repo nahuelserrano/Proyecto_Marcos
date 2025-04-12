@@ -16,5 +16,11 @@ namespace Proyecto_camiones.Services
         {
             this.fleteRepository = fleteRepository ?? throw new ArgumentNullException(nameof(fleteRepository));
         }
+
+        public async Task<bool> ProbarConexionAsync()
+        {
+            bool result = await this.fleteRepository.ProbarConexionAsync();
+            return result;
+        }
     }
 }

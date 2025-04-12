@@ -18,5 +18,11 @@ namespace Proyecto_camiones.ViewModels
             var repo = new FleteRepository(dbContext);
             this.fleteService = new FleteService(repo);
         }
+
+
+        public async Task<bool> testearConexion()
+        {
+            return await this.fleteService.ProbarConexionAsync();
+        }
     }
 }
