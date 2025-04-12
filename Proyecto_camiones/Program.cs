@@ -3,11 +3,13 @@ using Proyecto_camiones.Presentacion.Services;
 using System;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.ViewModels;
 using Proyecto_camiones.Presentacion.Utils;
 using Proyecto_camiones.Models;
+using MathNet.Numerics.LinearAlgebra.Factorization;
 
 
 namespace Proyecto_camiones.Presentacion
@@ -26,15 +28,15 @@ namespace Proyecto_camiones.Presentacion
 
             CamionViewModel cvm = new CamionViewModel();
             //PRUEBA INSERCION
-            Result<int> id = cvm.InsertarCamion(120, 40, "MLA126", "Pepito").Result;
-            if (id.IsSuccess)
-            {
-                Console.WriteLine("se pudo agregar con el id: " + id.Value);
-            }
-            else
-            {
-                Console.WriteLine(id.Error);
-            }
+            //Result<int> id = cvm.InsertarCamion(120, 40, "MLA126", "Pepito").Result;
+            //if (id.IsSuccess)
+            //{
+            //    Console.WriteLine("se pudo agregar con el id: " + id.Value);
+            //}
+            //else
+            //{
+            //    Console.WriteLine(id.Error);
+            //}
 
 
             //PRUEBA SELECT ALL
@@ -60,17 +62,6 @@ namespace Proyecto_camiones.Presentacion
             //Console.WriteLine(response.Value);
 
             EmpleadoViewModel evm = new EmpleadoViewModel();
-            //PRUEBA INSERCION
-            //Result<int> idempleado = evm.InsertarEmpleado("Juan").Result;
-            //if (id.IsSuccess)
-            //{
-            //    Console.WriteLine("se pudo agregar con el id: " + idempleado.Value);
-            //}
-            //else
-            //{
-            //    Console.WriteLine(id.Error);
-            //}
-            //PRUEBA SELECT ALL
 
             CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
 
@@ -127,8 +118,59 @@ namespace Proyecto_camiones.Presentacion
             //ELIMINAR 
             //var result = await clvm.Eliminar(1);
             //Console.WriteLine(result.Value);
+        }
 
+        public static async void ProbarObtenerIdEmpleado(int id)
+        {
+            EmpleadoViewModel evm = new EmpleadoViewModel();
 
+            Result<EmpleadoDTO> result = await evm.ObtenerPorId(3);
+            if (result.IsSuccess)
+            {
+                Console.WriteLine(result.Value.Nombre);
+            }
+            else
+            {
+                Console.WriteLine(result.Error);
+            }
+        }
+
+        public static async void ProbarInsertarEmpleado(string nombre)
+        {
+            EmpleadoViewModel evm = new EmpleadoViewModel();
+
+            Result<int> idEmpleado = evm.InsertarEmpleado(nombre).Result;
+
+            if (idEmpleado.IsSuccess)
+            {
+                Console.WriteLine("se pudo agregar con el id: " + idEmpleado.Value);
+            }
+            else
+            {
+                Console.WriteLine(idEmpleado.Error);
+            }
+        }
+
+        public static async void ProbarInsertarViaje(string origen, string destino)
+        {
+            ViajeViewModel vvm = new ViajeViewModel();
+
+            var resultadoCreacion1 = await vvm.CrearViaje(
+                destino: destino,
+                lugarPartida: origen,
+                kg: 5000.5f,
+                remito: 12345,
+                precioPorKilo: 10.5f,
+                chofer: 1,  // Asumiendo que el ID 1 existe
+                cliente: 2, // Asumiendo que el ID 2 existe
+                camion: 3,  // Asumiendo que el ID 3 existe
+                fechaInicio: new DateOnly(2025, 4, 11),
+                fechaFacturacion: new DateOnly(2025, 5, 1),
+                carga: "Materiales de construcción",
+                km: 650.75f
+            );
+
+            Console.WriteLine("Resultado de la creación del viaje: " + resultadoCreacion1.Value);
 
         }
     }

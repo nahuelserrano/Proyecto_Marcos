@@ -14,8 +14,8 @@ namespace Proyecto_camiones.Presentacion.Utils
         private readonly int _chofer;
         private readonly int _cliente;
         private readonly int _camion;
-        private readonly DateTime _fechaInicio;
-        private readonly DateTime _fechaEntrega;
+        private readonly DateOnly _fechaInicio;
+        private readonly DateOnly? _fechaFacturacion;
         private readonly string _carga;
         private readonly float _km;
         private List<string> _errores;
@@ -29,10 +29,10 @@ namespace Proyecto_camiones.Presentacion.Utils
             int chofer,
             int cliente,
             int camion,
-            DateTime fechaInicio,
-            DateTime fechaEntrega,
+            DateOnly fechaInicio,
             string carga,
-            float km)
+            float km,
+            DateOnly? fechaFacturacion = null)
         {
             _destino = destino;
             _lugarPartida = lugarPartida;
@@ -43,7 +43,7 @@ namespace Proyecto_camiones.Presentacion.Utils
             _cliente = cliente;
             _camion = camion;
             _fechaInicio = fechaInicio;
-            _fechaEntrega = fechaEntrega;
+            _fechaFacturacion = fechaFacturacion;
             _carga = carga;
             _km = km;
             _errores = new List<string>();
@@ -52,11 +52,9 @@ namespace Proyecto_camiones.Presentacion.Utils
 
         public ValidadorViaje ValidarFechas()
         {
-            if (_fechaEntrega < DateTime.Now)
-                _errores.Add("La fecha de partida no puede ser en el pasado");
 
-            if (_fechaEntrega < _fechaInicio)
-                _errores.Add(MensajeError.fechaInvalida(nameof(_fechaInicio)));
+            if (_fechaFacturacion < _fechaInicio)
+                _errores.Add(MensajeError.fechaInvalida(nameof(_fechaFacturacion)));
 
             return this;
         }

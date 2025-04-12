@@ -70,5 +70,6 @@
     <Compile Include="ViewModels\ClienteViewModel.cs" />
     <Compile Include="ViewModels\CuentaCorrienteViewModel.cs" />
     <Compile Include="ViewModels\General.cs" />
+    <Compile Include="ViewModels\ViajeViewModel.cs" />
   </ItemGroup>
 </Project>
