@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 10-04-2025 a las 04:31:37
+-- Tiempo de generación: 12-04-2025 a las 23:19:00
 -- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.0.30
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `truck_manager_project`
+-- Base de datos: `truck_manager_project_db`
 --
 
 -- --------------------------------------------------------
@@ -73,6 +73,17 @@ CREATE TABLE `cheque` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `chofer`
+--
+
+CREATE TABLE `chofer` (
+  `idChofer` int(11) NOT NULL,
+  `nombre` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `cliente`
 --
 
@@ -103,28 +114,29 @@ CREATE TABLE `cuenta_corriente` (
   `nro_factura` int(11) NOT NULL,
   `adeuda` float NOT NULL,
   `importe_pagado` float NOT NULL,
-  `idCliente` int(11) NOT NULL,
-  `saldo` float NOT NULL
+  `idCliente` int(11) DEFAULT NULL,
+  `saldo` float NOT NULL,
+  `idfletero` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `cuenta_corriente`
 --
 
-INSERT INTO `cuenta_corriente` (`idcuenta_corriente`, `fecha_factura`, `nro_factura`, `adeuda`, `importe_pagado`, `idCliente`, `saldo`) VALUES
-(1, '2025-04-07', 3333, 2345, 2344, 2, 0),
-(2, '2025-04-07', 89, 5678, 899, 5, 4779),
-(3, '2025-04-07', 8383, 99, 22, 5, 77);
+INSERT INTO `cuenta_corriente` (`idcuenta_corriente`, `fecha_factura`, `nro_factura`, `adeuda`, `importe_pagado`, `idCliente`, `saldo`, `idfletero`) VALUES
+(1, '2025-04-07', 3333, 2345, 2344, 2, 0, NULL),
+(2, '2025-04-07', 89, 5678, 899, 5, 4779, NULL),
+(3, '2025-04-07', 8383, 99, 22, 5, 77, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `empleado`
+-- Estructura de tabla para la tabla `fletero`
 --
 
-CREATE TABLE `empleado` (
-  `idempleado` int(11) NOT NULL,
-  `nombre` varchar(45) NOT NULL
+CREATE TABLE `fletero` (
+  `idFletero` int(11) NOT NULL,
+  `nombre` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -136,8 +148,9 @@ CREATE TABLE `empleado` (
 CREATE TABLE `pago` (
   `idpago` int(11) NOT NULL,
   `monto` varchar(45) NOT NULL,
-  `fecha_pagado` date DEFAULT NULL,
-  `idempleado` int(11) DEFAULT NULL
+  `fecha_viaje` date DEFAULT NULL,
+  `idChofer` int(11) DEFAULT NULL,
+  `pagado` tinyint(4) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -172,7 +185,8 @@ CREATE TABLE `viaje` (
   `idcliente` int(11) NOT NULL,
   `idcamion` int(11) NOT NULL,
   `km` float DEFAULT NULL,
-  `tarifa` float NOT NULL
+  `tarifa` float NOT NULL,
+  `nombre_chofer` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -192,7 +206,10 @@ CREATE TABLE `viaje_flete` (
   `tarifa` float DEFAULT NULL,
   `factura` int(11) DEFAULT NULL,
   `idCliente` int(11) DEFAULT NULL,
-  `fletero` varchar(45) DEFAULT NULL
+  `fletero` varchar(45) DEFAULT NULL,
+  `nombre_chofer` varchar(45) NOT NULL,
+  `comisión` float DEFAULT NULL,
+  `fecha_salida` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -213,6 +230,12 @@ ALTER TABLE `cheque`
   ADD KEY `cheque_cliente_fk_idx` (`idCliente`);
 
 --
+-- Indices de la tabla `chofer`
+--
+ALTER TABLE `chofer`
+  ADD PRIMARY KEY (`idChofer`);
+
+--
 -- Indices de la tabla `cliente`
 --
 ALTER TABLE `cliente`
@@ -223,20 +246,21 @@ ALTER TABLE `cliente`
 --
 ALTER TABLE `cuenta_corriente`
   ADD PRIMARY KEY (`idcuenta_corriente`),
-  ADD KEY `cc_cliente_fk_idx` (`idCliente`);
+  ADD KEY `cc_cliente_fk_idx` (`idCliente`),
+  ADD KEY `fk_cc_fletero_idx` (`idfletero`);
 
 --
--- Indices de la tabla `empleado`
+-- Indices de la tabla `fletero`
 --
-ALTER TABLE `empleado`
-  ADD PRIMARY KEY (`idempleado`);
+ALTER TABLE `fletero`
+  ADD PRIMARY KEY (`idFletero`);
 
 --
 -- Indices de la tabla `pago`
 --
 ALTER TABLE `pago`
   ADD PRIMARY KEY (`idpago`),
-  ADD KEY `fk_pago_empleado_idx` (`idempleado`);
+  ADD KEY `fk_pago_chofer_idx` (`idChofer`);
 
 --
 -- Indices de la tabla `usuario`
@@ -276,6 +300,12 @@ ALTER TABLE `cheque`
   MODIFY `idcheque` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `chofer`
+--
+ALTER TABLE `chofer`
+  MODIFY `idChofer` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `cliente`
 --
 ALTER TABLE `cliente`
@@ -288,10 +318,10 @@ ALTER TABLE `cuenta_corriente`
   MODIFY `idcuenta_corriente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT de la tabla `empleado`
+-- AUTO_INCREMENT de la tabla `fletero`
 --
-ALTER TABLE `empleado`
-  MODIFY `idempleado` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `fletero`
+  MODIFY `idFletero` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `pago`
@@ -331,13 +361,14 @@ ALTER TABLE `cheque`
 -- Filtros para la tabla `cuenta_corriente`
 --
 ALTER TABLE `cuenta_corriente`
-  ADD CONSTRAINT `cc_cliente_fk` FOREIGN KEY (`idCliente`) REFERENCES `cliente` (`idCliente`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `cc_cliente_fk` FOREIGN KEY (`idCliente`) REFERENCES `cliente` (`idCliente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_cc_fletero` FOREIGN KEY (`idfletero`) REFERENCES `fletero` (`idFletero`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `pago`
 --
 ALTER TABLE `pago`
-  ADD CONSTRAINT `fk_pago_empleado` FOREIGN KEY (`idempleado`) REFERENCES `empleado` (`idempleado`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_pago_chofer` FOREIGN KEY (`idChofer`) REFERENCES `chofer` (`idChofer`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `viaje`

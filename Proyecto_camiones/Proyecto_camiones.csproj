@@ -42,6 +42,7 @@
     <Compile Include="Models\Pago.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Models\Viaje.cs" />
+    <Compile Include="Models\ViajeFlete.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\CamionRepository.cs" />
