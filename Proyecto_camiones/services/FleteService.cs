@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Proyecto_camiones.Presentacion.Models;
+using Proyecto_camiones.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +8,13 @@ using System.Threading.Tasks;
 
 namespace Proyecto_camiones.Services
 {
-    class FleteService
+    public class FleteService
     {
+        private FleteRepository fleteRepository;
+
+        public FleteService(FleteRepository fleteRepository)
+        {
+            this.fleteRepository = fleteRepository ?? throw new ArgumentNullException(nameof(fleteRepository));
+        }
     }
 }
