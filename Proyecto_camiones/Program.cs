@@ -61,8 +61,6 @@ namespace Proyecto_camiones.Presentacion
             //var response = await cvm.Eliminar(8);
             //Console.WriteLine(response.Value);
 
-            EmpleadoViewModel evm = new EmpleadoViewModel();
-
             CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
 
             //INSERCION
