@@ -66,7 +66,7 @@ namespace Proyecto_camiones.Presentacion
 
             //INSERCION
 
-            //var cuenta = await ccvm.Insertar(5, new DateOnly(2025, 4, 7), 89, 5678, 899);
+            //var cuenta = await ccvm.Insertar(5, 1, new DateOnly(2025, 4, 7), 89, 5678, 899);
             //if (cuenta.IsSuccess)
             //{
             //    Console.WriteLine("Id insertado: " + cuenta.Value);
@@ -122,12 +122,12 @@ namespace Proyecto_camiones.Presentacion
 
             //INSERTAR
 
-            var idViaje = await vfvm.InsertarViajeFlete("Tandil", "Necochea", 40, "trigo", 120, 130, 19000, 12345, "MACHACA", "x", "Chofer del Flete X", 10, new DateOnly(2025, 4, 11));
-            if (idViaje.IsSuccess)
-            {
-                Console.WriteLine("Viaje ingresado con el id: " + idViaje.Value);
-            }
-            Console.WriteLine(idViaje.Error);
+            //var idViaje = await vfvm.InsertarViajeFlete("Tandil", "Necochea", 40, "trigo", 120, 130, 19000, 12345, "MACHACA", "x", "Chofer del Flete X", 10, new DateOnly(2025, 4, 11));
+            //if (idViaje.IsSuccess)
+            //{
+            //    Console.WriteLine("Viaje ingresado con el id: " + idViaje.Value);
+            //}
+            //Console.WriteLine(idViaje.Error);
 
 
         }

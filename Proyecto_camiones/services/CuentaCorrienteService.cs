@@ -61,15 +61,16 @@ namespace Proyecto_camiones.Services
             return Result<List<CuentaCorriente>>.Success(cuentas);
         }
 
-        public async Task<int> Insertar(int idCliente, DateOnly fecha, int nro, float adeuda, float pagado)
+        public async Task<int> Insertar(int idCliente, int idFletero, DateOnly fecha, int nro, float adeuda, float pagado)
         {
             Cliente c = await clienteRepository.ObtenerPorId(idCliente);
             if (c == null)
             {
                 return -1;
             }
+            //REPETIR LA VALIDACION PARA CHEQUEAR QUE EL FLETERO EXISTA EN LA DB
             Console.WriteLine("corroborado que el cliente existe y no se salió");
-            CuentaCorriente result = await ccRepository.InsertarCuentaCorriente(idCliente, fecha, nro, adeuda, pagado);
+            CuentaCorriente result = await ccRepository.InsertarCuentaCorriente(idCliente, idFletero, fecha, nro, adeuda, pagado);
             Console.WriteLine("superado 1");
             if(result != null)
             {
