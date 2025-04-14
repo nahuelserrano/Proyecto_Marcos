@@ -32,7 +32,25 @@ namespace Proyecto_camiones.Presentacion.Utils
         public static string PesoIncorrecto(float peso) =>
             $"El peso colocado: {peso} no es válido en el contexto";
 
-  
+        // Errores operacionales
+        public static string errorOperacion(string operacion, string entidad) =>
+            $"Ocurrió un error al {operacion} el/la {entidad}";
+
+        // Errores de conexión
+        public static string errorConexion() =>
+            "No se pudo establecer la conexión con la base de datos";
+
+        // Errores de validación comunes
+
+        // Errores del CRUD
+        public static string errorActualizacion(string entidad) =>
+            $"No se pudo actualizar el/la {entidad}";
+
+        public static string noExistenRegistros(string entidad, string filtro = null) =>
+            filtro == null
+                ? $"No existen registros de {entidad}"
+                : $"No existen registros de {entidad} con: {filtro}";
+
     }
 
 }

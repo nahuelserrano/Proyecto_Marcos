@@ -16,6 +16,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Cliente> Clientes { get; set; }
     public DbSet<Usuario> Usuarios { get; set; }
     public DbSet<CuentaCorriente> Cuentas { get; set; }
+    public DbSet<ViajeFlete> ViajesFlete { get; set; }
 
     // Constructor para pasar opciones (útil para pruebas o configuración)
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -30,7 +31,7 @@ public class ApplicationDbContext : DbContext
         {
             optionsBuilder.UseMySql(
                 "server=localhost;database=truck_manager_project;user=root;password=",
-                ServerVersion.AutoDetect("server=localhost;database=truck_manager_project;user=root;password="));
+                ServerVersion.AutoDetect("server=localhost;database=truck_manager_project_db;user=root;password="));
         }
     }
 
@@ -57,13 +58,6 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.nombre_chofer).HasColumnName("nombre_chofer");
         });
 
-        modelBuilder.Entity<Empleado>(entity =>
-        {
-            entity.ToTable("empleado");
-            entity.HasKey(e => e.Id);
-            entity.Property(e => e.Id).HasColumnName("idempleado");
-            entity.Property(e => e.nombre).HasColumnName("nombre");
-        });
 
         modelBuilder.Entity<CuentaCorriente>(entity =>
         {
@@ -75,6 +69,7 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.Adeuda).HasColumnName("adeuda");
             entity.Property(e => e.Pagado).HasColumnName("importe_pagado");
             entity.Property(e => e.IdCliente).HasColumnName("idCliente");
+            entity.Property(e => e.IdFletero).HasColumnName("idfletero");
             entity.Property(e => e.Saldo_Total).HasColumnName("saldo");
         });
 
@@ -84,6 +79,26 @@ public class ApplicationDbContext : DbContext
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Id).HasColumnName("idCliente");
             entity.Property(e => e.Nombre).HasColumnName("nombre");
+        });
+
+        modelBuilder.Entity<ViajeFlete>(entity =>
+        {
+            entity.ToTable("viaje_flete");
+            entity.HasKey(e => e.idViajeFlete);
+            entity.Property(e => e.idViajeFlete).HasColumnName("idviaje_flete");
+            entity.Property(e => e.origen).HasColumnName("origen");
+            entity.Property(e => e.destino).HasColumnName("destino");
+            entity.Property(e => e.remito).HasColumnName("remito");
+            entity.Property(e => e.carga).HasColumnName("carga");
+            entity.Property(e => e.km).HasColumnName("km");
+            entity.Property(e => e.kg).HasColumnName("kg");
+            entity.Property(e => e.tarifa).HasColumnName("tarifa");
+            entity.Property(e => e.factura).HasColumnName("factura");
+            entity.Property(e => e.idCliente).HasColumnName("idCliente");
+            entity.Property(e => e.idFlete).HasColumnName("fletero");
+            entity.Property(e => e.nombre_chofer).HasColumnName("nombre_chofer");
+            entity.Property(e => e.comision).HasColumnName("comision");
+            entity.Property(e => e.fecha_salida).HasColumnName("fecha_salida");
         });
 
         base.OnModelCreating(modelBuilder);

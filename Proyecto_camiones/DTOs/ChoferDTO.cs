@@ -9,16 +9,13 @@ namespace Proyecto_camiones.DTOs
     public class ChoferDTO : EmpleadoDTO
     {
         public string Nombre;
-        public string Apellido;
-        public ChoferDTO(string nombre, string apellido)
+        public ChoferDTO(string nombre)
         {
             Nombre = nombre;
-            Apellido = apellido;
         }
         public ChoferDTO()
         {
             Nombre = "default";
-            Apellido = "default";
             // Constructor vacío
         }
     }

@@ -46,7 +46,7 @@ namespace Proyecto_camiones.Repositories
             }
         }
 
-        public async Task<CuentaCorriente> InsertarCuentaCorriente(int idCliente, DateOnly fecha, int nro, float adeuda, float pagado)
+        public async Task<CuentaCorriente> InsertarCuentaCorriente(int idCliente, int idFletero, DateOnly fecha, int nro, float adeuda, float pagado)
         {
             try
             {
@@ -57,7 +57,7 @@ namespace Proyecto_camiones.Repositories
                     return null;
                 }
 
-                var cuenta = new CuentaCorriente(idCliente, fecha, nro, adeuda, pagado);
+                var cuenta = new CuentaCorriente(idCliente, idFletero, fecha, nro, adeuda, pagado);
                 await _context.Cuentas.AddAsync(cuenta);
                 int registrosAfectados = await _context.SaveChangesAsync();
 

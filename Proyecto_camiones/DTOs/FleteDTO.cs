@@ -9,16 +9,13 @@ namespace Proyecto_camiones.DTOs
     class FleteDTO : EmpleadoDTO
     {
         public string Nombre;
-        public string Apellido;
-        public FleteDTO(string nombre, string apellido)
+        public FleteDTO(string nombre)
         {
             Nombre = nombre;
-            Apellido = apellido;
         }
         public FleteDTO()
         {
             Nombre = "default";
-            Apellido = "default";
             // Constructor vacío
         }
 

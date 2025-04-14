@@ -42,10 +42,10 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
         // CREATE - Insertar un nuevo viaje
-        public async Task<Viaje> InsertarViajeAsync(string destino, string lugarPartida,
+        public async Task<Viaje?> InsertarViajeAsync(string destino, string lugarPartida,
                                                    float kg, int remito, float precioPorKilo,
                                                    int empleado, int cliente, int camion,
-                                                   DateTime fechaInicio, DateTime fechaEntrega,
+                                                   DateOnly fechaInicio, DateOnly fechaFacturacion,
                                                    string carga, float km)
         {
             try
@@ -57,7 +57,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 }
 
                 var viaje = new Viaje(destino, lugarPartida, kg, remito, precioPorKilo,
-                                      empleado, cliente, camion, fechaInicio, fechaEntrega,
+                                      empleado, cliente, camion, fechaInicio, fechaFacturacion,
                                       carga, km);
 
                 // Agregar el viaje a la base de datos (esto solo marca el objeto para insertar)
@@ -75,8 +75,15 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.ToString());
+                Console.WriteLine();
                 Console.WriteLine($"Error al insertar viaje: {ex.Message}");
+                Console.WriteLine();
                 Console.WriteLine($"Stack trace: {ex.StackTrace}");
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"Error interno: {ex.InnerException.Message}");
+                }
                 return null;
             }
         }
@@ -119,8 +126,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
         // READ - Obtener viajes con filtros
-        public async Task<List<Viaje>> ObtenerPorFiltroAsync(DateTime? fechaInicio = null,
-                                                            DateTime? fechaFin = null,
+        public async Task<List<Viaje>> ObtenerPorFiltroAsync(DateOnly? fechaInicio = null,
+                                                            DateOnly? fechaFin = null,
                                                             int? empleadoId = null,
                                                             int? camionId = null)
         {
@@ -134,7 +141,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     query = query.Where(v => v.FechaInicio >= fechaInicio.Value);
 
                 if (fechaFin.HasValue)
-                    query = query.Where(v => v.FechaEntrega <= fechaFin.Value);
+                    query = query.Where(v => v.FechaInicio <= fechaFin.Value);
 
                 if (empleadoId.HasValue)
                     query = query.Where(v => v.Empleado == empleadoId.Value);
@@ -162,8 +169,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
                                                     int? empleado = null,
                                                     int? cliente = null,
                                                     int? camion = null,
-                                                    DateTime? fechaInicio = null,
-                                                    DateTime? fechaEntrega = null,
+                                                    DateOnly? fechaInicio = null,
+                                                    DateOnly? fechaFacturacion = null,
                                                     string carga = null,
                                                     float? km = null)
         {
@@ -205,8 +212,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 if (fechaInicio.HasValue)
                     viaje.FechaInicio = fechaInicio.Value;
 
-                if (fechaEntrega.HasValue)
-                    viaje.FechaEntrega = fechaEntrega.Value;
+                if (fechaFacturacion.HasValue)
+                    viaje.FechaFacturacion = fechaFacturacion.Value;
 
                 if (!string.IsNullOrWhiteSpace(carga))
                     viaje.Carga = carga;
@@ -315,34 +322,13 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
         }
 
-        // Obtener viajes por estado
-        public async Task<List<Viaje>> ObtenerPorEstadoAsync(string estado)
-        {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(estado))
-                    return new List<Viaje>();
-
-                var viajes = await _context.Viajes
-                    .Where(v => v.Estado == estado)
-                    .ToListAsync();
-
-                return viajes;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al obtener viajes por estado: {ex.Message}");
-                return new List<Viaje>();
-            }
-        }
-
         // Obtener viajes en un rango de fechas
-        public async Task<List<Viaje>> ObtenerPorRangoFechasAsync(DateTime fechaInicio, DateTime fechaFin)
+        public async Task<List<Viaje>> ObtenerPorRangoFechasAsync(DateOnly fechaInicio, DateOnly fechaFin)
         {
             try
             {
                 var viajes = await _context.Viajes
-                    .Where(v => v.FechaInicio >= fechaInicio && v.FechaEntrega <= fechaFin)
+                    .Where(v => v.FechaInicio >= fechaInicio && v.FechaInicio <= fechaFin)
                     .ToListAsync();
 
                 return viajes;
@@ -351,29 +337,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
             {
                 Console.WriteLine($"Error al obtener viajes por rango de fechas: {ex.Message}");
                 return new List<Viaje>();
-            }
-        }
-
-        // Cambiar estado de un viaje
-        public async Task<bool> CambiarEstadoAsync(int viajeId, string nuevoEstado)
-        {
-            try
-            {
-                if (viajeId <= 0 || string.IsNullOrWhiteSpace(nuevoEstado))
-                    return false;
-
-                var viaje = await _context.Viajes.FindAsync(viajeId);
-                if (viaje == null)
-                    return false;
-
-                viaje.Estado = nuevoEstado;
-                await _context.SaveChangesAsync();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al cambiar estado del viaje: {ex.Message}");
-                return false;
             }
         }
 
