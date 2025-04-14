@@ -4,14 +4,15 @@ using System.Threading.Tasks;
 using Proyecto_camiones.Presentacion.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Proyecto_camiones.Models;
 
 namespace Proyecto_camiones.Presentacion.Repositories
 {
-    public class ChoferRepository
+    public class EmpleadoRepository
     {
         private readonly ApplicationDbContext _context;
 
-        public ChoferRepository(ApplicationDbContext context)
+        public EmpleadoRepository(ApplicationDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
@@ -43,7 +44,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         // CRUD OPERATIONS
 
         // CREATE - Insertar un nuevo chofer
-        public async Task<int> Insertar(string nombre, string apellido)
+        public async Task<int> InsertarEmpleadoAsync(string nombre)
         {
             try
             {
@@ -53,13 +54,13 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     return -1; // Mejor retornar un valor específico de error que null
                 }
 
-                var chofer = new Chofer(nombre, apellido);
+                var empleado = new Empleado(nombre);
 
-                _context.Empleados.Add(chofer);
+                _context.Empleados.Add(empleado);
 
                 await _context.SaveChangesAsync();
 
-                return chofer.Id; 
+                return empleado.Id;
             }
             catch (Exception ex)
             {
@@ -70,28 +71,23 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
         // READ - Obtener todos los choferes
-        public async Task<List<Chofer>> ObtenerChoferes()
+        public async Task<List<Empleado>> ObtenerEmpleadosAsync()
         {
             try
             {
-                var choferes = await _context.Empleados.Where(c=>c.tipo_empleado == "chofer").ToListAsync();
-                List<Chofer> response = new List<Chofer>();
-                foreach(var chofer in choferes)
-                {
-                    response.Add(new Chofer(chofer.nombre, chofer.apellido));
-                }
-                return response;
+                var empleados = await _context.Empleados.ToListAsync();
+                return empleados;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al obtener choferes: {ex.Message}");
+                Console.WriteLine($"Error al obtener empleados: {ex.Message}");
                 Console.WriteLine($"Stack trace: {ex.StackTrace}");
-                return new List<Chofer>(); 
+                return new List<Empleado>();
             }
         }
 
         // READ - Obtener un chofer específico por ID
-        public async Task<Chofer> ObtenerPorId(int id)
+        public async Task<Empleado> ObtenerPorIdAsync(int id)
         {
             try
             {
@@ -101,19 +97,18 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     return null;
                 }
 
-                var chofer = await _context.Empleados.FindAsync(id);
-                Chofer c = new Chofer(chofer.nombre, chofer.apellido);
-                return c;
+                var empleado = await _context.Empleados.FindAsync(id);
+                return empleado;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al obtener chofer: {ex.Message}");
+                Console.WriteLine($"Error al obtener empleado: {ex.Message}");
                 return null;
             }
         }
 
         // UPDATE - Actualizar datos de un chofer existente
-        public async Task<bool> Actualizar(int id, string nombre, string apellido)
+        public async Task<bool> ActualizarEmpleadoAsync(int id, string nombre)
         {
             try
             {
@@ -122,16 +117,15 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     return false;
                 }
 
-                // Verificar si el chofer existe
-                var choferExistente = await _context.Empleados.FindAsync(id);
-                if (choferExistente == null)
+                // Verificar si el empleado existe
+                var empleadoExistente = await _context.Empleados.FindAsync(id);
+                if (empleadoExistente == null)
                 {
                     return false;
                 }
 
                 // Actualizar propiedades
-                choferExistente.nombre = nombre;
-                choferExistente.apellido = apellido;
+                empleadoExistente.nombre = nombre;
 
                 // Guardar cambios
                 await _context.SaveChangesAsync();
@@ -139,13 +133,13 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al actualizar chofer: {ex.Message}");
+                Console.WriteLine($"Error al actualizar empleado: {ex.Message}");
                 return false;
             }
         }
 
         // DELETE - Eliminar un chofer
-        public async Task<bool> Eliminar(int id)
+        public async Task<bool> EliminarEmpleadoAsyn(int id)
         {
             try
             {
@@ -154,21 +148,21 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     return false;
                 }
 
-                // Buscar el chofer
-                var chofer = await _context.Empleados.FindAsync(id);
-                if (chofer == null)
+                // Buscar el empleado
+                var empleado = await _context.Empleados.FindAsync(id);
+                if (empleado == null)
                 {
                     return false;
                 }
 
-                // Eliminar el chofer
-                _context.Empleados.Remove(chofer);
+                // Eliminar el empleado
+                _context.Empleados.Remove(empleado);
                 await _context.SaveChangesAsync();
                 return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al eliminar chofer: {ex.Message}");
+                Console.WriteLine($"Error al eliminar empleado: {ex.Message}");
                 return false;
             }
         }

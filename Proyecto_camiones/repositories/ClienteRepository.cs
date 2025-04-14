@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Proyecto_camiones.DTOs;
+using Microsoft.EntityFrameworkCore;
+using NPOI.POIFS.Properties;
+using Org.BouncyCastle.Bcpg.OpenPgp;
 using Proyecto_camiones.Presentacion.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -43,25 +45,49 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
         }
 
-        //agrego el signo de pregunta luego de Cliente para decir que el result puede ser null
-        public async Task<Cliente?> InsertarClienteAsync(string nombre, string apellido, string dni)
+
+        public async Task<Cliente> ObtenerPorId(int id)
         {
             try
             {
+                var cliente = await _context.Clientes.FindAsync(id);
+                return cliente;
+            }catch(Exception e)
+            {
+                Console.WriteLine($"Stack trace: {e.StackTrace}");
+                return null;
+            }
+        }
+
+        public async Task<List<Cliente>> ObtenerTodos()
+        {
+            try
+            {
+                var clientes = await _context.Clientes.ToListAsync();
+                return clientes;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al insertar camión: {ex.Message}");
+                Console.WriteLine($"Stack trace: {ex.StackTrace}");
+                return null;
+            }
+        }
+
+        public async Task<Cliente> InsertarAsync(string nombre)
+        {
+            try
+            {
+
                 if (!await _context.Database.CanConnectAsync())
                 {
                     Console.WriteLine("No se puede conectar a la base de datos");
                     return null;
                 }
 
-                var cliente = new Cliente(nombre, apellido, dni)
-                {
-                    Nombre = nombre,
-                    Apellido = apellido,
-                    Dni = dni
-                };
+                var cliente = new Cliente(nombre);
 
-                // Agregar el cliente a la base de datos (esto solo marca el objeto para insertar)
+                // Agregar el camión a la base de datos (esto solo marca el objeto para insertar)
                 _context.Clientes.Add(cliente);
 
                 Console.WriteLine($"SQL a ejecutar: {_context.ChangeTracker.DebugView.LongView}");
@@ -78,96 +104,30 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al insertar cliente: {ex.Message}");
+                Console.WriteLine($"Error al insertar camión: {ex.Message}");
                 // Para debuggear, también es útil ver la excepción completa:
                 Console.WriteLine($"Stack trace: {ex.StackTrace}");
                 return null;
             }
         }
 
-        public async Task<List<Cliente>?> ObtenerClientesAsync()
+        public async Task<Cliente> ActualizarAsync(int id, string? nombre)
         {
-            try
+            var cliente = await this._context.Clientes.FindAsync(id);
+            if(cliente != null)
             {
-                var clientes = await _context.Clientes.Select(c => new ClienteDTO
-                {
-                    Id = c.Id,
-                    Nombre = c.Nombre,
-                    Apellido = c.Apellido,
-                    Dni = c.Dni
-                }).ToListAsync();
-
-                return clientes;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al obtener clientes: {ex.Message}");
-                Console.WriteLine($"Stack trace: {ex.StackTrace}");
-                return null;
-            }
-        }
-
-        public async Task<bool> Actualizar(int id, string? nombre=null, string? apellido = null, string? dni = null)   
-        {
-            try
-            {
-                var cliente = await _context.Clientes.FindAsync(id);
-
-                if (cliente == null)
-                    return false;
-
-                if (!string.IsNullOrEmpty(nombre))
+                if (nombre != null)
                 {
                     cliente.Nombre = nombre;
                 }
-
-                if (!string.IsNullOrEmpty(apellido))
-                {
-                    cliente.Apellido = apellido;
-                }
-
-                if (!string.IsNullOrEmpty(dni))
-                {
-                    cliente.Dni = dni;
-                }
-
                 await _context.SaveChangesAsync();
-                return true;
+                return cliente;
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al actualizar cliente: {ex.Message}");
-                return false;
-            }
+            return null;
         }
 
-        internal async Task<ClienteDTO?> ObtenerPorId(int id)
-        {
-            try
-            {
-                Cliente cliente = await _context.Clientes.FindAsync(id);
-                if (cliente != null)
-                {
-                    ClienteDTO nuevo = new ClienteDTO
-                    {
-                        Id = cliente.Id,
-                        Nombre = cliente.Nombre,
-                        Apellido = cliente.Apellido,
-                        Dni = cliente.Dni
-                    };
-                    return nuevo;
-                }
-                return null;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al obtener cliente por ID: {ex.Message}");
-                Console.WriteLine($"Stack trace: {ex.StackTrace}");
-                return null;
-            }
-        }
 
-        public async Task<bool> EliminarClienteAsync(int id)
+        public async Task<bool> Eliminar(int id)
         {
             try
             {
@@ -182,54 +142,17 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error al eliminar cliente: {ex.Message}");
                 return false;
             }
         }
 
-        public async Task<int> ObtenerIdCamion(int clienteId)
-        {
-            try
-            {
-                var cliente = await _context.Clientes
-                    .Include(c => c.Camion)
-                    .FirstOrDefaultAsync(c => c.Id == clienteId);
-
-                return cliente?.Camion?.Id ?? -1;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al obtener ID del camión: {ex.Message}");
-                return -1;
-            }
-        }
-
-        public async Task<List<ViajeDTO>?> ObtenerHistorialViajes(int clienteId)
-        {
-            try
-            {
-                var viajes = await _context.Viajes
-                    .Where(v => v.ClienteId == clienteId)
-                    .Select(v => new ViajeDTO
-                    {
-                        Id = v.Id,
-                        FechaSalida = v.FechaSalida,
-                        FechaLlegada = v.FechaLlegada,
-                        Origen = v.Origen,
-                        Destino = v.Destino,
-                        ClienteId = v.ClienteId
-                    })
-                    .ToListAsync();
-
-                return viajes;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al obtener historial de viajes: {ex.Message}");
-                return null;
-            }
-        }
+        //PARA QUE SE USA? NECESARIO?
+        //public async Task<List<Viaje>> ObtenerHistorialViajes(int clienteId)
+        //{
+        //    // Devolvemos una lista vacía de viajes para simular
+        //    return new List<Viaje>();
+        //}
     }
 }

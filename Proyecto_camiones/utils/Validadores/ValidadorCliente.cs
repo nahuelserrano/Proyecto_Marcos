@@ -11,17 +11,13 @@ namespace Proyecto_camiones.Presentacion.Utils
     {
         private readonly int Id_Cliente;
         private readonly String Nombre;
-        private readonly string Dni;
-        private readonly String Apellido;
         private List<string> _errores;
    
 
-        public ValidadorCliente( String Nombre, String Apellido, string Dni)
+        public ValidadorCliente( string Nombre)
         {
             //this.Id_Cliente = id;
             this.Nombre = Nombre;
-            this.Apellido = Apellido;
-            this.Dni = Dni;
             _errores = new List<string>();
         }
 
@@ -35,11 +31,6 @@ namespace Proyecto_camiones.Presentacion.Utils
             if (string.IsNullOrWhiteSpace(this.Nombre))
                 _errores.Add(MensajeError.ausenciaDeDatos(nameof(this.Nombre)));
 
-            if (string.IsNullOrWhiteSpace(this.Apellido))
-                _errores.Add(MensajeError.ausenciaDeDatos(nameof(this.Apellido)));
-
-            if (string.IsNullOrWhiteSpace(this.Dni))
-                _errores.Add(MensajeError.ausenciaDeDatos(nameof(this.Dni)));
 
 
 

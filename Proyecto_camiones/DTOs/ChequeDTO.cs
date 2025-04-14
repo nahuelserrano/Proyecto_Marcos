@@ -5,14 +5,14 @@ namespace Proyecto_camiones.DTOs
     public class ChequeDTO
     {
         public int Id_cliente;
-        public DateTime FechaIngresoCheque;
+        public DateOnly FechaIngresoCheque;
         public string NumeroCheque;
         public float Monto;
         public string Banco;
-        public DateTime FechaCobro;
+        public DateOnly FechaCobro;
 
 
-        public ChequeDTO(int id_Cliente, DateTime FechaIngresoCheque, string NumeroCheque, float Monto, String Banco, DateTime FechaCobro) {
+        public ChequeDTO(int id_Cliente, DateOnly FechaIngresoCheque, string NumeroCheque, float Monto, String Banco, DateOnly FechaCobro) {
             Id_cliente = id_Cliente;
             this.FechaIngresoCheque = FechaIngresoCheque;
             this.NumeroCheque = NumeroCheque;

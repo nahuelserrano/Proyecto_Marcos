@@ -72,52 +72,52 @@ namespace Proyecto_camiones.Presentacion.Services
                 return Result<int>.Failure("Hubo un error al crear el cheque");
             }
         }
-        
-
-        //public async Task<Result<ChequeDTO>> Actualizar(int id, int? id_cliente = null, DateTime? FechaIngresoCheque = null, string? NumeroCheque = null, float? Monto = null, string? Banco = null, DateTime? FechaCobro = null)
-        //{
-        //    if (id <= 0)
-        //        return Result<ChequeDTO>.Failure(MensajeError.idInvalido(id));
-
-        //    var chequeExistente = await _chequeRepository.ObtenerPorId(id);
-
-        //    if (chequeExistente == null)
-        //        return Result<ChequeDTO>.Failure(MensajeError.objetoNulo(nameof(chequeExistente)));
 
 
-        //    if (id_cliente.HasValue)
-        //        chequeExistente.Id_cliente = id_cliente.Value;
+        public async Task<Result<ChequeDTO>> Actualizar(int id, int? id_cliente = null, DateOnly? FechaIngresoCheque = null, string? NumeroCheque = null, float? Monto = null, string? Banco = null, DateOnly? FechaCobro = null)
+        {
+            if (id <= 0)
+                return Result<ChequeDTO>.Failure(MensajeError.idInvalido(id));
 
-        //    if (FechaIngresoCheque.HasValue)
-        //        chequeExistente.FechaIngresoCheque = FechaIngresoCheque.Value;
+            var chequeExistente = await _chequeRepository.ObtenerPorId(id);
 
-        //    if (NumeroCheque!=null)
-        //        chequeExistente.NumeroCheque = NumeroCheque;
+            if (chequeExistente == null)
+                return Result<ChequeDTO>.Failure(MensajeError.objetoNulo(nameof(chequeExistente)));
 
-        //    if (Monto.HasValue)
-        //        chequeExistente.Monto = Monto.Value;
 
-        //    if (!string.IsNullOrWhiteSpace(Banco))
-        //        chequeExistente.Banco = Banco;
+            if (id_cliente.HasValue)
+                chequeExistente.Id_cliente = id_cliente.Value;
 
-        //    if (FechaCobro.HasValue)
-        //        chequeExistente.FechaCobro = FechaCobro.Value;
+            if (FechaIngresoCheque.HasValue)
+                chequeExistente.FechaIngresoCheque = FechaIngresoCheque.Value;
 
-        //    if (chequeExistente.FechaIngresoCheque > chequeExistente.FechaCobro)
-        //        return Result<ChequeDTO>.Failure(MensajeError.fechaInvalida(nameof(Cliente)));
-           
-            
-            
-        //    bool success = await _chequeRepository.Actualizar(chequeExistente);
-        //        if (success)
-        //        {
-        //            ChequeDTO result = await _chequeRepository.ObtenerPorId(id);
-        //            return Result<ChequeDTO>.Success(result);
-        //        }
-        //        return Result<ChequeDTO>.Failure("No se pudo realizar la actualización");
-        //    }
+            if (NumeroCheque != null)
+                chequeExistente.NumeroCheque = NumeroCheque;
 
-            public async Task<List<ChequeDTO>?> ObtenerTodos()
+            if (Monto.HasValue)
+                chequeExistente.Monto = Monto.Value;
+
+            if (!string.IsNullOrWhiteSpace(Banco))
+                chequeExistente.Banco = Banco;
+
+            if (FechaCobro.HasValue)
+                chequeExistente.FechaCobro = FechaCobro.Value;
+
+            if (chequeExistente.FechaIngresoCheque > chequeExistente.FechaCobro)
+                return Result<ChequeDTO>.Failure(MensajeError.fechaInvalida(nameof(Cliente)));
+
+
+
+            bool success = await _chequeRepository.Actualizar(id,chequeExistente.Id_cliente,chequeExistente.FechaIngresoCheque,chequeExistente.NumeroCheque,chequeExistente.Banco,chequeExistente.Monto,chequeExistente.FechaCobro);
+            if (success)
+            {
+                ChequeDTO result = await _chequeRepository.ObtenerPorId(id);
+                return Result<ChequeDTO>.Success(result);
+            }
+            return Result<ChequeDTO>.Failure("No se pudo realizar la actualización");
+        }
+
+        public async Task<List<ChequeDTO>?> ObtenerTodos()
             {
             List<ChequeDTO> cheque = await _chequeRepository.ObtenerTodos();
             if (cheque != null)

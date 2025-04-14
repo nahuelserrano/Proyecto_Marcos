@@ -84,7 +84,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al insertar camión: {ex.Message}");
+                Console.WriteLine($"Error al insertar cheque: {ex.Message}");
    
                 Console.WriteLine($"Stack trace: {ex.StackTrace}");
                 return -1;
@@ -92,12 +92,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
         public async Task<List<ChequeDTO>?> ObtenerTodos()
-        {
-            try
-            {
-
-
-
+        { 
                 var cheques = await _context.Cheques.Select(c => new ChequeDTO
                 {
                     Id_cliente = c.id_Cliente,
@@ -110,20 +105,24 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
                 return cheques;
 
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al insertar camión: {ex.Message}");
-                Console.WriteLine($"Stack trace: {ex.StackTrace}");
-                return null;
-            }
+           
 
         }
 
-        public async Task<bool> Actualizar(int id,int? id_Cliente = null,DateTime? FechaIngresoCheque = null,string? 
-                                           NumeroCheque = null,decimal? Monto = null,string? Banco = null,DateTime? FechaCobro = null)
+        public async Task<bool> Actualizar(
+                                            int id,
+                                            int? id_Cliente = null,
+                                            DateOnly? FechaIngresoCheque = null,
+                                            string? NumeroCheque = null,
+                                            string? Banco = null,
+                                            float? Monto = null,
+                                            DateOnly? FechaCobro = null
+                                        )
+
         {
-            try {
+
+            try
+            {
                 var cheque = await _context.Cheques.FindAsync(id);
 
                 // Actualizar solo los campos proporcionados
@@ -137,7 +136,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     cheque.NumeroCheque = NumeroCheque;
 
                 if (Monto.HasValue)
-                    cheque.Monto = (float)Monto.Value;
+                    cheque.Monto = Monto.Value;
 
                 if (!string.IsNullOrEmpty(Banco))
                     cheque.Banco = Banco;
@@ -145,13 +144,13 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 if (FechaCobro.HasValue)
                     cheque.FechaCobro = FechaCobro.Value;
 
-     
+
                 await _context.SaveChangesAsync();
                 return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al actualizar camión: {ex.Message}");
+                Console.WriteLine($"Error al actualizar cheque: {ex.Message}");
                 return false;
             }
         }
