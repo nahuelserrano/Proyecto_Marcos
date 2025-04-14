@@ -28,11 +28,11 @@ namespace Proyecto_camiones.ViewModels
             return await this.cs.ProbarConexionAsync();
         }
 
-        public async Task<Result<int>> Insertar(int idCliente, DateOnly fecha, int nro, float adeuda, float pagado)
+        public async Task<Result<int>> Insertar(int idCliente, int idFletero, DateOnly fecha, int nro, float adeuda, float pagado)
         {
             if (this.testearConexion().Result)
             {
-                int id = await cs.Insertar(idCliente, fecha, nro, adeuda, pagado);
+                int id = await cs.Insertar(idCliente, idFletero, fecha, nro, adeuda, pagado);
                 if (id > -1) return Result<int>.Success(id);
                 return Result<int>.Failure("No se pudo crear el nuevo registro");
             }
