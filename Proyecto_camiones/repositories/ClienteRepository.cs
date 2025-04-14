@@ -147,6 +147,20 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
         }
 
+        public async Task<Cliente> ObtenerPorNombre(string nombre_cliente)
+        {
+            try
+            {
+                  return _context.Clientes.FirstOrDefault(c => c.Nombre == nombre_cliente);
+
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+            }
+        }
+
         //PARA QUE SE USA? NECESARIO?
         //public async Task<List<Viaje>> ObtenerHistorialViajes(int clienteId)
         //{

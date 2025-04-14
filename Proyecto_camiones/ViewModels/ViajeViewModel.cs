@@ -11,7 +11,7 @@ namespace Proyecto_camiones.ViewModels
 {
     public class ViajeViewModel
     {
-        private readonly ViajeService _viajeService;
+        private readonly ViajeFleteService _viajeService;
 
         public ViajeViewModel()
         {
@@ -28,7 +28,7 @@ namespace Proyecto_camiones.ViewModels
             var empleadoService = new EmpleadoService(empleadoRepository);
 
             // Finalmente creamos el servicio de viajes con todas sus dependencias
-            this._viajeService = new ViajeService(viajeRepository, camionService, empleadoService);
+            this._viajeService = new ViajeFleteService(viajeRepository, camionService, empleadoService);
         }
 
         // Método para probar la conexión

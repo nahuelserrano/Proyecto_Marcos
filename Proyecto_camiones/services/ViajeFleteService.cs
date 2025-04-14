@@ -9,13 +9,13 @@ using Proyecto_camiones.Presentacion.Utils;
 
 namespace Proyecto_camiones.Presentacion.Services
 {
-    public class ViajeService
+    public class ViajeFleteService
     {
         private readonly ViajeRepository _viajeRepository;
         private readonly CamionService _camionService;
         private readonly EmpleadoService _empleadoService;
 
-        public ViajeService(
+        public ViajeFleteService(
             ViajeRepository viajeRepository,
             CamionService camionService,
             EmpleadoService empleadoService)
