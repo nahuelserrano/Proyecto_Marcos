@@ -8,19 +8,22 @@ namespace Proyecto_camiones.Models
 {
     public class ViajeFlete
     {
-        private int idViajeFlete { get; set; }
-        private string origen { get; set; }
-        private string destino { get; set; }
-        private float remito { get; set; }
-        private string carga { get; set; }
-        private float km { get; set; }
-        private float kg { get; set; }
-        private float tarifa { get; set; }
-        private int factura { get; set; }
-        private int idCliente { get; set; }
-        private int idFlete { get; set; }
+        public int idViajeFlete { get; set; }
+        public string origen { get; set; }
+        public string destino { get; set; }
+        public float remito { get; set; }
+        public string carga { get; set; }
+        public float km { get; set; }
+        public float kg { get; set; }
+        public float tarifa { get; set; }
+        public int factura { get; set; }
+        public int idCliente { get; set; }
+        public int idFlete { get; set; }
+        public string nombre_chofer { get; set; }
+        public float comision { get; set; }
+        public DateOnly fecha_salida { get; set; }
 
-        public ViajeFlete(int idViajeFlete, string origen, string destino, float remito, string carga, float km, float kg, float tarifa, int factura, int idCliente, int idFlete)
+        public ViajeFlete(int idViajeFlete, string origen, string destino, float remito, string carga, float km, float kg, float tarifa, int factura, int idCliente, int idFlete, string nombre_chofer, float comision, DateOnly fecha)
         {
             this.idViajeFlete = idViajeFlete;
             this.origen = origen;
@@ -33,6 +36,9 @@ namespace Proyecto_camiones.Models
             this.factura = factura;
             this.idCliente = idCliente;
             this.idFlete = idFlete;
+            this.nombre_chofer = nombre_chofer;
+            this.comision = comision;
+            this.fecha_salida = fecha;
         }
 
         

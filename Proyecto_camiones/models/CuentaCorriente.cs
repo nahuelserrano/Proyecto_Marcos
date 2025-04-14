@@ -10,6 +10,7 @@ namespace Proyecto_camiones.Models
     {
         public int Id { get; set;}
         public int IdCliente { get; set; }
+        public int IdFletero { get; set; }
         public DateOnly Fecha_factura { get; set; }
         public int Nro_factura { get; set; }
         public float Adeuda { get; set; }
