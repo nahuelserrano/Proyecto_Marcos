@@ -50,7 +50,7 @@
     <Compile Include="Repositories\EmpleadoRepository.cs" />
     <Compile Include="Repositories\ClienteRepository.cs" />
     <Compile Include="Repositories\CuentaCorrienteRepository.cs" />
-    <Compile Include="Repositories\FleteRepository.cs" />
+    <Compile Include="Repositories\ViajeFleteRepository.cs" />
     <Compile Include="Repositories\PagoRepository.cs" />
     <Compile Include="Repositories\ViajeRepository.cs" />
     <Compile Include="Services\CamionService.cs" />
@@ -60,7 +60,7 @@
     <Compile Include="Services\CuentaCorrienteService.cs" />
     <Compile Include="Services\FleteService.cs" />
     <Compile Include="Services\PagoService.cs" />
-    <Compile Include="Services\ViajeService.cs" />
+    <Compile Include="Services\ViajeFleteService.cs" />
     <Compile Include="Utils\MensajesError\MensajeError.cs" />
     <Compile Include="Utils\Validadores\ValidadorCheque.cs" />
     <Compile Include="Utils\Result.cs" />
@@ -73,7 +73,7 @@
     <Compile Include="ViewModels\EmpleadoViewModel.cs" />
     <Compile Include="ViewModels\ClienteViewModel.cs" />
     <Compile Include="ViewModels\CuentaCorrienteViewModel.cs" />
-    <Compile Include="ViewModels\FleteViewModel.cs" />
+    <Compile Include="ViewModels\ViajeFleteViewModel.cs" />
     <Compile Include="ViewModels\General.cs" />
     <Compile Include="ViewModels\ViajeViewModel.cs" />
   </ItemGroup>

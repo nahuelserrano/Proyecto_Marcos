@@ -13,7 +13,7 @@ namespace Proyecto_camiones.ViewModels
 
         public static ApplicationDbContext obtenerInstancia()
         {
-            var connectionString = "server=localhost;user=root;password=;database=truck_manager_project;";
+            var connectionString = "server=localhost;user=root;password=;database=truck_manager_project_db;";
 
             // Crear la configuración del DbContext
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();

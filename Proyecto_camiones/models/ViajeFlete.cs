@@ -40,6 +40,13 @@ namespace Proyecto_camiones.Models
             this.fecha_salida = fecha;
         }
 
-        
+        public ViajeFlete()
+        {
+            this.origen = "default";
+            this.carga = "default";
+            this.nombre_chofer = "default";
+        }
+
+
     }
 }

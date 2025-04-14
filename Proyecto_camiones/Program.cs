@@ -10,6 +10,7 @@ using Proyecto_camiones.ViewModels;
 using Proyecto_camiones.Presentacion.Utils;
 using Proyecto_camiones.Models;
 using MathNet.Numerics.LinearAlgebra.Factorization;
+using System.Runtime.CompilerServices;
 
 
 namespace Proyecto_camiones.Presentacion
@@ -116,6 +117,19 @@ namespace Proyecto_camiones.Presentacion
             //ELIMINAR 
             //var result = await clvm.Eliminar(1);
             //Console.WriteLine(result.Value);
+
+            ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
+
+            //INSERTAR
+
+            var idViaje = await vfvm.InsertarViajeFlete("Tandil", "Necochea", 40, "trigo", 120, 130, 19000, 12345, "MACHACA", "x", "Chofer del Flete X", 10, new DateOnly(2025, 4, 11));
+            if (idViaje.IsSuccess)
+            {
+                Console.WriteLine("Viaje ingresado con el id: " + idViaje.Value);
+            }
+            Console.WriteLine(idViaje.Error);
+
+
         }
 
         public static async void ProbarObtenerIdEmpleado(int id)

@@ -151,7 +151,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                  return _context.Clientes.FirstOrDefault(c => c.Nombre == nombre_cliente);
+                  var cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Nombre == nombre_cliente);
+                return cliente;
 
             }
             catch(Exception e)

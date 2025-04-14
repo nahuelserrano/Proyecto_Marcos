@@ -39,6 +39,7 @@ namespace Proyecto_camiones.Repositories
             {
                 // Si ocurre un error (por ejemplo, si la base de datos no está disponible)
                 Console.WriteLine($"Error al intentar conectar: {ex.Message}");
+                Console.WriteLine(ex.InnerException);
                 return false;
             }
         }
@@ -59,6 +60,7 @@ namespace Proyecto_camiones.Repositories
             {
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e.InnerException);
+                return -1;
             }
         }
     }

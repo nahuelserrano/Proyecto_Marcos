@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 12-04-2025 a las 23:19:00
+-- Tiempo de generación: 14-04-2025 a las 03:29:35
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -208,9 +208,16 @@ CREATE TABLE `viaje_flete` (
   `idCliente` int(11) DEFAULT NULL,
   `fletero` varchar(45) DEFAULT NULL,
   `nombre_chofer` varchar(45) NOT NULL,
-  `comisión` float DEFAULT NULL,
+  `comision` float DEFAULT NULL,
   `fecha_salida` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `viaje_flete`
+--
+
+INSERT INTO `viaje_flete` (`idviaje_flete`, `origen`, `destino`, `remito`, `carga`, `km`, `kg`, `tarifa`, `factura`, `idCliente`, `fletero`, `nombre_chofer`, `comision`, `fecha_salida`) VALUES
+(1, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, '1', 'Chofer del Flete X', 10, '2025-04-11');
 
 --
 -- Índices para tablas volcadas
@@ -345,7 +352,7 @@ ALTER TABLE `viaje`
 -- AUTO_INCREMENT de la tabla `viaje_flete`
 --
 ALTER TABLE `viaje_flete`
-  MODIFY `idviaje_flete` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idviaje_flete` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Restricciones para tablas volcadas
