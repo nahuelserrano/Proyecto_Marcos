@@ -42,51 +42,51 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
         // CREATE - Insertar un nuevo viaje
-        public async Task<Viaje?> InsertarViajeAsync(string destino, string lugarPartida,
-                                                   float kg, int remito, float precioPorKilo,
-                                                   int empleado, int cliente, int camion,
-                                                   DateOnly fechaInicio, DateOnly fechaFacturacion,
-                                                   string carga, float km)
-        {
-            try
-            {
-                if (!await _context.Database.CanConnectAsync())
-                {
-                    Console.WriteLine("No se puede conectar a la base de datos");
-                    return null;
-                }
+        //public async Task<Viaje?> InsertarViajeAsync(string destino, string lugarPartida,
+        //                                           float kg, int remito, float precioPorKilo,
+        //                                           int empleado, int cliente, int camion,
+        //                                           DateOnly fechaInicio, DateOnly fechaFacturacion,
+        //                                           string carga, float km)
+        //{
+        //    try
+        //    {
+        //        if (!await _context.Database.CanConnectAsync())
+        //        {
+        //            Console.WriteLine("No se puede conectar a la base de datos");
+        //            return null;
+        //        }
 
-                var viaje = new Viaje(destino, lugarPartida, kg, remito, precioPorKilo,
-                                      empleado, cliente, camion, fechaInicio, fechaFacturacion,
-                                      carga, km);
+        //        var viaje = new Viaje(destino, lugarPartida, kg, remito, precioPorKilo,
+        //                              empleado, cliente, camion, fechaInicio, fechaFacturacion,
+        //                              carga, km);
 
-                // Agregar el viaje a la base de datos (esto solo marca el objeto para insertar)
-                _context.Viajes.Add(viaje);
+        //        // Agregar el viaje a la base de datos (esto solo marca el objeto para insertar)
+        //        _context.Viajes.Add(viaje);
 
-                // Guardar los cambios en la base de datos
-                int registrosAfectados = await _context.SaveChangesAsync();
+        //        // Guardar los cambios en la base de datos
+        //        int registrosAfectados = await _context.SaveChangesAsync();
 
-                if (registrosAfectados > 0)
-                {
-                    return viaje;
-                }
-                Console.WriteLine("No se insertó ningún registro");
-                return null;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                Console.WriteLine();
-                Console.WriteLine($"Error al insertar viaje: {ex.Message}");
-                Console.WriteLine();
-                Console.WriteLine($"Stack trace: {ex.StackTrace}");
-                if (ex.InnerException != null)
-                {
-                    Console.WriteLine($"Error interno: {ex.InnerException.Message}");
-                }
-                return null;
-            }
-        }
+        //        if (registrosAfectados > 0)
+        //        {
+        //            return viaje;
+        //        }
+        //        Console.WriteLine("No se insertó ningún registro");
+        //        return null;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex.ToString());
+        //        Console.WriteLine();
+        //        Console.WriteLine($"Error al insertar viaje: {ex.Message}");
+        //        Console.WriteLine();
+        //        Console.WriteLine($"Stack trace: {ex.StackTrace}");
+        //        if (ex.InnerException != null)
+        //        {
+        //            Console.WriteLine($"Error interno: {ex.InnerException.Message}");
+        //        }
+        //        return null;
+        //    }
+        //}
 
         // READ - Obtener todos los viajes
         public async Task<List<Viaje>> ObtenerTodosAsync()
@@ -143,8 +143,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 if (fechaFin.HasValue)
                     query = query.Where(v => v.FechaInicio <= fechaFin.Value);
 
-                if (empleadoId.HasValue)
-                    query = query.Where(v => v.Empleado == empleadoId.Value);
+                //if (empleadoId.HasValue)
+                //    query = query.Where(v => v.Empleado == empleadoId.Value);
 
                 if (camionId.HasValue)
                     query = query.Where(v => v.Camion == camionId.Value);
@@ -200,8 +200,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 if (precioPorKilo.HasValue)
                     viaje.PrecioPorKilo = precioPorKilo.Value;
 
-                if (empleado.HasValue)
-                    viaje.Empleado = empleado.Value;  // Cambiado de Chofer a Empleado
+                //if (empleado.HasValue)
+                //    viaje.Empleado = empleado.Value;  // Cambiado de Chofer a Empleado
 
                 if (cliente.HasValue)
                     viaje.Cliente = cliente.Value;
@@ -260,25 +260,25 @@ namespace Proyecto_camiones.Presentacion.Repositories
         // MÉTODOS ESPECÍFICOS
 
         // Obtener viajes por empleado
-        public async Task<List<Viaje>> ObtenerPorEmpleadoAsync(int empleadoId)
-        {
-            try
-            {
-                if (empleadoId <= 0)
-                    return new List<Viaje>();
+        //public async Task<List<Viaje>> ObtenerPorEmpleadoAsync(int empleadoId)
+        //{
+        //    try
+        //    {
+        //        if (empleadoId <= 0)
+        //            return new List<Viaje>();
 
-                var viajes = await _context.Viajes
-                    .Where(v => v.Empleado == empleadoId)
-                    .ToListAsync();
+        //        var viajes = await _context.Viajes
+        //            .Where(v => v.Empleado == empleadoId)
+        //            .ToListAsync();
 
-                return viajes;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al obtener viajes por empleado: {ex.Message}");
-                return new List<Viaje>();
-            }
-        }
+        //        return viajes;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine($"Error al obtener viajes por empleado: {ex.Message}");
+        //        return new List<Viaje>();
+        //    }
+        //}
 
         // Obtener viajes por camión
         public async Task<List<Viaje>> ObtenerPorCamionAsync(int camionId)

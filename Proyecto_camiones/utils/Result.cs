@@ -27,9 +27,9 @@ namespace Proyecto_camiones.Presentacion.Utils
             throw new NotImplementedException();
         }
 
-        public static implicit operator int(Result<int>? v)
-        {
-            throw new NotImplementedException();
-        }
+        //public static implicit operator int(Result<int>? v)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

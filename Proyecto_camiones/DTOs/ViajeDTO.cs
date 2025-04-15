@@ -29,26 +29,26 @@ namespace Proyecto_camiones.DTOs
                         string remito, string nombreEmpleado, string nombreCliente)
         {
             Id = id;
-            FechaInicio = fechaInicio;
-            FechaFacturacion = fechaFacturacion;
+            //FechaInicio = fechaInicio;
+            //FechaFacturacion = fechaFacturacion;
             LugarPartida = lugarPartida;
             Destino = destino;
-            Carga = carga;
-            Kg = kg;
+            //Carga = carga;
+            //Kg = kg;
             Km = km;
             PrecioPorKilo = precioPorKilo;
             this.Remito = remito;
             this.nombreEmpleado = nombreEmpleado;
             this.nombreCliente = nombreCliente;
-            this.Tarifa = tarifa;
+            //this.Tarifa = tarifa;
             this.toneladas = toneladas;
         }
 
         public ViajeDTO()
         {
             Id = 0;
-            FechaInicio = DateTime.Now;
-            FechaEntrega = DateTime.Now;
+            //FechaInicio = DateTime.Now;
+            //FechaEntrega = DateTime.Now;
             LugarPartida = "default";
             Destino = "default";
             Carga = "default";

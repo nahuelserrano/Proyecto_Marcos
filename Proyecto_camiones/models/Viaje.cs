@@ -35,22 +35,22 @@ namespace Proyecto_camiones.Presentacion.Models
             LugarPartida = lugarPartida;
             Kg = kg;
             Remito = remito;
-            Tarifa = tarifa;
+            //Tarifa = tarifa;
             Cliente = cliente;
             Camion = camion;
-            FechaInicio = fechaInicio;
-            FechaFacturacion = fechaFacturacion;
+            //FechaInicio = fechaInicio;
+            //FechaFacturacion = fechaFacturacion;
             Carga = carga;
             PrecioPorKilo = precioPorKilo;
             Km = km;
 
         }
 
-        public ViajeDTO toDTO()
-        {
-            return new ViajeDTO(Id, FechaInicio, FechaFacturacion, LugarPartida,
-                                Destino, Carga, Kg, (int)Km, PrecioPorKilo,
-                                Remito.ToString(), "default", "default");
-        }
+        //public ViajeDTO toDTO()
+        //{
+        //    //return new ViajeDTO(Id, FechaInicio, FechaFacturacion, LugarPartida,
+        //    //                    Destino, Carga, Kg, (int)Km, PrecioPorKilo,
+        //    //                    Remito.ToString(), "default", "default");
+        //}
     }
 }

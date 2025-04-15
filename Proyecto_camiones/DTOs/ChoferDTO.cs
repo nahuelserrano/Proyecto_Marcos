@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Proyecto_camiones.DTOs
 {
-    public class ChoferDTO : EmpleadoDTO
+    public class ChoferDTO
     {
         public string Nombre;
         public ChoferDTO(string nombre)

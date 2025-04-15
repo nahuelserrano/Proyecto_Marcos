@@ -1,4 +1,5 @@
-﻿using Proyecto_camiones.Presentacion.Models;
+﻿using Proyecto_camiones.DTOs;
+using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Utils;
 using Proyecto_camiones.Repositories;
@@ -41,6 +42,11 @@ namespace Proyecto_camiones.Services
                 return Result<int>.Failure("No se pudo insertar el viaje");
             }
             return Result<int>.Failure("No se puede insertar el viaje, el cliente o el fletero con ese nombre no existe");
+        }
+
+        internal async Task<Result<List<ViajeFleteDTO>>> ObtenerViajesDeUnFletero(string fletero)
+        {
+            throw new NotImplementedException();
         }
     }
 }
