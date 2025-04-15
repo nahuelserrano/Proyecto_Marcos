@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using NPOI.POIFS.Properties;
 using Org.BouncyCastle.Bcpg.OpenPgp;
 using Proyecto_camiones.Presentacion.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace Proyecto_camiones.Presentacion.Repositories
 {

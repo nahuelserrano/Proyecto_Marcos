@@ -27,6 +27,12 @@ namespace Proyecto_camiones.Presentacion
 
         {
 
+            //PRUEBA PAGOS
+            //PagoRepository pr = new PagoRepository(General.obtenerInstancia());
+            //PagosService pagosService = new PagosService(pr);
+
+            //pagosService.Crear(1, DateOnly.MinValue, DateOnly.MaxValue, DateOnly.MaxValue);
+
             //CamionViewModel cvm = new CamionViewModel();
             ////PRUEBA INSERCION
             //Result<int> id = cvm.InsertarCamion(120, 40, "MLA126", "Pepito").Result;
@@ -38,20 +44,15 @@ namespace Proyecto_camiones.Presentacion
             //{
             //    Console.WriteLine(id.Error);
 
-
-            PagoRepository pr = new PagoRepository(General.obtenerInstancia());
-            PagosService pagosService = new PagosService(pr);
-
-            //pagosService.Crear(1, DateOnly.MinValue, DateOnly.MaxValue, DateOnly.MaxValue);
-        //PRUEBA SELECT ALL
-        //var camiones = await cvm.ObtenerTodos();
-        //if (camiones.IsSuccess)
-        //{
-        //    foreach (var camion in camiones.Value)
-        //    {
-        //        Console.WriteLine(camion.ToString());
-        //    }
-        //}
+            //PRUEBA SELECT ALL
+            //var camiones = await cvm.ObtenerTodos();
+            //if (camiones.IsSuccess)
+            //{
+            //    foreach (var camion in camiones.Value)
+            //    {
+            //        Console.WriteLine(camion.ToString());
+            //    }
+            //}
 
             //PRUEBA UPDATE CAMION
             //var camionUpdated = await cvm.Actualizar(2, 100, null, "HIJ429", "JUAN");
@@ -65,18 +66,6 @@ namespace Proyecto_camiones.Presentacion
             //var response = await cvm.Eliminar(8);
             //Console.WriteLine(response.Value);
 
-            EmpleadoViewModel evm = new EmpleadoViewModel();
-            //PRUEBA INSERCION
-            //Result<int> idempleado = evm.InsertarEmpleado("Juan").Result;
-            //if (id.IsSuccess)
-            //{
-            //    Console.WriteLine("se pudo agregar con el id: " + idempleado.Value);
-            //}
-            //else
-            //{
-            //    Console.WriteLine(id.Error);
-            //}
-            //PRUEBA SELECT ALL
 
             CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
 
@@ -134,7 +123,7 @@ namespace Proyecto_camiones.Presentacion
             //var result = await clvm.Eliminar(1);
             //Console.WriteLine(result.Value);
 
-            ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
+            //ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
 
             //INSERTAR
 
@@ -149,36 +138,6 @@ namespace Proyecto_camiones.Presentacion
 
         }
 
-        public static async void ProbarObtenerIdEmpleado(int id)
-        {
-            EmpleadoViewModel evm = new EmpleadoViewModel();
-
-            Result<EmpleadoDTO> result = await evm.ObtenerPorId(3);
-            if (result.IsSuccess)
-            {
-                Console.WriteLine(result.Value.Nombre);
-            }
-            else
-            {
-                Console.WriteLine(result.Error);
-            }
-        }
-
-        public static async void ProbarInsertarEmpleado(string nombre)
-        {
-            EmpleadoViewModel evm = new EmpleadoViewModel();
-
-            Result<int> idEmpleado = evm.InsertarEmpleado(nombre).Result;
-
-            if (idEmpleado.IsSuccess)
-            {
-                Console.WriteLine("se pudo agregar con el id: " + idEmpleado.Value);
-            }
-            else
-            {
-                Console.WriteLine(idEmpleado.Error);
-            }
-        }
 
         public static async void ProbarInsertarViaje(string origen, string destino)
         {

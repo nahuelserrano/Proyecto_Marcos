@@ -6,21 +6,16 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Models;
-using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 
 
 namespace Proyecto_camiones.Presentacion.Repositories
 {
-    public class PagoRepository
+    public class PagoRepository(ApplicationDbContext context)
     {
-        private List<Pago> _pagos;
+        private List<Pago>? _pagos;
         private int _siguienteId;
-        private readonly ApplicationDbContext _context;
-        public PagoRepository(ApplicationDbContext context)
-        {
-            this._context = context;
-        }
+        private readonly ApplicationDbContext _context = context;
 
         public async Task<bool> ProbarConexionAsync()
         {

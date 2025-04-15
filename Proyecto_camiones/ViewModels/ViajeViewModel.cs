@@ -21,14 +21,14 @@ namespace Proyecto_camiones.ViewModels
             // Creamos las dependencias necesarias
             var viajeRepository = new ViajeRepository(dbContext);
             var camionRepository = new CamionRepository(dbContext);
-            var empleadoRepository = new EmpleadoRepository(dbContext);
+            //var empleadoRepository = new EmpleadoRepository(dbContext);
 
             // Creamos los servicios que ViajeService necesita
             var camionService = new CamionService(camionRepository);
-            var empleadoService = new EmpleadoService(empleadoRepository);
+            //var empleadoService = new EmpleadoService(empleadoRepository);
 
             // Finalmente creamos el servicio de viajes con todas sus dependencias
-            this._viajeService = new ViajeService(viajeRepository, camionService, empleadoService);
+            //this._viajeService = new ViajeService(viajeRepository, camionService, empleadoService);
         }
 
         // Método para probar la conexión
@@ -59,16 +59,16 @@ namespace Proyecto_camiones.ViewModels
                     kg, carga, cliente, camion, km, tarifa
                     );
 
-                if (resultado.IsSuccess)
-                {
-                    Console.WriteLine($"Viaje creado con ID: {resultado.Value}");
-                    return resultado;
-                }
-                else
-                {
-                    Console.WriteLine($"Error al crear el viaje: {resultado.Error}");
-                    return Result<ViajeDTO>.Failure(resultado.Error);
-                }
+                //if (resultado.IsSuccess)
+                //{
+                //    Console.WriteLine($"Viaje creado con ID: {resultado.Value}");
+                //    return resultado;
+                //}
+                //else
+                //{
+                //    Console.WriteLine($"Error al crear el viaje: {resultado.Error}");
+                //    return Result<ViajeDTO>.Failure(resultado.Error);
+                //}
             }
             return Result<ViajeDTO>.Failure("La conexión no pudo establecerse");
         }

@@ -8,11 +8,10 @@ namespace Proyecto_camiones.DTOs
 {
     public class ViajeDTO
     {
-        public int Id { get; set; }
         public DateOnly FechaInicio { get; set; }
         public string LugarPartida { get; set; }
         public string Destino { get; set; }
-        public string Remito { get; set; }
+        public int Remito { get; set; }
         public float Kg { get; set; }
         public string Carga { get; set; }
         public string nombreCliente { get; set; }
@@ -23,11 +22,10 @@ namespace Proyecto_camiones.DTOs
         public float toneladas { get; set; }
         public float PrecioViaje { get { return (Tarifa * toneladas) * 1000; } }
 
-        public ViajeDTO(int id, DateOnly fechaInicio, string lugarPartida,
-                        string destino, string remito, float kg, string carga, string nombreCliente, 
+        public ViajeDTO(DateOnly fechaInicio, string lugarPartida,
+                        string destino, int remito, float kg, string carga, string nombreCliente, 
                         string nombreEmpleado, float km, float tarifa)
         {
-            this.Id = id;
             this.FechaInicio = fechaInicio;
             this.LugarPartida = lugarPartida;
             this.Destino = destino;
@@ -37,17 +35,16 @@ namespace Proyecto_camiones.DTOs
             this.Remito = remito;
             this.nombreEmpleado = nombreEmpleado;
             this.nombreCliente = nombreCliente;
-            this.Tarifa = tarifa;
+            //this.Tarifa = tarifa;
             this.toneladas = toneladas;
         }
 
         public ViajeDTO()
         {
-            Id = 0;
             FechaInicio = DateOnly.MinValue;
             LugarPartida = "default";
             Destino = "default";
-            Remito = "default";
+            Remito = 0;
             Kg = 0.0f;
             Carga = "default";
             nombreCliente = "default";

@@ -12,11 +12,11 @@ public class ApplicationDbContext : DbContext
     public DbSet<Viaje> Viajes { get; set; }
     public DbSet<Cheque> Cheques { get; set; }
     public DbSet<Pago> Pagos { get; set; }
-    public DbSet<Empleado> Empleados { get; set; }
     public DbSet<Cliente> Clientes { get; set; }
     public DbSet<Usuario> Usuarios { get; set; }
     public DbSet<CuentaCorriente> Cuentas { get; set; }
     public DbSet<ViajeFlete> ViajesFlete { get; set; }
+    public DbSet<Flete> Fletes { get; set; }
 
     // Constructor para pasar opciones (útil para pruebas o configuración)
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -42,7 +42,6 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Viaje>().ToTable("viaje");
         modelBuilder.Entity<Cheque>().ToTable("cheque");
         modelBuilder.Entity<Pago>().ToTable("pago");
-        modelBuilder.Entity<Empleado>().ToTable("empleado");
         modelBuilder.Entity<Cliente>().ToTable("cliente");
         modelBuilder.Entity<Usuario>().ToTable("usuario");
         modelBuilder.Entity<CuentaCorriente>().ToTable("cuenta_corriente");
@@ -116,6 +115,14 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.nombre_chofer).HasColumnName("nombre_chofer");
             entity.Property(e => e.comision).HasColumnName("comision");
             entity.Property(e => e.fecha_salida).HasColumnName("fecha_salida");
+        });
+
+        modelBuilder.Entity<Flete>(entity =>
+        {
+            entity.ToTable("fletero");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasColumnName("idFletero");
+            entity.Property(e => e.nombre).HasColumnName("nombre");
         });
 
         base.OnModelCreating(modelBuilder);

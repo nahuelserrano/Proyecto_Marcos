@@ -38,10 +38,11 @@ namespace Proyecto_camiones.Presentacion.Models
 
         }
 
-        public ViajeDTO toDTO()
+
+        public ViajeDTO toDTO(string nombreChofer, string nombreCliente)
         {
-            return new ViajeDTO(Id, FechaInicio, LugarPartida, Destino, Remito.ToString(), Kg, Carga, 
-                "default", "default", Km, Tarifa);
+            return new ViajeDTO(FechaInicio, LugarPartida, Destino, Remito, Kg, Carga, 
+                nombreCliente, nombreChofer, Km, Tarifa );
         }
     }
 }

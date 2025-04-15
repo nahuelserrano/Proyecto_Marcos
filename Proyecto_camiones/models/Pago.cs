@@ -9,6 +9,7 @@ namespace Proyecto_camiones.Presentacion.Models
 {
     public class Pago
     {
+        public int Id { get; set; }
         public int Id_Chofer { get; set; }
         public DateOnly FechaDePago { get; set; }
         public float Monto_Pagado { get; set; }

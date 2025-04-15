@@ -15,16 +15,14 @@ namespace Proyecto_camiones.Presentacion.Services
     {
         private readonly ViajeRepository _viajeRepository;
         private readonly CamionService _camionService;
-        private readonly EmpleadoService _empleadoService;
+        //private readonly EmpleadoService _empleadoService;
 
         public ViajeService(
             ViajeRepository viajeRepository,
-            CamionService camionService,
-            EmpleadoService empleadoService)
+            CamionService camionService)
         {
             _viajeRepository = viajeRepository ?? throw new ArgumentNullException(nameof(viajeRepository));
             _camionService = camionService ?? throw new ArgumentNullException(nameof(camionService));
-            _empleadoService = empleadoService ?? throw new ArgumentNullException(nameof(empleadoService));
         }
 
         public async Task<bool> ProbarConexionAsync()
@@ -62,7 +60,7 @@ namespace Proyecto_camiones.Presentacion.Services
                     carga, cliente, camion, km, tarifa
                     );
 
-                return Result<ViajeDTO>.Success(viaje.toDTO()); // CORREGIR!
+                return Result<ViajeDTO>.Success(viaje.toDTO("implementar", "implementar")); // CORREGIR!
             }
             catch (Exception)
             {
@@ -102,7 +100,7 @@ namespace Proyecto_camiones.Presentacion.Services
 
                 foreach (var viaje in viajes)
                 {
-                    viajesDTO.Add(viaje.toDTO());
+                    //viajesDTO.Add(viaje.toDTO());
                 }
 
                 if (viajes == null || viajes.Count == 0)
