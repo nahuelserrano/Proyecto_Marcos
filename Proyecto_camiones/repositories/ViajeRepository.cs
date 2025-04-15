@@ -126,111 +126,111 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
         // READ - Obtener viajes con filtros
-        public async Task<List<Viaje>> ObtenerPorFiltroAsync(DateOnly? fechaInicio = null,
-                                                            DateOnly? fechaFin = null,
-                                                            int? empleadoId = null,
-                                                            int? camionId = null)
-        {
-            try
-            {
-                // Comenzamos con una consulta que incluye todos los viajes
-                IQueryable<Viaje> query = _context.Viajes;
+        //public async Task<List<Viaje>> ObtenerPorFiltroAsync(DateOnly? fechaInicio = null,
+        //                                                    DateOnly? fechaFin = null,
+        //                                                    int? empleadoId = null,
+        //                                                    int? camionId = null)
+        //{
+        //    try
+        //    {
+        //        // Comenzamos con una consulta que incluye todos los viajes
+        //        IQueryable<Viaje> query = _context.Viajes;
 
-                // Aplicamos los filtros según los parámetros proporcionados
-                if (fechaInicio.HasValue)
-                    query = query.Where(v => v.FechaInicio >= fechaInicio.Value);
+        //        // Aplicamos los filtros según los parámetros proporcionados
+        //        if (fechaInicio.HasValue)
+        //            query = query.Where(v => v.FechaInicio >= fechaInicio.Value);
 
-                if (fechaFin.HasValue)
-                    query = query.Where(v => v.FechaInicio <= fechaFin.Value);
+        //        if (fechaFin.HasValue)
+        //            query = query.Where(v => v.FechaInicio <= fechaFin.Value);
 
-                //if (empleadoId.HasValue)
-                //    query = query.Where(v => v.Empleado == empleadoId.Value);
+        //        //if (empleadoId.HasValue)
+        //        //    query = query.Where(v => v.Empleado == empleadoId.Value);
 
-                if (camionId.HasValue)
-                    query = query.Where(v => v.Camion == camionId.Value);
+        //        if (camionId.HasValue)
+        //            query = query.Where(v => v.Camion == camionId.Value);
 
-                // Ejecutamos la consulta y devolvemos el resultado
-                return await query.ToListAsync();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al filtrar viajes: {ex.Message}");
-                return new List<Viaje>();
-            }
-        }
+        //        // Ejecutamos la consulta y devolvemos el resultado
+        //        return await query.ToListAsync();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine($"Error al filtrar viajes: {ex.Message}");
+        //        return new List<Viaje>();
+        //    }
+        //}
 
         // UPDATE - Actualizar sólo campos específicos de un viaje
-        public async Task<bool> ActualizarAsync(int id,
-                                                    string destino = null,
-                                                    string lugarPartida = null,
-                                                    float? kg = null,
-                                                    int? remito = null,
-                                                    float? precioPorKilo = null,
-                                                    int? empleado = null,
-                                                    int? cliente = null,
-                                                    int? camion = null,
-                                                    DateOnly? fechaInicio = null,
-                                                    DateOnly? fechaFacturacion = null,
-                                                    string carga = null,
-                                                    float? km = null)
-        {
-            try
-            {
-                if (id <= 0)
-                    return false;
+        //public async Task<bool> ActualizarAsync(int id,
+        //                                            string destino = null,
+        //                                            string lugarPartida = null,
+        //                                            float? kg = null,
+        //                                            int? remito = null,
+        //                                            float? precioPorKilo = null,
+        //                                            int? empleado = null,
+        //                                            int? cliente = null,
+        //                                            int? camion = null,
+        //                                            DateOnly? fechaInicio = null,
+        //                                            DateOnly? fechaFacturacion = null,
+        //                                            string carga = null,
+        //                                            float? km = null)
+        //{
+        //    try
+        //    {
+        //        if (id <= 0)
+        //            return false;
 
-                // Verificar si el viaje existe
-                var viaje = await _context.Viajes.FindAsync(id);
-                if (viaje == null)
-                    return false;
+        //        // Verificar si el viaje existe
+        //        var viaje = await _context.Viajes.FindAsync(id);
+        //        if (viaje == null)
+        //            return false;
 
-                // Actualizar sólo los campos proporcionados
-                if (!string.IsNullOrWhiteSpace(destino))
-                    viaje.Destino = destino;
+        //        // Actualizar sólo los campos proporcionados
+        //        if (!string.IsNullOrWhiteSpace(destino))
+        //            viaje.Destino = destino;
 
-                if (!string.IsNullOrWhiteSpace(lugarPartida))
-                    viaje.LugarPartida = lugarPartida;
+        //        if (!string.IsNullOrWhiteSpace(lugarPartida))
+        //            viaje.LugarPartida = lugarPartida;
 
-                if (kg.HasValue)
-                    viaje.Kg = kg.Value;
+        //        if (kg.HasValue)
+        //            viaje.Kg = kg.Value;
 
-                if (remito.HasValue)
-                    viaje.Remito = remito.Value;
+        //        if (remito.HasValue)
+        //            viaje.Remito = remito.Value;
 
-                if (precioPorKilo.HasValue)
-                    viaje.PrecioPorKilo = precioPorKilo.Value;
+        //        if (precioPorKilo.HasValue)
+        //            viaje.PrecioPorKilo = precioPorKilo.Value;
 
-                //if (empleado.HasValue)
-                //    viaje.Empleado = empleado.Value;  // Cambiado de Chofer a Empleado
+        //        //if (empleado.HasValue)
+        //        //    viaje.Empleado = empleado.Value;  // Cambiado de Chofer a Empleado
 
-                if (cliente.HasValue)
-                    viaje.Cliente = cliente.Value;
+        //        if (cliente.HasValue)
+        //            viaje.Cliente = cliente.Value;
 
-                if (camion.HasValue)
-                    viaje.Camion = camion.Value;
+        //        if (camion.HasValue)
+        //            viaje.Camion = camion.Value;
 
-                if (fechaInicio.HasValue)
-                    viaje.FechaInicio = fechaInicio.Value;
+        //        if (fechaInicio.HasValue)
+        //            viaje.FechaInicio = fechaInicio.Value;
 
-                if (fechaFacturacion.HasValue)
-                    viaje.FechaFacturacion = fechaFacturacion.Value;
+        //        if (fechaFacturacion.HasValue)
+        //            viaje.FechaFacturacion = fechaFacturacion.Value;
 
-                if (!string.IsNullOrWhiteSpace(carga))
-                    viaje.Carga = carga;
+        //        if (!string.IsNullOrWhiteSpace(carga))
+        //            viaje.Carga = carga;
 
-                if (km.HasValue)
-                    viaje.Km = km.Value;
+        //        if (km.HasValue)
+        //            viaje.Km = km.Value;
 
-                // Guardar los cambios
-                await _context.SaveChangesAsync();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al actualizar campos del viaje: {ex.Message}");
-                return false;
-            }
-        }
+        //        // Guardar los cambios
+        //        await _context.SaveChangesAsync();
+        //        return true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine($"Error al actualizar campos del viaje: {ex.Message}");
+        //        return false;
+        //    }
+        //}
 
         // DELETE - Eliminar un viaje
         public async Task<bool> EliminarAsync(int id)

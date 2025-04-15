@@ -46,6 +46,11 @@ namespace Proyecto_camiones.Presentacion.Models
 
         }
 
+        public Viaje()
+        {
+
+        }
+
         //public ViajeDTO toDTO()
         //{
         //    //return new ViajeDTO(Id, FechaInicio, FechaFacturacion, LugarPartida,
