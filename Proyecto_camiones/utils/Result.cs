@@ -22,14 +22,14 @@ namespace Proyecto_camiones.Presentacion.Utils
         public static Result<T> Success(T value) => new Result<T>(true, value, null);
         public static Result<T> Failure(string error) => new Result<T>(false, default, error);
 
-        internal static Result<int> Success(Result<int>? result)
-        {
-            throw new NotImplementedException();
-        }
+        //internal static Result<int> Success(Result<int>? result)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        public static implicit operator int(Result<int>? v)
-        {
-            throw new NotImplementedException();
-        }
+        //public static implicit operator int(Result<int>? v)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

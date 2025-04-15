@@ -60,9 +60,9 @@
     <Compile Include="Services\EmpleadoService.cs" />
     <Compile Include="Services\ClienteService.cs" />
     <Compile Include="Services\CuentaCorrienteService.cs" />
-    <Compile Include="Services\FleteService.cs" />
     <Compile Include="Services\PagoService.cs" />
     <Compile Include="Services\ViajeFleteService.cs" />
+    <compile Include="Services\ViajeService.cs" />
     <Compile Include="Utils\MensajesError\MensajeError.cs" />
     <Compile Include="Utils\Validadores\ValidadorCheque.cs" />
     <Compile Include="Utils\Result.cs" />

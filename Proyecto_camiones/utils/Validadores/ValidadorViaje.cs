@@ -6,58 +6,43 @@ namespace Proyecto_camiones.Presentacion.Utils
 {
     public class ValidadorViaje
     {
-        private readonly string _destino;
+        private readonly DateOnly _fechaInicio;
         private readonly string _lugarPartida;
+        private readonly string _destino;
         private readonly float _kg;
         private readonly int _remito;
-        private readonly float _precioPorKilo;
-        private readonly int _chofer;
+        private readonly float _tarifa;
         private readonly int _cliente;
         private readonly int _camion;
-        private readonly DateOnly _fechaInicio;
-        private readonly DateOnly? _fechaFacturacion;
         private readonly string _carga;
         private readonly float _km;
         private List<string> _errores;
 
         public ValidadorViaje(
-            string destino,
+            DateOnly fechaInicio,
             string lugarPartida,
+            string destino,
             float kg,
             int remito,
-            float precioPorKilo,
-            int chofer,
+            float tarifa,
             int cliente,
             int camion,
-            DateOnly fechaInicio,
             string carga,
-            float km,
-            DateOnly? fechaFacturacion = null)
+            float km)
         {
             _destino = destino;
             _lugarPartida = lugarPartida;
             _kg = kg;
             _remito = remito;
-            _precioPorKilo = precioPorKilo;
-            _chofer = chofer;
+            _tarifa = tarifa;
             _cliente = cliente;
             _camion = camion;
             _fechaInicio = fechaInicio;
-            _fechaFacturacion = fechaFacturacion;
             _carga = carga;
             _km = km;
             _errores = new List<string>();
         }
 
-
-        public ValidadorViaje ValidarFechas()
-        {
-
-            if (_fechaFacturacion < _fechaInicio)
-                _errores.Add(MensajeError.fechaInvalida(nameof(_fechaFacturacion)));
-
-            return this;
-        }
 
         public ValidadorViaje ValidarCarga()
         {
@@ -86,8 +71,8 @@ namespace Proyecto_camiones.Presentacion.Utils
 
         public ValidadorViaje ValidarPrecioYRemito()
         {
-            if (_precioPorKilo <= 0)
-                _errores.Add(MensajeError.numeroNoValido(nameof(_precioPorKilo)));
+            if (_tarifa <= 0)
+                _errores.Add(MensajeError.numeroNoValido(nameof(_tarifa)));
 
             if (_remito <= 0)
                 _errores.Add(nameof(_remito));
@@ -104,8 +89,7 @@ namespace Proyecto_camiones.Presentacion.Utils
 
         public Result<bool> ValidarCompleto()
         {
-            return ValidarFechas()
-                .ValidarCarga()
+            return ValidarCarga()
                 .ValidarRuta()
                 .ValidarPrecioYRemito()
                 .ObtenerResultado();

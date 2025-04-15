@@ -40,24 +40,24 @@ namespace Proyecto_camiones.ViewModels
 
         // Método para crear un nuevo viaje
         public async Task<Result<ViajeDTO>> CrearViaje(
-            string destino,
+            DateOnly fechaInicio,
             string lugarPartida,
-            float kg,
+            string destino,
             int remito,
-            float precioPorKilo,
-            int chofer,
+            string carga,
+            float kg,
             int cliente,
             int camion,
-            DateOnly fechaInicio,
-            DateOnly fechaFacturacion,
-            string carga,
-            float km)
+            float km,
+            float tarifa
+            )
         {
             if (await this.TestearConexion())
             {
-                var resultado = await this._viajeService.CrearViajeAsync(
-                    destino, lugarPartida, kg, remito, precioPorKilo,
-                    chofer, cliente, camion, fechaInicio, carga, km, fechaFacturacion);
+                var resultado = await this._viajeService.CrearAsync(
+                    fechaInicio, lugarPartida, destino, remito, 
+                    kg, carga, cliente, camion, km, tarifa
+                    );
 
                 if (resultado.IsSuccess)
                 {
@@ -78,7 +78,7 @@ namespace Proyecto_camiones.ViewModels
         {
             if (await this.TestearConexion())
             {
-                var resultado = await this._viajeService.ObtenerViajesAsync();
+                var resultado = await this._viajeService.ObtenerTodosAsync();
 
                 if (resultado.IsSuccess)
                 {
@@ -93,6 +93,8 @@ namespace Proyecto_camiones.ViewModels
         }
 
         // Método para obtener viajes filtrados
+
+        /*
         public async Task<Result<List<ViajeDTO>>> ObtenerFiltrados(
             DateOnly? fechaInicio = null,
             DateOnly? fechaFin = null,
@@ -102,7 +104,7 @@ namespace Proyecto_camiones.ViewModels
             if (await this.TestearConexion())
             {
                 var resultado = await this._viajeService.ObtenerViajesAsync(
-                    fechaInicio, fechaFin, choferId, camionId);
+                    fechaInicio, fechaFin, camionId);
 
                 if (resultado.IsSuccess)
                 {
@@ -115,29 +117,28 @@ namespace Proyecto_camiones.ViewModels
             }
             return Result<List<ViajeDTO>>.Failure("La conexión no pudo establecerse");
         }
+        */
 
         // Método para actualizar un viaje
-        public async Task<Result<bool>> ActualizarViaje(
+        public async Task<Result<bool>> ActualizarAsync(
             int id,
-            string destino = null,
+            DateOnly? fechaInicio = null,
             string lugarPartida = null,
-            float? kg = null,
+            string destino = null,
             int? remito = null,
-            float? precioPorKilo = null,
-            int? empleado = null,
+            string carga = null,
+            float? kg = null,
             int? cliente = null,
             int? camion = null,
-            DateOnly? fechaInicio = null,
-            DateOnly? fechaFacturacion = null,
-            string carga = null,
-            float? km = null)
+            float? km = null,
+            float? tarifa = null
+            )
         {
             if (await this.TestearConexion())
             {
-                var resultado = await this._viajeService.EditarViajeAsync(
-                    id, destino, lugarPartida, kg, remito, precioPorKilo,
-                    empleado, cliente, camion, fechaInicio, fechaFacturacion,
-                    carga, km);
+                var resultado = await this._viajeService.ActualizarAsync(
+                    id, fechaInicio, lugarPartida, destino, remito, 
+                    kg, carga, cliente, camion, km, tarifa);
 
                 return resultado;
             }
@@ -145,11 +146,11 @@ namespace Proyecto_camiones.ViewModels
         }
 
         // Método para eliminar un viaje
-        public async Task<Result<string>> EliminarViaje(int id)
+        public async Task<Result<string>> EliminarAsync(int id)
         {
             if (await this.TestearConexion())
             {
-                var resultado = await this._viajeService.EliminarViajeAsync(id);
+                var resultado = await this._viajeService.EliminarAsync(id);
 
                 if (resultado.IsSuccess)
                 {
@@ -164,21 +165,11 @@ namespace Proyecto_camiones.ViewModels
         }
 
         // Método para obtener viajes por camión
-        public async Task<Result<List<ViajeDTO>>> ObtenerViajesPorCamion(int camionId)
+        public async Task<Result<List<ViajeDTO>>> ObtenerPorCamion(int camionId)
         {
             if (await this.TestearConexion())
             {
-                return await this._viajeService.ObtenerViajesPorCamionAsync(camionId);
-            }
-            return Result<List<ViajeDTO>>.Failure("La conexión no pudo establecerse");
-        }
-
-        // Método para obtener viajes por empleado/chofer
-        public async Task<Result<List<ViajeDTO>>> ObtenerViajesPorEmpleado(int empleadoId)
-        {
-            if (await this.TestearConexion())
-            {
-                return await this._viajeService.ObtenerViajesPorEmpleado(empleadoId);
+                return await this._viajeService.ObtenerPorCamionAsync(camionId);
             }
             return Result<List<ViajeDTO>>.Failure("La conexión no pudo establecerse");
         }

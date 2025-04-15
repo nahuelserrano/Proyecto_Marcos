@@ -42,11 +42,18 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
         // CREATE - Insertar un nuevo viaje
-        public async Task<Viaje?> InsertarViajeAsync(string destino, string lugarPartida,
-                                                   float kg, int remito, float precioPorKilo,
-                                                   int empleado, int cliente, int camion,
-                                                   DateOnly fechaInicio, DateOnly fechaFacturacion,
-                                                   string carga, float km)
+        public async Task<Viaje?> InsertarAsync(
+            DateOnly fechaInicio, 
+            string lugarPartida,
+            string destino, 
+            int remito, 
+            float kg,
+            string carga, 
+            int cliente, 
+            int camion,
+            float km,
+            float tarifa
+            )
         {
             try
             {
@@ -56,9 +63,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     return null;
                 }
 
-                var viaje = new Viaje(destino, lugarPartida, kg, remito, precioPorKilo,
-                                      empleado, cliente, camion, fechaInicio, fechaFacturacion,
-                                      carga, km);
+                var viaje = new Viaje(fechaInicio, lugarPartida, destino, remito, kg, 
+                    carga, cliente, camion, km, tarifa);
 
                 // Agregar el viaje a la base de datos (esto solo marca el objeto para insertar)
                 _context.Viajes.Add(viaje);
@@ -128,7 +134,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
         // READ - Obtener viajes con filtros
         public async Task<List<Viaje>> ObtenerPorFiltroAsync(DateOnly? fechaInicio = null,
                                                             DateOnly? fechaFin = null,
-                                                            int? empleadoId = null,
                                                             int? camionId = null)
         {
             try
@@ -142,9 +147,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
                 if (fechaFin.HasValue)
                     query = query.Where(v => v.FechaInicio <= fechaFin.Value);
-
-                if (empleadoId.HasValue)
-                    query = query.Where(v => v.Empleado == empleadoId.Value);
 
                 if (camionId.HasValue)
                     query = query.Where(v => v.Camion == camionId.Value);
@@ -160,19 +162,19 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
         // UPDATE - Actualizar sólo campos específicos de un viaje
-        public async Task<bool> ActualizarAsync(int id,
-                                                    string destino = null,
-                                                    string lugarPartida = null,
-                                                    float? kg = null,
-                                                    int? remito = null,
-                                                    float? precioPorKilo = null,
-                                                    int? empleado = null,
-                                                    int? cliente = null,
-                                                    int? camion = null,
-                                                    DateOnly? fechaInicio = null,
-                                                    DateOnly? fechaFacturacion = null,
-                                                    string carga = null,
-                                                    float? km = null)
+        public async Task<bool> ActualizarAsync(
+            int id,
+            DateOnly? fechaInicio = null,
+            string lugarPartida = null,
+            string destino = null,
+            int? remito = null,
+            string carga = null,
+            float? kg = null,
+            int? cliente = null,
+            int? camion = null,
+            float? tarifa = null,
+            float? km = null
+            )
         {
             try
             {
@@ -197,11 +199,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 if (remito.HasValue)
                     viaje.Remito = remito.Value;
 
-                if (precioPorKilo.HasValue)
-                    viaje.PrecioPorKilo = precioPorKilo.Value;
-
-                if (empleado.HasValue)
-                    viaje.Empleado = empleado.Value;  // Cambiado de Chofer a Empleado
+                if (tarifa.HasValue)
+                    viaje.Tarifa = tarifa.Value;
 
                 if (cliente.HasValue)
                     viaje.Cliente = cliente.Value;
@@ -211,9 +210,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
                 if (fechaInicio.HasValue)
                     viaje.FechaInicio = fechaInicio.Value;
-
-                if (fechaFacturacion.HasValue)
-                    viaje.FechaFacturacion = fechaFacturacion.Value;
 
                 if (!string.IsNullOrWhiteSpace(carga))
                     viaje.Carga = carga;
@@ -258,27 +254,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
         // MÉTODOS ESPECÍFICOS
-
-        // Obtener viajes por empleado
-        public async Task<List<Viaje>> ObtenerPorEmpleadoAsync(int empleadoId)
-        {
-            try
-            {
-                if (empleadoId <= 0)
-                    return new List<Viaje>();
-
-                var viajes = await _context.Viajes
-                    .Where(v => v.Empleado == empleadoId)
-                    .ToListAsync();
-
-                return viajes;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al obtener viajes por empleado: {ex.Message}");
-                return new List<Viaje>();
-            }
-        }
 
         // Obtener viajes por camión
         public async Task<List<Viaje>> ObtenerPorCamionAsync(int camionId)

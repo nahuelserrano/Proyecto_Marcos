@@ -42,7 +42,7 @@ namespace Proyecto_camiones.Presentacion
             PagoRepository pr = new PagoRepository(General.obtenerInstancia());
             PagosService pagosService = new PagosService(pr);
 
-            pagosService.Crear(1, DateOnly.MinValue, DateOnly.MaxValue, DateOnly.MaxValue);
+            //pagosService.Crear(1, DateOnly.MinValue, DateOnly.MaxValue, DateOnly.MaxValue);
         //PRUEBA SELECT ALL
         //var camiones = await cvm.ObtenerTodos();
         //if (camiones.IsSuccess)
@@ -145,6 +145,7 @@ namespace Proyecto_camiones.Presentacion
             //}
             //Console.WriteLine(idViaje.Error);
 
+            ProbarInsertarViaje("Tandil", "Azul");
 
         }
 
@@ -184,18 +185,16 @@ namespace Proyecto_camiones.Presentacion
             ViajeViewModel vvm = new ViajeViewModel();
 
             var resultadoCreacion1 = await vvm.CrearViaje(
-                destino: destino,
+                fechaInicio: new DateOnly(2025, 4, 11),
                 lugarPartida: origen,
-                kg: 5000.5f,
+                destino: destino,
                 remito: 12345,
-                precioPorKilo: 10.5f,
-                chofer: 1,  // Asumiendo que el ID 1 existe
+                carga: "Materiales de construcción",
+                kg: 5000.5f,
                 cliente: 2, // Asumiendo que el ID 2 existe
                 camion: 3,  // Asumiendo que el ID 3 existe
-                fechaInicio: new DateOnly(2025, 4, 11),
-                fechaFacturacion: new DateOnly(2025, 5, 1),
-                carga: "Materiales de construcción",
-                km: 650.75f
+                km: 650.75f,
+                tarifa: 10.5f
             );
 
             Console.WriteLine("Resultado de la creación del viaje: " + resultadoCreacion1.Value);

@@ -58,6 +58,23 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.nombre_chofer).HasColumnName("nombre_chofer");
         });
 
+        modelBuilder.Entity<Viaje>(entity =>
+        {
+            entity.ToTable("viaje");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasColumnName("idviaje");
+            entity.Property(e => e.FechaInicio).HasColumnName("partida");
+            entity.Property(e => e.LugarPartida).HasColumnName("origen");
+            entity.Property(e => e.Destino).HasColumnName("destino");
+            entity.Property(e => e.Remito).HasColumnName("remito");
+            entity.Property(e => e.Kg).HasColumnName("kg");
+            entity.Property(e => e.Carga).HasColumnName("carga");
+            entity.Property(e => e.Cliente).HasColumnName("cliente");
+            entity.Property(e => e.Camion).HasColumnName("camion");
+            entity.Property(e => e.Km).HasColumnName("km");
+            entity.Property(e => e.Tarifa).HasColumnName("tarifa");
+        });
+
 
         modelBuilder.Entity<CuentaCorriente>(entity =>
         {
