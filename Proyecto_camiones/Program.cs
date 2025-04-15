@@ -134,8 +134,10 @@ namespace Proyecto_camiones.Presentacion
             //}
             //Console.WriteLine(idViaje.Error);
 
-            ProbarInsertarViaje("Tandil", "Azul");
+            //ProbarInsertarViaje("Tandil", "Azul");
 
+            //ProbarInsertarChofer("Juan Alpaca");
+            ProbarEliminarChofer(2);
         }
 
 
@@ -151,13 +153,27 @@ namespace Proyecto_camiones.Presentacion
                 carga: "Materiales de construcción",
                 kg: 5000.5f,
                 cliente: 2, // Asumiendo que el ID 2 existe
-                camion: 3,  // Asumiendo que el ID 3 existe
+                camion: 3, // Asumiendo que el ID 3 existe
                 km: 650.75f,
                 tarifa: 10.5f
             );
 
             Console.WriteLine("Resultado de la creación del viaje: " + resultadoCreacion1.Value);
 
+        }
+
+        public static void ProbarInsertarChofer(string nombre)
+        {
+            ChoferViewModel cvm = new ChoferViewModel();
+            var resultadoCreacion = cvm.CrearAsync(nombre).Result;
+            Console.WriteLine("Resultado de la creación del chofer: " + resultadoCreacion.Value.Nombre);
+        }
+
+        public static void ProbarEliminarChofer(int id)
+        {
+            ChoferViewModel cvm = new ChoferViewModel();
+            var resultadoCreacion = cvm.EliminarAsync(id).Result;
+            Console.WriteLine("Resultado de la creación del chofer: " + resultadoCreacion.Value);
         }
     }
 }

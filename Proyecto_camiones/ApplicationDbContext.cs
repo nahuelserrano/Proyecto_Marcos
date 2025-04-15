@@ -17,6 +17,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<CuentaCorriente> Cuentas { get; set; }
     public DbSet<ViajeFlete> ViajesFlete { get; set; }
     public DbSet<Flete> Fletes { get; set; }
+    public DbSet<Chofer> Choferes { get; set; }
 
     // Constructor para pasar opciones (útil para pruebas o configuración)
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -45,6 +46,7 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Cliente>().ToTable("cliente");
         modelBuilder.Entity<Usuario>().ToTable("usuario");
         modelBuilder.Entity<CuentaCorriente>().ToTable("cuenta_corriente");
+        modelBuilder.Entity<Chofer>().ToTable("chofer");
 
         modelBuilder.Entity<Camion>(entity =>
         {
@@ -127,6 +129,13 @@ public class ApplicationDbContext : DbContext
 
         base.OnModelCreating(modelBuilder);
 
+        modelBuilder.Entity<Chofer>(entity =>
+        {
+            entity.ToTable("chofer");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasColumnName("idchofer");
+            entity.Property(e => e.Nombre).HasColumnName("nombre");
+        });
     }
 
 }
