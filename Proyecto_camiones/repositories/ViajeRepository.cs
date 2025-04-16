@@ -57,6 +57,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
+                Console.WriteLine(6);
                 if (!await _context.Database.CanConnectAsync())
                 {
                     Console.WriteLine("No se puede conectar a la base de datos");

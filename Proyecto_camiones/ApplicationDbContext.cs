@@ -31,7 +31,7 @@ public class ApplicationDbContext : DbContext
         if (!optionsBuilder.IsConfigured)
         {
             optionsBuilder.UseMySql(
-                "server=localhost;database=truck_manager_project;user=root;password=",
+                "server=localhost;database=truck_manager_project_db;user=root;password=",
                 ServerVersion.AutoDetect("server=localhost;database=truck_manager_project_db;user=root;password="));
         }
     }

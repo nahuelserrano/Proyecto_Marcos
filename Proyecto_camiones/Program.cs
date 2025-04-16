@@ -133,16 +133,18 @@ namespace Proyecto_camiones.Presentacion
             //    Console.WriteLine("Viaje ingresado con el id: " + idViaje.Value);
             //}
             //Console.WriteLine(idViaje.Error);
-
-            //ProbarInsertarViaje("Tandil", "Azul");
+            Console.WriteLine(1);
+            ProbarInsertarViaje("Tandil", "Azul");
 
             //ProbarInsertarChofer("Juan Alpaca");
-            ProbarEliminarChofer(2);
+            //ProbarEliminarChofer(2);
         }
 
 
         public static async void ProbarInsertarViaje(string origen, string destino)
         {
+            Console.WriteLine(2);
+
             ViajeViewModel vvm = new ViajeViewModel();
 
             var resultadoCreacion1 = await vvm.CrearViaje(
@@ -157,9 +159,8 @@ namespace Proyecto_camiones.Presentacion
                 km: 650.75f,
                 tarifa: 10.5f
             );
-
+            Console.WriteLine(3);
             Console.WriteLine("Resultado de la creación del viaje: " + resultadoCreacion1.Value);
-
         }
 
         public static void ProbarInsertarChofer(string nombre)
