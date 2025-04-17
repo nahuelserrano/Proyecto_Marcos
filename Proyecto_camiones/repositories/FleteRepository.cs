@@ -1,4 +1,5 @@
-﻿using Proyecto_camiones.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Proyecto_camiones.Models;
 using Proyecto_camiones.Presentacion;
 using System;
 using System.Collections.Generic;
@@ -47,7 +48,7 @@ namespace Proyecto_camiones.Repositories
             try
             {
                 Flete nuevo = new Flete(nombre);
-                this._context.Fletes.Add(nuevo);
+                await this._context.Fletes.AddAsync(nuevo);
                 int registrosAfectados = await this._context.SaveChangesAsync();
                 if (registrosAfectados > 0)
                 {
@@ -59,6 +60,20 @@ namespace Proyecto_camiones.Repositories
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e.InnerException);
                 return -1;
+            }
+        }
+
+        internal async Task<Flete> ObtenerPorNombre(string nombre)
+        {
+            try
+            {
+                Flete flete = await _context.Fletes.Where(f => f.nombre == nombre).FirstOrDefaultAsync();
+                return flete;
+            }catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.InnerException);
+                return null;
             }
         }
     }

@@ -11,6 +11,7 @@ using Proyecto_camiones.Presentacion.Utils;
 using Proyecto_camiones.Models;
 using MathNet.Numerics.LinearAlgebra.Factorization;
 using System.Runtime.CompilerServices;
+using MySqlX.XDevAPI.Common;
 
 
 namespace Proyecto_camiones.Presentacion
@@ -33,7 +34,7 @@ namespace Proyecto_camiones.Presentacion
 
             //pagosService.Crear(1, DateOnly.MinValue, DateOnly.MaxValue, DateOnly.MaxValue);
 
-            //CamionViewModel cvm = new CamionViewModel();
+            CamionViewModel cvm = new CamionViewModel();
             ////PRUEBA INSERCION
             //Result<int> id = cvm.InsertarCamion(120, 40, "MLA126", "Pepito").Result;
             //if (id.IsSuccess)
@@ -101,7 +102,7 @@ namespace Proyecto_camiones.Presentacion
             //}
 
 
-            //  ClienteViewModel clvm = new ClienteViewModel();
+            ClienteViewModel clvm = new ClienteViewModel();
 
             //INSERCION
             //var cliente = await clvm.InsertarCliente("MACHACA");
@@ -123,7 +124,7 @@ namespace Proyecto_camiones.Presentacion
             //var result = await clvm.Eliminar(1);
             //Console.WriteLine(result.Value);
 
-            //ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
+            ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
 
             //INSERTAR
 
@@ -137,7 +138,32 @@ namespace Proyecto_camiones.Presentacion
             //ProbarInsertarViaje("Tandil", "Azul");
 
             //ProbarInsertarChofer("Juan Alpaca");
-            ProbarEliminarChofer(2);
+
+            FleteViewModel fvm = new FleteViewModel();
+
+            //INSERTAR FLETERO
+            //var idFletero = await fvm.InsertarFletero("Marcelo");
+            //if (idFletero.IsSuccess)
+            //{
+            //    Console.WriteLine("Fletero insertado con el id: " + idFletero.Value);
+            //}
+            //else
+            //{
+            //    Console.WriteLine(idFletero.Error);
+            //}
+
+            //OBTENER POR NOMBRE
+            var fletero = await fvm.ObtenerFletePorNombre("Marcelo");
+            if (fletero.IsSuccess)
+            {
+                Console.WriteLine(fletero.Value);
+            }
+            else
+            {
+                Console.WriteLine(fletero.Error);
+            }
+
+            //ProbarEliminarChofer(2);
         }
 
 
