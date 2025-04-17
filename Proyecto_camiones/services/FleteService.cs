@@ -30,6 +30,7 @@ namespace Proyecto_camiones.Services
         {
             if(nombre!= null)
             {
+                nombre = nombre.ToUpper();
                 int id = await this.fleteRepository.InsertarFletero(nombre);
                 if (id > -1)
                 {
@@ -44,6 +45,7 @@ namespace Proyecto_camiones.Services
         {
             if(nombre != null)
             {
+                nombre = nombre.ToUpper();
                 Flete fletero = await this.fleteRepository.ObtenerPorNombre(nombre);
                 if(fletero != null)
                 {

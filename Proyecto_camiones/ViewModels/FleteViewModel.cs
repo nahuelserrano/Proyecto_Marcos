@@ -18,8 +18,7 @@ namespace Proyecto_camiones.ViewModels
 
         public FleteViewModel()
         {
-            var dbContext = General.obtenerInstancia();
-            var repo = new FleteRepository(dbContext);
+            var repo = new FleteRepository();
             fleteService = new FleteService(repo);
         }
 

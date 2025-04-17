@@ -142,7 +142,7 @@ namespace Proyecto_camiones.Presentacion
             FleteViewModel fvm = new FleteViewModel();
 
             //INSERTAR FLETERO
-            //var idFletero = await fvm.InsertarFletero("Marcelo");
+            //var idFletero = await fvm.InsertarFletero("Carlos");
             //if (idFletero.IsSuccess)
             //{
             //    Console.WriteLine("Fletero insertado con el id: " + idFletero.Value);
@@ -153,15 +153,15 @@ namespace Proyecto_camiones.Presentacion
             //}
 
             //OBTENER POR NOMBRE
-            var fletero = await fvm.ObtenerFletePorNombre("Marcelo");
-            if (fletero.IsSuccess)
-            {
-                Console.WriteLine(fletero.Value);
-            }
-            else
-            {
-                Console.WriteLine(fletero.Error);
-            }
+            //var fletero = await fvm.ObtenerFletePorNombre("Carlos");
+            //if (fletero.IsSuccess)
+            //{
+            //    Console.WriteLine(fletero.Value);
+            //}
+            //else
+            //{
+            //    Console.WriteLine(fletero.Error);
+            //}
 
             //ProbarEliminarChofer(2);
         }

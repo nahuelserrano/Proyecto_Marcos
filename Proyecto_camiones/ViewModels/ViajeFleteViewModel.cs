@@ -20,7 +20,7 @@ namespace Proyecto_camiones.ViewModels
         {
             var dbContext = General.obtenerInstancia();
             var repo = new ViajeFleteRepository(dbContext);
-            this.fleteService = new ViajeFleteService(repo, new ClienteRepository(General.obtenerInstancia()));
+            this.fleteService = new ViajeFleteService(repo, new ClienteRepository(General.obtenerInstancia()), new FleteRepository());
         }
 
 
