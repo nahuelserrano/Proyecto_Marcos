@@ -18,8 +18,7 @@ namespace Proyecto_camiones.ViewModels
 
         public ViajeFleteViewModel()
         {
-            var dbContext = General.obtenerInstancia();
-            var repo = new ViajeFleteRepository(dbContext);
+            var repo = new ViajeFleteRepository();
             this.fleteService = new ViajeFleteService(repo, new ClienteRepository(General.obtenerInstancia()), new FleteRepository());
         }
 
@@ -33,6 +32,8 @@ namespace Proyecto_camiones.ViewModels
         {
             if (this.testearConexion().Result)
             {
+                nombre_cliente = nombre_cliente.ToUpper();
+                nombre_fletero = nombre_fletero.ToUpper();
                 return await this.fleteService.InsertarViajeFlete(origen, destino, remito, carga, km, kg, tarifa, factura, nombre_cliente, nombre_fletero, nombre_chofer, comision, fecha_salida);
             }
             return Result<int>.Failure("No se pudo establecer la conexion con la db");
@@ -43,6 +44,7 @@ namespace Proyecto_camiones.ViewModels
         {
             if (this.testearConexion().Result)
             {
+                fletero = fletero.ToUpper();
                 return await this.fleteService.ObtenerViajesDeUnFletero(fletero);
             }
             return Result<List<ViajeFleteDTO>>.Failure("No se pudo acceder a la base de datos");

@@ -128,18 +128,33 @@ namespace Proyecto_camiones.Presentacion
 
             //INSERTAR
 
-            //var idViaje = await vfvm.InsertarViajeFlete("Tandil", "Necochea", 40, "trigo", 120, 130, 19000, 12345, "MACHACA", "x", "Chofer del Flete X", 10, new DateOnly(2025, 4, 11));
+            //var idViaje = await vfvm.InsertarViajeFlete("Tandil", "Necochea", 40, "trigo", 120, 130, 19000, 12345, "MACHACA", "CARLOS", "Chofer de Carlos", 10, new DateOnly(2025, 4, 11));
             //if (idViaje.IsSuccess)
             //{
             //    Console.WriteLine("Viaje ingresado con el id: " + idViaje.Value);
             //}
             //Console.WriteLine(idViaje.Error);
 
-            //ProbarInsertarViaje("Tandil", "Azul");
+            //OBTENER VIAJES DE UN FLETERO
 
-            //ProbarInsertarChofer("Juan Alpaca");
+            var viajes = await vfvm.ObtenerViajesDeUnFletero("Carlos");
+            if (viajes.IsSuccess)
+            {
+                foreach(var viaje in viajes.Value)
+                {
+                    Console.WriteLine(viaje);
+                }
+            }
+            else
+            {
+                Console.WriteLine(viajes.Error);
+            }
 
-            FleteViewModel fvm = new FleteViewModel();
+                //ProbarInsertarViaje("Tandil", "Azul");
+
+                //ProbarInsertarChofer("Juan Alpaca");
+
+                FleteViewModel fvm = new FleteViewModel();
 
             //INSERTAR FLETERO
             //var idFletero = await fvm.InsertarFletero("Carlos");

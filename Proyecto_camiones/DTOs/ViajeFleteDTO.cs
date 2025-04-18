@@ -21,5 +21,33 @@ namespace Proyecto_camiones.DTOs
         public string nombre_chofer { get; set; }
         public float comision { get; set; }
         public DateOnly fecha_salida { get; set; }
+
+        public ViajeFleteDTO(string origen, string destino, float remito, string carga, float km, float kg, float tarifa, int factura, string cliente, string fletero, string nombre_chofer, float comision, DateOnly fecha_salida)
+        {
+            this.origen = origen;
+            this.destino = destino;
+            this.remito = remito;
+            this.carga = carga;
+            this.km = km;
+            this.kg = kg;
+            this.tarifa = tarifa;
+            this.factura = factura;
+            this.cliente = cliente;
+            this.fletero = fletero;
+            this.nombre_chofer = nombre_chofer;
+            this.comision = comision;
+            this.fecha_salida = fecha_salida;
+        }
+
+        public ViajeFleteDTO()
+        {
+
+        }
+
+        override
+            public string ToString()
+        {
+            return "ORIGEN: " + this.origen + ", DESTINO: " + this.destino + ", FLETERO: " + this.fletero + ", CLIENTE: " + this.cliente;
+        }
     }
 }

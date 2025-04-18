@@ -49,7 +49,17 @@ namespace Proyecto_camiones.Services
 
         internal async Task<Result<List<ViajeFleteDTO>>> ObtenerViajesDeUnFletero(string fletero)
         {
-            throw new NotImplementedException();
+            Flete flete = await this.fleteRepository.ObtenerPorNombre(fletero);
+            if(flete != null)
+            {
+                List<ViajeFleteDTO> viajes = await this.ViajeFleteRepository.ObtenerViajesPorFletero(flete.Id);
+                if (viajes != null)
+                {
+                   return Result<List<ViajeFleteDTO>>.Success(viajes);
+                }
+                return Result<List<ViajeFleteDTO>>.Failure("Hubo un error al obtener los viajes");
+            }
+            return Result<List<ViajeFleteDTO>>.Failure("No existe un fletero con ese nombre");
         }
     }
 }
