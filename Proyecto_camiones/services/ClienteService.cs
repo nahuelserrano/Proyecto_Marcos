@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Utils;
@@ -75,5 +77,9 @@ namespace Proyecto_camiones.Presentacion.Services
             return Result<Cliente>.Failure("No existe un cliente con ese id");
         }
 
+        internal async Task<Result<List<ViajeMixtoDTO>>> ObtenerViajesDeUnCliente(string v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

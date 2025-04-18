@@ -1,4 +1,5 @@
-﻿using Proyecto_camiones.Presentacion.Models;
+﻿using Proyecto_camiones.DTOs;
+using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Services;
 using Proyecto_camiones.Presentacion.Utils;
@@ -69,5 +70,14 @@ namespace Proyecto_camiones.ViewModels
             }
             return Result<bool>.Failure("No se pudo establecer la conexión");
         } 
+
+        public async Task<Result<List<ViajeMixtoDTO>>> ObtenerViajesDeUnCliente(string cliente)
+        {
+            if (this.testearConexion().Result)
+            {
+                return await this.clienteService.ObtenerViajesDeUnCliente(cliente.ToUpper());
+            }
+            return Result<List<ViajeMixtoDTO>>.Failure("No se pudo establecer la conexión");
+        }
     }
 }
