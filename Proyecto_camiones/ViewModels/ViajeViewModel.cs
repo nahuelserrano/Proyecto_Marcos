@@ -40,7 +40,7 @@ namespace Proyecto_camiones.ViewModels
         // Método para probar la conexión
         public async Task<bool> TestearConexion()
         {
-            return await this._viajeService.ProbarConexionAsync();
+            return await _viajeService.ProbarConexionAsync();
         }
 
         // Método para crear un nuevo viaje
@@ -57,15 +57,15 @@ namespace Proyecto_camiones.ViewModels
             float tarifa)
         {
             Console.WriteLine(4);
-            
-            //bool conexionExitosa = await TestearConexion();
 
-            //Console.WriteLine(await TestearConexion());
+            bool conexionExitosa = await TestearConexion();
 
-            //if (!conexionExitosa)
-            //{
-            //    return Result<ViajeDTO>.Failure(MensajeError.errorConexion());
-            //}
+            Console.WriteLine(await TestearConexion());
+
+            if (!conexionExitosa)
+            {
+                return Result<ViajeDTO>.Failure(MensajeError.errorConexion());
+            }
 
             var resultado = await _viajeService.CrearAsync(
                 fechaInicio, lugarPartida, destino, remito,

@@ -25,6 +25,17 @@ public class ApplicationDbContext : DbContext
 
 
 
+    // Configurar la conexión a MySQL
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseMySql(
+                "server=localhost;database=truck_manager_project_db;user=root;password=",
+                ServerVersion.AutoDetect("server=localhost;database=truck_manager_project_db;user=root;password="));
+        }
+    }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // Configuración adicional que mapea una entidad a su tabla en la base de datos

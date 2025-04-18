@@ -11,31 +11,17 @@ namespace Proyecto_camiones.ViewModels
     public static class General
     {
 
-        private static ApplicationDbContext _instance;
-
         public static ApplicationDbContext obtenerInstancia()
         {
-            if (_instance == null)
-            {
-                // Conexión directa que SABEMOS que funciona
-                string connectionString = "server=localhost;database=truck_manager_project_db;user=root;password=;Connect Timeout=10;";
+            var connectionString = "server=localhost;user=root;password=;database=truck_manager_project_db;";
 
+            // Crear la configuración del DbContext
                 var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-                optionsBuilder.UseMySql(
-                    connectionString,
-                    // Usamos versión específica en lugar de AutoDetect
-                    new MySqlServerVersion(new Version(10, 4, 32)), // Ajusta esto a tu versión de MySQL
-                    mySqlOptions =>
-                    {
-                        mySqlOptions.EnableRetryOnFailure(3, TimeSpan.FromSeconds(3), null);
-                        mySqlOptions.CommandTimeout(15);
-                    }
-                );
+            optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)); // Usar el proveedor de MySQL
 
-                _instance = new ApplicationDbContext(optionsBuilder.Options);
-            }
-
-            return _instance;
+            // Crear una instancia del contexto
+            var dbContext = new ApplicationDbContext(optionsBuilder.Options);
+            return dbContext;
         }
     }
 }

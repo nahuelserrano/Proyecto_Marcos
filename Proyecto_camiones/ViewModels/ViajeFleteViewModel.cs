@@ -30,7 +30,7 @@ namespace Proyecto_camiones.ViewModels
 
         public async Task<Result<int>> InsertarViajeFlete(string origen, string destino, float remito, string carga, float km, float kg, float tarifa, int factura, string nombre_cliente, string nombre_fletero, string nombre_chofer, float comision, DateOnly fecha_salida)
         {
-            if (await this.testearConexion())
+            if (this.testearConexion().Result)
             {
                 nombre_cliente = nombre_cliente.ToUpper();
                 nombre_fletero = nombre_fletero.ToUpper();
@@ -42,7 +42,7 @@ namespace Proyecto_camiones.ViewModels
 
         public async Task<Result<List<ViajeFleteDTO>>> ObtenerViajesDeUnFletero(string fletero)
         {
-            if (await this.testearConexion())
+            if (this.testearConexion().Result)
             {
                 fletero = fletero.ToUpper();
                 return await this.fleteService.ObtenerViajesDeUnFletero(fletero);

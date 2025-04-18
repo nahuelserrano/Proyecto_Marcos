@@ -30,7 +30,7 @@ namespace Proyecto_camiones.ViewModels
 
         public async Task<Result<int>> Insertar(int idCliente, int idFletero, DateOnly fecha, int nro, float adeuda, float pagado)
         {
-            if (await this.testearConexion())
+            if (this.testearConexion().Result)
             {
                 int id = await cs.Insertar(idCliente, idFletero, fecha, nro, adeuda, pagado);
                 if (id > -1) return Result<int>.Success(id);
@@ -41,7 +41,7 @@ namespace Proyecto_camiones.ViewModels
 
         public async Task<Result<CuentaCorriente>> ObtenerMasRecienteByCliente(int idCliente)
         {
-            if (await this.testearConexion())
+            if (this.testearConexion().Result)
             {
                 CuentaCorriente c = await this.cs.ObtenerCuentaMasRecienteByClientId(idCliente);
                 if(c != null)
@@ -55,7 +55,7 @@ namespace Proyecto_camiones.ViewModels
 
         public async Task<Result<List<CuentaCorriente>>> ObtenerTodas()
         {
-            if (await this.testearConexion())
+            if (this.testearConexion().Result)
             {
                 List<CuentaCorriente> cuentas = await this.cs.ObtenerTodas();
                 if (cuentas != null)
@@ -69,7 +69,7 @@ namespace Proyecto_camiones.ViewModels
 
         public async Task<Result<List<CuentaCorriente>>> ObtenerCuentasByClienteId(int id)
         {
-            if (await this.testearConexion())
+            if (this.testearConexion().Result)
             {
                 return await this.cs.ObtenerCuentasByIdCliente(id);
             }

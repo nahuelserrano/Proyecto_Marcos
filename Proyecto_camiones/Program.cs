@@ -36,7 +36,7 @@ namespace Proyecto_camiones.Presentacion
 
             //pagosService.Crear(1, DateOnly.MinValue, DateOnly.MaxValue, DateOnly.MaxValue);
 
-            //CamionViewModel cvm = new CamionViewModel();
+            CamionViewModel cvm = new CamionViewModel();
             ////PRUEBA INSERCION
             //Result<int> id = cvm.InsertarCamion(120, 40, "MLA126", "Pepito").Result;
             //if (id.IsSuccess)
@@ -70,7 +70,7 @@ namespace Proyecto_camiones.Presentacion
             //Console.WriteLine(response.Value);
 
 
-            //CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
+            CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
 
             //INSERCION
 
@@ -104,7 +104,7 @@ namespace Proyecto_camiones.Presentacion
             //}
 
 
-            //ClienteViewModel clvm = new ClienteViewModel();
+            ClienteViewModel clvm = new ClienteViewModel();
 
             //INSERCION
             //var cliente = await clvm.InsertarCliente("MACHACA");
@@ -126,7 +126,7 @@ namespace Proyecto_camiones.Presentacion
             //var result = await clvm.Eliminar(1);
             //Console.WriteLine(result.Value);
 
-            //ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
+            ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
 
             //INSERTAR
 
@@ -156,11 +156,11 @@ namespace Proyecto_camiones.Presentacion
             //    Console.WriteLine(viajes.Error);
             //}
 
-                //ProbarInsertarViaje("Tandil", "Azul");
+            //ProbarInsertarViaje("Tandil", "Azul");
 
-                //ProbarInsertarChofer("Juan Alpaca");
+            //ProbarInsertarChofer("Juan Alpaca");
 
-                //FleteViewModel fvm = new FleteViewModel();
+            //FleteViewModel fvm = new FleteViewModel();
 
             //INSERTAR FLETERO
             //var idFletero = await fvm.InsertarFletero("Carlos");
@@ -185,8 +185,6 @@ namespace Proyecto_camiones.Presentacion
             //}
 
             //ProbarEliminarChofer(2);
-
-            TestConexionDirecta();
 
             Console.WriteLine(1);
             ProbarInsertarViaje("Tandil", "Azul");
@@ -237,52 +235,6 @@ namespace Proyecto_camiones.Presentacion
             ChoferViewModel cvm = new ChoferViewModel();
             var resultadoCreacion = cvm.EliminarAsync(id).Result;
             Console.WriteLine("Resultado de la creación del chofer: " + resultadoCreacion.Value);
-        }
-
-        public static bool TestConexionDirecta()
-        {
-            Console.WriteLine(">>> Iniciando prueba de conexión directa con ADO.NET");
-
-            // Crea una conexión con timeout explícito
-            using var connection = new MySqlConnection(
-                "server=localhost;database=truck_manager_project_db;user=root;password=;Connect Timeout=5;");
-
-            try
-            {
-                Console.WriteLine(">>> Intentando abrir conexión directa...");
-                // Usa un timeout manual por si acaso
-                var openTask = connection.OpenAsync();
-                if (Task.WaitAny(new Task[] { openTask }, TimeSpan.FromSeconds(5).Milliseconds) == -1)
-                {
-                    Console.WriteLine(">>> ¡TIMEOUT al abrir conexión!");
-                    return false;
-                }
-
-                if (connection.State == ConnectionState.Open)
-                {
-                    Console.WriteLine(">>> ¡Conexión directa exitosa!");
-                    return true;
-                }
-                else
-                {
-                    Console.WriteLine($">>> Conexión en estado: {connection.State}");
-                    return false;
-                }
-            }
-            catch (MySqlException ex)
-            {
-                Console.WriteLine($">>> ERROR MySQL: {ex.Message}, Número: {ex.Number}");
-                return false;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($">>> ERROR general: {ex.Message}");
-                return false;
-            }
-            finally
-            {
-                Console.WriteLine(">>> Finalizando prueba de conexión directa");
-            }
         }
     }
 }

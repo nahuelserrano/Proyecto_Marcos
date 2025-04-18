@@ -30,7 +30,7 @@ namespace Proyecto_camiones.ViewModels
 
         public async Task<Result<int>> InsertarCliente(string nombre)
         {
-            if (await this.testearConexion())
+            if (this.testearConexion().Result)
             {
                 Console.WriteLine("omg entré!!");
                 var resultado = await this.clienteService.InsertarAsync(nombre);
@@ -55,7 +55,7 @@ namespace Proyecto_camiones.ViewModels
 
         public async Task<Result<Cliente>> ObtenerById(int id)
         {
-            if (await this.testearConexion())
+            if (this.testearConexion().Result)
             {
                 return await this.clienteService.ObtenerByIdAsync(id);
             }
@@ -64,7 +64,7 @@ namespace Proyecto_camiones.ViewModels
 
         public async Task<Result<bool>> Eliminar(int id)
         {
-            if (await this.testearConexion())
+            if (this.testearConexion().Result)
             {
                 return await this.clienteService.Eliminar(id);
             }
@@ -73,7 +73,7 @@ namespace Proyecto_camiones.ViewModels
 
         public async Task<Result<List<ViajeMixtoDTO>>> ObtenerViajesDeUnCliente(string cliente)
         {
-            if (await this.testearConexion())
+            if (this.testearConexion().Result)
             {
                 return await this.clienteService.ObtenerViajesDeUnCliente(cliente.ToUpper());
             }

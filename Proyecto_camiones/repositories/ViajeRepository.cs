@@ -21,27 +21,24 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
         public async Task<bool> ProbarConexionAsync()
         {
-            Console.WriteLine(">>> Probando conexión con consulta simple...");
             try
             {
-                // Usa un timeout para prevenir bloqueos
-                using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+                bool puedeConectar = await _context.Database.CanConnectAsync();
 
-                // Ejecuta una consulta simple en lugar de usar CanConnectAsync
-                int resultado = await _context.Database
-                    .ExecuteSqlRawAsync("SELECT 1", cts.Token);
+                if (puedeConectar)
+                {
+                    Console.WriteLine("Conexión exitosa a la base de datos.");
+                }
+                else
+                {
+                    Console.WriteLine("No se puede conectar a la base de datos.");
+                }
 
-                Console.WriteLine($">>> Consulta ejecutada con éxito: {resultado}");
-                return true;
-            }
-            catch (TaskCanceledException)
-            {
-                Console.WriteLine(">>> Timeout al ejecutar la consulta de prueba");
-                return false;
+                return puedeConectar;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($">>> Error al probar conexión: {ex.Message}");
+                Console.WriteLine($"Error al intentar conectar: {ex.Message}");
                 return false;
             }
         }
