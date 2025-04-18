@@ -18,6 +18,8 @@ namespace Proyecto_camiones.Presentacion.Models
         public int Camion { get; set; }
         public float Km { get; set; }
         public float Tarifa { get; set; }
+        public string NombreChofer { get; set; }
+
         public DateOnly FechaFacturacion { get; set; }
         public float total { get { return (Tarifa * Kg) * 1000; } }
 

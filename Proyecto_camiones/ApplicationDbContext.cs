@@ -25,17 +25,6 @@ public class ApplicationDbContext : DbContext
 
 
 
-    // Configurar la conexión a MySQL
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        if (!optionsBuilder.IsConfigured)
-        {
-            optionsBuilder.UseMySql(
-                "server=localhost;database=truck_manager_project_db;user=root;password=",
-                ServerVersion.AutoDetect("server=localhost;database=truck_manager_project_db;user=root;password="));
-        }
-    }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // Configuración adicional que mapea una entidad a su tabla en la base de datos
@@ -70,10 +59,11 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.Remito).HasColumnName("remito");
             entity.Property(e => e.Kg).HasColumnName("kg");
             entity.Property(e => e.Carga).HasColumnName("carga");
-            entity.Property(e => e.Cliente).HasColumnName("cliente");
-            entity.Property(e => e.Camion).HasColumnName("camion");
+            entity.Property(e => e.Cliente).HasColumnName("idcliente");
+            entity.Property(e => e.Camion).HasColumnName("idcamion");
             entity.Property(e => e.Km).HasColumnName("km");
             entity.Property(e => e.Tarifa).HasColumnName("tarifa");
+            entity.Property(e => e.NombreChofer).HasColumnName("nombre_chofer");
         });
 
 

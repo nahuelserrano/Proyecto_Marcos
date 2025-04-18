@@ -1,4 +1,5 @@
 ﻿using MySqlX.XDevAPI.Common;
+using Proyecto_camiones.Models;
 using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Utils;
 using Proyecto_camiones.Repositories;
@@ -29,6 +30,7 @@ namespace Proyecto_camiones.Services
         {
             if(nombre!= null)
             {
+                nombre = nombre.ToUpper();
                 int id = await this.fleteRepository.InsertarFletero(nombre);
                 if (id > -1)
                 {
@@ -37,6 +39,21 @@ namespace Proyecto_camiones.Services
                 return Result<int>.Failure("Hubo un problema al intentar insertar el fletero");
             }
             return Result<int>.Failure("El campo nombre no puede ser nulo");
+        }
+
+        internal async Task<Result<Flete>> ObtenerPorNombre(string nombre)
+        {
+            if(nombre != null)
+            {
+                nombre = nombre.ToUpper();
+                Flete fletero = await this.fleteRepository.ObtenerPorNombre(nombre);
+                if(fletero != null)
+                {
+                    return Result<Flete>.Success(fletero);
+                }
+                return Result<Flete>.Failure("No existe un fletero con ese nombre");
+            }
+            return Result<Flete>.Failure("El nombre no puede ser nulo");
         }
     }
 }

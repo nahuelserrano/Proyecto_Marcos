@@ -1,5 +1,7 @@
-﻿using Proyecto_camiones.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Proyecto_camiones.Models;
 using Proyecto_camiones.Presentacion;
+using Proyecto_camiones.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +14,9 @@ namespace Proyecto_camiones.Repositories
     {
         private readonly ApplicationDbContext _context;
 
-        public FleteRepository(ApplicationDbContext context)
+        public FleteRepository()
         {
-            _context = context;
+            _context = General.obtenerInstancia();
         }
 
         public async Task<bool> ProbarConexionAsync()
@@ -47,8 +49,9 @@ namespace Proyecto_camiones.Repositories
             try
             {
                 Flete nuevo = new Flete(nombre);
-                this._context.Fletes.Add(nuevo);
+                await this._context.Fletes.AddAsync(nuevo);
                 int registrosAfectados = await this._context.SaveChangesAsync();
+                Console.WriteLine($"Registros afectados: {registrosAfectados}");
                 if (registrosAfectados > 0)
                 {
                     return nuevo.Id;
@@ -59,6 +62,20 @@ namespace Proyecto_camiones.Repositories
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e.InnerException);
                 return -1;
+            }
+        }
+
+        internal async Task<Flete> ObtenerPorNombre(string nombre)
+        {
+            try
+            {
+                Flete flete = await _context.Fletes.Where(f => f.nombre == nombre).FirstOrDefaultAsync();
+                return flete;
+            }catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.InnerException);
+                return null;
             }
         }
     }

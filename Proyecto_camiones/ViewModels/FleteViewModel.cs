@@ -1,5 +1,5 @@
-﻿/*
-using MySqlX.XDevAPI.Common;
+﻿using MySqlX.XDevAPI.Common;
+using Proyecto_camiones.Models;
 using Proyecto_camiones.Presentacion.Utils;
 using Proyecto_camiones.Repositories;
 using Proyecto_camiones.Services;
@@ -18,8 +18,7 @@ namespace Proyecto_camiones.ViewModels
 
         public FleteViewModel()
         {
-            var dbContext = General.obtenerInstancia();
-            var repo = new FleteRepository(dbContext);
+            var repo = new FleteRepository();
             fleteService = new FleteService(repo);
         }
 
@@ -36,6 +35,14 @@ namespace Proyecto_camiones.ViewModels
             }
             return Result<int>.Failure("No se pudo establecer la conexion con la base de datos");
         }
+
+        public async Task<Result<Flete>> ObtenerFletePorNombre(string nombre)
+        {
+            if (this.TestearConexion().Result)
+            {
+                return await this.fleteService.ObtenerPorNombre(nombre);
+            }
+            return Result<Flete>.Failure("No se pudo establecer la conexion con la base de datos");
+        }
     }
 }
-*/

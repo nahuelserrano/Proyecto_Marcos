@@ -34,13 +34,13 @@ namespace Proyecto_camiones.ViewModels
 
 
             // Finalmente creamos el servicio de viajes con todas sus dependencias
-            _viajeService = new ViajeService(viajeRepository, camionService, clienteService, choferService );
+            _viajeService = new ViajeService(viajeRepository, camionService, clienteService, choferService);
         }
 
         // Método para probar la conexión
         public async Task<bool> TestearConexion()
         {
-            return await _viajeService.ProbarConexionAsync();
+            return await this._viajeService.ProbarConexionAsync();
         }
 
         // Método para crear un nuevo viaje
@@ -57,25 +57,28 @@ namespace Proyecto_camiones.ViewModels
             float tarifa)
         {
             Console.WriteLine(4);
-            if (await this.TestearConexion())
+            
+            //bool conexionExitosa = await TestearConexion();
+
+            //Console.WriteLine(await TestearConexion());
+
+            //if (!conexionExitosa)
+            //{
+            //    return Result<ViajeDTO>.Failure(MensajeError.errorConexion());
+            //}
+
+            var resultado = await _viajeService.CrearAsync(
+                fechaInicio, lugarPartida, destino, remito,
+                kg, carga, cliente, camion, km, tarifa);
+
+            if (resultado.IsSuccess)
             {
-
-                var resultado = await _viajeService.CrearAsync(
-                    fechaInicio, lugarPartida, destino, remito,
-                    kg, carga, cliente, camion, km, tarifa);
-
-                if (resultado.IsSuccess)
-                {
-                    Console.WriteLine($"Viaje creado con éxito");
-                    return resultado;
-                }
-                else
-                {
-                    Console.WriteLine($"Error al crear el viaje: {resultado.Error}");
-                    return Result<ViajeDTO>.Failure(resultado.Error);
-                }
+                Console.WriteLine($"Viaje creado con éxito");
+                return resultado;
             }
-            return Result<ViajeDTO>.Failure("La conexión no pudo establecerse");
+            
+            Console.WriteLine($"Error al crear el viaje: {resultado.Error}");
+            return Result<ViajeDTO>.Failure(resultado.Error);
         }
 
         // Método para obtener todos los viajes

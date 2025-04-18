@@ -1,4 +1,5 @@
-﻿using Proyecto_camiones.Presentacion.Models;
+﻿using Proyecto_camiones.DTOs;
+using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Services;
 using Proyecto_camiones.Presentacion.Utils;
@@ -29,7 +30,7 @@ namespace Proyecto_camiones.ViewModels
 
         public async Task<Result<int>> InsertarCliente(string nombre)
         {
-            if (this.testearConexion().Result)
+            if (await this.testearConexion())
             {
                 Console.WriteLine("omg entré!!");
                 var resultado = await this.clienteService.InsertarAsync(nombre);
@@ -54,7 +55,7 @@ namespace Proyecto_camiones.ViewModels
 
         public async Task<Result<Cliente>> ObtenerById(int id)
         {
-            if (this.testearConexion().Result)
+            if (await this.testearConexion())
             {
                 return await this.clienteService.ObtenerByIdAsync(id);
             }
@@ -63,11 +64,20 @@ namespace Proyecto_camiones.ViewModels
 
         public async Task<Result<bool>> Eliminar(int id)
         {
-            if (this.testearConexion().Result)
+            if (await this.testearConexion())
             {
                 return await this.clienteService.Eliminar(id);
             }
             return Result<bool>.Failure("No se pudo establecer la conexión");
         } 
+
+        public async Task<Result<List<ViajeMixtoDTO>>> ObtenerViajesDeUnCliente(string cliente)
+        {
+            if (await this.testearConexion())
+            {
+                return await this.clienteService.ObtenerViajesDeUnCliente(cliente.ToUpper());
+            }
+            return Result<List<ViajeMixtoDTO>>.Failure("No se pudo establecer la conexión");
+        }
     }
 }

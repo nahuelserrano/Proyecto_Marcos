@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using MySql.Data.MySqlClient;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Models;
 
@@ -19,24 +21,27 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
         public async Task<bool> ProbarConexionAsync()
         {
+            Console.WriteLine(">>> Probando conexión con consulta simple...");
             try
             {
-                bool puedeConectar = await _context.Database.CanConnectAsync();
+                // Usa un timeout para prevenir bloqueos
+                using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
 
-                if (puedeConectar)
-                {
-                    Console.WriteLine("Conexión exitosa a la base de datos.");
-                }
-                else
-                {
-                    Console.WriteLine("No se puede conectar a la base de datos.");
-                }
+                // Ejecuta una consulta simple en lugar de usar CanConnectAsync
+                int resultado = await _context.Database
+                    .ExecuteSqlRawAsync("SELECT 1", cts.Token);
 
-                return puedeConectar;
+                Console.WriteLine($">>> Consulta ejecutada con éxito: {resultado}");
+                return true;
+            }
+            catch (TaskCanceledException)
+            {
+                Console.WriteLine(">>> Timeout al ejecutar la consulta de prueba");
+                return false;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al intentar conectar: {ex.Message}");
+                Console.WriteLine($">>> Error al probar conexión: {ex.Message}");
                 return false;
             }
         }

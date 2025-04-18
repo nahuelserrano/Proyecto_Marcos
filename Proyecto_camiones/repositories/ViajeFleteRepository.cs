@@ -1,5 +1,8 @@
-﻿using Proyecto_camiones.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Proyecto_camiones.DTOs;
+using Proyecto_camiones.Models;
 using Proyecto_camiones.Presentacion;
+using Proyecto_camiones.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +16,9 @@ namespace Proyecto_camiones.Repositories
 
         private readonly ApplicationDbContext _context;
 
-        public ViajeFleteRepository(ApplicationDbContext context)
+        public ViajeFleteRepository()
         {
-            _context = context;
+            _context = General.obtenerInstancia();
         }
 
         public async Task<bool> ProbarConexionAsync()
@@ -61,6 +64,51 @@ namespace Proyecto_camiones.Repositories
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e.InnerException);
                 return -1;
+            }
+        }
+
+        internal async Task<List<ViajeFleteDTO>> ObtenerViajesPorFletero(int idFletero)
+        {
+            try
+            {
+                var viajes = await _context.ViajesFlete
+                .Where(v => v.idFlete == idFletero)  // Filtrar por el fletero solicitado
+                .Join(
+                    _context.Clientes,
+                    viaje => viaje.idCliente,
+                    cliente => cliente.Id,  // Asumiendo que el ID del cliente es 'Id'
+                    (viaje, cliente) => new { Viaje = viaje, Cliente = cliente }
+                )
+                .Join(
+                    _context.Fletes,
+                    vc => vc.Viaje.idFlete,
+                    flete => flete.Id,  // Asumiendo que el ID del fletero es 'Id'
+                    (vc, flete) => new ViajeFleteDTO
+                    {
+                        origen = vc.Viaje.origen,
+                        destino = vc.Viaje.destino,
+                        remito = vc.Viaje.remito,
+                        carga = vc.Viaje.carga,
+                        km = vc.Viaje.km,
+                        kg = vc.Viaje.kg,
+                        tarifa = vc.Viaje.tarifa,
+                        factura = vc.Viaje.factura,
+                        cliente = vc.Cliente.Nombre,  // Nombre del cliente obtenido por join
+                        fletero = flete.nombre,       // Nombre del fletero obtenido por join
+                        nombre_chofer = vc.Viaje.nombre_chofer,
+                        comision = vc.Viaje.comision,
+                        fecha_salida = vc.Viaje.fecha_salida
+                    }
+                )
+                .ToListAsync();
+
+                return viajes;
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.InnerException);
+                return null;
             }
         }
     }

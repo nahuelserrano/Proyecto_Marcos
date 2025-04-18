@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 14-04-2025 a las 03:29:35
+-- Tiempo de generación: 18-04-2025 a las 03:18:25
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -139,6 +139,18 @@ CREATE TABLE `fletero` (
   `nombre` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `fletero`
+--
+
+INSERT INTO `fletero` (`idFletero`, `nombre`) VALUES
+(1, 'Bernabé'),
+(2, 'Marcelo'),
+(3, 'Marcelo'),
+(4, 'JUAN'),
+(5, 'JUAN'),
+(6, 'CARLOS');
+
 -- --------------------------------------------------------
 
 --
@@ -148,9 +160,25 @@ CREATE TABLE `fletero` (
 CREATE TABLE `pago` (
   `idpago` int(11) NOT NULL,
   `monto` varchar(45) NOT NULL,
-  `fecha_viaje` date DEFAULT NULL,
   `idChofer` int(11) DEFAULT NULL,
-  `pagado` tinyint(4) DEFAULT NULL
+  `pagado` tinyint(4) DEFAULT NULL,
+  `idViaje` int(11) NOT NULL,
+  `idSueldo` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `sueldo`
+--
+
+CREATE TABLE `sueldo` (
+  `idsueldo` int(11) NOT NULL,
+  `idchofer` int(11) NOT NULL,
+  `fecha_desde` date DEFAULT NULL,
+  `fecha_hasta` date DEFAULT NULL,
+  `fecha_pago` date DEFAULT NULL,
+  `monto_total` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -217,7 +245,18 @@ CREATE TABLE `viaje_flete` (
 --
 
 INSERT INTO `viaje_flete` (`idviaje_flete`, `origen`, `destino`, `remito`, `carga`, `km`, `kg`, `tarifa`, `factura`, `idCliente`, `fletero`, `nombre_chofer`, `comision`, `fecha_salida`) VALUES
-(1, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, '1', 'Chofer del Flete X', 10, '2025-04-11');
+(1, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, '1', 'Chofer del Flete X', 10, '2025-04-11'),
+(2, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, '1', 'Chofer del Flete X', 10, '2025-04-11'),
+(3, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, '1', 'Chofer del Flete X', 10, '2025-04-11'),
+(4, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, '1', 'Chofer del Flete X', 10, '2025-04-11'),
+(5, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, '1', 'Chofer del Flete X', 10, '2025-04-11'),
+(6, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, '1', 'Chofer del Flete X', 10, '2025-04-11'),
+(7, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, '1', 'Chofer del Flete X', 10, '2025-04-11'),
+(8, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, '1', 'Chofer del Flete X', 10, '2025-04-11'),
+(9, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, '1', 'Chofer del Flete X', 10, '2025-04-11'),
+(10, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, '1', 'Chofer del Flete X', 10, '2025-04-11'),
+(11, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, '1', 'Chofer del Flete X', 10, '2025-04-11'),
+(12, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, '1', 'Chofer del Flete X', 10, '2025-04-11');
 
 --
 -- Índices para tablas volcadas
@@ -267,7 +306,16 @@ ALTER TABLE `fletero`
 --
 ALTER TABLE `pago`
   ADD PRIMARY KEY (`idpago`),
-  ADD KEY `fk_pago_chofer_idx` (`idChofer`);
+  ADD KEY `fk_pago_chofer_idx` (`idChofer`),
+  ADD KEY `fk_pago_viaje_idx` (`idViaje`),
+  ADD KEY `fk_pago_sueldo_idx` (`idSueldo`);
+
+--
+-- Indices de la tabla `sueldo`
+--
+ALTER TABLE `sueldo`
+  ADD PRIMARY KEY (`idsueldo`),
+  ADD KEY `fk_sueldo_chofer_idx` (`idchofer`);
 
 --
 -- Indices de la tabla `usuario`
@@ -328,13 +376,19 @@ ALTER TABLE `cuenta_corriente`
 -- AUTO_INCREMENT de la tabla `fletero`
 --
 ALTER TABLE `fletero`
-  MODIFY `idFletero` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idFletero` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `pago`
 --
 ALTER TABLE `pago`
   MODIFY `idpago` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `sueldo`
+--
+ALTER TABLE `sueldo`
+  MODIFY `idsueldo` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
@@ -352,7 +406,7 @@ ALTER TABLE `viaje`
 -- AUTO_INCREMENT de la tabla `viaje_flete`
 --
 ALTER TABLE `viaje_flete`
-  MODIFY `idviaje_flete` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idviaje_flete` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Restricciones para tablas volcadas
@@ -375,7 +429,15 @@ ALTER TABLE `cuenta_corriente`
 -- Filtros para la tabla `pago`
 --
 ALTER TABLE `pago`
-  ADD CONSTRAINT `fk_pago_chofer` FOREIGN KEY (`idChofer`) REFERENCES `chofer` (`idChofer`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_pago_chofer` FOREIGN KEY (`idChofer`) REFERENCES `chofer` (`idChofer`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_pago_sueldo` FOREIGN KEY (`idSueldo`) REFERENCES `sueldo` (`idsueldo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_pago_viaje` FOREIGN KEY (`idViaje`) REFERENCES `viaje` (`idviaje`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `sueldo`
+--
+ALTER TABLE `sueldo`
+  ADD CONSTRAINT `fk_sueldo_chofer` FOREIGN KEY (`idchofer`) REFERENCES `chofer` (`idChofer`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `viaje`

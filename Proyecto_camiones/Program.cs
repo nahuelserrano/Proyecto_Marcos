@@ -11,6 +11,9 @@ using Proyecto_camiones.Presentacion.Utils;
 using Proyecto_camiones.Models;
 using MathNet.Numerics.LinearAlgebra.Factorization;
 using System.Runtime.CompilerServices;
+using MySqlX.XDevAPI.Common;
+using System.Data;
+using MySql.Data.MySqlClient;
 
 
 namespace Proyecto_camiones.Presentacion
@@ -67,7 +70,7 @@ namespace Proyecto_camiones.Presentacion
             //Console.WriteLine(response.Value);
 
 
-            CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
+            //CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
 
             //INSERCION
 
@@ -101,7 +104,7 @@ namespace Proyecto_camiones.Presentacion
             //}
 
 
-            //  ClienteViewModel clvm = new ClienteViewModel();
+            //ClienteViewModel clvm = new ClienteViewModel();
 
             //INSERCION
             //var cliente = await clvm.InsertarCliente("MACHACA");
@@ -127,17 +130,68 @@ namespace Proyecto_camiones.Presentacion
 
             //INSERTAR
 
-            //var idViaje = await vfvm.InsertarViajeFlete("Tandil", "Necochea", 40, "trigo", 120, 130, 19000, 12345, "MACHACA", "x", "Chofer del Flete X", 10, new DateOnly(2025, 4, 11));
+            //var idViaje = await vfvm.InsertarViajeFlete("Tandil", "Necochea", 40, "trigo", 120, 130, 19000, 12345, "MACHACA", "CARLOS", "Chofer de Carlos", 10, new DateOnly(2025, 4, 11));
             //if (idViaje.IsSuccess)
             //{
             //    Console.WriteLine("Viaje ingresado con el id: " + idViaje.Value);
             //}
             //Console.WriteLine(idViaje.Error);
+
+
+            //ProbarInsertarChofer("Juan Alpaca");
+
+
+            //OBTENER VIAJES DE UN FLETERO
+
+            //var viajes = await vfvm.ObtenerViajesDeUnFletero("Carlos");
+            //if (viajes.IsSuccess)
+            //{
+            //    foreach(var viaje in viajes.Value)
+            //    {
+            //        Console.WriteLine(viaje);
+            //    }
+            //}
+            //else
+            //{
+            //    Console.WriteLine(viajes.Error);
+            //}
+
+                //ProbarInsertarViaje("Tandil", "Azul");
+
+                //ProbarInsertarChofer("Juan Alpaca");
+
+                //FleteViewModel fvm = new FleteViewModel();
+
+            //INSERTAR FLETERO
+            //var idFletero = await fvm.InsertarFletero("Carlos");
+            //if (idFletero.IsSuccess)
+            //{
+            //    Console.WriteLine("Fletero insertado con el id: " + idFletero.Value);
+            //}
+            //else
+            //{
+            //    Console.WriteLine(idFletero.Error);
+            //}
+
+            //OBTENER POR NOMBRE
+            //var fletero = await fvm.ObtenerFletePorNombre("Carlos");
+            //if (fletero.IsSuccess)
+            //{
+            //    Console.WriteLine(fletero.Value);
+            //}
+            //else
+            //{
+            //    Console.WriteLine(fletero.Error);
+            //}
+
+            //ProbarEliminarChofer(2);
+
+            TestConexionDirecta();
+
             Console.WriteLine(1);
             ProbarInsertarViaje("Tandil", "Azul");
 
-            //ProbarInsertarChofer("Juan Alpaca");
-            //ProbarEliminarChofer(2);
+            
         }
 
 
@@ -159,7 +213,15 @@ namespace Proyecto_camiones.Presentacion
                 km: 650.75f,
                 tarifa: 10.5f
             );
+
             Console.WriteLine(3);
+
+            if (!resultadoCreacion1.IsSuccess)
+            {
+                Console.WriteLine("Error al crear el viaje: " + resultadoCreacion1.Error);
+                return;
+            }
+
             Console.WriteLine("Resultado de la creación del viaje: " + resultadoCreacion1.Value);
         }
 
@@ -175,6 +237,52 @@ namespace Proyecto_camiones.Presentacion
             ChoferViewModel cvm = new ChoferViewModel();
             var resultadoCreacion = cvm.EliminarAsync(id).Result;
             Console.WriteLine("Resultado de la creación del chofer: " + resultadoCreacion.Value);
+        }
+
+        public static bool TestConexionDirecta()
+        {
+            Console.WriteLine(">>> Iniciando prueba de conexión directa con ADO.NET");
+
+            // Crea una conexión con timeout explícito
+            using var connection = new MySqlConnection(
+                "server=localhost;database=truck_manager_project_db;user=root;password=;Connect Timeout=5;");
+
+            try
+            {
+                Console.WriteLine(">>> Intentando abrir conexión directa...");
+                // Usa un timeout manual por si acaso
+                var openTask = connection.OpenAsync();
+                if (Task.WaitAny(new Task[] { openTask }, TimeSpan.FromSeconds(5).Milliseconds) == -1)
+                {
+                    Console.WriteLine(">>> ¡TIMEOUT al abrir conexión!");
+                    return false;
+                }
+
+                if (connection.State == ConnectionState.Open)
+                {
+                    Console.WriteLine(">>> ¡Conexión directa exitosa!");
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine($">>> Conexión en estado: {connection.State}");
+                    return false;
+                }
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine($">>> ERROR MySQL: {ex.Message}, Número: {ex.Number}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($">>> ERROR general: {ex.Message}");
+                return false;
+            }
+            finally
+            {
+                Console.WriteLine(">>> Finalizando prueba de conexión directa");
+            }
         }
     }
 }

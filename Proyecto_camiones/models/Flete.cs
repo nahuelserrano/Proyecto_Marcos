@@ -15,5 +15,11 @@ namespace Proyecto_camiones.Models
         {
             this.nombre = nombre;
         }
+
+        override
+            public string ToString()
+        {
+            return "Nombre fletero: " + this.nombre;
+        }
     }
 }
