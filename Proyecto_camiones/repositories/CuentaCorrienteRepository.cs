@@ -89,7 +89,7 @@ namespace Proyecto_camiones.Repositories
                 var result = await _context.Cuentas.Where(r => r.IdCliente == clienteId).OrderByDescending(r => r.Fecha_factura).FirstOrDefaultAsync();
                 if(result != null)
                 {
-                    CuentaCorriente cuenta = new CuentaCorriente(result.IdCliente, result.Fecha_factura, result.Nro_factura, result.Adeuda, result.Pagado);
+                    CuentaCorriente cuenta = new CuentaCorriente(result.IdCliente, -2, result.Fecha_factura, result.Nro_factura, result.Adeuda, result.Pagado);
                     return cuenta;
                 }
                 return null;
@@ -135,7 +135,7 @@ namespace Proyecto_camiones.Repositories
                 var cuentas = await this._context.Cuentas.Where(c => c.IdCliente == id).ToListAsync();
                 foreach(var c in cuentas)
                 {
-                    CuentaCorriente cuenta = new CuentaCorriente(c.IdCliente, c.Fecha_factura, c.Nro_factura, c.Adeuda, c.Pagado);
+                    CuentaCorriente cuenta = new CuentaCorriente(c.IdCliente, -2, c.Fecha_factura, c.Nro_factura, c.Adeuda, c.Pagado);
                     result.Add(cuenta);
                 }
                 return result;

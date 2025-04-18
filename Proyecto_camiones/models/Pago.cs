@@ -9,8 +9,8 @@ namespace Proyecto_camiones.Presentacion.Models
 {
     public class Pago
     {
+        public int Id { get; set; }
         public int Id_Chofer { get; set; }
-        public DateOnly FechaDePago { get; set; }
         public float Monto_Pagado { get; set; }
         public DateOnly pagadoDesde { get; set; }
         public DateOnly pagadoHasta { get; set; }
@@ -20,7 +20,7 @@ namespace Proyecto_camiones.Presentacion.Models
         public Pago(float monto, int Id_Chofer, DateOnly pagadoDesde, DateOnly pagadoHasta, DateOnly FechaPago)
         {
             this.Id_Chofer = Id_Chofer;
-            this.FechaDePago = FechaPago;
+            this.FechaPago = FechaPago;
             this.Monto_Pagado = monto;
             this.pagadoDesde = pagadoDesde;
             this.pagadoHasta = pagadoHasta;

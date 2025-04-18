@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using MySqlX.XDevAPI.Common;
-using NPOI.POIFS.Properties;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Repositories;
@@ -15,7 +11,7 @@ namespace Proyecto_camiones.Presentacion.Services
     class PagosService
     {
         private PagoRepository _pagoRepository;
-        private ViajeService _viajeService;
+        private VIA _viajeService;
         private Viaje _viajeDTO;
 
         public PagosService(PagoRepository pagosR)
@@ -56,7 +52,7 @@ namespace Proyecto_camiones.Presentacion.Services
 
         public async Task<Result<int>> Crear(int Id_Chofer, DateOnly pagodesde, DateOnly pagoHasta, DateOnly FechaPago)
         {
-            // float monto = this.calculadorSueldo(Id_Chofer);
+             float monto = this.calculadorSueldo(Id_Chofer);
 
            
             ValidadorPago validador = new ValidadorPago(33,Id_Chofer, FechaPago, pagodesde, pagoHasta);

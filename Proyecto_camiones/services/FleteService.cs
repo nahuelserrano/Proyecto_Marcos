@@ -1,5 +1,5 @@
-﻿using Proyecto_camiones.Presentacion.Models;
-using Proyecto_camiones.Presentacion.Repositories;
+﻿using MySqlX.XDevAPI.Common;
+using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Utils;
 using Proyecto_camiones.Repositories;
 using System;
@@ -10,37 +10,33 @@ using System.Threading.Tasks;
 
 namespace Proyecto_camiones.Services
 {
-    public class ViajeFleteService
+    public class FleteService
     {
-        private ViajeFleteRepository fleteRepository;
-        private ClienteRepository clienteRepository;
 
-        public ViajeFleteService(ViajeFleteRepository fleteRepository, ClienteRepository cs)
+        public readonly FleteRepository fleteRepository;
+
+        public FleteService(FleteRepository fleteRepository)
         {
             this.fleteRepository = fleteRepository ?? throw new ArgumentNullException(nameof(fleteRepository));
-            this.clienteRepository = cs;
         }
 
-        public async Task<bool> ProbarConexionAsync()
+        public async Task<bool> TestearConexion()
         {
-            bool result = await this.fleteRepository.ProbarConexionAsync();
-            return result;
+            return await this.fleteRepository.ProbarConexionAsync();
         }
 
-        internal async Task<Result<int>> InsertarViajeFlete(string origen, string destino, float remito, string carga, float km, float kg, float tarifa, int factura, string nombre_cliente, string nombre_fletero, string nombre_chofer, float comision, DateOnly fecha_salida)
+        public async Task<Result<int>> InsertarFletero(string nombre)
         {
-            Cliente cliente = await this.clienteRepository.ObtenerPorNombre(nombre_cliente);
-            //HACER LA MISMA VALIDACION CON EL NOMBRE DEL FLETERO
-            if(cliente != null) //Y EL FLETERO ES DISTINTO DE NULL
-            {                                                                                                              //REEMPLAZAR CON FLETE.ID
-               int idViaje = await this.fleteRepository.InsertarViajeFlete(origen, destino, remito, carga, km, kg, tarifa, factura, cliente.Id, 1, nombre_chofer, comision, fecha_salida);
-                if (idViaje > 0)
+            if(nombre!= null)
+            {
+                int id = await this.fleteRepository.InsertarFletero(nombre);
+                if (id > -1)
                 {
-                    return Result<int>.Success(idViaje);
+                    return Result<int>.Success(id);
                 }
-                return Result<int>.Failure("No se pudo insertar el viaje");
+                return Result<int>.Failure("Hubo un problema al intentar insertar el fletero");
             }
-            return Result<int>.Failure("No se puede insertar el viaje, el cliente o el fletero con ese nombre no existe");
+            return Result<int>.Failure("El campo nombre no puede ser nulo");
         }
     }
 }

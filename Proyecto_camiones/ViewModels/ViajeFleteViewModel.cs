@@ -1,4 +1,6 @@
-﻿using Proyecto_camiones.Presentacion.Repositories;
+﻿using Proyecto_camiones.DTOs;
+using Proyecto_camiones.Models;
+using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Utils;
 using Proyecto_camiones.Repositories;
 using Proyecto_camiones.Services;
@@ -35,6 +37,15 @@ namespace Proyecto_camiones.ViewModels
             }
             return Result<int>.Failure("No se pudo establecer la conexion con la db");
             
+        }
+
+        public async Task<Result<List<ViajeFleteDTO>>> ObtenerViajesDeUnFletero(string fletero)
+        {
+            if (this.testearConexion().Result)
+            {
+                return await this.fleteService.ObtenerViajesDeUnFletero(fletero);
+            }
+            return Result<List<ViajeFleteDTO>>.Failure("No se pudo acceder a la base de datos");
         }
     }
 }
