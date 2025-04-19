@@ -45,37 +45,37 @@ namespace Proyecto_camiones.Presentacion.Services
             float km,
             float tarifa)
         {
-            Console.WriteLine(5);
-            ValidadorViaje validador = new ValidadorViaje(
-                fechaInicio, lugarPartida, destino, kg, remito,
-                tarifa, cliente, camion, carga, km);
 
-            Result<bool> resultadoValidacion = validador.ValidarCompleto();
+            try{
+                
 
-            if (!resultadoValidacion.IsSuccess)
-                return Result<ViajeDTO>.Failure(resultadoValidacion.Error);
+                ValidadorViaje validador = new ValidadorViaje(fechaInicio, lugarPartida, destino, kg, remito,
+                    tarifa, cliente, camion, carga, km);
 
-            try
-            {
-                // Obtener nombres de cliente y chofer para el DTO
-                string nombreCliente = "Cliente " + cliente;
-                string nombreChofer = "Chofer (pendiente)";
+                Result<bool> resultadoIdRelaciones = validador.ValidarIdRelaciones().ObtenerResultado();
 
-                // Si tenemos acceso a los repositorios, obtener los nombres reales
-                if (_clienteService != null)
+
+                if (!resultadoIdRelaciones.IsSuccess)
                 {
-                    var clienteResult = await _clienteService.ObtenerByIdAsync(cliente);
-                    if (clienteResult.IsSuccess)
-                        nombreCliente = clienteResult.Value.Nombre;
+                    return Result<ViajeDTO>.Failure(resultadoIdRelaciones.Error);
                 }
 
-                if (_camionService != null)
-                {
-                    var camionResult = await _camionService.ObtenerPorIdAsync(camion);
-                    if (camionResult != null)
-                        nombreChofer = camionResult.Nombre_Chofer;
-                }
+                // Revisar que los metodos puedan retornar null si no esxiste el camion o cliente con ese id
+                /*
+                var clienteResult = await _clienteService.ObtenerPorIdAsync(cliente);
+                var camionResult = await _camionService.ObtenerPorIdAsync(camion);
 
+                validador.reiniciar();
+
+                validador.ValidarExistenRelaciones(clienteResult != null, camionResult != null);
+
+                Result<bool> resultadoValidacion = validador.ValidarCompleto();
+
+                if (!resultadoValidacion.IsSuccess)
+                {
+                    return Result<ViajeDTO>.Failure(resultadoValidacion.Error);
+                }
+                */
                 ViajeDTO viaje = await _viajeRepository.InsertarAsync(
                     fechaInicio, lugarPartida, destino, remito, kg,
                     carga, cliente, camion, km, tarifa);
