@@ -36,7 +36,7 @@ namespace Proyecto_camiones.Presentacion
 
             //pagosService.Crear(1, DateOnly.MinValue, DateOnly.MaxValue, DateOnly.MaxValue);
 
-            CamionViewModel cvm = new CamionViewModel();
+            //CamionViewModel cvm = new CamionViewModel();
             ////PRUEBA INSERCION
             //Result<int> id = cvm.InsertarCamion(120, 40, "MLA126", "Pepito").Result;
             //if (id.IsSuccess)
@@ -70,7 +70,7 @@ namespace Proyecto_camiones.Presentacion
             //Console.WriteLine(response.Value);
 
 
-            CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
+            //CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
 
             //INSERCION
 
@@ -104,7 +104,7 @@ namespace Proyecto_camiones.Presentacion
             //}
 
 
-            ClienteViewModel clvm = new ClienteViewModel();
+            //ClienteViewModel clvm = new ClienteViewModel();
 
             //INSERCION
             //var cliente = await clvm.InsertarCliente("MACHACA");
@@ -126,7 +126,7 @@ namespace Proyecto_camiones.Presentacion
             //var result = await clvm.Eliminar(1);
             //Console.WriteLine(result.Value);
 
-            ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
+            //ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
 
             //INSERTAR
 
@@ -199,7 +199,7 @@ namespace Proyecto_camiones.Presentacion
 
             ViajeViewModel vvm = new ViajeViewModel();
 
-            var resultadoCreacion1 = await vvm.CrearViaje(
+            var resultadoCreacion1 = await vvm.CrearAsync(
                 fechaInicio: new DateOnly(2025, 4, 11),
                 lugarPartida: origen,
                 destino: destino,

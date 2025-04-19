@@ -12,9 +12,6 @@ namespace Proyecto_camiones.ViewModels
     public class ViajeViewModel
     {
         private readonly ViajeService _viajeService;
-        private readonly ClienteService _clienteService;
-        private readonly ClienteService _camionService;
-        private readonly ChoferService _choferService;
 
         public ViajeViewModel()
         {
@@ -23,9 +20,9 @@ namespace Proyecto_camiones.ViewModels
 
             // Creamos las dependencias necesarias
             var viajeRepository = new ViajeRepository(dbContext);
-            CamionRepository camionRepository = new CamionRepository(dbContext);
-            ClienteRepository clienteRepository = new ClienteRepository(dbContext);
-            ChoferRepository choferRepository = new ChoferRepository(dbContext);
+            var camionRepository = new CamionRepository(dbContext);
+            var clienteRepository = new ClienteRepository(dbContext);
+            var choferRepository = new ChoferRepository(dbContext);
 
             // Creamos los servicios que ViajeService necesita
             var camionService = new CamionService(camionRepository);
@@ -44,7 +41,7 @@ namespace Proyecto_camiones.ViewModels
         }
 
         // Método para crear un nuevo viaje
-        public async Task<Result<ViajeDTO>> CrearViaje(
+        public async Task<Result<ViajeDTO>> CrearAsync(
             DateOnly fechaInicio,
             string lugarPartida,
             string destino,
@@ -82,7 +79,7 @@ namespace Proyecto_camiones.ViewModels
         }
 
         // Método para obtener todos los viajes
-        public async Task<Result<List<ViajeDTO>>> ObtenerTodos()
+        public async Task<Result<List<ViajeDTO>>> ObtenerTodosAsync()
         {
             if (await this.TestearConexion())
             {
@@ -92,16 +89,15 @@ namespace Proyecto_camiones.ViewModels
                 {
                     return resultado;
                 }
-                else
-                {
-                    return Result<List<ViajeDTO>>.Failure(resultado.Error);
-                }
+                
+                return Result<List<ViajeDTO>>.Failure(resultado.Error);
+                
             }
             return Result<List<ViajeDTO>>.Failure("La conexión no pudo establecerse");
         }
 
         // Método para obtener viajes filtrados
-        public async Task<Result<List<ViajeDTO>>> ObtenerFiltrados(
+        public async Task<Result<List<ViajeDTO>>> ObtenerPorFiltradoAsync(
             DateOnly? fechaInicio = null,
             DateOnly? fechaFin = null,
             int? choferId = null,
@@ -169,7 +165,7 @@ namespace Proyecto_camiones.ViewModels
         }
 
         // Método para obtener viajes por camión
-        public async Task<Result<List<ViajeDTO>>> ObtenerPorCamion(int camionId)
+        public async Task<Result<List<ViajeDTO>>> ObtenerPorCamionAsync(int camionId)
         {
             if (await this.TestearConexion())
             {

@@ -76,14 +76,14 @@ namespace Proyecto_camiones.Presentacion.Services
                         nombreChofer = camionResult.Nombre_Chofer;
                 }
 
-                Viaje viaje = await _viajeRepository.InsertarAsync(
+                ViajeDTO viaje = await _viajeRepository.InsertarAsync(
                     fechaInicio, lugarPartida, destino, remito, kg,
                     carga, cliente, camion, km, tarifa);
 
                 if (viaje == null)
                     return Result<ViajeDTO>.Failure("No se pudo crear el viaje en la base de datos");
 
-                return Result<ViajeDTO>.Success(viaje.toDTO(nombreChofer, nombreCliente));
+                return Result<ViajeDTO>.Success(viaje);
             }
             catch (Exception ex)
             {
@@ -96,37 +96,11 @@ namespace Proyecto_camiones.Presentacion.Services
             try
             {
                 var viajes = await _viajeRepository.ObtenerTodosAsync();
-                List<ViajeDTO> viajesDTO = new List<ViajeDTO>();
 
-                foreach (var viaje in viajes)
-                {
-                    // Obtener nombres de cliente y chofer
-                    string nombreCliente = "Cliente " + viaje.Cliente;
-                    string nombreChofer = "Chofer (pendiente)";
-
-                    // Si tenemos acceso a los repositorios, obtener los nombres reales
-                    if (_clienteService != null)
-                    {
-                        var clienteResult = await _clienteService.ObtenerByIdAsync(viaje.Cliente);
-                        if (clienteResult.IsSuccess)
-                            nombreCliente = clienteResult.Value.Nombre;
-                    }
-
-                    // Usar el servicio de camión para obtener datos del camión y su chofer
-                    if (_camionService != null)
-                    {
-                        var camionResult = await _camionService.ObtenerPorIdAsync(viaje.Camion);
-                        if (camionResult != null)
-                            nombreChofer = camionResult.Nombre_Chofer;
-                    }
-
-                    viajesDTO.Add(viaje.toDTO(nombreChofer, nombreCliente));
-                }
-
-                if (viajes == null || viajes.Count == 0)
+                if (viajes.Count == 0)
                     return Result<List<ViajeDTO>>.Success(new List<ViajeDTO>());
 
-                return Result<List<ViajeDTO>>.Success(viajesDTO);
+                return Result<List<ViajeDTO>>.Success(viajes);
             }
             catch (Exception ex)
             {
@@ -185,7 +159,7 @@ namespace Proyecto_camiones.Presentacion.Services
 
             try
             {
-                Viaje viaje = await _viajeRepository.ObtenerPorIdAsync(id);
+                ViajeDTO viaje = await _viajeRepository.ObtenerPorIdAsync(id);
 
                 if (viaje == null)
                     return Result<bool>.Failure(MensajeError.NoExisteId(nameof(Viaje), id));
@@ -221,39 +195,8 @@ namespace Proyecto_camiones.Presentacion.Services
                 }
 
                 var viajes = await _viajeRepository.ObtenerPorCamionAsync(idCamion);
-                List<ViajeDTO> viajesDTO = new List<ViajeDTO>();
 
-                foreach (var viaje in viajes)
-                {
-                    // Obtener nombres de cliente y chofer
-                    string nombreCliente = "Cliente " + viaje.Cliente;
-                    string nombreChofer = "Chofer (pendiente)";
-
-                    // Si tenemos acceso a los servicios, obtener los nombres reales
-                    if (_clienteService != null)
-                    {
-                        var clienteResult = await _clienteService.ObtenerByIdAsync(viaje.Cliente);
-                        if (clienteResult.IsSuccess)
-                            nombreCliente = clienteResult.Value.Nombre;
-                    }
-
-                    // Usar el servicio de camión para obtener datos del camión
-                    if (_camionService != null)
-                    {
-                        var camionResult = await _camionService.ObtenerPorIdAsync(viaje.Camion);
-                        if (camionResult != null)
-                            nombreChofer = camionResult.Nombre_Chofer;
-                    }
-
-                    viajesDTO.Add(viaje.toDTO(nombreChofer, nombreCliente));
-                }
-
-                if (viajes == null || viajes.Count == 0)
-                {
-                    return Result<List<ViajeDTO>>.Failure("No se encontraron viajes para el camión especificado");
-                }
-
-                return Result<List<ViajeDTO>>.Success(viajesDTO);
+                return Result<List<ViajeDTO>>.Success(viajes);
             }
             catch (Exception ex)
             {
