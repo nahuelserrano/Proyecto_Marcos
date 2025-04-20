@@ -18,7 +18,7 @@ namespace Proyecto_camiones.Presentacion.Services
             this._chequeRepository = chequeR ?? throw new ArgumentNullException(nameof(chequeR));
         }
 
-        public async Task<Result<ChequeDTO>> ObtenerPorId(int id)
+        public async Task<Result<ChequeDTO>> ObtenerPorIdAsyncObtenerPorId(int id)
         {
             if (id < 0)
             {
@@ -33,7 +33,7 @@ namespace Proyecto_camiones.Presentacion.Services
             return Result<ChequeDTO>.Success(cheque);
         }
 
-        internal async Task<Result<bool>> Eliminar(int id)
+        internal async Task<Result<bool>> EliminarAsync(int id)
         {
             if (id <= 0) return Result<bool>.Failure(MensajeError.idInvalido(id));
 
@@ -46,7 +46,7 @@ namespace Proyecto_camiones.Presentacion.Services
             return Result<bool>.Success(true);
         }
 
-        public async Task<Result<int>> Crear(int id_Cliente, DateOnly FechaIngresoCheque, string NumeroCheque, float Monto, string Banco, DateOnly FechaCobro)
+        public async Task<Result<int>> CrearAsync(int id_Cliente, DateOnly FechaIngresoCheque, string NumeroCheque, float Monto, string Banco, DateOnly FechaCobro)
         {
             ValidadorCheque validador = new ValidadorCheque(id_Cliente, FechaIngresoCheque, NumeroCheque, Monto, Banco, FechaCobro);
             Result<bool> resultadoValidacion = validador.ValidarCompleto();
@@ -74,7 +74,7 @@ namespace Proyecto_camiones.Presentacion.Services
         }
 
 
-        public async Task<Result<ChequeDTO>> Actualizar(int id, int? id_cliente = null, DateOnly? FechaIngresoCheque = null, string? NumeroCheque = null, float? Monto = null, string? Banco = null, DateOnly? FechaCobro = null)
+        public async Task<Result<ChequeDTO>> ActualizarAsync(int id, int? id_cliente = null, DateOnly? FechaIngresoCheque = null, string? NumeroCheque = null, float? Monto = null, string? Banco = null, DateOnly? FechaCobro = null)
         {
             if (id <= 0)
                 return Result<ChequeDTO>.Failure(MensajeError.idInvalido(id));
@@ -117,7 +117,7 @@ namespace Proyecto_camiones.Presentacion.Services
             return Result<ChequeDTO>.Failure("No se pudo realizar la actualización");
         }
 
-        public async Task<List<ChequeDTO>?> ObtenerTodos()
+        public async Task<List<ChequeDTO>?> ObtenerTodosAsync()
             {
             List<ChequeDTO> cheque = await _chequeRepository.ObtenerTodos();
             if (cheque != null)

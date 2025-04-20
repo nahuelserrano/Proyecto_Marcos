@@ -7,7 +7,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 namespace Proyecto_camiones.Presentacion.Utils
 {
 
-    public class ValidadorPago
+    public class ValidadorSueldo
     {  
         private readonly float Monto;
         private readonly bool Pagado;
@@ -20,7 +20,7 @@ namespace Proyecto_camiones.Presentacion.Utils
 
 
         
-        public ValidadorPago(float monto, int Id_Chofer, DateOnly pagoDesde,DateOnly pagoHasta)
+        public ValidadorSueldo(float monto, int Id_Chofer, DateOnly pagoDesde,DateOnly pagoHasta)
         {
             this.Monto = monto;
             this.Id_Chofer = Id_Chofer;
@@ -30,7 +30,7 @@ namespace Proyecto_camiones.Presentacion.Utils
             Errores = new List<string>();
         }
 
-        public ValidadorPago(double monto ,int id_Chofer, DateOnly pagoDesde, DateOnly pagoHasta, DateOnly fechaPago)
+        public ValidadorSueldo(double monto ,int id_Chofer, DateOnly pagoDesde, DateOnly pagoHasta, DateOnly fechaPago)
         {
             this.Id_Chofer = id_Chofer;
             this.FechaPago = fechaPago;
@@ -40,7 +40,7 @@ namespace Proyecto_camiones.Presentacion.Utils
             this.Errores = new List<string>();
         }
 
-        public ValidadorPago ValidarDatos()
+        public ValidadorSueldo ValidarDatos()
         {
           
             if (this.Monto < 0)
@@ -52,7 +52,7 @@ namespace Proyecto_camiones.Presentacion.Utils
             return this;
         }
 
-        public ValidadorPago ValidarFecha()
+        public ValidadorSueldo ValidarFecha()
         {
             if (FechaPago != null) { 
                 if (this.FechaPago < MesCorrespondiente) { 

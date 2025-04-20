@@ -1,22 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
-using Proyecto_camiones.DTOs;
-using Proyecto_camiones.Presentacion.Models;
-using Microsoft.EntityFrameworkCore;
+using Proyecto_camiones.Presentacion;
+using Proyecto_camiones.Presentacion.Utils;
+using Proyecto_camiones.Models;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
-
-namespace Proyecto_camiones.Presentacion.Repositories
+namespace Proyecto_camiones.Repositories
 {
-    public class PagoRepository(ApplicationDbContext context)
+    class PagoRepository
     {
-        private List<Pago>? _pagos;
-        private int _siguienteId;
-        private readonly ApplicationDbContext _context = context;
+        private readonly ApplicationDbContext _context;
 
+        public PagoRepository(ApplicationDbContext context)
+        {
+            this._context = context;
+        }
         public async Task<bool> ProbarConexionAsync()
         {
             try
@@ -31,7 +32,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 {
                     Console.WriteLine("No se puede conectar a la base de datos.");
                 }
-
                 return puedeConectar;
             }
             catch (Exception ex)
@@ -41,9 +41,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 return false;
             }
         }
-
-
-        public async Task<int> Insertar(float monto, int Id_Chofer, DateOnly pagadoDesde, DateOnly pagadoHasta, DateOnly FechaPago)
+    
+       public async Task<int> Insertar(int id_chofer, int id_viaje, bool pagado, float monto_pagado)
         {
             try
             {
@@ -52,143 +51,62 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     Console.WriteLine("No se puede conectar a la base de datos");
                     return -1;
                 }
-              
-                var pago = new Pago(monto, Id_Chofer, pagadoDesde, pagadoHasta, FechaPago);
-
+                var pago = new Pago( id_chofer, id_viaje,monto_pagado);
 
                 _context.Pagos.Add(pago);
-
-                await _context.SaveChangesAsync();
-                int registrosAfectados = await _context.SaveChangesAsync();
-
+                int registrosAfectados = this._context.SaveChanges();
                 if (registrosAfectados > 0)
                 {
-                    return 1;
+                    return pago.Id;
                 }
-                Console.WriteLine("No se insertó ningún registro");
                 return -1;
-
-
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Console.WriteLine($"Error al insertar pago: {ex.Message}");
-
-                Console.WriteLine($"Stack trace: {ex.StackTrace}");
                 return -1;
             }
         }
 
 
 
-      public async Task<PagoDTO?> ObtenerPorId(int id)
-      {
-            Pago pago= await _context.Pagos.FindAsync(id);
-    
-            if (pago == null)
-                return null;
-
-            PagoDTO pagop = new PagoDTO(
-                pago.Monto_Pagado,
-                pago.Id_Chofer,
-                pago.pagadoDesde,
-                pago.pagadoHasta,
-                pago.FechaDePago
-            );
-
-            return pagop;
-      }
-
-       
-        public async Task<List<PagoDTO>> ObtenerTodos()
-        {
-            
-                var pagos = await _context.Pagos.Select(p => new PagoDTO
-                {
-                    Monto_Pagado = p.Monto_Pagado,
-                    Id_Chofer = p.Id_Chofer,
-                    pagadoDesde = p.pagadoDesde,
-                    pagadoHasta = p.pagadoHasta,
-                    FechaDePago = p.FechaDePago
-
-                }).ToListAsync();
-
-                return pagos;
-            
-        }
-
-
-        public async Task<bool> Actualizar(int id,int id_Chofer, DateOnly? pagadoDesde = null, DateOnly? pagadoHasta = null, float? monto = null, DateOnly? FechaPago = null)
+        public async Task<bool> Actualizar(int?id_viaje=null, float? monto_pagado_nuevo = null,DateOnly? pagadoDesde=null,DateOnly? pagadoHasta=null)
         {
             try
             {
-                var pago = await _context.Pagos.FindAsync(id);
-
-                // Actualizar solo los campos proporcionados
-                if (monto == null && id_Chofer == null && FechaPago == null && pagadoDesde == null && pagadoHasta == null)
+                if (!await _context.Database.CanConnectAsync())
                 {
+                    Console.WriteLine("No se puede conectar a la base de datos");
                     return false;
                 }
-
-                // Chequeos individuales
-                if (monto != null)
+                if (id_viaje != null && monto_pagado_nuevo!=null)
                 {
-                    pago.Monto = monto.Value;
+                    Pago pago = await _context.Pagos.FindAsync(id_viaje);
+                    if (pago == null)
+                    {
+                        return false;
+                    }
+                    pago.Monto_Pagado = monto_pagado_nuevo.Value;
+                    return true;
                 }
-
-                if (id_Chofer != null)
-                {
-                    pago.Id_Chofer = id_Chofer;
-                }
-
-                if (pagadoDesde != null)
-                {
-                   pago.pagadoDesde = pagadoDesde.Value;
-                }
-
-                if (pagadoHasta != null)
-                {
-                    pago.pagadoHasta = pagadoHasta.Value;
-                }
-
+                if (pagadoDesde != null && pagadoHasta != null) { 
                 
-
-                if (FechaPago != null)
-                {
-                    pago.FechaPago = FechaPago.Value;
+                    List<Pago> pagos = await _context.Pagos.Where(p => p.Fecha_Pago >= pagadoDesde && p.Fecha_Pago <= pagadoHasta).ToListAsync();
                 }
-
-
-
-                await _context.SaveChangesAsync();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al actualizar pago: {ex.Message}");
+                
+                
+                int registrosAfectados = this._context.SaveChanges();
+                if (registrosAfectados > 0)
+                {
+                    return true;
+                }
                 return false;
             }
-        }
-        public async Task<bool> Eliminar(int id)
-        {
-            try
-            {
-                var pago = await _context.Pagos.FindAsync(id);
-
-                if (pago == null)
-                    return false;
-
-                _context.Pagos.Remove(pago);
-
-                await _context.SaveChangesAsync();
-
-                return true;
-            }
-            catch (Exception)
+            catch (Exception e)
             {
                 return false;
             }
         }
-        
+
     }
+
 }

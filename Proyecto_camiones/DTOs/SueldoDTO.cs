@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Proyecto_camiones.DTOs
 {
-    public class PagoDTO
+    public class SueldoDTO
     {
         public int Id_Chofer { get; set; }    
         public DateOnly FechaDePago { get; set; }
@@ -14,7 +14,7 @@ namespace Proyecto_camiones.DTOs
         public DateOnly pagadoDesde { get;  set; }
         public DateOnly pagadoHasta { get;  set; }
 
-        public PagoDTO(float monto, int Id_Chofer, DateOnly pagadoDesde,DateOnly pagadoHasta, DateOnly FechaPago)
+        public SueldoDTO(float monto, int Id_Chofer, DateOnly pagadoDesde,DateOnly pagadoHasta, DateOnly FechaPago)
         {
             this.Id_Chofer = Id_Chofer;
             this.FechaDePago = FechaPago;
@@ -23,7 +23,7 @@ namespace Proyecto_camiones.DTOs
             this.pagadoHasta = pagadoHasta;
         }
 
-        public PagoDTO()
+        public SueldoDTO()
         {
             // Constructor vacío
             this.pagadoDesde = default;

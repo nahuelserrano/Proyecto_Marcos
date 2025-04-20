@@ -11,7 +11,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Camion> Camiones { get; set; }
     public DbSet<Viaje> Viajes { get; set; }
     public DbSet<Cheque> Cheques { get; set; }
-    public DbSet<Pago> Pagos { get; set; }
+    public DbSet<Sueldo> Pagos { get; set; }
     public DbSet<Cliente> Clientes { get; set; }
     public DbSet<Usuario> Usuarios { get; set; }
     public DbSet<CuentaCorriente> Cuentas { get; set; }
@@ -42,7 +42,7 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Camion>().ToTable("camion");
         modelBuilder.Entity<Viaje>().ToTable("viaje");
         modelBuilder.Entity<Cheque>().ToTable("cheque");
-        modelBuilder.Entity<Pago>().ToTable("pago");
+        modelBuilder.Entity<Sueldo>().ToTable("pago");
         modelBuilder.Entity<Cliente>().ToTable("cliente");
         modelBuilder.Entity<Usuario>().ToTable("usuario");
         modelBuilder.Entity<CuentaCorriente>().ToTable("cuenta_corriente");
