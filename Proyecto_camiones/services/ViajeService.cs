@@ -33,6 +33,23 @@ namespace Proyecto_camiones.Presentacion.Services
             return result;
         }
 
+        public async Task<Result<ViajeDTO>> ObtenerPorIdAsync(int id)
+        {
+            if (id <= 0)
+                return Result<ViajeDTO>.Failure(MensajeError.idInvalido(id));
+            try
+            {
+                var viaje = await _viajeRepository.ObtenerPorIdAsync(id);
+                if (viaje == null)
+                    return Result<ViajeDTO>.Failure(MensajeError.NoExisteId(nameof(Viaje), id));
+                return Result<ViajeDTO>.Success(viaje);
+            }
+            catch (Exception ex)
+            {
+                return Result<ViajeDTO>.Failure($"Error al obtener el viaje: {ex.Message}");
+            }
+        }
+
         public async Task<Result<ViajeDTO>> CrearAsync(
             DateOnly fechaInicio,
             string lugarPartida,

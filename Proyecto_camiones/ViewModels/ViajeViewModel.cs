@@ -78,6 +78,23 @@ namespace Proyecto_camiones.ViewModels
             return Result<ViajeDTO>.Failure(resultado.Error);
         }
 
+        // Método para obtener un viaje por ID
+        public async Task<Result<ViajeDTO>> ObtenerPorIdAsync(int id)
+        {
+            if (await this.TestearConexion())
+            {
+                var resultado = await _viajeService.ObtenerPorIdAsync(id);
+                if (resultado.IsSuccess)
+                {
+                    return resultado;
+                }
+
+                return Result<ViajeDTO>.Failure(resultado.Error);
+
+            }
+            return Result<ViajeDTO>.Failure("La conexión no pudo establecerse");
+        }
+
         // Método para obtener todos los viajes
         public async Task<Result<List<ViajeDTO>>> ObtenerTodosAsync()
         {
