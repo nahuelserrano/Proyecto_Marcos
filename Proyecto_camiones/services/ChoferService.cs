@@ -55,18 +55,18 @@ namespace Proyecto_camiones.Presentacion.Services
 
             ValidadorChofer validador = new ValidadorChofer(nombre);
             Result<bool> resultadoValidacion = validador.ValidarCompleto();
+
             if (!resultadoValidacion.IsSuccess)
                 return Result<ChoferDTO>.Failure(resultadoValidacion.Error);
 
 
             try
             {
-                Chofer chofer = await _choferRepository.InsertarAsync(nombre);
+                Chofer? chofer = await _choferRepository.InsertarAsync(nombre);
 
                 if (chofer == null)
-                {
-                    return null;
-                }
+                    return Result<ChoferDTO>.Failure("Hubo un error al crear el chofer");
+                
 
                 return Result<ChoferDTO>.Success(chofer.toDTO());
             }

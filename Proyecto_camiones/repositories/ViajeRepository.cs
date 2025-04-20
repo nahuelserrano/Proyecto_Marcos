@@ -140,8 +140,12 @@ namespace Proyecto_camiones.Presentacion.Repositories
                             Km = viaje.Km,
                             Tarifa = viaje.Tarifa,
                         }).ToListAsync();
-                   
-                
+
+                if (viajes.Count == 0)
+                {
+                    Console.WriteLine("No hay viajes");
+                }
+
                 return viajes;
             }
             catch (Exception ex)
@@ -153,7 +157,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
         // READ - Obtener un viaje por ID
-        public async Task<ViajeDTO> ObtenerPorIdAsync(int id)
+        public async Task<ViajeDTO?> ObtenerPorIdAsync(int id)
         {
             try
             {
@@ -177,7 +181,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                             Tarifa = viaje.Tarifa
                         }
                     ).FirstOrDefaultAsync();
-
+                
                 return viajes;
             }
             catch (Exception e)

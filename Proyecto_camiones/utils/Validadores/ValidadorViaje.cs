@@ -81,24 +81,18 @@ namespace Proyecto_camiones.Presentacion.Utils
             return this;
         }
 
-        public ValidadorViaje ValidarExistenRelaciones(bool clienteExiste, bool camionExiste)
+        public ValidadorViaje ValidarExistencia(bool clienteExiste, bool camionExiste)
         {
-            if (_camion > 0)
-            {
-                if (!camionExiste)
-                    _errores.Add($"No existe un camión con el ID {_camion}");
-            }
-
-            if (_cliente > 0)
-            {
-                if (!clienteExiste)
+            if (!camionExiste)
+                _errores.Add($"No existe un camión con el ID {_camion}");
+           
+            if (!clienteExiste)
                     _errores.Add($"No existe un cliente con el ID {_cliente}");
-            }
 
             return this;
         }
 
-        public ValidadorViaje ValidarIdRelaciones()
+        public ValidadorViaje ValidarIdPositivos()
         {
             if (_camion <= 0)
                 _errores.Add(MensajeError.idInvalido(_camion));
@@ -121,12 +115,8 @@ namespace Proyecto_camiones.Presentacion.Utils
             return ValidarCarga()
                 .ValidarRuta()
                 .ValidarPrecioYRemito()
+                .ValidarIdPositivos()
                 .ObtenerResultado();
-        }
-
-        public void reiniciar()
-        {
-            _errores.Clear();
         }
 
         private string ObtenerMensajeError()

@@ -186,9 +186,10 @@ namespace Proyecto_camiones.Presentacion
 
             //ProbarEliminarChofer(2);
 
-            Console.WriteLine(1);
-            ProbarInsertarViaje("Tandil", "Azul");
+            //Console.WriteLine(1);
+            //ProbarInsertarViaje("Tandil", "Azul");
 
+            ProbarInsertarChofer("Juan Alpaca");
             
         }
 

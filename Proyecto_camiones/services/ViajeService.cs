@@ -52,7 +52,7 @@ namespace Proyecto_camiones.Presentacion.Services
                 ValidadorViaje validador = new ValidadorViaje(fechaInicio, lugarPartida, destino, kg, remito,
                     tarifa, cliente, camion, carga, km);
 
-                Result<bool> resultadoIdRelaciones = validador.ValidarIdRelaciones().ObtenerResultado();
+                Result<bool> resultadoIdRelaciones = validador.ValidarCompleto();
 
 
                 if (!resultadoIdRelaciones.IsSuccess)
@@ -65,9 +65,7 @@ namespace Proyecto_camiones.Presentacion.Services
                 var clienteResult = await _clienteService.ObtenerPorIdAsync(cliente);
                 var camionResult = await _camionService.ObtenerPorIdAsync(camion);
 
-                validador.reiniciar();
-
-                validador.ValidarExistenRelaciones(clienteResult != null, camionResult != null);
+                validador.ValidarExistencia(clienteResult != null, camionResult != null);
 
                 Result<bool> resultadoValidacion = validador.ValidarCompleto();
 

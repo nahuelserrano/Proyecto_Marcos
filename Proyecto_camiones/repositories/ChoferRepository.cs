@@ -57,9 +57,13 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
                 _context.Choferes.Add(chofer);
 
-                await _context.SaveChangesAsync();
+                int registrosafectados = await _context.SaveChangesAsync();
 
-                return chofer;
+                if (registrosafectados > 0)
+                    return chofer;
+                    
+                return null;
+
             }
             catch (Exception ex)
             {
