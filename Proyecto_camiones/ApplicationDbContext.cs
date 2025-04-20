@@ -77,6 +77,22 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.NombreChofer).HasColumnName("nombre_chofer");
         });
 
+        modelBuilder.Entity<Viaje>(entity =>
+        {
+            // Configuración existente...
+
+            // RELACIONES (AQUÍ ESTÁ LA MAGIA)
+            entity.HasOne(v => v.ClienteNavigation)
+                .WithMany(c => c.Viajes)
+                .HasForeignKey(v => v.Cliente)
+                .OnDelete(DeleteBehavior.Restrict); // Impide que se elimine un cliente con viajes
+
+            entity.HasOne(v => v.CamionNavigation)
+                .WithMany(c => c.Viajes)
+                .HasForeignKey(v => v.Camion)
+                .OnDelete(DeleteBehavior.Restrict); // Impide que se elimine un camión con viajes
+        });
+
 
         modelBuilder.Entity<CuentaCorriente>(entity =>
         {

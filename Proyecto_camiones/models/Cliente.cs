@@ -16,6 +16,10 @@ namespace Proyecto_camiones.Presentacion.Models
         {
             this.Nombre = nombre;
         }
+
+        // Navegación inversa (colección)
+        public ICollection<Viaje> Viajes { get; set; }
+
         override
         public String ToString()
         {

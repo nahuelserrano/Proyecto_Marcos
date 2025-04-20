@@ -30,6 +30,7 @@ namespace Proyecto_camiones.Presentacion.Models
             this.nombre_chofer = "undefined";
         }
 
+        public ICollection<Viaje> Viajes { get; set; }
 
         public static implicit operator Task<object>(Camion v)
         {

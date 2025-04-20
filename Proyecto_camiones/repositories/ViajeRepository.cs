@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MySql.Data.MySqlClient;
+using MySqlX.XDevAPI;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Models;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
@@ -123,23 +124,21 @@ namespace Proyecto_camiones.Presentacion.Repositories
             try
             {
                 var viajes = await _context.Viajes
-                    .Join
-                    (_context.Clientes,
-                        viaje => viaje.Cliente,
-                        cliente => cliente.Id,
-                        (viaje, cliente) => new ViajeDTO
-                        {
-                            FechaInicio = viaje.FechaInicio,
-                            LugarPartida = viaje.LugarPartida,
-                            Destino = viaje.Destino,
-                            Remito = viaje.Remito,
-                            Kg = viaje.Kg,
-                            Carga = viaje.Carga,
-                            NombreCliente = cliente.Nombre,
-                            NombreChofer = viaje.NombreChofer, // Directo del camión
-                            Km = viaje.Km,
-                            Tarifa = viaje.Tarifa,
-                        }).ToListAsync();
+                    .AsNoTracking() // Para mejorar performance en queries de solo lectura
+                    .Include(v => v.ClienteNavigation)
+                    .Select(v => new ViajeDTO
+                    {
+                        FechaInicio = v.FechaInicio,
+                        LugarPartida = v.LugarPartida,
+                        Destino = v.Destino,
+                        Remito = v.Remito,
+                        Kg = v.Kg,
+                        Carga = v.Carga,
+                        NombreCliente = v.ClienteNavigation.Nombre,
+                        NombreChofer = v.NombreChofer,
+                        Km = v.Km,
+                        Tarifa = v.Tarifa
+                    }).ToListAsync();
 
                 if (viajes.Count == 0)
                 {
@@ -161,38 +160,40 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                var viajes = await _context.Viajes
-                    .Join
-                    (
-                        _context.Clientes,
-                        viaje => id,
-                        cliente => cliente.Id,
-                        (viaje, cliente) => new ViajeDTO
-                        {
-                            FechaInicio = viaje.FechaInicio,
-                            LugarPartida = viaje.LugarPartida,
-                            Destino = viaje.Destino,
-                            Remito = viaje.Remito,
-                            Kg = viaje.Kg,
-                            Carga = viaje.Carga,
-                            NombreCliente = cliente.Nombre,
-                            NombreChofer = viaje.NombreChofer,
-                            Km = viaje.Km,
-                            Tarifa = viaje.Tarifa
-                        }
-                    ).FirstOrDefaultAsync();
+                var viaje = await _context.Viajes
+                    .AsNoTracking()
+                    .Include(v => v.ClienteNavigation)
+                    .FirstOrDefaultAsync(v => v.Id == id);
+
+                if (viaje == null)
+                    return null;
                 
-                return viajes;
+
+                var viajeDTO = new ViajeDTO
+                {
+                    FechaInicio = viaje.FechaInicio,
+                    LugarPartida = viaje.LugarPartida,
+                    Destino = viaje.Destino,
+                    Remito = viaje.Remito,
+                    Kg = viaje.Kg,
+                    Carga = viaje.Carga,
+                    NombreCliente = viaje.ClienteNavigation.Nombre,
+                    NombreChofer = viaje.NombreChofer,
+                    Km = viaje.Km,
+                    Tarifa = viaje.Tarifa,
+                };
+
+                return viajeDTO;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Console.WriteLine(e);
-                throw;
+                Console.WriteLine($"Error al obtener viaje: {ex.Message}");
+                return null;
             }
         }
 
         // READ - Obtener viajes con filtros
-        public async Task<List<Viaje>> ObtenerPorFechaYCamionAsync(int camionId,
+        public async Task<List<ViajeDTO>> ObtenerPorFechaYCamionAsync(int camionId,
                                                             DateOnly? fechaInicio = null,
                                                             DateOnly? fechaFin = null
                                                             )
@@ -200,25 +201,10 @@ namespace Proyecto_camiones.Presentacion.Repositories
             try
             {
                 // Comenzamos con una consulta que incluye todos los viajes
-                IQueryable<Viaje> query = _context.Viajes;
+                var query = _context.Viajes.AsNoTracking()
+                    .Include(v => v.ClienteNavigation)
+                    .Where(v => v.Camion == camionId);
 
-                query
-                   .Join(_context.Clientes,
-                        viaje => viaje.Cliente,
-                        cliente => cliente.Id,
-                        (viaje, cliente) => new ViajeDTO
-                        {
-                            FechaInicio = viaje.FechaInicio,
-                            LugarPartida = viaje.LugarPartida,
-                            Destino = viaje.Destino,
-                            Remito = viaje.Remito,
-                            Kg = viaje.Kg,
-                            Carga = viaje.Carga,
-                            NombreCliente = cliente.Nombre,
-                            NombreChofer = viaje.NombreChofer, // Directo del camión
-                            Km = viaje.Km,
-                            Tarifa = viaje.Tarifa,
-                        });
                 // Aplicamos los filtros según los parámetros proporcionados
                 if (fechaInicio.HasValue)
                     query = query.Where(v => v.FechaInicio >= fechaInicio.Value);
@@ -226,13 +212,28 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 if (fechaFin.HasValue)
                     query = query.Where(v => v.FechaInicio <= fechaFin.Value);
 
-                // Ejecutamos la consulta y devolvemos el resultado
-                return await query.ToListAsync();
+                var viajes = await query.Select(v => new ViajeDTO
+                {
+                    FechaInicio = v.FechaInicio,
+                    LugarPartida = v.LugarPartida,
+                    Destino = v.Destino,
+                    Remito = v.Remito,
+                    Kg = v.Kg,
+                    Carga = v.Carga,
+                    NombreCliente =v.ClienteNavigation.Nombre,
+                    NombreChofer = v.NombreChofer,
+                    Km = v.Km,
+                    Tarifa = v.Tarifa,
+                }).ToListAsync();
+
+                Console.WriteLine($"Se encontraron {viajes.Count} viajes.");
+
+                return viajes;
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error al filtrar viajes: {ex.Message}");
-                return new List<Viaje>();
+                return new List<ViajeDTO>();
             }
         }
 
@@ -330,31 +331,24 @@ namespace Proyecto_camiones.Presentacion.Repositories
             try
             {
                 var viajes = await _context.Viajes
-                    .Join(
-                        _context.Clientes,
-                        viaje => viaje.Cliente,
-                        cliente => cliente.Id,
-                        (viaje, cliente) => new { Viaje = viaje, Cliente = cliente }
-                    )
-                    .Join(
-                        _context.Camiones,
-                        combinado => combinado.Viaje.Camion,
-                        camion => camionId,
-                        (combinado, camion) => new ViajeDTO
-                        {
-                            FechaInicio = combinado.Viaje.FechaInicio,
-                            LugarPartida = combinado.Viaje.LugarPartida,
-                            Destino = combinado.Viaje.Destino,
-                            Remito = combinado.Viaje.Remito,
-                            Kg = combinado.Viaje.Kg,
-                            Carga = combinado.Viaje.Carga,
-                            NombreCliente = combinado.Cliente.Nombre,
-                            NombreChofer = camion.nombre_chofer, // Directo del camión
-                            Km = combinado.Viaje.Km,
-                            Tarifa = combinado.Viaje.Tarifa,
-                        }
-                    )
-                    .ToListAsync();
+                    .AsNoTracking()
+                    .Include(v => v.ClienteNavigation)
+                    .Where(v => v.Camion == camionId)
+                    .Select(v => new ViajeDTO
+                    {
+                        FechaInicio = v.FechaInicio,
+                        LugarPartida = v.LugarPartida,
+                        Destino = v.Destino,
+                        Remito = v.Remito,
+                        Kg = v.Kg,
+                        Carga = v.Carga,
+                        NombreCliente = v.ClienteNavigation.Nombre,
+                        NombreChofer = v.NombreChofer,
+                        Km = v.Km,
+                        Tarifa = v.Tarifa,
+                    }).ToListAsync();
+
+                Console.WriteLine($"Se encontraron {viajes.Count} viajes para el camión con ID {camionId}.");
 
                 return viajes;
             }
@@ -372,30 +366,22 @@ namespace Proyecto_camiones.Presentacion.Repositories
             {
 
                 var viajes = await _context.Viajes
-                    .Join(
-                        _context.Clientes,
-                        viaje => viaje.Cliente,
-                        cliente => clienteId,
-                        (viaje, cliente) => new { Viaje = viaje, Cliente = cliente }
-                    )
-                    .Join(
-                        _context.Camiones,
-                        combinado => combinado.Viaje.Camion,
-                        camion => camion.Id,
-                        (combinado, camion) => new ViajeDTO
-                        {
-                            FechaInicio = combinado.Viaje.FechaInicio,
-                            LugarPartida = combinado.Viaje.LugarPartida,
-                            Destino = combinado.Viaje.Destino,
-                            Remito = combinado.Viaje.Remito,
-                            Kg = combinado.Viaje.Kg,
-                            Carga = combinado.Viaje.Carga,
-                            NombreCliente = combinado.Cliente.Nombre,
-                            NombreChofer = camion.nombre_chofer, // Directo del camión
-                            Km = combinado.Viaje.Km,
-                            Tarifa = combinado.Viaje.Tarifa,
-                        }
-                    ).ToListAsync();
+                    .AsNoTracking()
+                    .Include(v => v.ClienteNavigation)
+                    .Where(v => v.Cliente == clienteId)
+                    .Select(v => new ViajeDTO
+                    {
+                        FechaInicio = v.FechaInicio,
+                        LugarPartida = v.LugarPartida,
+                        Destino = v.Destino,
+                        Remito = v.Remito,
+                        Kg = v.Kg,
+                        Carga = v.Carga,
+                        NombreCliente = v.ClienteNavigation.Nombre,
+                        NombreChofer = v.NombreChofer,
+                        Km = v.Km,
+                        Tarifa = v.Tarifa,
+                    }).ToListAsync();
 
                 return viajes;
             }

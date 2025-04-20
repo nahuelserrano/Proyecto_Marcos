@@ -43,6 +43,7 @@
     <Compile Include="Models\CuentaCorriente.cs" />
     <Compile Include="Models\Flete.cs" />
     <Compile Include="Models\Pago.cs" />
+    <Compile Include="Models\Sueldo.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Models\Viaje.cs" />
     <Compile Include="Models\ViajeFlete.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="Services\ClienteService.cs" />
     <Compile Include="Services\CuentaCorrienteService.cs" />
     <Compile Include="Services\PagoService.cs" />
+    <Compile Include="Services\SueldoService.cs" />
     <Compile Include="Services\ViajeFleteService.cs" />
     <compile Include="Services\ViajeService.cs" />
     <compile Include="Services\FleteService.cs" />

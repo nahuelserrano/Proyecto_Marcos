@@ -21,6 +21,10 @@ namespace Proyecto_camiones.Presentacion.Models
         public string NombreChofer { get; set; }
         public float Total => Tarifa * Kg * 1000;
 
+        // Propiedades de navegación
+        public Cliente ClienteNavigation { get; set; } // La entidad Cliente relacionada
+        public Camion CamionNavigation { get; set; } // La entidad Camión relacionada
+
         public Viaje(DateOnly fechaInicio, string lugarPartida, string destino, int remito, float kg,
             string carga, int cliente, int camion, float km,  float tarifa)
         {
