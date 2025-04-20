@@ -18,7 +18,7 @@ namespace Proyecto_camiones.Presentacion.Services
             this._chequeRepository = chequeR ?? throw new ArgumentNullException(nameof(chequeR));
         }
 
-        public async Task<Result<ChequeDTO>> ObtenerPorId(int id)
+        public async Task<Result<ChequeDTO>> ObtenerPorIdAsyncObtenerPorId(int id)
         {
             if (id < 0)
             {
@@ -117,7 +117,7 @@ namespace Proyecto_camiones.Presentacion.Services
             return Result<ChequeDTO>.Failure("No se pudo realizar la actualización");
         }
 
-        public async Task<List<ChequeDTO>?> ObtenerTodos()
+        public async Task<List<ChequeDTO>?> ObtenerTodosAsync()
             {
             List<ChequeDTO> cheque = await _chequeRepository.ObtenerTodos();
             if (cheque != null)

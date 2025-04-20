@@ -3,28 +3,49 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
-namespace Proyecto_camiones.Presentacion.Models
+namespace Proyecto_camiones.Models
 {
-    public class Pago
+
+    class Pago
     {
         public int Id { get; set; }
         public int Id_Chofer { get; set; }
+        public int Id_Viaje { get; set; }
+        public int? Id_sueldo { get; set; }
+        public bool Pagado { get; set; }
         public float Monto_Pagado { get; set; }
-        public DateOnly pagadoDesde { get; set; }
-        public DateOnly pagadoHasta { get; set; }
-        public float Monto { get; internal set; }
-        public DateOnly FechaPago { get; internal set; }
-
-        public Pago(float monto, int Id_Chofer, DateOnly pagadoDesde, DateOnly pagadoHasta, DateOnly FechaPago)
+     
+        public Pago(int id, int id_chofer, int id_viaje, float monto_pagado, int id_sueldo)
         {
-            this.Id_Chofer = Id_Chofer;
-            this.FechaPago = FechaPago;
-            this.Monto_Pagado = monto;
-            this.pagadoDesde = pagadoDesde;
-            this.pagadoHasta = pagadoHasta;
+            Id = id;
+            Id_Chofer = id_chofer;
+            Id_Viaje = id_viaje;
+            Id_sueldo = id_sueldo;
+            Pagado = false;
+            Monto_Pagado = monto_pagado;
+           
         }
+        public Pago(int id, int id_chofer, int id_viaje, float monto_pagado)
+        {
+            Id = id;
+            Id_Chofer = id_chofer;
+            Id_Viaje = id_viaje;
+            Id_sueldo = null;
+            Pagado = false;
+            Monto_Pagado = monto_pagado;
+          
+        }
+        public Pago( int id_chofer, int id_viaje, float monto_pagado)
+        {
+            
+            Id_Chofer = id_chofer;
+            Id_Viaje = id_viaje;
+            Id_sueldo = null;
+            Pagado = false;
+            Monto_Pagado = monto_pagado;
 
+        }
     }
-}
+        
+    }

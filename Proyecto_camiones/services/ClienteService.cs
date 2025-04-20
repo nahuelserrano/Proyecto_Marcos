@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Utils;
@@ -22,7 +24,7 @@ namespace Proyecto_camiones.Presentacion.Services
             return result;
         }
 
-        public async Task<Result<Cliente>> ObtenerByIdAsync(int id)
+        public async Task<Result<Cliente>> ObtenerPorIdAsync(int id)
         {
             if (id < 0)
                 return Result<Cliente>.Failure(MensajeError.idInvalido(id));
@@ -36,7 +38,7 @@ namespace Proyecto_camiones.Presentacion.Services
         }
 
 
-        public async Task<Result<bool>> Eliminar(int clienteId)
+        public async Task<Result<bool>> EliminarAsync(int clienteId)
         {
             if (clienteId < 0) return Result<bool>.Failure(MensajeError.idInvalido(clienteId));
 
@@ -62,7 +64,7 @@ namespace Proyecto_camiones.Presentacion.Services
 
 
 
-        public async Task<Result<Cliente>> Actualizar(int id, String nombre, String apellido)
+        public async Task<Result<Cliente>> ActualizarAsync(int id, String nombre, String apellido)
         {
             //lo dejo en para que lo chequeen, si mandamos el id para corregir a la funcion del
             //validador tambien nos hace mandarlo en crear. por eso propongo dejar el chequeo aca
@@ -75,5 +77,9 @@ namespace Proyecto_camiones.Presentacion.Services
             return Result<Cliente>.Failure("No existe un cliente con ese id");
         }
 
+        internal async Task<Result<List<ViajeMixtoDTO>>> ObtenerViajesDeUnCliente(string v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

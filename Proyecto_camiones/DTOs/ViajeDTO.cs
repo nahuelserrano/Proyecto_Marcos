@@ -8,29 +8,27 @@ namespace Proyecto_camiones.DTOs
 {
     public class ViajeDTO
     {
-        public int Id { get; set; }
         public DateOnly FechaInicio { get; set; }
-        public DateOnly FechaFacturacion { get; set; }
         public string LugarPartida { get; set; }
         public string Destino { get; set; }
-        public string Carga { get; set; }
+        public int Remito { get; set; }
         public float Kg { get; set; }
-        public int Km { get; set; }
-        public float toneladas { get; set; }
-        public double PrecioPorKilo { get; set; }
-        public string Remito { get; set; }
-        public string nombreEmpleado { get; set; }
+        public string Carga { get; set; }
         public string nombreCliente { get; set; }
+        public string nombreEmpleado { get; set; }
+        public float Km { get; set; }
         public float Tarifa { get; set; }
+        public DateOnly FechaFacturacion { get; set; }
+        public float toneladas { get; set; }
         public float PrecioViaje { get { return (Tarifa * toneladas) * 1000; } }
 
-        public ViajeDTO(int id, DateOnly fechaInicio, DateOnly fechaEntrega, string lugarPartida,
-                        string destino, String carga, int km, double precioPorKilo,
-                        string remito, string nombreEmpleado, string nombreCliente,float kg,float tarifa)
+        public ViajeDTO(DateOnly fechaInicio, string lugarPartida,
+                        string destino, int remito, float kg, string carga, string nombreCliente, 
+                        string nombreEmpleado, float km, float tarifa)
         {
             Id = id;
-            FechaInicio = fechaInicio;
-           
+            //FechaInicio = fechaInicio;
+            //FechaFacturacion = fechaFacturacion;
             LugarPartida = lugarPartida;
             Destino = destino;
             //Carga = carga;
@@ -47,17 +45,16 @@ namespace Proyecto_camiones.DTOs
         public ViajeDTO()
         {
             Id = 0;
-            FechaInicio = DateTime.Now;
-            FechaEntrega = DateTime.Now;
+            //FechaInicio = DateTime.Now;
+            //FechaEntrega = DateTime.Now;
             LugarPartida = "default";
             Destino = "default";
-            Carga = "default";
+            Remito = 0;
             Kg = 0.0f;
-            Km = 0;
-            PrecioPorKilo = 0.0;
-            Remito = "default";
-            nombreEmpleado = "default";
+            Carga = "default";
             nombreCliente = "default";
+            nombreEmpleado = "default";
+            Km = 0;
             Tarifa = 1200;
             toneladas = 12;
         }

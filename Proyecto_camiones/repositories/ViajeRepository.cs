@@ -42,51 +42,57 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
         // CREATE - Insertar un nuevo viaje
-        //public async Task<Viaje?> InsertarViajeAsync(string destino, string lugarPartida,
-        //                                           float kg, int remito, float precioPorKilo,
-        //                                           int empleado, int cliente, int camion,
-        //                                           DateOnly fechaInicio, DateOnly fechaFacturacion,
-        //                                           string carga, float km)
-        //{
-        //    try
-        //    {
-        //        if (!await _context.Database.CanConnectAsync())
-        //        {
-        //            Console.WriteLine("No se puede conectar a la base de datos");
-        //            return null;
-        //        }
+        public async Task<Viaje?> InsertarAsync(
+            DateOnly fechaInicio, 
+            string lugarPartida,
+            string destino, 
+            int remito, 
+            float kg,
+            string carga, 
+            int cliente, 
+            int camion,
+            float km,
+            float tarifa
+            )
+        {
+            try
+            {
+                if (!await _context.Database.CanConnectAsync())
+                {
+                    Console.WriteLine("No se puede conectar a la base de datos");
+                    return null;
+                }
 
-        //        var viaje = new Viaje(destino, lugarPartida, kg, remito, precioPorKilo,
-        //                              empleado, cliente, camion, fechaInicio, fechaFacturacion,
-        //                              carga, km);
+                var viaje = new Viaje(fechaInicio, lugarPartida, destino, remito, kg, 
+                    carga, cliente, camion, km, tarifa);
 
-        //        // Agregar el viaje a la base de datos (esto solo marca el objeto para insertar)
-        //        _context.Viajes.Add(viaje);
+                // Agregar el viaje a la base de datos (esto solo marca el objeto para insertar)
+                _context.Viajes.Add(viaje);
 
-        //        // Guardar los cambios en la base de datos
-        //        int registrosAfectados = await _context.SaveChangesAsync();
+                // Guardar los cambios en la base de datos
+                int registrosAfectados = await _context.SaveChangesAsync();
 
-        //        if (registrosAfectados > 0)
-        //        {
-        //            return viaje;
-        //        }
-        //        Console.WriteLine("No se insertó ningún registro");
-        //        return null;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine(ex.ToString());
-        //        Console.WriteLine();
-        //        Console.WriteLine($"Error al insertar viaje: {ex.Message}");
-        //        Console.WriteLine();
-        //        Console.WriteLine($"Stack trace: {ex.StackTrace}");
-        //        if (ex.InnerException != null)
-        //        {
-        //            Console.WriteLine($"Error interno: {ex.InnerException.Message}");
-        //        }
-        //        return null;
-        //    }
-        //}
+                if (registrosAfectados > 0)
+                {
+                    return viaje;
+                }
+                Console.WriteLine("No se insertó ningún registro");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                Console.WriteLine();
+                Console.WriteLine($"Error al insertar viaje: {ex.Message}");
+                Console.WriteLine();
+                Console.WriteLine($"Stack trace: {ex.StackTrace}");
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"Error interno: {ex.InnerException.Message}");
+                }
+                return null;
+            }
+        }
 
         // READ - Obtener todos los viajes
         public async Task<List<Viaje>> ObtenerTodosAsync()
@@ -126,111 +132,101 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
         // READ - Obtener viajes con filtros
-        //public async Task<List<Viaje>> ObtenerPorFiltroAsync(DateOnly? fechaInicio = null,
-        //                                                    DateOnly? fechaFin = null,
-        //                                                    int? empleadoId = null,
-        //                                                    int? camionId = null)
-        //{
-        //    try
-        //    {
-        //        // Comenzamos con una consulta que incluye todos los viajes
-        //        IQueryable<Viaje> query = _context.Viajes;
+        public async Task<List<Viaje>> ObtenerPorFiltroAsync(DateOnly? fechaInicio = null,
+                                                            DateOnly? fechaFin = null,
+                                                            int? camionId = null)
+        {
+            try
+            {
+                // Comenzamos con una consulta que incluye todos los viajes
+                IQueryable<Viaje> query = _context.Viajes;
 
-        //        // Aplicamos los filtros según los parámetros proporcionados
-        //        if (fechaInicio.HasValue)
-        //            query = query.Where(v => v.FechaInicio >= fechaInicio.Value);
+                // Aplicamos los filtros según los parámetros proporcionados
+                if (fechaInicio.HasValue)
+                    query = query.Where(v => v.FechaInicio >= fechaInicio.Value);
 
-        //        if (fechaFin.HasValue)
-        //            query = query.Where(v => v.FechaInicio <= fechaFin.Value);
+                if (fechaFin.HasValue)
+                    query = query.Where(v => v.FechaInicio <= fechaFin.Value);
 
-        //        //if (empleadoId.HasValue)
-        //        //    query = query.Where(v => v.Empleado == empleadoId.Value);
+                if (camionId.HasValue)
+                    query = query.Where(v => v.Camion == camionId.Value);
 
-        //        if (camionId.HasValue)
-        //            query = query.Where(v => v.Camion == camionId.Value);
-
-        //        // Ejecutamos la consulta y devolvemos el resultado
-        //        return await query.ToListAsync();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"Error al filtrar viajes: {ex.Message}");
-        //        return new List<Viaje>();
-        //    }
-        //}
+                // Ejecutamos la consulta y devolvemos el resultado
+                return await query.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al filtrar viajes: {ex.Message}");
+                return new List<Viaje>();
+            }
+        }
 
         // UPDATE - Actualizar sólo campos específicos de un viaje
-        //public async Task<bool> ActualizarAsync(int id,
-        //                                            string destino = null,
-        //                                            string lugarPartida = null,
-        //                                            float? kg = null,
-        //                                            int? remito = null,
-        //                                            float? precioPorKilo = null,
-        //                                            int? empleado = null,
-        //                                            int? cliente = null,
-        //                                            int? camion = null,
-        //                                            DateOnly? fechaInicio = null,
-        //                                            DateOnly? fechaFacturacion = null,
-        //                                            string carga = null,
-        //                                            float? km = null)
-        //{
-        //    try
-        //    {
-        //        if (id <= 0)
-        //            return false;
+        public async Task<bool> ActualizarAsync(
+            int id,
+            DateOnly? fechaInicio = null,
+            string lugarPartida = null,
+            string destino = null,
+            int? remito = null,
+            string carga = null,
+            float? kg = null,
+            int? cliente = null,
+            int? camion = null,
+            float? tarifa = null,
+            float? km = null
+            )
+        {
+            try
+            {
+                if (id <= 0)
+                    return false;
 
-        //        // Verificar si el viaje existe
-        //        var viaje = await _context.Viajes.FindAsync(id);
-        //        if (viaje == null)
-        //            return false;
+                // Verificar si el viaje existe
+                var viaje = await _context.Viajes.FindAsync(id);
+                if (viaje == null)
+                    return false;
 
-        //        // Actualizar sólo los campos proporcionados
-        //        if (!string.IsNullOrWhiteSpace(destino))
-        //            viaje.Destino = destino;
+                // Actualizar sólo los campos proporcionados
+                if (!string.IsNullOrWhiteSpace(destino))
+                    viaje.Destino = destino;
 
-        //        if (!string.IsNullOrWhiteSpace(lugarPartida))
-        //            viaje.LugarPartida = lugarPartida;
+                if (!string.IsNullOrWhiteSpace(lugarPartida))
+                    viaje.LugarPartida = lugarPartida;
 
-        //        if (kg.HasValue)
-        //            viaje.Kg = kg.Value;
+                if (kg.HasValue)
+                    viaje.Kg = kg.Value;
 
-        //        if (remito.HasValue)
-        //            viaje.Remito = remito.Value;
+                if (remito.HasValue)
+                    viaje.Remito = remito.Value;
 
-        //        if (precioPorKilo.HasValue)
-        //            viaje.PrecioPorKilo = precioPorKilo.Value;
+                if (tarifa.HasValue)
+                    viaje.Tarifa = tarifa.Value;
 
-        //        //if (empleado.HasValue)
-        //        //    viaje.Empleado = empleado.Value;  // Cambiado de Chofer a Empleado
+                if (cliente.HasValue)
+                    viaje.Cliente = cliente.Value;
 
-        //        if (cliente.HasValue)
-        //            viaje.Cliente = cliente.Value;
+                if (camion.HasValue)
+                    viaje.Camion = camion.Value;
 
-        //        if (camion.HasValue)
-        //            viaje.Camion = camion.Value;
+                if (fechaInicio.HasValue)
+                    viaje.FechaInicio = fechaInicio.Value;
 
-        //        if (fechaInicio.HasValue)
-        //            viaje.FechaInicio = fechaInicio.Value;
+                if (!string.IsNullOrWhiteSpace(carga))
+                    viaje.Carga = carga;
 
-        //        if (fechaFacturacion.HasValue)
-        //            viaje.FechaFacturacion = fechaFacturacion.Value;
+                if (km.HasValue)
+                    viaje.Km = km.Value;
 
-        //        if (!string.IsNullOrWhiteSpace(carga))
-        //            viaje.Carga = carga;
-
-        //        if (km.HasValue)
-        //            viaje.Km = km.Value;
-
-        //        // Guardar los cambios
-        //        await _context.SaveChangesAsync();
-        //        return true;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"Error al actualizar campos del viaje: {ex.Message}");
-        //        return false;
-        //    }
-        //}
+                // Guardar los cambios
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al actualizar campos del viaje: {ex.Message}");
+                return false;
+            }
+        }
 
         // DELETE - Eliminar un viaje
         public async Task<bool> EliminarAsync(int id)
@@ -258,27 +254,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
         // MÉTODOS ESPECÍFICOS
-
-        // Obtener viajes por empleado
-        //public async Task<List<Viaje>> ObtenerPorEmpleadoAsync(int empleadoId)
-        //{
-        //    try
-        //    {
-        //        if (empleadoId <= 0)
-        //            return new List<Viaje>();
-
-        //        var viajes = await _context.Viajes
-        //            .Where(v => v.Empleado == empleadoId)
-        //            .ToListAsync();
-
-        //        return viajes;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"Error al obtener viajes por empleado: {ex.Message}");
-        //        return new List<Viaje>();
-        //    }
-        //}
 
         // Obtener viajes por camión
         public async Task<List<Viaje>> ObtenerPorCamionAsync(int camionId)

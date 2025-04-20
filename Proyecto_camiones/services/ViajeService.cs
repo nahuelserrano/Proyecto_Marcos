@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Models;
@@ -15,15 +17,13 @@ namespace Proyecto_camiones.Presentacion.Services
         private readonly CamionService _camionService;
         //private readonly EmpleadoService _empleadoService;
 
-        //public ViajeService(
-        //    ViajeRepository viajeRepository,
-        //    CamionService camionService,
-        //    EmpleadoService empleadoService)
-        //{
-        //    _viajeRepository = viajeRepository ?? throw new ArgumentNullException(nameof(viajeRepository));
-        //    _camionService = camionService ?? throw new ArgumentNullException(nameof(camionService));
-        //    _empleadoService = empleadoService ?? throw new ArgumentNullException(nameof(empleadoService));
-        //}
+        public ViajeService(
+            ViajeRepository viajeRepository,
+            CamionService camionService)
+        {
+            _viajeRepository = viajeRepository ?? throw new ArgumentNullException(nameof(viajeRepository));
+            _camionService = camionService ?? throw new ArgumentNullException(nameof(camionService));
+        }
 
         public async Task<bool> ProbarConexionAsync()
         {
@@ -32,45 +32,43 @@ namespace Proyecto_camiones.Presentacion.Services
         }
 
         // Clase Task: representa una operación que está en progreso o que se completará en el futuro, parecidas a las promesas
-        //public async Task<Result<ViajeDTO>> CrearViajeAsync(string destino,
-        //    string lugarPartida,
-        //    float kg,
-        //    int remito,
-        //    float precioPorKilo,
-        //    int chofer,
-        //    int cliente,
-        //    int camion,
-        //    DateOnly fechaInicio,
-        //    string carga,
-        //    float km,
-        //    DateOnly? fechaFacturacion = null)
-        //{
-        //    ValidadorViaje validador = new ValidadorViaje(
-        //        destino, lugarPartida, kg, remito, precioPorKilo,
-        //        chofer, cliente, camion, fechaInicio, 
-        //        carga, km, fechaFacturacion);
+        public async Task<Result<ViajeDTO>> CrearAsync(
+            DateOnly fechaInicio,
+            string lugarPartida,
+            string destino,
+            int remito,
+            float kg,
+            string carga,
+            int cliente,
+            int camion,
+            float km,
+            float tarifa
+            )
+        {
+            ValidadorViaje validador = new ValidadorViaje(fechaInicio, lugarPartida, destino, kg, remito, 
+                tarifa, cliente, camion, carga, km);
 
-        //    Result<bool> resultadoValidacion = validador.ValidarCompleto();
+            Result<bool> resultadoValidacion = validador.ValidarCompleto();
 
-        //    if (!resultadoValidacion.IsSuccess)
-        //        return Result<ViajeDTO>.Failure(resultadoValidacion.Error);
+            if (!resultadoValidacion.IsSuccess)
+                return Result<ViajeDTO>.Failure(resultadoValidacion.Error);
 
-        //    try
-        //    {
-        //        //Viaje viaje = await _viajeRepository.InsertarViajeAsync(
-        //        //    destino, lugarPartida, kg, remito, precioPorKilo,
-        //        //    chofer, cliente, camion, fechaInicio, fechaFacturacion ?? default,
-        //        //    carga, km);
+            try
+            {
+                Viaje viaje = await _viajeRepository.InsertarAsync(
+                    fechaInicio, lugarPartida, destino, remito, kg, 
+                    carga, cliente, camion, km, tarifa
+                    );
 
-        //        //return Result<ViajeDTO>.Success(viaje.toDTO()); // CORREGIR!
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return Result<ViajeDTO>.Failure("Hubo un error al crear el viaje");
-        //    }
-        //}
+                return Result<ViajeDTO>.Success(viaje.toDTO("implementar", "implementar")); // CORREGIR!
+            }
+            catch (Exception)
+            {
+                return Result<ViajeDTO>.Failure("Hubo un error al crear el viaje");
+            }
+        }
 
-        public async Task<Result<Viaje>> ObtenerViajeAsync(int id)
+        public async Task<Result<Viaje>> ObtenerPorIdAsync(int id)
         {
             if (id <= 0)
                 return Result<Viaje>.Failure(MensajeError.idInvalido(id));
@@ -92,11 +90,7 @@ namespace Proyecto_camiones.Presentacion.Services
         }
 
         // READ - Obtener todos los viajes con filtros opcionales
-        public async Task<Result<List<ViajeDTO>>> ObtenerViajesAsync(
-            DateOnly? fechaInicio = null, // <tipo>? significa que el valor puede ser null
-            DateOnly? fechaFin = null,
-            int? choferId = null,
-            int? camionId = null)
+        public async Task<Result<List<ViajeDTO>>> ObtenerTodosAsync()
         {
             try
             {
@@ -120,28 +114,27 @@ namespace Proyecto_camiones.Presentacion.Services
             }
         }
 
-        public async Task<Result<bool>> EditarViajeAsync(
+        public async Task<Result<bool>> ActualizarAsync(
            int id,
-           string destino = null,
+           DateOnly? fechaInicio = null,
            string lugarPartida = null,
-           float? kg = null,
+           string destino = null,
            int? remito = null,
-           float? precioPorKilo = null,
-           int? empleado = null,
+           float? kg = null,
+           string carga = null,
            int? cliente = null,
            int? camion = null,
-           DateOnly? fechaInicio = null,
-           DateOnly? fechaFacturacion = null,
-           string carga = null,
-           float? km = null)
+           float? km = null,
+           float? tarifa = null
+           )
         {
             if (id <= 0)
                 return Result<bool>.Failure(MensajeError.idInvalido(id));
 
             // Verificamos que al menos un parámetro sea diferente de null
             if (destino == null && lugarPartida == null && kg == null && remito == null &&
-                precioPorKilo == null && empleado == null && cliente == null && camion == null &&
-                fechaInicio == null && fechaFacturacion == null && carga == null && km == null)
+                tarifa == null  && cliente == null && camion == null &&
+                fechaInicio == null && carga == null && km == null)
             {
                 return Result<bool>.Failure("No se establecio ningún campo a editar");
             }
@@ -154,59 +147,52 @@ namespace Proyecto_camiones.Presentacion.Services
                     return Result<bool>.Failure(MensajeError.NoExisteId(nameof(Viaje), id));
 
                 // Actualizamos con los valores nuevos o mantenemos los anteriores
-                //var viajeModificado = new Viaje(
-                //    destino ?? viajeActual.Destino,
-                //    lugarPartida ?? viajeActual.LugarPartida,
-                //    kg ?? viajeActual.Kg,
-                //    remito ?? viajeActual.Remito,
-                //    precioPorKilo ?? viajeActual.PrecioPorKilo,
-                //    //empleado ?? viajeActual.Empleado,
-                //    cliente ?? viajeActual.Cliente,
-                //    camion ?? viajeActual.Camion,
-                //    //fechaInicio ?? viajeActual.FechaInicio,
-                //    //fechaFacturacion ?? viajeActual.FechaFacturacion,
-                //    carga ?? viajeActual.Carga,
-                //    km ?? viajeActual.Km
-                //);
+                var viajeModificado = new Viaje(
+                    fechaInicio ?? viajeActual.FechaInicio,
+                    lugarPartida ?? viajeActual.LugarPartida,
+                    destino ?? viajeActual.Destino,
+                    remito ?? viajeActual.Remito,
+                    kg ?? viajeActual.Kg,
+                    carga ?? viajeActual.Carga,
+                    cliente ?? viajeActual.Cliente,
+                    camion ?? viajeActual.Camion,
+                    km ?? viajeActual.Km,
+                    tarifa ?? viajeActual.Tarifa
+                    );
 
                 // Validamos el viaje modificado
-                //ValidadorViaje validador = new ValidadorViaje(
-                //    viajeModificado.Destino,
-                //    viajeModificado.LugarPartida,
-                //    viajeModificado.Kg,
-                //    viajeModificado.Remito,
-                //    viajeModificado.PrecioPorKilo,
-                //    //viajeModificado.Empleado,
-                //    viajeModificado.Cliente,
-                //    viajeModificado.Camion
-                //    //viajeModificado.FechaInicio,
-                //    //viajeModificado.Carga,
-                //    //viajeModificado.Km,
-                //    //viajeModificado.FechaFacturacion
-                //);
+                ValidadorViaje validador = new ValidadorViaje(
+                    viajeModificado.FechaInicio,
+                    viajeModificado.LugarPartida,
+                    viajeModificado.Destino,
+                    viajeModificado.Kg,
+                    viajeModificado.Remito,
+                    viajeModificado.Tarifa,
+                    viajeModificado.Cliente,
+                    viajeModificado.Camion,
+                    viajeModificado.Carga,
+                    viajeModificado.Km
+                    );
 
                 // Solo validamos lo que se modificó
-                //if (fechaInicio != null || fechaFacturacion != null)
-                //    validador.ValidarFechas();
 
-                //if (destino != null || lugarPartida != null)
-                //    validador.ValidarRuta();
+                if (destino != null || lugarPartida != null)
+                    validador.ValidarRuta();
 
-                //if (kg != null)
-                //    validador.ValidarCarga();
+                if (kg != null)
+                    validador.ValidarCarga();
 
-                //if (precioPorKilo != null || remito != null)
-                //    validador.ValidarPrecioYRemito();
+                if (tarifa != null || remito != null)
+                    validador.ValidarPrecioYRemito();
 
 
-                //Result<bool> resultadoValidacion = validador.ObtenerResultado();
+                Result<bool> resultadoValidacion = validador.ObtenerResultado();
 
-                //if (!resultadoValidacion.IsSuccess)
-                //    return Result<bool>.Failure(resultadoValidacion.Error);
+                if (!resultadoValidacion.IsSuccess)
+                    return Result<bool>.Failure(resultadoValidacion.Error);
 
-                //await _viajeRepository.ActualizarAsync(id, destino, lugarPartida, kg, remito, 
-                //    precioPorKilo, empleado, cliente, camion, 
-                //    fechaInicio, fechaFacturacion, carga, km);
+                await _viajeRepository.ActualizarAsync(id, fechaInicio, lugarPartida, destino, remito, 
+                    carga, kg, cliente, camion, tarifa, km);
                 return Result<bool>.Success(true);
             }
             catch (Exception)
@@ -215,7 +201,7 @@ namespace Proyecto_camiones.Presentacion.Services
             }
         }
 
-        public async Task<Result<bool>> EliminarViajeAsync(int id)
+        public async Task<Result<bool>> EliminarAsync(int id)
         {
             if (id <= 0)
                 return Result<bool>.Failure("ID de viaje inválido.");
@@ -237,7 +223,7 @@ namespace Proyecto_camiones.Presentacion.Services
             }
         }
 
-        public async Task<Result<List<ViajeDTO>>> ObtenerViajesPorCamionAsync(int idCamion)
+        public async Task<Result<List<ViajeDTO>>> ObtenerPorCamionAsync(int idCamion)
         {
             if (idCamion <= 0)
             {
@@ -252,23 +238,6 @@ namespace Proyecto_camiones.Presentacion.Services
                 return Result<List<ViajeDTO>>.Failure("No se encontraron viajes para el camión especificado");
             }
 
-            return Result<List<ViajeDTO>>.Success(viajes);
-        }
-
-        public async Task<Result<List<ViajeDTO>>> ObtenerViajesPorEmpleado(int idEmpleado)
-        {
-            if (idEmpleado <= 0)
-            {
-                return Result<List<ViajeDTO>>.Failure(MensajeError.idInvalido(idEmpleado));
-            }
-
-            //var viajes = await _viajeRepository.ObtenerPorChofer(idChofer);
-            List<ViajeDTO> viajes = null;
-
-            if (viajes == null || viajes.Count == 0)
-            {
-                return Result<List<ViajeDTO>>.Failure("No se encontraron viajes para el chofer especificado");
-            }
             return Result<List<ViajeDTO>>.Success(viajes);
         }
     }

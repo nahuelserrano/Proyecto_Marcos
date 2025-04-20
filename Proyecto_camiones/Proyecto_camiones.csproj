@@ -37,6 +37,7 @@
     </Compile>
     <Compile Include="Models\Camion.cs" />
     <Compile Include="Models\Cheque.cs" />
+    <Compile Include="Models\Chofer.cs" />
     <Compile Include="Models\Cliente.cs" />
     <Compile Include="Models\CuentaCorriente.cs" />
     <Compile Include="Models\Flete.cs" />
@@ -48,6 +49,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\CamionRepository.cs" />
     <Compile Include="Repositories\ChequeRepository.cs" />
+    <Compile Include="Repositories\ChoferRepository.cs" />
     <Compile Include="Repositories\ClienteRepository.cs" />
     <Compile Include="Repositories\CuentaCorrienteRepository.cs" />
     <Compile Include="Repositories\FleteRepository.cs" />
@@ -56,20 +58,23 @@
     <Compile Include="Repositories\ViajeRepository.cs" />
     <Compile Include="Services\CamionService.cs" />
     <Compile Include="Services\ChequeService.cs" />
+    <Compile Include="Services\ChoferService.cs" />
     <Compile Include="Services\ClienteService.cs" />
     <Compile Include="Services\CuentaCorrienteService.cs" />
-    <Compile Include="Services\FleteService.cs" />
-    <Compile Include="Services\ViajeFleteService.cs" />
     <Compile Include="Services\PagoService.cs" />
-    <Compile Include="Services\ViajeService.cs" />
+    <Compile Include="Services\ViajeFleteService.cs" />
+    <compile Include="Services\ViajeService.cs" />
+    <compile Include="Services\FleteService.cs" />
     <Compile Include="Utils\MensajesError\MensajeError.cs" />
     <Compile Include="Utils\Validadores\ValidadorCheque.cs" />
     <Compile Include="Utils\Result.cs" />
     <Compile Include="Utils\Validadores\ValidadorCamion.cs" />
+    <Compile Include="Utils\Validadores\ValidadorChofer.cs" />
     <Compile Include="Utils\Validadores\ValidadorCliente.cs" />
     <Compile Include="Utils\Validadores\ValidadorPago.cs" />
     <Compile Include="Utils\Validadores\ValidadorViaje.cs" />
     <Compile Include="ViewModels\CamionViewModel.cs" />
+    <Compile Include="ViewModels\ChoferViewModel.cs" />
     <Compile Include="ViewModels\ClienteViewModel.cs" />
     <Compile Include="ViewModels\CuentaCorrienteViewModel.cs" />
     <Compile Include="ViewModels\FleteViewModel.cs" />

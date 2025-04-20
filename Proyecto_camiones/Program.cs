@@ -11,6 +11,7 @@ using Proyecto_camiones.Presentacion.Utils;
 using Proyecto_camiones.Models;
 using MathNet.Numerics.LinearAlgebra.Factorization;
 using System.Runtime.CompilerServices;
+using MySqlX.XDevAPI.Common;
 
 
 namespace Proyecto_camiones.Presentacion
@@ -33,7 +34,7 @@ namespace Proyecto_camiones.Presentacion
 
             //pagosService.Crear(1, DateOnly.MinValue, DateOnly.MaxValue, DateOnly.MaxValue);
 
-            //CamionViewModel cvm = new CamionViewModel();
+            CamionViewModel cvm = new CamionViewModel();
             ////PRUEBA INSERCION
             //Result<int> id = cvm.InsertarCamion(120, 40, "MLA126", "Pepito").Result;
             //if (id.IsSuccess)
@@ -101,7 +102,7 @@ namespace Proyecto_camiones.Presentacion
             //}
 
 
-            //  ClienteViewModel clvm = new ClienteViewModel();
+            ClienteViewModel clvm = new ClienteViewModel();
 
             //INSERCION
             //var cliente = await clvm.InsertarCliente("MACHACA");
@@ -127,22 +128,57 @@ namespace Proyecto_camiones.Presentacion
 
             //INSERTAR
 
-            //var idViaje = await vfvm.InsertarViajeFlete("Tandil", "Necochea", 40, "trigo", 120, 130, 19000, 12345, "MACHACA", "x", "Chofer del Flete X", 10, new DateOnly(2025, 4, 11));
+            //var idViaje = await vfvm.InsertarViajeFlete("Tandil", "Necochea", 40, "trigo", 120, 130, 19000, 12345, "MACHACA", "CARLOS", "Chofer de Carlos", 10, new DateOnly(2025, 4, 11));
             //if (idViaje.IsSuccess)
             //{
             //    Console.WriteLine("Viaje ingresado con el id: " + idViaje.Value);
             //}
             //Console.WriteLine(idViaje.Error);
 
-            FleteViewModel fvm = new FleteViewModel();
-            var idFletero = await fvm.InsertarFletero("Bernabé");
-            if (idFletero.IsSuccess)
+            //OBTENER VIAJES DE UN FLETERO
+
+            var viajes = await vfvm.ObtenerViajesDeUnFletero("Carlos");
+            if (viajes.IsSuccess)
             {
-                Console.WriteLine("Fletero insertado con el id: " + idFletero.Value);
+                foreach(var viaje in viajes.Value)
+                {
+                    Console.WriteLine(viaje);
+                }
             }
-            Console.WriteLine(idFletero.Error);
+            else
+            {
+                Console.WriteLine(viajes.Error);
+            }
 
+                //ProbarInsertarViaje("Tandil", "Azul");
 
+                //ProbarInsertarChofer("Juan Alpaca");
+
+                FleteViewModel fvm = new FleteViewModel();
+
+            //INSERTAR FLETERO
+            //var idFletero = await fvm.InsertarFletero("Carlos");
+            //if (idFletero.IsSuccess)
+            //{
+            //    Console.WriteLine("Fletero insertado con el id: " + idFletero.Value);
+            //}
+            //else
+            //{
+            //    Console.WriteLine(idFletero.Error);
+            //}
+
+            //OBTENER POR NOMBRE
+            //var fletero = await fvm.ObtenerFletePorNombre("Carlos");
+            //if (fletero.IsSuccess)
+            //{
+            //    Console.WriteLine(fletero.Value);
+            //}
+            //else
+            //{
+            //    Console.WriteLine(fletero.Error);
+            //}
+
+            //ProbarEliminarChofer(2);
         }
 
 
@@ -151,22 +187,34 @@ namespace Proyecto_camiones.Presentacion
             ViajeViewModel vvm = new ViajeViewModel();
 
             var resultadoCreacion1 = await vvm.CrearViaje(
-                destino: destino,
-                lugarPartida: origen,
-                kg: 5000.5f,
-                remito: 12345,
-                precioPorKilo: 10.5f,
-                chofer: 1,  // Asumiendo que el ID 1 existe
-                cliente: 2, // Asumiendo que el ID 2 existe
-                camion: 3,  // Asumiendo que el ID 3 existe
                 fechaInicio: new DateOnly(2025, 4, 11),
-                fechaFacturacion: new DateOnly(2025, 5, 1),
+                lugarPartida: origen,
+                destino: destino,
+                remito: 12345,
                 carga: "Materiales de construcción",
-                km: 650.75f
+                kg: 5000.5f,
+                cliente: 2, // Asumiendo que el ID 2 existe
+                camion: 3, // Asumiendo que el ID 3 existe
+                km: 650.75f,
+                tarifa: 10.5f
             );
 
             Console.WriteLine("Resultado de la creación del viaje: " + resultadoCreacion1.Value);
 
+        }
+
+        public static void ProbarInsertarChofer(string nombre)
+        {
+            ChoferViewModel cvm = new ChoferViewModel();
+            var resultadoCreacion = cvm.CrearAsync(nombre).Result;
+            Console.WriteLine("Resultado de la creación del chofer: " + resultadoCreacion.Value.Nombre);
+        }
+
+        public static void ProbarEliminarChofer(int id)
+        {
+            ChoferViewModel cvm = new ChoferViewModel();
+            var resultadoCreacion = cvm.EliminarAsync(id).Result;
+            Console.WriteLine("Resultado de la creación del chofer: " + resultadoCreacion.Value);
         }
     }
 }

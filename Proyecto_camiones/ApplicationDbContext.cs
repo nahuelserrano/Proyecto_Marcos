@@ -11,12 +11,13 @@ public class ApplicationDbContext : DbContext
     public DbSet<Camion> Camiones { get; set; }
     public DbSet<Viaje> Viajes { get; set; }
     public DbSet<Cheque> Cheques { get; set; }
-    public DbSet<Pago> Pagos { get; set; }
+    public DbSet<Sueldo> Pagos { get; set; }
     public DbSet<Cliente> Clientes { get; set; }
     public DbSet<Usuario> Usuarios { get; set; }
     public DbSet<CuentaCorriente> Cuentas { get; set; }
     public DbSet<ViajeFlete> ViajesFlete { get; set; }
     public DbSet<Flete> Fletes { get; set; }
+    public DbSet<Chofer> Choferes { get; set; }
 
     // Constructor para pasar opciones (útil para pruebas o configuración)
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -41,10 +42,11 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Camion>().ToTable("camion");
         modelBuilder.Entity<Viaje>().ToTable("viaje");
         modelBuilder.Entity<Cheque>().ToTable("cheque");
-        modelBuilder.Entity<Pago>().ToTable("pago");
+        modelBuilder.Entity<Sueldo>().ToTable("pago");
         modelBuilder.Entity<Cliente>().ToTable("cliente");
         modelBuilder.Entity<Usuario>().ToTable("usuario");
         modelBuilder.Entity<CuentaCorriente>().ToTable("cuenta_corriente");
+        modelBuilder.Entity<Chofer>().ToTable("chofer");
 
         modelBuilder.Entity<Camion>(entity =>
         {
@@ -55,6 +57,23 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.tara).HasColumnName("tara");
             entity.Property(e => e.Patente).HasColumnName("patente");
             entity.Property(e => e.nombre_chofer).HasColumnName("nombre_chofer");
+        });
+
+        modelBuilder.Entity<Viaje>(entity =>
+        {
+            entity.ToTable("viaje");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasColumnName("idviaje");
+            entity.Property(e => e.FechaInicio).HasColumnName("partida");
+            entity.Property(e => e.LugarPartida).HasColumnName("origen");
+            entity.Property(e => e.Destino).HasColumnName("destino");
+            entity.Property(e => e.Remito).HasColumnName("remito");
+            entity.Property(e => e.Kg).HasColumnName("kg");
+            entity.Property(e => e.Carga).HasColumnName("carga");
+            entity.Property(e => e.Cliente).HasColumnName("cliente");
+            entity.Property(e => e.Camion).HasColumnName("camion");
+            entity.Property(e => e.Km).HasColumnName("km");
+            entity.Property(e => e.Tarifa).HasColumnName("tarifa");
         });
 
 
@@ -110,6 +129,13 @@ public class ApplicationDbContext : DbContext
 
         base.OnModelCreating(modelBuilder);
 
+        modelBuilder.Entity<Chofer>(entity =>
+        {
+            entity.ToTable("chofer");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasColumnName("idchofer");
+            entity.Property(e => e.Nombre).HasColumnName("nombre");
+        });
     }
 
 }

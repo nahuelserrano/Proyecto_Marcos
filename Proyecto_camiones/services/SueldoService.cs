@@ -2,45 +2,46 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Proyecto_camiones.DTOs;
+using Proyecto_camiones.Services;
 using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Utils;
 
 namespace Proyecto_camiones.Presentacion.Services
 {
-    class PagosService
+    class SueldoService
     {
-        private PagoRepository _pagoRepository;
-        private VIA _viajeService;
+        private SueldoRepository _sueldoRepository;
+        private ViajeService _viajeService;
         private Viaje _viajeDTO;
 
-        public PagosService(PagoRepository pagosR)
+        public SueldoService(SueldoRepository pagosR)
         {
-            this._pagoRepository = pagosR ?? throw new ArgumentNullException(nameof(pagosR));
+            this._sueldoRepository = pagosR ?? throw new ArgumentNullException(nameof(pagosR));
         }
 
-        public async Task<Result<PagoDTO>> ObtenerPorId(int id)
+        public async Task<Result<SueldoDTO>> ObtenerPorId(int id)
         {
             if (id <= 0)
-                return Result<PagoDTO>.Failure(MensajeError.idInvalido(id));
+                return Result<SueldoDTO>.Failure(MensajeError.idInvalido(id));
 
-            PagoDTO Pago = await _pagoRepository.ObtenerPorId(id);
+            SueldoDTO Pago = await _sueldoRepository.ObtenerPorId(id);
 
             if (Pago == null)
-                return Result<PagoDTO>.Failure(MensajeError.objetoNulo(nameof(Pago)));
+                return Result<SueldoDTO>.Failure(MensajeError.objetoNulo(nameof(Pago)));
 
-            return Result<PagoDTO>.Success(Pago);
+            return Result<SueldoDTO>.Success(Pago);
         }
 
-        internal async Task<Result<bool>> Eliminar(int pagoId)
+        internal async Task<Result<bool>> EliminarAsync(int pagoId)
         {
             if (pagoId <= 0) return Result<bool>.Failure(MensajeError.idInvalido(pagoId));
 
-            PagoDTO pago = await this._pagoRepository.ObtenerPorId(pagoId);
+            SueldoDTO pago = await this._sueldoRepository.ObtenerPorId(pagoId);
 
             if (pago == null) return Result<bool>.Failure(MensajeError.objetoNulo(nameof(pago)));
 
-            await _pagoRepository.Eliminar(pagoId); 
+            await _sueldoRepository.Eliminar(pagoId); 
 
             return Result<bool>.Success(true);
 
@@ -50,12 +51,12 @@ namespace Proyecto_camiones.Presentacion.Services
 
         }
 
-        public async Task<Result<int>> Crear(int Id_Chofer, DateOnly pagodesde, DateOnly pagoHasta, DateOnly FechaPago)
+        public async Task<Result<int>> CrearAsync(int Id_Chofer, DateOnly pagodesde, DateOnly pagoHasta, DateOnly FechaPago)
         {
              float monto = this.calculadorSueldo(Id_Chofer);
 
            
-            ValidadorPago validador = new ValidadorPago(33,Id_Chofer, FechaPago, pagodesde, pagoHasta);
+            ValidadorSueldo validador = new ValidadorSueldo(33,Id_Chofer, FechaPago, pagodesde, pagoHasta);
 
             Result<bool> resultadoValidacion = validador.ValidarCompleto();
 
@@ -65,7 +66,7 @@ namespace Proyecto_camiones.Presentacion.Services
             try
             {
                 
-                int idPago = await _pagoRepository.Insertar(2,Id_Chofer, FechaPago, pagodesde, FechaPago);
+                int idPago = await _sueldoRepository.Insertar(2,Id_Chofer, FechaPago, pagodesde, FechaPago);
                 return Result<int>.Success(idPago);
             }
             catch (Exception ex)
@@ -102,18 +103,18 @@ namespace Proyecto_camiones.Presentacion.Services
 
         }
 
-        public async Task<Result<PagoDTO>> Actualizar(int id,float? monto=null, int? Id_Chofer=null, DateOnly? pagadoDesde=null, DateOnly? pagadoHasta=null, DateOnly? FechaPago=null)
+        public async Task<Result<SueldoDTO>> ActualizarAsync(int id,float? monto=null, int? Id_Chofer=null, DateOnly? pagadoDesde=null, DateOnly? pagadoHasta=null, DateOnly? FechaPago=null)
         {
             if (id <= 0)
-                return Result<PagoDTO>.Failure(MensajeError.idInvalido(id));
+                return Result<SueldoDTO>.Failure(MensajeError.idInvalido(id));
 
-            var pagoExistente = await _pagoRepository.ObtenerPorId(id);
+            var pagoExistente = await _sueldoRepository.ObtenerPorId(id);
 
             if (pagoExistente == null)
-                return Result<PagoDTO>.Failure("No se encontró el pago con el ID proporcionado.");
+                return Result<SueldoDTO>.Failure("No se encontró el pago con el ID proporcionado.");
 
             if (monto == null && Id_Chofer == null && pagadoDesde == null && pagadoHasta == null && FechaPago == null)
-                return Result<PagoDTO>.Failure("No se proporcionó ningún dato para actualizar.");
+                return Result<SueldoDTO>.Failure("No se proporcionó ningún dato para actualizar.");
 
             // Actualizaciones individuales
             if (monto != null)
@@ -130,13 +131,13 @@ namespace Proyecto_camiones.Presentacion.Services
             if (FechaPago != null)
                 pagoExistente.FechaDePago = FechaPago.Value;
 
-             bool success = await this._pagoRepository.Actualizar(id,pagoExistente.Id_Chofer,pagoExistente.pagadoDesde, pagoExistente.pagadoHasta,pagoExistente.Monto_Pagado,pagoExistente.FechaDePago);
+             bool success = await this._sueldoRepository.Actualizar(id,pagoExistente.Id_Chofer,pagoExistente.pagadoDesde, pagoExistente.pagadoHasta,pagoExistente.Monto_Pagado,pagoExistente.FechaDePago);
             if (success)
             {
-                PagoDTO result = await this._pagoRepository.ObtenerPorId(id);
-                return Result<PagoDTO>.Success(result);
+                SueldoDTO result = await _sueldoRepository.ObtenerPorId(id);
+                return Result<SueldoDTO>.Success(result);
             }
-            return Result<PagoDTO>.Failure("No se pudo realizar la actualización");
+            return Result<SueldoDTO>.Failure("No se pudo realizar la actualización");
         }
 
     }
