@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Proyecto_camiones.DTOs
 {
-    class ViajeMixtoDTO
+    public class ViajeMixtoDTO
     {
         public string origen { get; set; }
         public string destino { get; set; }

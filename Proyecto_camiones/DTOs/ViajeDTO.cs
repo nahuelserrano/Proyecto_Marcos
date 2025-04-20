@@ -14,33 +14,29 @@ namespace Proyecto_camiones.DTOs
         public int Remito { get; set; }
         public float Kg { get; set; }
         public string Carga { get; set; }
-        public string nombreCliente { get; set; }
-        public string nombreEmpleado { get; set; }
+        public string NombreCliente { get; set; }
+        public string NombreChofer { get; set; }
         public float Km { get; set; }
         public float Tarifa { get; set; }
-        public DateOnly FechaFacturacion { get; set; }
-        public float toneladas { get; set; }
-        public float PrecioViaje { get { return (Tarifa * toneladas) * 1000; } }
+        public float PrecioViaje => Tarifa * Kg  * 1000; 
 
         public ViajeDTO(DateOnly fechaInicio, string lugarPartida,
-                        string destino, int remito, float kg, string carga, string nombreCliente, 
-                        string nombreEmpleado, float km, float tarifa)
+            string destino, int remito, float kg, string carga, string nombreCliente,
+            string nombreChofer, float km, float tarifa)
         {
-            Id = id;
-            //FechaInicio = fechaInicio;
-            //FechaFacturacion = fechaFacturacion;
+            FechaInicio = fechaInicio;
             LugarPartida = lugarPartida;
             Destino = destino;
-            //Carga = carga;
-            //Kg = kg;
+            Carga = carga;
+            Kg = kg;
             Km = km;
-            PrecioPorKilo = precioPorKilo;
-            this.Remito = remito;
-            this.nombreEmpleado = nombreEmpleado;
-            this.nombreCliente = nombreCliente;
-            //this.Tarifa = tarifa;
-            this.toneladas = toneladas;
+            Remito = remito;
+            NombreChofer = nombreChofer;
+            NombreCliente = nombreCliente;
+            Tarifa = tarifa;
         }
+
+        // También arreglamos la propiedad para que sea consistente
 
         public ViajeDTO()
         {
@@ -52,12 +48,11 @@ namespace Proyecto_camiones.DTOs
             Remito = 0;
             Kg = 0.0f;
             Carga = "default";
-            nombreCliente = "default";
-            nombreEmpleado = "default";
+            NombreCliente = "default";
+            NombreChofer = "default";
             Km = 0;
             Tarifa = 1200;
-            toneladas = 12;
         }
     }
-    }
+}
 

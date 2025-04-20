@@ -12,6 +12,8 @@ using Proyecto_camiones.Models;
 using MathNet.Numerics.LinearAlgebra.Factorization;
 using System.Runtime.CompilerServices;
 using MySqlX.XDevAPI.Common;
+using System.Data;
+using MySql.Data.MySqlClient;
 
 
 namespace Proyecto_camiones.Presentacion
@@ -34,7 +36,7 @@ namespace Proyecto_camiones.Presentacion
 
             //pagosService.Crear(1, DateOnly.MinValue, DateOnly.MaxValue, DateOnly.MaxValue);
 
-            CamionViewModel cvm = new CamionViewModel();
+            //CamionViewModel cvm = new CamionViewModel();
             ////PRUEBA INSERCION
             //Result<int> id = cvm.InsertarCamion(120, 40, "MLA126", "Pepito").Result;
             //if (id.IsSuccess)
@@ -68,7 +70,7 @@ namespace Proyecto_camiones.Presentacion
             //Console.WriteLine(response.Value);
 
 
-            CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
+            //CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
 
             //INSERCION
 
@@ -102,7 +104,7 @@ namespace Proyecto_camiones.Presentacion
             //}
 
 
-            ClienteViewModel clvm = new ClienteViewModel();
+            //ClienteViewModel clvm = new ClienteViewModel();
 
             //INSERCION
             //var cliente = await clvm.InsertarCliente("MACHACA");
@@ -124,7 +126,7 @@ namespace Proyecto_camiones.Presentacion
             //var result = await clvm.Eliminar(1);
             //Console.WriteLine(result.Value);
 
-            ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
+            //ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
 
             //INSERTAR
 
@@ -135,26 +137,30 @@ namespace Proyecto_camiones.Presentacion
             //}
             //Console.WriteLine(idViaje.Error);
 
+
+            //ProbarInsertarChofer("Juan Alpaca");
+
+
             //OBTENER VIAJES DE UN FLETERO
 
-            var viajes = await vfvm.ObtenerViajesDeUnFletero("Carlos");
-            if (viajes.IsSuccess)
-            {
-                foreach(var viaje in viajes.Value)
-                {
-                    Console.WriteLine(viaje);
-                }
-            }
-            else
-            {
-                Console.WriteLine(viajes.Error);
-            }
+            //var viajes = await vfvm.ObtenerViajesDeUnFletero("Carlos");
+            //if (viajes.IsSuccess)
+            //{
+            //    foreach(var viaje in viajes.Value)
+            //    {
+            //        Console.WriteLine(viaje);
+            //    }
+            //}
+            //else
+            //{
+            //    Console.WriteLine(viajes.Error);
+            //}
 
-                //ProbarInsertarViaje("Tandil", "Azul");
+            //ProbarInsertarViaje("Tandil", "Azul");
 
-                //ProbarInsertarChofer("Juan Alpaca");
+            //ProbarInsertarChofer("Juan Alpaca");
 
-                FleteViewModel fvm = new FleteViewModel();
+            //FleteViewModel fvm = new FleteViewModel();
 
             //INSERTAR FLETERO
             //var idFletero = await fvm.InsertarFletero("Carlos");
@@ -179,14 +185,21 @@ namespace Proyecto_camiones.Presentacion
             //}
 
             //ProbarEliminarChofer(2);
+
+            Console.WriteLine(1);
+            ProbarInsertarViaje("Tandil", "Azul");
+
+            
         }
 
 
         public static async void ProbarInsertarViaje(string origen, string destino)
         {
+            Console.WriteLine(2);
+
             ViajeViewModel vvm = new ViajeViewModel();
 
-            var resultadoCreacion1 = await vvm.CrearViaje(
+            var resultadoCreacion1 = await vvm.CrearAsync(
                 fechaInicio: new DateOnly(2025, 4, 11),
                 lugarPartida: origen,
                 destino: destino,
@@ -199,8 +212,15 @@ namespace Proyecto_camiones.Presentacion
                 tarifa: 10.5f
             );
 
-            Console.WriteLine("Resultado de la creación del viaje: " + resultadoCreacion1.Value);
+            Console.WriteLine(3);
 
+            if (!resultadoCreacion1.IsSuccess)
+            {
+                Console.WriteLine("Error al crear el viaje: " + resultadoCreacion1.Error);
+                return;
+            }
+
+            Console.WriteLine("Resultado de la creación del viaje: " + resultadoCreacion1.Value);
         }
 
         public static void ProbarInsertarChofer(string nombre)

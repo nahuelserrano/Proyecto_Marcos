@@ -29,6 +29,7 @@
     <Compile Include="DTOs\PagoDTO.cs" />
     <Compile Include="DTOs\ViajeDTO.cs" />
     <Compile Include="DTOs\ViajeFleteDTO.cs" />
+    <Compile Include="DTOs\ViajeMixtoDTO.cs"/>
     <Compile Include="Forms\Formulario_Viajes.cs">
       <SubType>Form</SubType>
     </Compile>

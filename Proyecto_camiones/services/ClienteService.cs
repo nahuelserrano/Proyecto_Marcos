@@ -9,7 +9,7 @@ using Proyecto_camiones.Presentacion.Utils;
 
 namespace Proyecto_camiones.Presentacion.Services
 {
-    class ClienteService
+    public class ClienteService
     {
         private ClienteRepository _clienteRepository;
 

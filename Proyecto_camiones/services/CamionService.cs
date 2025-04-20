@@ -70,6 +70,20 @@ namespace Proyecto_camiones.Presentacion.Services
             }
         }
 
+        public async Task<CamionDTO> ObtenerPorIdAsync(int id)
+        {
+            try
+            {
+                CamionDTO camion = await _camionRepository.ObtenerPorId(id);
+                return camion;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
         internal async Task<Result<CamionDTO>> Actualizar(int id, float? peso_max, float? tara, string? patente, string? nombre)
         {
             if (id <= 0)

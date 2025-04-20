@@ -18,13 +18,12 @@ namespace Proyecto_camiones.Presentacion.Models
         public int Camion { get; set; }
         public float Km { get; set; }
         public float Tarifa { get; set; }
-        public DateOnly FechaFacturacion { get; set; }
-        public float total { get { return (Tarifa * Kg) * 1000; } }
+        public string NombreChofer { get; set; }
+        public float Total => Tarifa * Kg * 1000;
 
         public Viaje(DateOnly fechaInicio, string lugarPartida, string destino, int remito, float kg,
             string carga, int cliente, int camion, float km,  float tarifa)
         {
-     
             FechaInicio = fechaInicio;
             LugarPartida = lugarPartida;
             Destino = destino;
@@ -35,14 +34,18 @@ namespace Proyecto_camiones.Presentacion.Models
             Camion = camion;
             Km = km;
             Tarifa = tarifa;
-
         }
-
 
         public ViajeDTO toDTO(string nombreChofer, string nombreCliente)
         {
             return new ViajeDTO(FechaInicio, LugarPartida, Destino, Remito, Kg, Carga, 
-                nombreCliente, nombreChofer, Km, Tarifa );
+                nombreCliente, nombreChofer, Km, Tarifa);
+        }
+
+        public ViajeDTO toDTO(string nombreCliente)
+        {
+            return new ViajeDTO(FechaInicio, LugarPartida, Destino, Remito, Kg, Carga,
+                nombreCliente, NombreChofer, Km, Tarifa);
         }
     }
 }
