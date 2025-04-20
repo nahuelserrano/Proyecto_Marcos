@@ -83,20 +83,20 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
       public async Task<SueldoDTO?> ObtenerPorId(int id)
       {
-            Sueldo pago= await _context.Sueldo.FindAsync(id);
+            Sueldo sueldo= await _context.Sueldo.FindAsync(id);
     
-            if (pago == null)
+            if (sueldo == null)
                 return null;
 
-            SueldoDTO pagop = new SueldoDTO(
-                pago.Monto_Pagado,
-                pago.Id_Chofer,
-                pago.pagadoDesde,
-                pago.pagadoHasta,
-                pago.FechaPago
+            SueldoDTO sueldoS = new SueldoDTO(
+                sueldo.Monto_Pagado,
+                sueldo.Id_Chofer,
+                sueldo.pagadoDesde,
+                sueldo.pagadoHasta,
+                sueldo.FechaPago
             );
 
-            return pagop;
+            return sueldoS;
       }
 
        

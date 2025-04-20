@@ -14,7 +14,7 @@ namespace Proyecto_camiones.Services
     {
 
 
-        public Result<int> crearPagos(int id_chofer, int id_viaje, bool pagado, float monto_pagado)
+        public Result<int> CrearAsync(int id_chofer, int id_viaje, bool pagado, float monto_pagado)
         {
             ValidadorPago validador = new ValidadorPago(id_chofer, id_viaje, pagado, monto_pagado);
             Result<bool> resultadoValidacion = validador.ValidarCompleto();
@@ -65,7 +65,7 @@ namespace Proyecto_camiones.Services
         public Result<float> ObtenerPorFiltroAsync(int id_chofer, DateOnly calcularDesde, DateOnly calcularHasta)
         {
             List<Pago> pagos = PagoRepository.ObtenerPagosByChofer(id_chofer, calcularDesde, calcularHasta);
-            return ;
+            return null;
         }
         public Result<bool> ActualizarAsync() { 
         

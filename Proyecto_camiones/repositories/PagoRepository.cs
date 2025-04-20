@@ -88,12 +88,12 @@ namespace Proyecto_camiones.Repositories
                     pago.Monto_Pagado = monto_pagado_nuevo.Value;
                     return true;
                 }
-               
-                if (pago == null)
-                {
-                    return false;
+                if (pagadoDesde != null && pagadoHasta != null) { 
+                
+                    List<Pago> pagos = await _context.Pagos.Where(p => p.Fecha_Pago >= pagadoDesde && p.Fecha_Pago <= pagadoHasta).ToListAsync();
                 }
-                pago.Monto_pagado = monto_pagado;
+                
+                
                 int registrosAfectados = this._context.SaveChanges();
                 if (registrosAfectados > 0)
                 {
