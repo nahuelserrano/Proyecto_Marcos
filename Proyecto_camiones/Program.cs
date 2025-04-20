@@ -189,9 +189,6 @@ namespace Proyecto_camiones.Presentacion
             //Console.WriteLine(1);
             //ProbarInsertarViaje("Tandil", "Azul");
 
-            ProbarInsertarChofer("Juan Alpaca");
-
-
             try
             {
                 // PRUEBAS CHOFER
@@ -209,7 +206,7 @@ namespace Proyecto_camiones.Presentacion
                 await ProbarActualizarViaje(1, destino: "Las Vegas");
                 await ProbarEliminarViaje(1);
 
-                Console.WriteLine("¡Todas las pruebas completadas! Casi tan exitoso como mi cita falsa del viernes.");
+                Console.WriteLine("¡Todas las pruebas completadas!");
             }
             catch (Exception ex)
             {
