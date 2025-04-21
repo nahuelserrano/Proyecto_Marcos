@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Proyecto_camiones.Models
 {
 
-    class Pago
+    public class Pago
     {
         public int Id { get; set; }
         public int Id_Chofer { get; set; }

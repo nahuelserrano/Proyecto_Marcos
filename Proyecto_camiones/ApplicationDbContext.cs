@@ -11,7 +11,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<Camion> Camiones { get; set; }
     public DbSet<Viaje> Viajes { get; set; }
     public DbSet<Cheque> Cheques { get; set; }
-    public DbSet<Sueldo> Pagos { get; set; }
+    public DbSet<Pago> Pagos { get; set; }
+    public DbSet<Sueldo> Sueldos { get; set; }
     public DbSet<Cliente> Clientes { get; set; }
     public DbSet<Usuario> Usuarios { get; set; }
     public DbSet<CuentaCorriente> Cuentas { get; set; }
@@ -106,6 +107,29 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.IdCliente).HasColumnName("idCliente");
             entity.Property(e => e.IdFletero).HasColumnName("idfletero");
             entity.Property(e => e.Saldo_Total).HasColumnName("saldo");
+        });
+        
+        modelBuilder.Entity<Pago>(entity =>
+        {
+            entity.ToTable("pago");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
+            entity.Property(e => e.Monto_Pagado).HasColumnName("Monto_Pago");
+            entity.Property(e => e.Pagado).HasColumnName("Pagado");
+            entity.Property(e => e.Id_Chofer).HasColumnName("id_Chofer");
+            entity.Property(e => e.Id_Viaje).HasColumnName("id_Viaje");
+            entity.Property(e => e.Id_sueldo).HasColumnName("id_sueldo");
+        });
+        modelBuilder.Entity<Sueldo>(entity =>
+        {
+            entity.ToTable("sueldo");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
+            entity.Property(e => e.Monto).HasColumnName("Monto_Pago");
+            entity.Property(e => e.Id_Chofer).HasColumnName("id_Chofer");
+            entity.Property(e => e.pagadoDesde).HasColumnName("pagado_Desde");
+            entity.Property(e => e.pagadoHasta).HasColumnName("pagado_Hasta");
+            entity.Property(e => e.FechaPago).HasColumnName("fecha_Pago");
         });
 
         modelBuilder.Entity<Cliente>(entity =>

@@ -14,16 +14,16 @@ namespace Proyecto_camiones.Services
     {
 
 
-        public Result<int> CrearAsync(int id_chofer, int id_viaje, bool pagado, float monto_pagado)
+        public Result<int> CrearAsync(int id_chofer, int id_viaje, float monto_pagado)
         {
-            ValidadorPago validador = new ValidadorPago(id_chofer, id_viaje, pagado, monto_pagado);
+            ValidadorPago validador = new ValidadorPago(id_chofer, id_viaje, monto_pagado);
             Result<bool> resultadoValidacion = validador.ValidarCompleto();
             if (!resultadoValidacion.IsSuccess)
                 return Result<int>.Failure(resultadoValidacion.Error);
 
             try
             {
-                int idPago = PagoRepository.Insertar(id_chofer, id_viaje, pagado, monto_pagado);
+                int idPago = PagoRepository.Insertar(id_chofer, id_viaje, pagado=false, monto_pagado);
                 if (idPago > 0)
                 {
                     return Result<int>.Success(idPago);
@@ -40,18 +40,15 @@ namespace Proyecto_camiones.Services
 
         }
 
-        public void marcarPagos(int id_chofer,DateOnly desde,DateOnly hasta) {
+        public Result<bool> marcarPagos(int id_chofer,DateOnly desde,DateOnly hasta,int id_Sueldo) {
             try
             {
-                List<Pago> pagos = PagoRepository.ObtenerPagos();
+                List<Pago> pagos = PagoRepository.ObtenerPagos(id_chofer,desde,hasta);
                 foreach (var pago in pagos)
-                {
-                    if (pago.Pagado == false)
-                    {
-                        // Lógica para marcar el pago como pagado
-                        PagoRepository.MarcarComoPagado(pago.Id);
-                    }
+                {                   
+                      this.ActualizarAsync(pago.Id,true,id_Sueldo);
                 }
+                return Result<bool>.Success(true);
             }
             catch (Exception ex)
             {
@@ -64,11 +61,20 @@ namespace Proyecto_camiones.Services
 
         public Result<float> ObtenerPorFiltroAsync(int id_chofer, DateOnly calcularDesde, DateOnly calcularHasta)
         {
-            List<Pago> pagos = PagoRepository.ObtenerPagosByChofer(id_chofer, calcularDesde, calcularHasta);
-            return null;
+            List<Pago> pagos = PagoRepository.ObtenerPagos(id_chofer, calcularDesde, calcularHasta);
+
+            float totalPagar = 0;
+            foreach (var pago in pagos) { 
+            
+                 totalPagar+=pago.Monto_Pagado;
+            }
+           return Result<float>.Success(totalPagar);
         }
-        public Result<bool> ActualizarAsync() { 
+           
         
+        public Result<bool> ActualizarAsync(int id,bool pagado,int id_sueldo) 
+        {
+            PagoRepository.MarcarComoPagado(id,pagado,id_sueldo);
         }
     
     }

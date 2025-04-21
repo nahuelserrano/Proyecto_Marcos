@@ -69,7 +69,7 @@ namespace Proyecto_camiones.Repositories
 
 
 
-        public async Task<bool> Actualizar(int?id_viaje=null, float? monto_pagado_nuevo = null,DateOnly? pagadoDesde=null,DateOnly? pagadoHasta=null)
+        public async Task<bool> Actualizar(int? id=null,int?id_viaje=null, float? monto_pagado_nuevo = null)
         {
             try
             {
@@ -88,12 +88,22 @@ namespace Proyecto_camiones.Repositories
                     pago.Monto_Pagado = monto_pagado_nuevo.Value;
                     return true;
                 }
-                if (pagadoDesde != null && pagadoHasta != null) { 
-                
-                    List<Pago> pagos = await _context.Pagos.Where(p => p.Fecha_Pago >= pagadoDesde && p.Fecha_Pago <= pagadoHasta).ToListAsync();
+
+
+                if (id != null)
+                {
+                    Pago pagoExistente = await _context.Pagos.FindAsync(id);
+                    if (pagoExistente == null)
+                    {
+                        return false;
+                    }
+                    pagoExistente.Pagado = true;
+
                 }
-                
-                
+
+
+
+
                 int registrosAfectados = this._context.SaveChanges();
                 if (registrosAfectados > 0)
                 {
