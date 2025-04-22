@@ -16,11 +16,13 @@ namespace Proyecto_camiones.Services
     {
         private CuentaCorrienteRepository ccRepository;
         private ClienteRepository clienteRepository;
+        private FleteRepository fleteRepository;
 
         public CuentaCorrienteService(CuentaCorrienteRepository cc, ClienteRepository cr)
         {
             this.ccRepository = cc ?? throw new ArgumentNullException(nameof(cc));
             this.clienteRepository = cr ?? throw new ArgumentNullException(nameof(cr));
+            this.fleteRepository = new FleteRepository();
         }
 
         public async Task<bool> ProbarConexionAsync()
@@ -61,22 +63,41 @@ namespace Proyecto_camiones.Services
             return Result<List<CuentaCorriente>>.Success(cuentas);
         }
 
-        public async Task<int> Insertar(int idCliente, int idFletero, DateOnly fecha, int nro, float adeuda, float pagado)
+        public async Task<int> Insertar(string? cliente, string? fletero, DateOnly fecha, int nro, float adeuda, float pagado)
         {
-            Cliente c = await clienteRepository.ObtenerPorId(idCliente);
-            if (c == null)
+            if (cliente == null && fletero == null) return -1;
+            Cliente c;
+            if(cliente != null)
             {
+                c = await clienteRepository.ObtenerPorNombre(cliente.ToUpper());
+                if (c == null)
+                {
+                    return -1;
+                }
+                Console.WriteLine("corroborado que el cliente/fletero existe y no se salió");
+                CuentaCorriente result = await ccRepository.InsertarCuentaCorriente(c.Id, null, fecha, nro, adeuda, pagado);
+                Console.WriteLine("superado 1");
+                if (result != null)
+                {
+                    return result.Id;
+                }
                 return -1;
             }
-            //REPETIR LA VALIDACION PARA CHEQUEAR QUE EL FLETERO EXISTA EN LA DB
-            Console.WriteLine("corroborado que el cliente existe y no se salió");
-            CuentaCorriente result = await ccRepository.InsertarCuentaCorriente(idCliente, idFletero, fecha, nro, adeuda, pagado);
-            Console.WriteLine("superado 1");
-            if(result != null)
+            Flete flete;
+            if(fletero != null)
             {
-                return result.Id;
+                flete = await this.fleteRepository.ObtenerPorNombre(fletero.ToUpper());
+                if (flete == null) return -1;
+                CuentaCorriente result = await ccRepository.InsertarCuentaCorriente(null, flete.Id, fecha, nro, adeuda, pagado);
+                Console.WriteLine("superado 1");
+                if (result != null)
+                {
+                    return result.Id;
+                }
+                return -1;
             }
             return -1;
+            
         }
     }
 }

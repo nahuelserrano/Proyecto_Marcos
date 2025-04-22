@@ -70,16 +70,26 @@ namespace Proyecto_camiones.Presentacion
             //Console.WriteLine(response.Value);
 
 
-            //CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
+            CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
 
-            //INSERCION
+            //INSERCION PARA CUENTA CORRIENTE DE UN FLETERO FUNCIONANDO CORRECTAMENTE
 
-            //var cuenta = await ccvm.Insertar(5, 1, new DateOnly(2025, 4, 7), 89, 5678, 899);
+            //var cuenta = await ccvm.Insertar(null, "carlos", new DateOnly(2025, 4, 21), 90, 1000, 600);
             //if (cuenta.IsSuccess)
             //{
             //    Console.WriteLine("Id insertado: " + cuenta.Value);
             //}
             //Console.WriteLine(cuenta.Value);
+
+            //INSERCION PARA CUENTA CORRIENTE DE UN CLIENTE FUNCIONANDO CORRECTAMENTE
+
+            //var cuenta = await ccvm.Insertar("machaca", null, new DateOnly(2025, 4, 22), 92, 1000, 600);
+            //if (cuenta.IsSuccess)
+            //{
+            //    Console.WriteLine("Id insertado: " + cuenta.Value);
+            //}
+            //Console.WriteLine(cuenta.Value);
+
 
             //var cuenta2 = await ccvm.Insertar(5, new DateOnly(2025, 4, 7), 8383, 99, 22);
             //if (cuenta2.IsSuccess)
