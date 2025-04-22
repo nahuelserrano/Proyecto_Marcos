@@ -40,7 +40,6 @@ namespace Proyecto_camiones.DTOs
 
         public ViajeDTO()
         {
-            Id = 0;
             //FechaInicio = DateTime.Now;
             //FechaEntrega = DateTime.Now;
             LugarPartida = "default";

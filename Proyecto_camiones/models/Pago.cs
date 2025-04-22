@@ -46,6 +46,11 @@ namespace Proyecto_camiones.Models
             Monto_Pagado = monto_pagado;
 
         }
+
+        public Pago()
+        {
+
+        }
     }
         
     }

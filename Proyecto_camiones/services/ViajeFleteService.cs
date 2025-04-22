@@ -61,5 +61,6 @@ namespace Proyecto_camiones.Services
             }
             return Result<List<ViajeFleteDTO>>.Failure("No existe un fletero con ese nombre");
         }
+
     }
 }
