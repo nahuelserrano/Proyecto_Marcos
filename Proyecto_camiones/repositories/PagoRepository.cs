@@ -7,6 +7,8 @@ using Proyecto_camiones.Presentacion;
 using Proyecto_camiones.Presentacion.Utils;
 using Proyecto_camiones.Models;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using Proyecto_camiones.DTOs;
+using Microsoft.EntityFrameworkCore;
 
 namespace Proyecto_camiones.Repositories
 {
@@ -42,7 +44,7 @@ namespace Proyecto_camiones.Repositories
             }
         }
     
-       public async Task<int> Insertar(int id_chofer, int id_viaje, bool pagado, float monto_pagado)
+       public async Task<int> Insertar(int id_chofer, int id_viaje,  float monto_pagado)
         {
             try
             {
@@ -69,7 +71,7 @@ namespace Proyecto_camiones.Repositories
 
 
 
-        public async Task<bool> Actualizar(int? id=null,int?id_viaje=null, float? monto_pagado_nuevo = null)
+        public async Task<bool> Actualizar(int? id=null,int? id_Sueldo=null,int?id_viaje=null, float? monto_pagado_nuevo = null)
         {
             try
             {
@@ -90,7 +92,7 @@ namespace Proyecto_camiones.Repositories
                 }
 
 
-                if (id != null)
+                if (id != null&&id_Sueldo!=null)
                 {
                     Pago pagoExistente = await _context.Pagos.FindAsync(id);
                     if (pagoExistente == null)
@@ -98,6 +100,8 @@ namespace Proyecto_camiones.Repositories
                         return false;
                     }
                     pagoExistente.Pagado = true;
+                    pagoExistente.Id_sueldo = id_Sueldo;
+                    return true;
 
                 }
 
@@ -114,6 +118,33 @@ namespace Proyecto_camiones.Repositories
             catch (Exception e)
             {
                 return false;
+            }
+        }
+
+
+
+        public async Task<List<Pago>> ObtenerPagosAsync(int idViaje, DateOnly fechaDesde, DateOnly fechaHasta)
+        {
+            try
+            {
+                var pagosPorViajeEnRango = await _context.Pagos
+                    .Where(pago => pago.Id_Viaje == idViaje && pago.Pagado == false) // Filtrar pagos por el Id_Viaje y ver si esta pago o no
+                    .Join(
+                        _context.Viajes,
+                        pago => pago.Id_Viaje,
+                        viaje => viaje.Id,
+                        (pago, viaje) => new { Pago = pago, Viaje = viaje }
+                    )
+                    .Where(joinResult => joinResult.Viaje.FechaInicio >= fechaDesde && joinResult.Viaje.FechaInicio <= fechaHasta)
+                    .Select(joinResult => joinResult.Pago) // Seleccionamos solo los objetos Pago resultantes
+                    .ToListAsync();
+
+                return pagosPorViajeEnRango;
+            }
+            catch (Exception ex)
+            {
+
+                return new List<Pago>();
             }
         }
 

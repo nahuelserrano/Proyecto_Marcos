@@ -1,4 +1,5 @@
 ﻿using MySqlX.XDevAPI.Common;
+using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Models;
 using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Repositories;
@@ -16,11 +17,13 @@ namespace Proyecto_camiones.Services
     {
         private CuentaCorrienteRepository ccRepository;
         private ClienteRepository clienteRepository;
+        private FleteRepository fleteRepository;
 
         public CuentaCorrienteService(CuentaCorrienteRepository cc, ClienteRepository cr)
         {
             this.ccRepository = cc ?? throw new ArgumentNullException(nameof(cc));
             this.clienteRepository = cr ?? throw new ArgumentNullException(nameof(cr));
+            this.fleteRepository = new FleteRepository();
         }
 
         public async Task<bool> ProbarConexionAsync()
@@ -46,37 +49,73 @@ namespace Proyecto_camiones.Services
             return result;
         }
 
-        public async Task<Result<List<CuentaCorriente>>> ObtenerCuentasByIdCliente(int id)
+        public async Task<Result<List<CuentaCorrienteDTO>>> ObtenerCuentasByIdCliente(string cliente)
         {
-            Cliente c = await clienteRepository.ObtenerPorId(id);
+            Cliente c = await clienteRepository.ObtenerPorNombre(cliente.ToUpper());
             if (c == null)
             {
-                return Result<List<CuentaCorriente>>.Failure("No existe un cliente con ese Id");
+                return Result<List<CuentaCorrienteDTO>>.Failure("No existe un cliente con ese nombre");
             }
-            List<CuentaCorriente> cuentas = await this.ccRepository.ObtenerCuentasByIdCliente(id);
+            int id = c.Id;
+            List<CuentaCorrienteDTO> cuentas = await this.ccRepository.ObtenerCuentasByIdCliente(id);
             if(cuentas == null || cuentas.Count() == 0)
             {
-                return Result<List<CuentaCorriente>>.Failure("No existen cuentas para ese cliente o hubo un fallo en la conexión");
+                return Result<List<CuentaCorrienteDTO>>.Failure("No existen cuentas para ese cliente o hubo un fallo en la conexión");
             }
-            return Result<List<CuentaCorriente>>.Success(cuentas);
+            return Result<List<CuentaCorrienteDTO>>.Success(cuentas);
         }
 
-        public async Task<int> Insertar(int idCliente, int idFletero, DateOnly fecha, int nro, float adeuda, float pagado)
+        public async Task<Result<List<CuentaCorrienteDTO>>> ObtenerCuentasDeUnFletero(string fletero)
         {
-            Cliente c = await clienteRepository.ObtenerPorId(idCliente);
-            if (c == null)
+            Flete f = await this.fleteRepository.ObtenerPorNombre(fletero.ToUpper());
+            if(f == null)
             {
+                return Result<List<CuentaCorrienteDTO>>.Failure("No existe un fletero con ese nombre");
+            }
+            int id = f.Id;
+            List<CuentaCorrienteDTO> cuentas = await this.ccRepository.ObtenerCuentasDeUnFletero(id);
+            if(cuentas == null || cuentas.Count() == 0)
+            {
+                return Result<List<CuentaCorrienteDTO>>.Failure("No existen cuentas para ese fletero o hubo un fallo en la conexión");
+            }
+            return Result<List<CuentaCorrienteDTO>>.Success(cuentas);
+        }
+
+        public async Task<int> Insertar(string? cliente, string? fletero, DateOnly fecha, int nro, float adeuda, float pagado)
+        {
+            if (cliente == null && fletero == null) return -1;
+            Cliente c;
+            if(cliente != null)
+            {
+                c = await clienteRepository.ObtenerPorNombre(cliente.ToUpper());
+                if (c == null)
+                {
+                    return -1;
+                }
+                Console.WriteLine("corroborado que el cliente/fletero existe y no se salió");
+                CuentaCorriente result = await ccRepository.InsertarCuentaCorriente(c.Id, null, fecha, nro, adeuda, pagado);
+                Console.WriteLine("superado 1");
+                if (result != null)
+                {
+                    return result.Id;
+                }
                 return -1;
             }
-            //REPETIR LA VALIDACION PARA CHEQUEAR QUE EL FLETERO EXISTA EN LA DB
-            Console.WriteLine("corroborado que el cliente existe y no se salió");
-            CuentaCorriente result = await ccRepository.InsertarCuentaCorriente(idCliente, idFletero, fecha, nro, adeuda, pagado);
-            Console.WriteLine("superado 1");
-            if(result != null)
+            Flete flete;
+            if(fletero != null)
             {
-                return result.Id;
+                flete = await this.fleteRepository.ObtenerPorNombre(fletero.ToUpper());
+                if (flete == null) return -1;
+                CuentaCorriente result = await ccRepository.InsertarCuentaCorriente(null, flete.Id, fecha, nro, adeuda, pagado);
+                Console.WriteLine("superado 1");
+                if (result != null)
+                {
+                    return result.Id;
+                }
+                return -1;
             }
             return -1;
+            
         }
     }
 }

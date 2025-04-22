@@ -45,7 +45,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
 
-        public async Task<Cliente> ObtenerPorId(int id)
+        public async Task<Cliente> ObtenerPorId(int? id)
         {
             try
             {
@@ -147,11 +147,11 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
         }
 
-        public async Task<Cliente> ObtenerPorNombre(string nombre_cliente)
+        public async Task<Cliente?> ObtenerPorNombre(string nombre_cliente)
         {
             try
             {
-                  var cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Nombre == nombre_cliente);
+                  Cliente cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Nombre == nombre_cliente);
                 return cliente;
 
             }

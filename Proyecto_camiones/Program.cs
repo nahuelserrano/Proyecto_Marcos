@@ -70,16 +70,26 @@ namespace Proyecto_camiones.Presentacion
             //Console.WriteLine(response.Value);
 
 
-            //CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
+            CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
 
-            //INSERCION
+            //INSERCION PARA CUENTA CORRIENTE DE UN FLETERO FUNCIONANDO CORRECTAMENTE
 
-            //var cuenta = await ccvm.Insertar(5, 1, new DateOnly(2025, 4, 7), 89, 5678, 899);
+            //var cuenta = await ccvm.Insertar(null, "carlos", new DateOnly(2025, 4, 21), 90, 1000, 600);
             //if (cuenta.IsSuccess)
             //{
             //    Console.WriteLine("Id insertado: " + cuenta.Value);
             //}
             //Console.WriteLine(cuenta.Value);
+
+            //INSERCION PARA CUENTA CORRIENTE DE UN CLIENTE FUNCIONANDO CORRECTAMENTE
+
+            //var cuenta = await ccvm.Insertar("machaca", null, new DateOnly(2025, 4, 22), 92, 1000, 600);
+            //if (cuenta.IsSuccess)
+            //{
+            //    Console.WriteLine("Id insertado: " + cuenta.Value);
+            //}
+            //Console.WriteLine(cuenta.Value);
+
 
             //var cuenta2 = await ccvm.Insertar(5, new DateOnly(2025, 4, 7), 8383, 99, 22);
             //if (cuenta2.IsSuccess)
@@ -89,11 +99,11 @@ namespace Proyecto_camiones.Presentacion
             //Console.WriteLine(cuenta2.Value);
 
 
-            //OBTENER CUENTAS DE UN CLIENTE
-            //var cuentasCliente5 = await ccvm.ObtenerCuentasByClienteId(5);
+            //OBTENER CUENTAS DE UN CLIENTE POR SU NOMBRE
+            //var cuentasCliente5 = await ccvm.ObtenerCuentasByCliente("machaca");
             //if (cuentasCliente5.IsSuccess)
             //{
-            //    foreach(CuentaCorriente c in cuentasCliente5.Value)
+            //    foreach (CuentaCorrienteDTO c in cuentasCliente5.Value)
             //    {
             //        Console.WriteLine(c);
             //    }
@@ -103,8 +113,23 @@ namespace Proyecto_camiones.Presentacion
             //    Console.WriteLine(cuentasCliente5.Error);
             //}
 
+            //OBTENER LAS CUENTAS DE UN FLETERO POR SU NOMBRE
 
-            //ClienteViewModel clvm = new ClienteViewModel();
+            //var cuentasFleteCarlos = await ccvm.ObtenerCuentasByFletero("carlos");
+            //if (cuentasFleteCarlos.IsSuccess)
+            //{
+            //    foreach (CuentaCorrienteDTO c in cuentasFleteCarlos.Value)
+            //    {
+            //        Console.WriteLine(c);
+            //    }
+            //}
+            //else
+            //{
+            //    Console.WriteLine(cuentasFleteCarlos.Error);
+            //}
+
+
+            ClienteViewModel clvm = new ClienteViewModel();
 
             //INSERCION
             //var cliente = await clvm.InsertarCliente("MACHACA");
@@ -113,84 +138,47 @@ namespace Proyecto_camiones.Presentacion
             //    Console.WriteLine("Cliente insertado con el id: " + cliente.Value);
             //}
 
+            //OBTENER VIAJES DE UN CLIENTE
 
-            //OBTENER BY ID
-            //var cliente = await clvm.ObtenerById(4);
-            //if (cliente.IsSuccess)
+            //var viajes = clvm.ObtenerViajesDeUnCliente("cooperativa");
+            //if (viajes.Result.IsSuccess)
             //{
-            //    Console.WriteLine(cliente.Value);
-            //}
-
-
-            //ELIMINAR 
-            //var result = await clvm.Eliminar(1);
-            //Console.WriteLine(result.Value);
-
-            //ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
-
-            //INSERTAR
-
-            //var idViaje = await vfvm.InsertarViajeFlete("Tandil", "Necochea", 40, "trigo", 120, 130, 19000, 12345, "MACHACA", "CARLOS", "Chofer de Carlos", 10, new DateOnly(2025, 4, 11));
-            //if (idViaje.IsSuccess)
-            //{
-            //    Console.WriteLine("Viaje ingresado con el id: " + idViaje.Value);
-            //}
-            //Console.WriteLine(idViaje.Error);
-
-
-            //ProbarInsertarChofer("Juan Alpaca");
-
-
-            //OBTENER VIAJES DE UN FLETERO
-
-            //var viajes = await vfvm.ObtenerViajesDeUnFletero("Carlos");
-            //if (viajes.IsSuccess)
-            //{
-            //    foreach(var viaje in viajes.Value)
+            //    foreach(var viaje in viajes.Result.Value)
             //    {
-            //        Console.WriteLine(viaje);
+            //        Console.WriteLine(viaje.ToString());
             //    }
             //}
             //else
             //{
-            //    Console.WriteLine(viajes.Error);
+            //    Console.WriteLine(viajes.Result.Error);
             //}
 
-            //ProbarInsertarViaje("Tandil", "Azul");
 
-            //ProbarInsertarChofer("Juan Alpaca");
+                //OBTENER BY ID
+                //var cliente = await clvm.ObtenerById(4);
+                //if (cliente.IsSuccess)
+                //{
+                //    Console.WriteLine(cliente.Value);
+                //}
 
-            //FleteViewModel fvm = new FleteViewModel();
 
-            //INSERTAR FLETERO
-            //var idFletero = await fvm.InsertarFletero("Carlos");
-            //if (idFletero.IsSuccess)
+                //ELIMINAR 
+                //var result = await clvm.Eliminar(1);
+                //Console.WriteLine(result.Value);
+
+                //ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
+
+                //INSERTAR
+
+                //var idViaje = await vfvm.InsertarViajeFlete("Tandil", "Necochea", 40, "trigo", 120, 130, 19000, 12345, "MACHACA", "CARLOS", "Chofer de Carlos", 10, new DateOnly(2025, 4, 11));
+                //if (idViaje.IsSuccess)
+                //{
+                //    Console.WriteLine("Viaje ingresado con el id: " + idViaje.Value);
+                //}
+                //Console.WriteLine(idViaje.Error);
+
+            //try
             //{
-            //    Console.WriteLine("Fletero insertado con el id: " + idFletero.Value);
-            //}
-            //else
-            //{
-            //    Console.WriteLine(idFletero.Error);
-            //}
-
-            //OBTENER POR NOMBRE
-            //var fletero = await fvm.ObtenerFletePorNombre("Carlos");
-            //if (fletero.IsSuccess)
-            //{
-            //    Console.WriteLine(fletero.Value);
-            //}
-            //else
-            //{
-            //    Console.WriteLine(fletero.Error);
-            //}
-
-            //ProbarEliminarChofer(2);
-
-            //Console.WriteLine(1);
-            //ProbarInsertarViaje("Tandil", "Azul");
-
-            try
-            {
                 // PRUEBAS CHOFER
                 //await ProbarInsertarChofer("McLovin");
                 //await ProbarObtenerChoferPorId(1);
@@ -205,15 +193,83 @@ namespace Proyecto_camiones.Presentacion
                 //await ProbarActualizarViaje(1, destino: "Las Vegas");
                 //await ProbarEliminarViaje(1);
 
-                Console.WriteLine("¡Todas las pruebas completadas!");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"¡ERROR CRÍTICO! {ex.Message}");
-                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
-                if (ex.InnerException != null)
-                    Console.WriteLine($"Error interno: {ex.InnerException.Message}");
-            }
+
+                //ProbarInsertarChofer("Juan Alpaca");
+
+                //OBTENER VIAJES DE UN FLETERO
+
+                //var viajes = await vfvm.ObtenerViajesDeUnFletero("Carlos");
+                //if (viajes.IsSuccess)
+                //{
+                //    foreach(var viaje in viajes.Value)
+                //    {
+                //        Console.WriteLine(viaje);
+                //    }
+                //}
+                //else
+                //{
+                //    Console.WriteLine(viajes.Error);
+                //}
+
+                //ProbarInsertarViaje("Tandil", "Azul");
+
+                //ProbarInsertarChofer("Juan Alpaca");
+
+                //FleteViewModel fvm = new FleteViewModel();
+
+                //INSERTAR FLETERO
+                //var idFletero = await fvm.InsertarFletero("Carlos");
+                //if (idFletero.IsSuccess)
+                //{
+                //    Console.WriteLine("Fletero insertado con el id: " + idFletero.Value);
+                //}
+                //else
+                //{
+                //    Console.WriteLine(idFletero.Error);
+                //}
+
+                //OBTENER POR NOMBRE
+                //var fletero = await fvm.ObtenerFletePorNombre("Carlos");
+                //if (fletero.IsSuccess)
+                //{
+                //    Console.WriteLine(fletero.Value);
+                //}
+                //else
+                //{
+                //    Console.WriteLine(fletero.Error);
+                //}
+
+                //ProbarEliminarChofer(2);
+
+                //Console.WriteLine(1);
+                //ProbarInsertarViaje("Tandil", "Azul");
+
+                //try
+                //{
+                //    // PRUEBAS CHOFER
+                //    await ProbarInsertarChofer("McLovin");
+                //    await ProbarObtenerChoferPorId(1);
+                //    await ProbarObtenerTodosChoferes();
+                //    await ProbarActualizarChofer(1, "McLovin Actualizado");
+                //    await ProbarEliminarChofer(1);
+
+                //    await ProbarInsertarViaje("Tandil", "Miami");
+
+                //    await ProbarObtenerViajePorId(1);
+                //    await ProbarObtenerTodosViajes();
+                //    await ProbarObtenerViajesPorCamion(3);
+                //    await ProbarActualizarViaje(1, destino: "Las Vegas");
+                //    await ProbarEliminarViaje(1);
+
+                //    Console.WriteLine("¡Todas las pruebas completadas!");
+                //}
+                //catch (Exception ex)
+                //{
+                //    Console.WriteLine($"¡ERROR CRÍTICO! {ex.Message}");
+                //    Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                //    if (ex.InnerException != null)
+                //        Console.WriteLine($"Error interno: {ex.InnerException.Message}");
+                //}
         }
 
 

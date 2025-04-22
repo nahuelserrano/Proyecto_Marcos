@@ -8,6 +8,7 @@ using MySql.Data.MySqlClient;
 using MySqlX.XDevAPI;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Models;
+using Proyecto_camiones.Presentacion.Utils;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace Proyecto_camiones.Presentacion.Repositories
@@ -361,6 +362,39 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
         // Obtener viajes por cliente
+        public async Task<List<ViajeMixtoDTO>> ObtenerViajeMixtoPorClienteAsync(int clienteId)
+        {
+            try
+            {
+
+                var viajes = await _context.Viajes
+                    .AsNoTracking()
+                    .Include(v => v.ClienteNavigation)
+                    .Include(v => v.CamionNavigation)
+                    .Where(v => v.Cliente == clienteId)
+                    .Select(v => new ViajeMixtoDTO
+                    {
+                        Fecha_salida = v.FechaInicio,
+                        Origen = v.LugarPartida,
+                        Destino = v.Destino,
+                        Remito = v.Remito,
+                        Kg = v.Kg,
+                        Carga = v.Carga,
+                        Nombre_chofer = v.NombreChofer,
+                        Km = v.Km,
+                        Tarifa = v.Tarifa,
+                        Camion = v.CamionNavigation.Patente
+                    }).ToListAsync();
+
+                return viajes;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al obtener viajes por cliente: {ex.Message}");
+                return new List<ViajeMixtoDTO>();
+            }
+        }
+
         public async Task<List<ViajeDTO>> ObtenerPorClienteAsync(int clienteId)
         {
             try
@@ -390,6 +424,43 @@ namespace Proyecto_camiones.Presentacion.Repositories
             {
                 Console.WriteLine($"Error al obtener viajes por cliente: {ex.Message}");
                 return new List<ViajeDTO>();
+            }
+        }
+
+        public async Task<List<ViajeDTO>> ObtenerPorChoferAsync(string chofer)
+        {
+            try
+            {
+                var viajes = await _context.Viajes
+                    .AsNoTracking()
+                    .Include(v => v.ClienteNavigation)
+                    .Where(v => v.NombreChofer == chofer)
+                    .Select(v => new ViajeDTO()
+                    {
+                        FechaInicio = v.FechaInicio,
+                        LugarPartida = v.LugarPartida,
+                        Destino = v.Destino,
+                        Remito = v.Remito,
+                        Kg = v.Kg,
+                        Carga = v.Carga,
+                        NombreCliente = v.ClienteNavigation.Nombre,
+                        NombreChofer = v.NombreChofer,
+                        Km = v.Km,
+                        Tarifa = v.Tarifa,
+                    }).ToListAsync();
+
+                if (viajes.Count == 0)
+                {
+                    Console.WriteLine($"No hay viajes con ese chofer");
+                }
+
+                return viajes;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al obtener viajes por chofer: {ex.Message}");
+                throw;
             }
         }
     }

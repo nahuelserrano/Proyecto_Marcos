@@ -25,11 +25,12 @@
     <Compile Include="DTOs\CamionDTO.cs" />
     <Compile Include="DTOs\ChequeDTO.cs" />
     <Compile Include="DTOs\ChoferDTO.cs" />
+    <Compile Include="DTOs\CuentaCorrienteDTO.cs" />
     <Compile Include="DTOs\FleteDTO.cs" />
     <Compile Include="DTOs\SueldoDTO.cs" />
     <Compile Include="DTOs\ViajeDTO.cs" />
     <Compile Include="DTOs\ViajeFleteDTO.cs" />
-    <Compile Include="DTOs\ViajeMixtoDTO.cs"/>
+    <Compile Include="DTOs\ViajeMixtoDTO.cs" />
     <Compile Include="Forms\Formulario_Viajes.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -64,11 +65,11 @@
     <Compile Include="Services\ChoferService.cs" />
     <Compile Include="Services\ClienteService.cs" />
     <Compile Include="Services\CuentaCorrienteService.cs" />
-    <Compile Include="Services\PagoService.cs" />
     <Compile Include="Services\SueldoService.cs" />
     <Compile Include="Services\ViajeFleteService.cs" />
     <compile Include="Services\ViajeService.cs" />
     <compile Include="Services\FleteService.cs" />
+    <compile Include="Services\PagoService.cs" />
     <Compile Include="Utils\MensajesError\MensajeError.cs" />
     <Compile Include="Utils\Validadores\ValidadorCheque.cs" />
     <Compile Include="Utils\Result.cs" />

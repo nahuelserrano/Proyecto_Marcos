@@ -2,6 +2,7 @@
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Models;
 using Proyecto_camiones.Presentacion;
+using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -64,6 +65,35 @@ namespace Proyecto_camiones.Repositories
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e.InnerException);
                 return -1;
+            }
+        }
+
+        internal async Task<List<ViajeMixtoDTO>> ObtenerViajesDeUnCliente(int id)
+        {
+            try
+            {
+                var viajes = await (from v in this._context.ViajesFlete
+                                    join f in this._context.Fletes on v.idFlete equals f.Id
+                                    where v.idCliente == id
+                                    select new ViajeMixtoDTO(
+                                        v.origen,
+                                        v.destino,
+                                         v.fecha_salida,
+                                        v.remito,
+                                         v.nombre_chofer,
+                                         v.carga,
+                                         v.km,
+                                        v.kg,
+                                         v.tarifa,
+                                        v.comision,
+                                        f.nombre // Aquí obtenemos el nombre del fletero
+                                    )).ToListAsync();
+                return viajes;
+            } catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.InnerException);
+                return null;
             }
         }
 

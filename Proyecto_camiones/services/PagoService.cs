@@ -1,4 +1,4 @@
-﻿using System;
+﻿x|using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,7 +27,7 @@ namespace Proyecto_camiones.Services
                 if (idPago > 0)
                 {
                     return Result<int>.Success(idPago);
-                }
+        }
                 else
                 {
                     return Result<int>.Failure("El pago no pudo ser insertado");
@@ -39,7 +39,7 @@ namespace Proyecto_camiones.Services
             }
 
         }
-
+                
         public Result<bool> marcarPagos(int id_chofer,DateOnly desde,DateOnly hasta,int id_Sueldo) {
             try
             {
@@ -57,24 +57,34 @@ namespace Proyecto_camiones.Services
             }
 
         }
+            
 
+        //public async Task<Result<float>> ObtenerPorFiltroAsync(int id_chofer, DateOnly calcularDesde, DateOnly calcularHasta)
+        //{
+             
+        //    Task<List<Pago>> pagos = await _pagoRepository.ObtenerPagosAsync(id_chofer, calcularDesde, calcularHasta);
 
         public Result<float> ObtenerPorFiltroAsync(int id_chofer, DateOnly calcularDesde, DateOnly calcularHasta)
         {
             List<Pago> pagos = PagoRepository.ObtenerPagos(id_chofer, calcularDesde, calcularHasta);
-
+            
             float totalPagar = 0;
             foreach (var pago in pagos) { 
-            
+           
                  totalPagar+=pago.Monto_Pagado;
             }
            return Result<float>.Success(totalPagar);
         }
-           
         
+        //public Result<bool> ActualizarAsync(int id,bool pagado,int id_sueldo) 
+        //{
+        //    PagoRepository.MarcarComoPagado(id,pagado,id_sueldo);
+        //}
+    
         public Result<bool> ActualizarAsync(int id,bool pagado,int id_sueldo) 
         {
             PagoRepository.MarcarComoPagado(id,pagado,id_sueldo);
         } */
     }
-}
+    }
+

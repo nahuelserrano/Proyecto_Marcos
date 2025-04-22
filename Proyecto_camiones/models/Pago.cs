@@ -48,5 +48,10 @@ namespace Proyecto_camiones.Models
         public Pago()
         {
         }
+
+        public Pago()
+        {
+
+        }
     }
 }

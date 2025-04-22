@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Models;
 using Proyecto_camiones.Presentacion;
 using Proyecto_camiones.Presentacion.Models;
@@ -46,7 +47,7 @@ namespace Proyecto_camiones.Repositories
             }
         }
 
-        public async Task<CuentaCorriente> InsertarCuentaCorriente(int idCliente, int idFletero, DateOnly fecha, int nro, float adeuda, float pagado)
+        public async Task<CuentaCorriente> InsertarCuentaCorriente(int? idCliente, int? idFletero, DateOnly fecha, int nro, float adeuda, float pagado)
         {
             try
             {
@@ -56,9 +57,30 @@ namespace Proyecto_camiones.Repositories
                     Console.WriteLine("No se puede conectar a la base de datos");
                     return null;
                 }
+                CuentaCorriente ultimoRegistro;
+                if (idCliente != null)
+                {
+                    ultimoRegistro = await this._context.Cuentas.Where(c => c.IdCliente == idCliente).OrderByDescending(c=> c.Fecha_factura).FirstOrDefaultAsync();
+                } else if(idFletero != null)
+                {
+                    ultimoRegistro = await this._context.Cuentas.Where(c => c.IdFletero == idFletero).OrderByDescending(c => c.Fecha_factura).FirstOrDefaultAsync();
+                }
+                else
+                {
+                    return null;
+                }
 
-                var cuenta = new CuentaCorriente(idCliente, idFletero, fecha, nro, adeuda, pagado);
-                await _context.Cuentas.AddAsync(cuenta);
+                CuentaCorriente cuenta;
+                if(ultimoRegistro == null)
+                {
+                    cuenta = new CuentaCorriente(idCliente, idFletero, fecha, nro, adeuda, pagado);
+                }
+                else
+                {
+                   cuenta = new CuentaCorriente(idCliente, idFletero, fecha, nro, adeuda + ultimoRegistro.Saldo_Total, pagado);
+                }
+
+                    await _context.Cuentas.AddAsync(cuenta);
                 int registrosAfectados = await _context.SaveChangesAsync();
 
                 if (registrosAfectados > 0)
@@ -70,7 +92,8 @@ namespace Proyecto_camiones.Repositories
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.InnerException?.Message);
+                Console.WriteLine(e.InnerException);
+                Console.WriteLine(e.Message);
                 return null;
             }
 
@@ -89,7 +112,7 @@ namespace Proyecto_camiones.Repositories
                 var result = await _context.Cuentas.Where(r => r.IdCliente == clienteId).OrderByDescending(r => r.Fecha_factura).FirstOrDefaultAsync();
                 if(result != null)
                 {
-                    CuentaCorriente cuenta = new CuentaCorriente(result.IdCliente, -2, result.Fecha_factura, result.Nro_factura, result.Adeuda, result.Pagado);
+                    CuentaCorriente cuenta = new CuentaCorriente(result.IdCliente, -1, result.Fecha_factura, result.Nro_factura, result.Adeuda, result.Pagado);
                     return cuenta;
                 }
                 return null;
@@ -121,7 +144,7 @@ namespace Proyecto_camiones.Repositories
             }
         }
 
-        internal async Task<List<CuentaCorriente>> ObtenerCuentasByIdCliente(int id)
+        internal async Task<List<CuentaCorrienteDTO>> ObtenerCuentasByIdCliente(int id)
         {
             try
             {
@@ -131,17 +154,53 @@ namespace Proyecto_camiones.Repositories
                     return null;
                 }
 
-                List<CuentaCorriente> result = new List<CuentaCorriente>();
-                var cuentas = await this._context.Cuentas.Where(c => c.IdCliente == id).ToListAsync();
-                foreach(var c in cuentas)
-                {
-                    CuentaCorriente cuenta = new CuentaCorriente(c.IdCliente, -2, c.Fecha_factura, c.Nro_factura, c.Adeuda, c.Pagado);
-                    result.Add(cuenta);
-                }
-                return result;
+                List<CuentaCorrienteDTO> result = new List<CuentaCorrienteDTO>();
+                var cuentas = await _context.Cuentas
+                            .Where(c => c.IdCliente == id)
+                            .Select(c => new CuentaCorrienteDTO(
+                            
+                                c.Fecha_factura,
+                                c.Nro_factura,
+                                c.Adeuda,
+                                c.Pagado,
+                                c.Saldo_Total
+                            )).ToListAsync();
+                return cuentas;
             }catch(Exception e)
             {
                 Console.WriteLine(e.Message);
+                Console.WriteLine(e.InnerException);
+                return null;
+            }
+        }
+
+        internal async Task<List<CuentaCorrienteDTO>> ObtenerCuentasDeUnFletero(int id)
+        {
+            try
+            {
+                if (!await _context.Database.CanConnectAsync())
+                {
+                    Console.WriteLine("No se puede conectar a la base de datos");
+                    return null;
+                }
+
+                List<CuentaCorrienteDTO> result = new List<CuentaCorrienteDTO>();
+                var cuentas = await _context.Cuentas
+                            .Where(c => c.IdFletero == id)
+                            .Select(c => new CuentaCorrienteDTO(
+
+                                c.Fecha_factura,
+                                c.Nro_factura,
+                                c.Adeuda,
+                                c.Pagado,
+                                c.Saldo_Total
+                            )).ToListAsync();
+                return cuentas;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.InnerException);
                 return null;
             }
         }

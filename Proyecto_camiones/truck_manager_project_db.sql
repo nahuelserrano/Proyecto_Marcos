@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 18-04-2025 a las 03:18:25
+-- Tiempo de generación: 22-04-2025 a las 04:01:57
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -234,7 +234,7 @@ CREATE TABLE `viaje_flete` (
   `tarifa` float DEFAULT NULL,
   `factura` int(11) DEFAULT NULL,
   `idCliente` int(11) DEFAULT NULL,
-  `fletero` varchar(45) DEFAULT NULL,
+  `fletero` int(11) DEFAULT NULL,
   `nombre_chofer` varchar(45) NOT NULL,
   `comision` float DEFAULT NULL,
   `fecha_salida` date DEFAULT NULL
@@ -245,18 +245,22 @@ CREATE TABLE `viaje_flete` (
 --
 
 INSERT INTO `viaje_flete` (`idviaje_flete`, `origen`, `destino`, `remito`, `carga`, `km`, `kg`, `tarifa`, `factura`, `idCliente`, `fletero`, `nombre_chofer`, `comision`, `fecha_salida`) VALUES
-(1, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, '1', 'Chofer del Flete X', 10, '2025-04-11'),
-(2, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, '1', 'Chofer del Flete X', 10, '2025-04-11'),
-(3, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, '1', 'Chofer del Flete X', 10, '2025-04-11'),
-(4, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, '1', 'Chofer del Flete X', 10, '2025-04-11'),
-(5, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, '1', 'Chofer del Flete X', 10, '2025-04-11'),
-(6, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, '1', 'Chofer del Flete X', 10, '2025-04-11'),
-(7, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, '1', 'Chofer del Flete X', 10, '2025-04-11'),
-(8, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, '1', 'Chofer del Flete X', 10, '2025-04-11'),
-(9, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, '1', 'Chofer del Flete X', 10, '2025-04-11'),
-(10, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, '1', 'Chofer del Flete X', 10, '2025-04-11'),
-(11, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, '1', 'Chofer del Flete X', 10, '2025-04-11'),
-(12, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, '1', 'Chofer del Flete X', 10, '2025-04-11');
+(1, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, 1, 'Chofer del Flete X', 10, '2025-04-11'),
+(2, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, 1, 'Chofer del Flete X', 10, '2025-04-11'),
+(3, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, 1, 'Chofer del Flete X', 10, '2025-04-11'),
+(4, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, 1, 'Chofer del Flete X', 10, '2025-04-11'),
+(5, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, 1, 'Chofer del Flete X', 10, '2025-04-11'),
+(6, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, 1, 'Chofer del Flete X', 10, '2025-04-11'),
+(7, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, 1, 'Chofer del Flete X', 10, '2025-04-11'),
+(8, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, 1, 'Chofer del Flete X', 10, '2025-04-11'),
+(9, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, 1, 'Chofer del Flete X', 10, '2025-04-11'),
+(10, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, 1, 'Chofer del Flete X', 10, '2025-04-11'),
+(11, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, 1, 'Chofer del Flete X', 10, '2025-04-11'),
+(12, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, 1, 'Chofer del Flete X', 10, '2025-04-11'),
+(13, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, 6, 'Chofer de Carlos', 10, '2025-04-11'),
+(14, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, 6, 'Chofer de Carlos', 10, '2025-04-11'),
+(15, 'Tandil', 'Ayacucho', 19292, 'trigo', 150, 300, 19000, 12244, 3, 1, 'Justo', 10, '2025-04-15'),
+(16, 'Pilar', 'Tandil', 2000, 'soja', 650, 880, 35000, 1235, 3, 3, 'Patricio', 15, '2025-04-10');
 
 --
 -- Índices para tablas volcadas
@@ -336,7 +340,8 @@ ALTER TABLE `viaje`
 --
 ALTER TABLE `viaje_flete`
   ADD PRIMARY KEY (`idviaje_flete`),
-  ADD KEY `fk_flete_cliente_idx` (`idCliente`);
+  ADD KEY `fk_flete_cliente_idx` (`idCliente`),
+  ADD KEY `fk_flete_fletero_idx` (`fletero`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -406,7 +411,7 @@ ALTER TABLE `viaje`
 -- AUTO_INCREMENT de la tabla `viaje_flete`
 --
 ALTER TABLE `viaje_flete`
-  MODIFY `idviaje_flete` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `idviaje_flete` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- Restricciones para tablas volcadas
@@ -450,7 +455,8 @@ ALTER TABLE `viaje`
 -- Filtros para la tabla `viaje_flete`
 --
 ALTER TABLE `viaje_flete`
-  ADD CONSTRAINT `fk_flete_cliente` FOREIGN KEY (`idCliente`) REFERENCES `cliente` (`idCliente`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_flete_cliente` FOREIGN KEY (`idCliente`) REFERENCES `cliente` (`idCliente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_flete_fletero` FOREIGN KEY (`fletero`) REFERENCES `fletero` (`idFletero`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

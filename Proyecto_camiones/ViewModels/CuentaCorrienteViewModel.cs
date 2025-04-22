@@ -1,4 +1,5 @@
 ﻿using MySqlX.XDevAPI.Common;
+using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Models;
 using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Services;
@@ -28,11 +29,11 @@ namespace Proyecto_camiones.ViewModels
             return await this.cs.ProbarConexionAsync();
         }
 
-        public async Task<Result<int>> Insertar(int idCliente, int idFletero, DateOnly fecha, int nro, float adeuda, float pagado)
+        public async Task<Result<int>> Insertar(string? cliente, string? fletero, DateOnly fecha, int nro, float adeuda, float pagado)
         {
             if (this.testearConexion().Result)
             {
-                int id = await cs.Insertar(idCliente, idFletero, fecha, nro, adeuda, pagado);
+                int id = await cs.Insertar(cliente, fletero, fecha, nro, adeuda, pagado);
                 if (id > -1) return Result<int>.Success(id);
                 return Result<int>.Failure("No se pudo crear el nuevo registro");
             }
@@ -67,13 +68,22 @@ namespace Proyecto_camiones.ViewModels
             return Result<List<CuentaCorriente>>.Failure("No se pudo establecer la conexion");
         }
 
-        public async Task<Result<List<CuentaCorriente>>> ObtenerCuentasByClienteId(int id)
+        public async Task<Result<List<CuentaCorrienteDTO>>> ObtenerCuentasByCliente(string cliente)
         {
             if (this.testearConexion().Result)
             {
-                return await this.cs.ObtenerCuentasByIdCliente(id);
+                return await this.cs.ObtenerCuentasByIdCliente(cliente);
             }
-            return Result<List<CuentaCorriente>>.Failure("No se pudo establecer la conexion");
+            return Result<List<CuentaCorrienteDTO>>.Failure("No se pudo establecer la conexion");
+        }
+
+        public async Task<Result<List<CuentaCorrienteDTO>>> ObtenerCuentasByFletero(string fletero)
+        {
+            if (this.testearConexion().Result)
+            {
+                return await this.cs.ObtenerCuentasDeUnFletero(fletero);
+            }
+            return Result<List<CuentaCorrienteDTO>>.Failure("No se pudo establecer la conexion");
         }
     }
 }
