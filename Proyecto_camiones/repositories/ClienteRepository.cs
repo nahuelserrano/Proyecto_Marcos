@@ -45,7 +45,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
 
-        public async Task<Cliente> ObtenerPorId(int id)
+        public async Task<Cliente> ObtenerPorId(int? id)
         {
             try
             {
