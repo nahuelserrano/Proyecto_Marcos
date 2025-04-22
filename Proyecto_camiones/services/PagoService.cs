@@ -1,4 +1,4 @@
-﻿x|using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +13,11 @@ namespace Proyecto_camiones.Services
     class PagoServices
     {
 
-
+        private PagoRepository _pagoRepository;
+        public PagoServices(PagoRepository pagoRepository)
+        {
+            this._pagoRepository = pagoRepository;
+        }
         public Result<int> CrearAsync(int id_chofer, int id_viaje, float monto_pagado)
         {
             ValidadorPago validador = new ValidadorPago(id_chofer, id_viaje, monto_pagado);
@@ -23,7 +27,8 @@ namespace Proyecto_camiones.Services
 
             try
             {
-                int idPago = PagoRepository.Insertar(id_chofer, id_viaje, pagado=false, monto_pagado);
+                
+                int idPago = PagoRepository.Insertar(id_chofer, id_viaje, monto_pagado);
                 if (idPago > 0)
                 {
                     return Result<int>.Success(idPago);
@@ -57,11 +62,12 @@ namespace Proyecto_camiones.Services
             }
 
         }
+            
 
-
-        public Result<float> ObtenerPorFiltroAsync(int id_chofer, DateOnly calcularDesde, DateOnly calcularHasta)
+        public async Task<Result<float>> ObtenerPorFiltroAsync(int id_chofer, DateOnly calcularDesde, DateOnly calcularHasta)
         {
-            List<Pago> pagos = PagoRepository.ObtenerPagos(id_chofer, calcularDesde, calcularHasta);
+             
+            Task<List<Pago>> pagos = await _pagoRepository.ObtenerPagosAsync(id_chofer, calcularDesde, calcularHasta);
 
             float totalPagar = 0;
             foreach (var pago in pagos) { 
