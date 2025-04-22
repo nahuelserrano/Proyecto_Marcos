@@ -12,7 +12,7 @@ namespace Proyecto_camiones.Services
 {
     class PagoServices
     {
-
+        /*
 
         public Result<int> CrearAsync(int id_chofer, int id_viaje, float monto_pagado)
         {
@@ -75,7 +75,6 @@ namespace Proyecto_camiones.Services
         public Result<bool> ActualizarAsync(int id,bool pagado,int id_sueldo) 
         {
             PagoRepository.MarcarComoPagado(id,pagado,id_sueldo);
-        }
-    
+        } */
     }
 }

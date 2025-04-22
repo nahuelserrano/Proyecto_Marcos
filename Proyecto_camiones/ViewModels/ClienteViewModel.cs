@@ -57,7 +57,7 @@ namespace Proyecto_camiones.ViewModels
         {
             if (this.testearConexion().Result)
             {
-                return await this.clienteService.ObtenerByIdAsync(id);
+                //return await this.clienteService.ObtenerByIdAsync(id);
             }
             return Result<Cliente>.Failure("No se pudo establecer la conexion");
         }
@@ -66,7 +66,7 @@ namespace Proyecto_camiones.ViewModels
         {
             if (this.testearConexion().Result)
             {
-                return await this.clienteService.Eliminar(id);
+                //return await this.clienteService.Eliminar(id);
             }
             return Result<bool>.Failure("No se pudo establecer la conexión");
         } 

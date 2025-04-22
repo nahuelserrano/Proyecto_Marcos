@@ -53,7 +53,7 @@ namespace Proyecto_camiones.Presentacion.Services
 
         public async Task<Result<int>> CrearAsync(int Id_Chofer, DateOnly pagodesde, DateOnly pagoHasta, DateOnly FechaPago)
         {
-             float monto = this.calculadorSueldo(Id_Chofer);
+             //float monto = this.calculadorSueldo(Id_Chofer);
 
            
             ValidadorSueldo validador = new ValidadorSueldo(33,Id_Chofer, FechaPago, pagodesde, pagoHasta);

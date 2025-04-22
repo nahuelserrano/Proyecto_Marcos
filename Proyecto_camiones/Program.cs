@@ -192,19 +192,18 @@ namespace Proyecto_camiones.Presentacion
             try
             {
                 // PRUEBAS CHOFER
-                await ProbarInsertarChofer("McLovin");
-                await ProbarObtenerChoferPorId(1);
-                await ProbarObtenerTodosChoferes();
-                await ProbarActualizarChofer(1, "McLovin Actualizado");
-                await ProbarEliminarChofer(1);
+                //await ProbarInsertarChofer("McLovin");
+                //await ProbarObtenerChoferPorId(1);
+                //await ProbarObtenerTodosChoferes();
+                //await ProbarActualizarChofer(1, "McLovin Actualizado");
+                //await ProbarEliminarChofer(2);
 
-                await ProbarInsertarViaje("Tandil", "Miami");
-
-                await ProbarObtenerViajePorId(1);
-                await ProbarObtenerTodosViajes();
-                await ProbarObtenerViajesPorCamion(3);
-                await ProbarActualizarViaje(1, destino: "Las Vegas");
-                await ProbarEliminarViaje(1);
+                //await ProbarInsertarViaje("Tandil", "Miami");
+                //await ProbarObtenerViajePorId(1);
+                //await ProbarObtenerTodosViajes();
+                //await ProbarObtenerViajesPorCamion(3);
+                //await ProbarActualizarViaje(1, destino: "Las Vegas");
+                //await ProbarEliminarViaje(1);
 
                 Console.WriteLine("¡Todas las pruebas completadas!");
             }

@@ -56,7 +56,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 var pago = new Sueldo(monto, Id_Chofer, pagadoDesde, pagadoHasta, FechaPago);
 
 
-                _context.Sueldo.Add(pago);
+                _context.Sueldos.Add(pago);
 
                 await _context.SaveChangesAsync();
                 int registrosAfectados = await _context.SaveChangesAsync();
@@ -83,7 +83,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
       public async Task<SueldoDTO?> ObtenerPorId(int id)
       {
-            Sueldo sueldo= await _context.Sueldo.FindAsync(id);
+            Sueldo sueldo = await _context.Sueldos.FindAsync(id);
     
             if (sueldo == null)
                 return null;
@@ -103,7 +103,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         public async Task<List<SueldoDTO>> ObtenerTodos()
         {
             
-                var sueldo = await _context.Sueldo.Select(p => new SueldoDTO
+                var sueldo = await _context.Sueldos.Select(p => new SueldoDTO
                 {
                     Monto_Pagado = p.Monto_Pagado,
                     Id_Chofer = p.Id_Chofer,
@@ -122,7 +122,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                var pago = await _context.Sueldo.FindAsync(id);
+                var pago = await _context.Sueldos.FindAsync(id);
 
                 // Actualizar solo los campos proporcionados
                 if (monto == null && id_Chofer == null && FechaPago == null && pagadoDesde == null && pagadoHasta == null)
@@ -173,12 +173,12 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                var pago = await _context.Sueldo.FindAsync(id);
+                var pago = await _context.Sueldos.FindAsync(id);
 
                 if (pago == null)
                     return false;
 
-                _context.Sueldo.Remove(pago);
+                _context.Sueldos.Remove(pago);
 
                 await _context.SaveChangesAsync();
 
