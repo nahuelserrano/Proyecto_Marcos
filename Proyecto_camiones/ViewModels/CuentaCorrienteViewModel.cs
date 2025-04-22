@@ -1,4 +1,5 @@
 ﻿using MySqlX.XDevAPI.Common;
+using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Models;
 using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Services;
@@ -67,13 +68,13 @@ namespace Proyecto_camiones.ViewModels
             return Result<List<CuentaCorriente>>.Failure("No se pudo establecer la conexion");
         }
 
-        public async Task<Result<List<CuentaCorriente>>> ObtenerCuentasByClienteId(int id)
+        public async Task<Result<List<CuentaClienteDTO>>> ObtenerCuentasByClienteId(int id)
         {
             if (this.testearConexion().Result)
             {
                 return await this.cs.ObtenerCuentasByIdCliente(id);
             }
-            return Result<List<CuentaCorriente>>.Failure("No se pudo establecer la conexion");
+            return Result<List<CuentaClienteDTO>>.Failure("No se pudo establecer la conexion");
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using MySqlX.XDevAPI.Common;
+using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Models;
 using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Repositories;
@@ -48,19 +49,19 @@ namespace Proyecto_camiones.Services
             return result;
         }
 
-        public async Task<Result<List<CuentaCorriente>>> ObtenerCuentasByIdCliente(int id)
+        public async Task<Result<List<CuentaClienteDTO>>> ObtenerCuentasByIdCliente(int id)
         {
             Cliente c = await clienteRepository.ObtenerPorId(id);
             if (c == null)
             {
-                return Result<List<CuentaCorriente>>.Failure("No existe un cliente con ese Id");
+                return Result<List<CuentaClienteDTO>>.Failure("No existe un cliente con ese Id");
             }
-            List<CuentaCorriente> cuentas = await this.ccRepository.ObtenerCuentasByIdCliente(id);
+            List<CuentaClienteDTO> cuentas = await this.ccRepository.ObtenerCuentasByIdCliente(id);
             if(cuentas == null || cuentas.Count() == 0)
             {
-                return Result<List<CuentaCorriente>>.Failure("No existen cuentas para ese cliente o hubo un fallo en la conexión");
+                return Result<List<CuentaClienteDTO>>.Failure("No existen cuentas para ese cliente o hubo un fallo en la conexión");
             }
-            return Result<List<CuentaCorriente>>.Success(cuentas);
+            return Result<List<CuentaClienteDTO>>.Success(cuentas);
         }
 
         public async Task<int> Insertar(string? cliente, string? fletero, DateOnly fecha, int nro, float adeuda, float pagado)

@@ -25,10 +25,11 @@
     <Compile Include="DTOs\CamionDTO.cs" />
     <Compile Include="DTOs\ChequeDTO.cs" />
     <Compile Include="DTOs\ChoferDTO.cs" />
+    <Compile Include="DTOs\CuentaClienteDTO.cs" />
     <Compile Include="DTOs\FleteDTO.cs" />
     <Compile Include="DTOs\ViajeDTO.cs" />
     <Compile Include="DTOs\ViajeFleteDTO.cs" />
-    <Compile Include="DTOs\ViajeMixtoDTO.cs"/>
+    <Compile Include="DTOs\ViajeMixtoDTO.cs" />
     <Compile Include="Forms\Formulario_Viajes.cs">
       <SubType>Form</SubType>
     </Compile>
