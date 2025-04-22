@@ -55,13 +55,8 @@ namespace Proyecto_camiones.ViewModels
 
         public async Task<Result<Cliente>> ObtenerById(int id)
         {
-            if (this.testearConexion().Result)
-            {
-<<<<<<< HEAD
-                //return await this.clienteService.ObtenerByIdAsync(id);
-=======
+            if (this.testearConexion().Result){
                 return await this.clienteService.ObtenerPorIdAsync(id);
->>>>>>> 0b79f6d352cbb55ca5f3c1915907bd41b08f729c
             }
             return Result<Cliente>.Failure("No se pudo establecer la conexion");
         }
@@ -70,11 +65,7 @@ namespace Proyecto_camiones.ViewModels
         {
             if (this.testearConexion().Result)
             {
-<<<<<<< HEAD
-                //return await this.clienteService.Eliminar(id);
-=======
                 return await this.clienteService.EliminarAsync(id);
->>>>>>> 0b79f6d352cbb55ca5f3c1915907bd41b08f729c
             }
             return Result<bool>.Failure("No se pudo establecer la conexión");
         } 

@@ -51,8 +51,8 @@ namespace Proyecto_camiones.Presentacion.Services
 
         //    }
 
-        public async Task<Result<int>> CrearAsync(int Id_Chofer, DateOnly pagodesde, DateOnly pagoHasta, DateOnly FechaPago)
-        {
+        //public async Task<Result<int>> CrearAsync(int Id_Chofer, DateOnly pagodesde, DateOnly pagoHasta, DateOnly FechaPago)
+        //{
              //float monto = this.calculadorSueldo(Id_Chofer);
 
 

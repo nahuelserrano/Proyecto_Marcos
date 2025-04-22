@@ -80,9 +80,6 @@ public class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<Viaje>(entity =>
         {
-            // Configuración existente...
-
-            // RELACIONES (AQUÍ ESTÁ LA MAGIA)
             entity.HasOne(v => v.ClienteNavigation)
                 .WithMany(c => c.Viajes)
                 .HasForeignKey(v => v.Cliente)
