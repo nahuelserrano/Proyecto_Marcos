@@ -144,7 +144,7 @@ namespace Proyecto_camiones.Repositories
             }
         }
 
-        internal async Task<List<CuentaClienteDTO>> ObtenerCuentasByIdCliente(int id)
+        internal async Task<List<CuentaCorrienteDTO>> ObtenerCuentasByIdCliente(int id)
         {
             try
             {
@@ -154,10 +154,10 @@ namespace Proyecto_camiones.Repositories
                     return null;
                 }
 
-                List<CuentaClienteDTO> result = new List<CuentaClienteDTO>();
+                List<CuentaCorrienteDTO> result = new List<CuentaCorrienteDTO>();
                 var cuentas = await _context.Cuentas
                             .Where(c => c.IdCliente == id)
-                            .Select(c => new CuentaClienteDTO(
+                            .Select(c => new CuentaCorrienteDTO(
                             
                                 c.Fecha_factura,
                                 c.Nro_factura,
@@ -169,6 +169,38 @@ namespace Proyecto_camiones.Repositories
             }catch(Exception e)
             {
                 Console.WriteLine(e.Message);
+                Console.WriteLine(e.InnerException);
+                return null;
+            }
+        }
+
+        internal async Task<List<CuentaCorrienteDTO>> ObtenerCuentasDeUnFletero(int id)
+        {
+            try
+            {
+                if (!await _context.Database.CanConnectAsync())
+                {
+                    Console.WriteLine("No se puede conectar a la base de datos");
+                    return null;
+                }
+
+                List<CuentaCorrienteDTO> result = new List<CuentaCorrienteDTO>();
+                var cuentas = await _context.Cuentas
+                            .Where(c => c.IdFletero == id)
+                            .Select(c => new CuentaCorrienteDTO(
+
+                                c.Fecha_factura,
+                                c.Nro_factura,
+                                c.Adeuda,
+                                c.Pagado,
+                                c.Saldo_Total
+                            )).ToListAsync();
+                return cuentas;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.InnerException);
                 return null;
             }
         }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Proyecto_camiones.DTOs
 {
-    public class CuentaClienteDTO
+    public class CuentaCorrienteDTO
     {
         public DateOnly Fecha_factura { get; set; }
         public int Nro_factura { get; set; }
@@ -15,7 +15,7 @@ namespace Proyecto_camiones.DTOs
 
         public float Saldo_Total { get; set; }
 
-        public CuentaClienteDTO(DateOnly fecha_factura, int nro_factura, float adeuda, float pagado, float saldo_Total)
+        public CuentaCorrienteDTO(DateOnly fecha_factura, int nro_factura, float adeuda, float pagado, float saldo_Total)
         {
             Fecha_factura = fecha_factura;
             Nro_factura = nro_factura;
@@ -24,7 +24,7 @@ namespace Proyecto_camiones.DTOs
             Saldo_Total = saldo_Total;
         }
 
-        public CuentaClienteDTO()
+        public CuentaCorrienteDTO()
         {
 
         }

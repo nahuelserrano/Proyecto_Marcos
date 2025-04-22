@@ -99,19 +99,34 @@ namespace Proyecto_camiones.Presentacion
             //Console.WriteLine(cuenta2.Value);
 
 
-            //OBTENER CUENTAS DE UN CLIENTE
-            var cuentasCliente5 = await ccvm.ObtenerCuentasByClienteId(5);
-            if (cuentasCliente5.IsSuccess)
-            {
-                foreach(CuentaClienteDTO c in cuentasCliente5.Value)
-                {
-                    Console.WriteLine(c);
-                }
-            }
-            else
-            {
-                Console.WriteLine(cuentasCliente5.Error);
-            }
+            //OBTENER CUENTAS DE UN CLIENTE POR SU NOMBRE
+            //var cuentasCliente5 = await ccvm.ObtenerCuentasByCliente("machaca");
+            //if (cuentasCliente5.IsSuccess)
+            //{
+            //    foreach (CuentaCorrienteDTO c in cuentasCliente5.Value)
+            //    {
+            //        Console.WriteLine(c);
+            //    }
+            //}
+            //else
+            //{
+            //    Console.WriteLine(cuentasCliente5.Error);
+            //}
+
+            //OBTENER LAS CUENTAS DE UN FLETERO POR SU NOMBRE
+
+            //var cuentasFleteCarlos = await ccvm.ObtenerCuentasByFletero("carlos");
+            //if (cuentasFleteCarlos.IsSuccess)
+            //{
+            //    foreach (CuentaCorrienteDTO c in cuentasFleteCarlos.Value)
+            //    {
+            //        Console.WriteLine(c);
+            //    }
+            //}
+            //else
+            //{
+            //    Console.WriteLine(cuentasFleteCarlos.Error);
+            //}
 
 
             ClienteViewModel clvm = new ClienteViewModel();

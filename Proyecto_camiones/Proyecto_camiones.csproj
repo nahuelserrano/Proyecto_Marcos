@@ -25,7 +25,7 @@
     <Compile Include="DTOs\CamionDTO.cs" />
     <Compile Include="DTOs\ChequeDTO.cs" />
     <Compile Include="DTOs\ChoferDTO.cs" />
-    <Compile Include="DTOs\CuentaClienteDTO.cs" />
+    <Compile Include="DTOs\CuentaCorrienteDTO.cs" />
     <Compile Include="DTOs\FleteDTO.cs" />
     <Compile Include="DTOs\ViajeDTO.cs" />
     <Compile Include="DTOs\ViajeFleteDTO.cs" />

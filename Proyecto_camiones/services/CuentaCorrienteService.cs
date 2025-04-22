@@ -49,19 +49,36 @@ namespace Proyecto_camiones.Services
             return result;
         }
 
-        public async Task<Result<List<CuentaClienteDTO>>> ObtenerCuentasByIdCliente(int id)
+        public async Task<Result<List<CuentaCorrienteDTO>>> ObtenerCuentasByIdCliente(string cliente)
         {
-            Cliente c = await clienteRepository.ObtenerPorId(id);
+            Cliente c = await clienteRepository.ObtenerPorNombre(cliente.ToUpper());
             if (c == null)
             {
-                return Result<List<CuentaClienteDTO>>.Failure("No existe un cliente con ese Id");
+                return Result<List<CuentaCorrienteDTO>>.Failure("No existe un cliente con ese nombre");
             }
-            List<CuentaClienteDTO> cuentas = await this.ccRepository.ObtenerCuentasByIdCliente(id);
+            int id = c.Id;
+            List<CuentaCorrienteDTO> cuentas = await this.ccRepository.ObtenerCuentasByIdCliente(id);
             if(cuentas == null || cuentas.Count() == 0)
             {
-                return Result<List<CuentaClienteDTO>>.Failure("No existen cuentas para ese cliente o hubo un fallo en la conexión");
+                return Result<List<CuentaCorrienteDTO>>.Failure("No existen cuentas para ese cliente o hubo un fallo en la conexión");
             }
-            return Result<List<CuentaClienteDTO>>.Success(cuentas);
+            return Result<List<CuentaCorrienteDTO>>.Success(cuentas);
+        }
+
+        public async Task<Result<List<CuentaCorrienteDTO>>> ObtenerCuentasDeUnFletero(string fletero)
+        {
+            Flete f = await this.fleteRepository.ObtenerPorNombre(fletero.ToUpper());
+            if(f == null)
+            {
+                return Result<List<CuentaCorrienteDTO>>.Failure("No existe un fletero con ese nombre");
+            }
+            int id = f.Id;
+            List<CuentaCorrienteDTO> cuentas = await this.ccRepository.ObtenerCuentasDeUnFletero(id);
+            if(cuentas == null || cuentas.Count() == 0)
+            {
+                return Result<List<CuentaCorrienteDTO>>.Failure("No existen cuentas para ese fletero o hubo un fallo en la conexión");
+            }
+            return Result<List<CuentaCorrienteDTO>>.Success(cuentas);
         }
 
         public async Task<int> Insertar(string? cliente, string? fletero, DateOnly fecha, int nro, float adeuda, float pagado)

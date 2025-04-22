@@ -68,13 +68,22 @@ namespace Proyecto_camiones.ViewModels
             return Result<List<CuentaCorriente>>.Failure("No se pudo establecer la conexion");
         }
 
-        public async Task<Result<List<CuentaClienteDTO>>> ObtenerCuentasByClienteId(int id)
+        public async Task<Result<List<CuentaCorrienteDTO>>> ObtenerCuentasByCliente(string cliente)
         {
             if (this.testearConexion().Result)
             {
-                return await this.cs.ObtenerCuentasByIdCliente(id);
+                return await this.cs.ObtenerCuentasByIdCliente(cliente);
             }
-            return Result<List<CuentaClienteDTO>>.Failure("No se pudo establecer la conexion");
+            return Result<List<CuentaCorrienteDTO>>.Failure("No se pudo establecer la conexion");
+        }
+
+        public async Task<Result<List<CuentaCorrienteDTO>>> ObtenerCuentasByFletero(string fletero)
+        {
+            if (this.testearConexion().Result)
+            {
+                return await this.cs.ObtenerCuentasDeUnFletero(fletero);
+            }
+            return Result<List<CuentaCorrienteDTO>>.Failure("No se pudo establecer la conexion");
         }
     }
 }

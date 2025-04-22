@@ -147,7 +147,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
         }
 
-        public async Task<Cliente> ObtenerPorNombre(string nombre_cliente)
+        public async Task<Cliente?> ObtenerPorNombre(string nombre_cliente)
         {
             try
             {
