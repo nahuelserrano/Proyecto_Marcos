@@ -14,6 +14,10 @@ using System.Runtime.CompilerServices;
 using MySqlX.XDevAPI.Common;
 using System.Data;
 using MySql.Data.MySqlClient;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 
 namespace Proyecto_camiones.Presentacion
@@ -29,6 +33,11 @@ namespace Proyecto_camiones.Presentacion
         static async Task Main(string[] args)
 
         {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Viaje()); // Ejecuta el formulario principal
+
+
 
             //PRUEBA PAGOS
             //PagoRepository pr = new PagoRepository(General.obtenerInstancia());

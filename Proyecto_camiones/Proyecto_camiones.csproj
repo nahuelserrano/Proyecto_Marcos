@@ -1,27 +1,34 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
-<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
   </PropertyGroup>
-  
+
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
-    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.13.9" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.3" />
-    <PackageReference Include="MySql.Data" Version="8.0.32" />
-    <PackageReference Include="NPOI" Version="2.7.3" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0-preview.3.efcore.9.0.0" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
-    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.6.2" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Compile Include="ApplicationDbContext.cs" />
-    <Compile Include="Datos_pagos.cs" />
+    <!-- Personalizados -->
+    <Compile Update="NewRoundPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="RoundButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+
+    <!-- Forms -->
+    <Compile Include="Forms\Formulario_Viajes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Formulario_Viajes.Designer.cs">
+      <DependentUpon>Formulario_Viajes.cs</DependentUpon>
+    </Compile>
+
+    <!-- Archivos DTOs -->
     <Compile Include="DTOs\CamionDTO.cs" />
     <Compile Include="DTOs\ChequeDTO.cs" />
     <Compile Include="DTOs\ChoferDTO.cs" />
@@ -31,12 +38,8 @@
     <Compile Include="DTOs\ViajeDTO.cs" />
     <Compile Include="DTOs\ViajeFleteDTO.cs" />
     <Compile Include="DTOs\ViajeMixtoDTO.cs" />
-    <Compile Include="Forms\Formulario_Viajes.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Formulario_Viajes.Designer.cs">
-      <DependentUpon>Formulario_Viajes.cs</DependentUpon>
-    </Compile>
+
+    <!-- Modelos -->
     <Compile Include="Models\Camion.cs" />
     <Compile Include="Models\Cheque.cs" />
     <Compile Include="Models\Chofer.cs" />
@@ -48,18 +51,8 @@
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Models\Viaje.cs" />
     <Compile Include="Models\ViajeFlete.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\CamionRepository.cs" />
-    <Compile Include="Repositories\ChequeRepository.cs" />
-    <Compile Include="Repositories\ChoferRepository.cs" />
-    <Compile Include="Repositories\ClienteRepository.cs" />
-    <Compile Include="Repositories\CuentaCorrienteRepository.cs" />
-    <Compile Include="Repositories\FleteRepository.cs" />
-    <Compile Include="Repositories\ViajeFleteRepository.cs" />
-    <Compile Include="Repositories\PagoRepository.cs" />
-    <Compile Include="Repositories\SueldoRepository.cs" />
-    <Compile Include="Repositories\ViajeRepository.cs" />
+
+    <!-- Servicios -->
     <Compile Include="Services\CamionService.cs" />
     <Compile Include="Services\ChequeService.cs" />
     <Compile Include="Services\ChoferService.cs" />
@@ -67,17 +60,23 @@
     <Compile Include="Services\CuentaCorrienteService.cs" />
     <Compile Include="Services\SueldoService.cs" />
     <Compile Include="Services\ViajeFleteService.cs" />
-    <compile Include="Services\ViajeService.cs" />
-    <compile Include="Services\FleteService.cs" />
-    <compile Include="Services\PagoService.cs" />
-    <Compile Include="Utils\MensajesError\MensajeError.cs" />
-    <Compile Include="Utils\Validadores\ValidadorCheque.cs" />
-    <Compile Include="Utils\Result.cs" />
-    <Compile Include="Utils\Validadores\ValidadorCamion.cs" />
-    <Compile Include="Utils\Validadores\ValidadorChofer.cs" />
-    <Compile Include="Utils\Validadores\ValidadorCliente.cs" />
-    <Compile Include="Utils\Validadores\ValidadorSueldo.cs" />
-    <Compile Include="Utils\Validadores\ValidadorViaje.cs" />
+    <Compile Include="Services\ViajeService.cs" />
+    <Compile Include="Services\FleteService.cs" />
+    <Compile Include="Services\PagoService.cs" />
+
+    <!-- Repositorios -->
+    <Compile Include="Repositories\CamionRepository.cs" />
+    <Compile Include="Repositories\ChequeRepository.cs" />
+    <Compile Include="Repositories\ChoferRepository.cs" />
+    <Compile Include="Repositories\ClienteRepository.cs" />
+    <Compile Include="Repositories\CuentaCorrienteRepository.cs" />
+    <Compile Include="Repositories\FleteRepository.cs" />
+    <Compile Include="Repositories\PagoRepository.cs" />
+    <Compile Include="Repositories\SueldoRepository.cs" />
+    <Compile Include="Repositories\ViajeRepository.cs" />
+    <Compile Include="Repositories\ViajeFleteRepository.cs" />
+
+    <!-- ViewModels -->
     <Compile Include="ViewModels\CamionViewModel.cs" />
     <Compile Include="ViewModels\ChoferViewModel.cs" />
     <Compile Include="ViewModels\ClienteViewModel.cs" />
@@ -86,5 +85,35 @@
     <Compile Include="ViewModels\ViajeFleteViewModel.cs" />
     <Compile Include="ViewModels\General.cs" />
     <Compile Include="ViewModels\ViajeViewModel.cs" />
+
+    <!-- Utils y Validadores -->
+    <Compile Include="Utils\MensajesError\MensajeError.cs" />
+    <Compile Include="Utils\Result.cs" />
+    <Compile Include="Utils\Validadores\ValidadorCamion.cs" />
+    <Compile Include="Utils\Validadores\ValidadorCheque.cs" />
+    <Compile Include="Utils\Validadores\ValidadorChofer.cs" />
+    <Compile Include="Utils\Validadores\ValidadorCliente.cs" />
+    <Compile Include="Utils\Validadores\ValidadorSueldo.cs" />
+    <Compile Include="Utils\Validadores\ValidadorViaje.cs" />
+
+    <!-- Core -->
+    <Compile Include="Program.cs" />
+    <Compile Include="Datos_pagos.cs" />
+    <Compile Include="ApplicationDbContext.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.13.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.3" />
+    <PackageReference Include="MySql.Data" Version="8.0.32" />
+    <PackageReference Include="NPOI" Version="2.7.3" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0-preview.3.efcore.9.0.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.6.2" />
+  </ItemGroup>
+
 </Project>
