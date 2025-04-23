@@ -36,122 +36,123 @@ namespace Proyecto_camiones.Presentacion
 
             //pagosService.Crear(1, DateOnly.MinValue, DateOnly.MaxValue, DateOnly.MaxValue);
 
-            //CamionViewModel cvm = new CamionViewModel();
-            ////PRUEBA INSERCION
-            //Result<int> id = cvm.InsertarCamion(120, 40, "MLA126", "Pepito").Result;
-            //if (id.IsSuccess)
-            //{
-            //    Console.WriteLine("se pudo agregar con el id: " + id.Value);
-            //}
-            //else
-            //{
-            //    Console.WriteLine(id.Error);
+            CamionViewModel cvm = new CamionViewModel();
+            //PRUEBA INSERCION
+            Result<int> id = cvm.InsertarCamion(120, 40, "MLA126", "Pepito").Result;
+            if (id.IsSuccess)
+            {
+                Console.WriteLine("se pudo agregar con el id: " + id.Value);
+            }
+            else
+            {
+                Console.WriteLine(id.Error);
+            }
 
-            //PRUEBA SELECT ALL
-            //var camiones = await cvm.ObtenerTodos();
-            //if (camiones.IsSuccess)
-            //{
-            //    foreach (var camion in camiones.Value)
-            //    {
-            //        Console.WriteLine(camion.ToString());
-            //    }
-            //}
+                //PRUEBA SELECT ALL
+                //var camiones = await cvm.ObtenerTodos();
+                //if (camiones.IsSuccess)
+                //{
+                //    foreach (var camion in camiones.Value)
+                //    {
+                //        Console.WriteLine(camion.ToString());
+                //    }
+                //}
 
-            //PRUEBA UPDATE CAMION
-            //var camionUpdated = await cvm.Actualizar(2, 100, null, "HIJ429", "JUAN");
-            //if (camionUpdated.IsSuccess)
-            //{
-            //    CamionDTO camion = camionUpdated.Value;
-            //    Console.WriteLine("camion actualizado a: " + camion.ToString());
-            //}
+                //PRUEBA UPDATE CAMION
+                //var camionUpdated = await cvm.Actualizar(2, 100, null, "HIJ429", "JUAN");
+                //if (camionUpdated.IsSuccess)
+                //{
+                //    CamionDTO camion = camionUpdated.Value;
+                //    Console.WriteLine("camion actualizado a: " + camion.ToString());
+                //}
 
-            //PRUEBA ELIMINAR CAMION
-            //var response = await cvm.Eliminar(8);
-            //Console.WriteLine(response.Value);
-
-
-            CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
-
-            //INSERCION PARA CUENTA CORRIENTE DE UN FLETERO FUNCIONANDO CORRECTAMENTE
-
-            //var cuenta = await ccvm.Insertar(null, "carlos", new DateOnly(2025, 4, 21), 90, 1000, 600);
-            //if (cuenta.IsSuccess)
-            //{
-            //    Console.WriteLine("Id insertado: " + cuenta.Value);
-            //}
-            //Console.WriteLine(cuenta.Value);
-
-            //INSERCION PARA CUENTA CORRIENTE DE UN CLIENTE FUNCIONANDO CORRECTAMENTE
-
-            //var cuenta = await ccvm.Insertar("machaca", null, new DateOnly(2025, 4, 22), 92, 1000, 600);
-            //if (cuenta.IsSuccess)
-            //{
-            //    Console.WriteLine("Id insertado: " + cuenta.Value);
-            //}
-            //Console.WriteLine(cuenta.Value);
+                //PRUEBA ELIMINAR CAMION
+                //var response = await cvm.Eliminar(8);
+                //Console.WriteLine(response.Value);
 
 
-            //var cuenta2 = await ccvm.Insertar(5, new DateOnly(2025, 4, 7), 8383, 99, 22);
-            //if (cuenta2.IsSuccess)
-            //{
-            //    Console.WriteLine("Id insertado: " + cuenta2.Value);
-            //}
-            //Console.WriteLine(cuenta2.Value);
+                CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
+
+                //INSERCION PARA CUENTA CORRIENTE DE UN FLETERO FUNCIONANDO CORRECTAMENTE
+
+                //var cuenta = await ccvm.Insertar(null, "carlos", new DateOnly(2025, 4, 21), 90, 1000, 600);
+                //if (cuenta.IsSuccess)
+                //{
+                //    Console.WriteLine("Id insertado: " + cuenta.Value);
+                //}
+                //Console.WriteLine(cuenta.Value);
+
+                //INSERCION PARA CUENTA CORRIENTE DE UN CLIENTE FUNCIONANDO CORRECTAMENTE
+
+                //var cuenta = await ccvm.Insertar("machaca", null, new DateOnly(2025, 4, 23), 92, 1000, 600);
+                //if (cuenta.IsSuccess)
+                //{
+                //    Console.WriteLine("Id insertado: " + cuenta.Value);
+                //}
+                //Console.WriteLine(cuenta.Value);
 
 
-            //OBTENER CUENTAS DE UN CLIENTE POR SU NOMBRE
-            //var cuentasCliente5 = await ccvm.ObtenerCuentasByCliente("machaca");
-            //if (cuentasCliente5.IsSuccess)
-            //{
-            //    foreach (CuentaCorrienteDTO c in cuentasCliente5.Value)
-            //    {
-            //        Console.WriteLine(c);
-            //    }
-            //}
-            //else
-            //{
-            //    Console.WriteLine(cuentasCliente5.Error);
-            //}
-
-            //OBTENER LAS CUENTAS DE UN FLETERO POR SU NOMBRE
-
-            //var cuentasFleteCarlos = await ccvm.ObtenerCuentasByFletero("carlos");
-            //if (cuentasFleteCarlos.IsSuccess)
-            //{
-            //    foreach (CuentaCorrienteDTO c in cuentasFleteCarlos.Value)
-            //    {
-            //        Console.WriteLine(c);
-            //    }
-            //}
-            //else
-            //{
-            //    Console.WriteLine(cuentasFleteCarlos.Error);
-            //}
+                //var cuenta2 = await ccvm.Insertar(5, new DateOnly(2025, 4, 7), 8383, 99, 22);
+                //if (cuenta2.IsSuccess)
+                //{
+                //    Console.WriteLine("Id insertado: " + cuenta2.Value);
+                //}
+                //Console.WriteLine(cuenta2.Value);
 
 
-            ClienteViewModel clvm = new ClienteViewModel();
+                //OBTENER CUENTAS DE UN CLIENTE POR SU NOMBRE
+                //var cuentasCliente5 = await ccvm.ObtenerCuentasByCliente("machaca");
+                //if (cuentasCliente5.IsSuccess)
+                //{
+                //    foreach (CuentaCorrienteDTO c in cuentasCliente5.Value)
+                //    {
+                //        Console.WriteLine(c);
+                //    }
+                //}
+                //else
+                //{
+                //    Console.WriteLine(cuentasCliente5.Error);
+                //}
 
-            //INSERCION
-            //var cliente = await clvm.InsertarCliente("MACHACA");
-            //if (cliente.IsSuccess)
-            //{
-            //    Console.WriteLine("Cliente insertado con el id: " + cliente.Value);
-            //}
+                //OBTENER LAS CUENTAS DE UN FLETERO POR SU NOMBRE
 
-            //OBTENER VIAJES DE UN CLIENTE
+                //var cuentasFleteCarlos = await ccvm.ObtenerCuentasByFletero("carlos");
+                //if (cuentasFleteCarlos.IsSuccess)
+                //{
+                //    foreach (CuentaCorrienteDTO c in cuentasFleteCarlos.Value)
+                //    {
+                //        Console.WriteLine(c);
+                //    }
+                //}
+                //else
+                //{
+                //    Console.WriteLine(cuentasFleteCarlos.Error);
+                //}
 
-            //var viajes = clvm.ObtenerViajesDeUnCliente("cooperativa");
-            //if (viajes.Result.IsSuccess)
-            //{
-            //    foreach(var viaje in viajes.Result.Value)
-            //    {
-            //        Console.WriteLine(viaje.ToString());
-            //    }
-            //}
-            //else
-            //{
-            //    Console.WriteLine(viajes.Result.Error);
-            //}
+
+                ClienteViewModel clvm = new ClienteViewModel();
+
+                //INSERCION
+                //var cliente = await clvm.InsertarCliente("MACHACA");
+                //if (cliente.IsSuccess)
+                //{
+                //    Console.WriteLine("Cliente insertado con el id: " + cliente.Value);
+                //}
+
+                //OBTENER VIAJES DE UN CLIENTE
+
+                //var viajes = clvm.ObtenerViajesDeUnCliente("cooperativa");
+                //if (viajes.Result.IsSuccess)
+                //{
+                //    foreach (var viaje in viajes.Result.Value)
+                //    {
+                //        Console.WriteLine(viaje.ToString());
+                //    }
+                //}
+                //else
+                //{
+                //    Console.WriteLine(viajes.Result.Error);
+                //}
 
 
                 //OBTENER BY ID
@@ -255,7 +256,7 @@ namespace Proyecto_camiones.Presentacion
                 //    if (ex.InnerException != null)
                 //        Console.WriteLine($"Error interno: {ex.InnerException.Message}");
                 //}
-        }
+            }
 
 
         public static async Task<ViajeDTO> ProbarInsertarViaje(string origen, string destino)
