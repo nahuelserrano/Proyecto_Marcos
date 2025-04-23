@@ -38,15 +38,15 @@ namespace Proyecto_camiones.Presentacion
 
             CamionViewModel cvm = new CamionViewModel();
             //PRUEBA INSERCION
-            Result<int> id = cvm.InsertarCamion(120, 40, "MLA126", "Ana").Result;
-            if (id.IsSuccess)
-            {
-                Console.WriteLine("se pudo agregar con el id: " + id.Value);
-            }
-            else
-            {
-                Console.WriteLine(id.Error);
-            }
+            //Result<int> id = cvm.InsertarCamion(120, 40, "MLA126", "Ana").Result;
+            //if (id.IsSuccess)
+            //{
+            //    Console.WriteLine("se pudo agregar con el id: " + id.Value);
+            //}
+            //else
+            //{
+            //    Console.WriteLine(id.Error);
+            //}
 
             //PRUEBA SELECT ALL
             //var camiones = await cvm.ObtenerTodos();
