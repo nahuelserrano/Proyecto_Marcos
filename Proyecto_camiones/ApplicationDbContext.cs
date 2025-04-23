@@ -80,9 +80,6 @@ public class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<Viaje>(entity =>
         {
-            // Configuración existente...
-
-            // RELACIONES (AQUÍ ESTÁ LA MAGIA)
             entity.HasOne(v => v.ClienteNavigation)
                 .WithMany(c => c.Viajes)
                 .HasForeignKey(v => v.Cliente)
@@ -113,12 +110,12 @@ public class ApplicationDbContext : DbContext
         {
             entity.ToTable("pago");
             entity.HasKey(e => e.Id);
-            entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
-            entity.Property(e => e.Monto_Pagado).HasColumnName("Monto_Pago");
-            entity.Property(e => e.Pagado).HasColumnName("Pagado");
-            entity.Property(e => e.Id_Chofer).HasColumnName("id_Chofer");
-            entity.Property(e => e.Id_Viaje).HasColumnName("id_Viaje");
-            entity.Property(e => e.Id_sueldo).HasColumnName("id_sueldo");
+            entity.Property(e => e.Id).HasColumnName("idpago").ValueGeneratedOnAdd();
+            entity.Property(e => e.Monto_Pagado).HasColumnName("monto");
+            entity.Property(e => e.Pagado).HasColumnName("pagado");
+            entity.Property(e => e.Id_Chofer).HasColumnName("idChofer");
+            entity.Property(e => e.Id_Viaje).HasColumnName("idViaje");
+            entity.Property(e => e.Id_sueldo).HasColumnName("idsueldo");
         });
         modelBuilder.Entity<Sueldo>(entity =>
         {
@@ -174,10 +171,9 @@ public class ApplicationDbContext : DbContext
         {
             entity.ToTable("chofer");
             entity.HasKey(e => e.Id);
-            entity.Property(e => e.Id).HasColumnName("idchofer");
+            entity.Property(e => e.Id).HasColumnName("idChofer");
             entity.Property(e => e.Nombre).HasColumnName("nombre");
         });
     }
-
 }
 

@@ -27,6 +27,7 @@
     <Compile Include="DTOs\ChoferDTO.cs" />
     <Compile Include="DTOs\CuentaCorrienteDTO.cs" />
     <Compile Include="DTOs\FleteDTO.cs" />
+    <Compile Include="DTOs\SueldoDTO.cs" />
     <Compile Include="DTOs\ViajeDTO.cs" />
     <Compile Include="DTOs\ViajeFleteDTO.cs" />
     <Compile Include="DTOs\ViajeMixtoDTO.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="Repositories\FleteRepository.cs" />
     <Compile Include="Repositories\ViajeFleteRepository.cs" />
     <Compile Include="Repositories\PagoRepository.cs" />
+    <Compile Include="Repositories\SueldoRepository.cs" />
     <Compile Include="Repositories\ViajeRepository.cs" />
     <Compile Include="Services\CamionService.cs" />
     <Compile Include="Services\ChequeService.cs" />
@@ -68,13 +70,13 @@
     <compile Include="Services\ViajeService.cs" />
     <compile Include="Services\FleteService.cs" />
     <compile Include="Services\PagoService.cs" />
-
     <Compile Include="Utils\MensajesError\MensajeError.cs" />
     <Compile Include="Utils\Validadores\ValidadorCheque.cs" />
     <Compile Include="Utils\Result.cs" />
     <Compile Include="Utils\Validadores\ValidadorCamion.cs" />
     <Compile Include="Utils\Validadores\ValidadorChofer.cs" />
     <Compile Include="Utils\Validadores\ValidadorCliente.cs" />
+    <Compile Include="Utils\Validadores\ValidadorSueldo.cs" />
     <Compile Include="Utils\Validadores\ValidadorViaje.cs" />
     <Compile Include="ViewModels\CamionViewModel.cs" />
     <Compile Include="ViewModels\ChoferViewModel.cs" />
