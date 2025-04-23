@@ -38,7 +38,7 @@ namespace Proyecto_camiones.Presentacion
 
             CamionViewModel cvm = new CamionViewModel();
             //PRUEBA INSERCION
-            Result<int> id = cvm.InsertarCamion(120, 40, "MLA126", "Pepito").Result;
+            Result<int> id = cvm.InsertarCamion(120, 40, "MLA126", "Ana").Result;
             if (id.IsSuccess)
             {
                 Console.WriteLine("se pudo agregar con el id: " + id.Value);
@@ -48,30 +48,30 @@ namespace Proyecto_camiones.Presentacion
                 Console.WriteLine(id.Error);
             }
 
-                //PRUEBA SELECT ALL
-                //var camiones = await cvm.ObtenerTodos();
-                //if (camiones.IsSuccess)
-                //{
-                //    foreach (var camion in camiones.Value)
-                //    {
-                //        Console.WriteLine(camion.ToString());
-                //    }
-                //}
+            //PRUEBA SELECT ALL
+            //var camiones = await cvm.ObtenerTodos();
+            //if (camiones.IsSuccess)
+            //{
+            //    foreach (var camion in camiones.Value)
+            //    {
+            //        Console.WriteLine(camion.ToString());
+            //    }
+            //}
 
-                //PRUEBA UPDATE CAMION
-                //var camionUpdated = await cvm.Actualizar(2, 100, null, "HIJ429", "JUAN");
-                //if (camionUpdated.IsSuccess)
-                //{
-                //    CamionDTO camion = camionUpdated.Value;
-                //    Console.WriteLine("camion actualizado a: " + camion.ToString());
-                //}
+            //PRUEBA UPDATE CAMION
+            //var camionUpdated = await cvm.Actualizar(2, 100, null, "HIJ429", "JUAN");
+            //if (camionUpdated.IsSuccess)
+            //{
+            //    CamionDTO camion = camionUpdated.Value;
+            //    Console.WriteLine("camion actualizado a: " + camion.ToString());
+            //}
 
-                //PRUEBA ELIMINAR CAMION
-                //var response = await cvm.Eliminar(8);
-                //Console.WriteLine(response.Value);
+            //PRUEBA ELIMINAR CAMION
+            //var response = await cvm.Eliminar(8);
+            //Console.WriteLine(response.Value);
 
 
-                CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
+            CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
 
                 //INSERCION PARA CUENTA CORRIENTE DE UN FLETERO FUNCIONANDO CORRECTAMENTE
 
