@@ -20,13 +20,6 @@
       <SubType>Component</SubType>
     </Compile>
 
-    <!-- Forms -->
-    <Compile Include="Forms\Formulario_Viajes.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Formulario_Viajes.Designer.cs">
-      <DependentUpon>Formulario_Viajes.cs</DependentUpon>
-    </Compile>
 
     <!-- Archivos DTOs -->
     <Compile Include="DTOs\CamionDTO.cs" />
@@ -95,6 +88,15 @@
     <Compile Include="Utils\Validadores\ValidadorCliente.cs" />
     <Compile Include="Utils\Validadores\ValidadorSueldo.cs" />
     <Compile Include="Utils\Validadores\ValidadorViaje.cs" />
+    <Compile Include="SueldoMensual.cs" />
+<Compile Include="Viaje.cs" />
+<Compile Include="CuentaCorriente.cs" />
+<Compile Include="Cheque.cs" />
+<Compile Include="ViajeFiltro.cs" />
+<Compile Include="FormRegistro.cs" />
+<Compile Include="Home.cs" />
+<Compile Include="NewRoundPanel.cs" />
+<Compile Include="RoundButton.cs" />
 
     <!-- Core -->
     <Compile Include="Program.cs" />

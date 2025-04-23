@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using NPOI.SS.Formula.Functions;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Models;
@@ -43,39 +44,33 @@ namespace Proyecto_camiones.Presentacion.Services
 
 
         //CREAR CAMION
-        public async Task<Result<int>> CrearCamionAsync(float peso, float tara, string patente, string nombre)
+        public async Task<Result<int>> CrearCamionAsync( string patente)
         {
-            ValidadorCamion validador = new ValidadorCamion(peso, tara, patente, nombre);
+            //ValidadorCamion validador = new ValidadorCamion(patente);
 
-            Result<bool> resultadoValidacion = validador.ValidarCompleto();
+            //Result<bool> resultadoValidacion = validador.ValidarCompleto();
 
-            if (!resultadoValidacion.IsSuccess)
-                return Result<int>.Failure(resultadoValidacion.Error);
+            //if (!resultadoValidacion.IsSuccess)
+            //    return Result<int>.Failure(resultadoValidacion.Error);
 
             try
             {
                 // Intentar insertar en la base de datos
-                Camion response = await _camionRepository.InsertarCamionAsync(peso, tara, patente, nombre);
+                MessageBox.Show("Entramos!!!!");
+                Camion response = await _camionRepository.InsertarCamionAsync( patente);
+                MessageBox.Show("Se insertó");
                 if (response != null)
                 {
-                    Chofer chofer = await this._choferRepository.InsertarAsync(nombre); 
-                    if(chofer != null)
-                    {
-                        return Result<int>.Success(response.Id);
-                    }
-                    else
-                    {
-                        return Result<int>.Failure("Error al insertar el chofer de ese camión, modifiquelo y vuelva a intentar");                    }
+                    MessageBox.Show("Bien");
+                    return Result<int>.Success(response.Id);
                 }
-                else
-                {
                     return Result<int>.Failure("El camion no pudo ser incertado");
-                }
             }
             catch (Exception ex)
             {
                 // Si algo sale mal, registrar el error y devolver un mensaje amigable
                 //Logger.LogError($"Error al crear camion: {ex.Message}"); 
+                MessageBox.Show("Error al insertar");
                 return Result<int>.Failure("Hubo un error al crear el camion");
             }
         }

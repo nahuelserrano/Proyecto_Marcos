@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Windows.Forms;
 
 namespace Proyecto_camiones.Presentacion.Repositories
 {
@@ -43,7 +44,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
         //agrego el signo de pregunta luego de Camion para decir que el result puede ser null
-        public async Task<Camion?> InsertarCamionAsync(float peso_max, float tara, string patente, string nombre)
+        public async Task<Camion?> InsertarCamionAsync( string patente)
         {
             try
             {
@@ -54,15 +55,17 @@ namespace Proyecto_camiones.Presentacion.Repositories
                         return null;
                     }
 
-                var camion = new Camion(peso_max, tara, patente, nombre);
+                var camion = new Camion( patente, null);
 
                 // Agregar el camión a la base de datos (esto solo marca el objeto para insertar)
                 _context.Camiones.Add(camion);
+                MessageBox.Show("Agregado de add");
 
                 Console.WriteLine($"SQL a ejecutar: {_context.ChangeTracker.DebugView.LongView}");
 
                 // Guardar los cambios en la base de datos (aquí se genera el SQL real y se ejecuta)
                 int registrosAfectados = await _context.SaveChangesAsync();
+                MessageBox.Show("Guardado en la db");
 
                 if (registrosAfectados > 0)
                 {
@@ -76,6 +79,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 Console.WriteLine($"Error al insertar camión: {ex.Message}");
                 // Para debuggear, también es útil ver la excepción completa:
                 Console.WriteLine($"Stack trace: {ex.StackTrace}");
+                MessageBox.Show("Error de conexión"+ ex.Message);
+                MessageBox.Show("Error de conexión"+ex.InnerException);
                 return null;
             }
         }
@@ -86,8 +91,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
             {
                 var camiones = await _context.Camiones.Select(c => new CamionDTO
                 {
-                    peso_max = c.peso_max,
-                    tara = c.tara,
                     Patente = c.Patente,
                     Nombre_Chofer = c.nombre_chofer
                 }).ToListAsync();
@@ -110,16 +113,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 var camion = await _context.Camiones.FindAsync(id);
                 if (camion == null) return false;
                 
-
-                if (peso_max.HasValue)  // Mejor usar HasValue para tipos nullable
-                {
-                    camion.peso_max = peso_max.Value; 
-                }
-
-                if (tara.HasValue)
-                {
-                    camion.tara = tara.Value;
-                }
 
                 if (!string.IsNullOrEmpty(patente))  // Mejor verificación para strings
                 {
@@ -149,7 +142,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             Camion camion = await _context.Camiones.FindAsync(id);
             if (camion != null)
             {
-                CamionDTO nuevo = new CamionDTO(camion.peso_max, camion.tara, camion.Patente, camion.nombre_chofer);
+                CamionDTO nuevo = new CamionDTO( camion.Patente, camion.nombre_chofer);
                 return nuevo;
             }
             return null;

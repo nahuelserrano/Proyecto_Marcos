@@ -13,6 +13,8 @@ using System.Security.Cryptography;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Diagnostics;
+using Proyecto_camiones.ViewModels;
+using Proyecto_camiones.Presentacion.Utils;
 
 namespace AppCamiones
 {
@@ -158,15 +160,15 @@ namespace AppCamiones
         }
 
         //InfoFunctions
-        public void CardGenerator(string filtro, string info)
+        public async void CardGenerator(string filtro, string info)
         {
 
             cardsContainer.Controls.Clear();
             buttonAddNew.Visible = false;
             formCargarSection.Visible = false;
-            
 
-            List<string> datos = GetFilterInfo(filtro, info);
+
+            List<string> datos = await GetFilterInfoAsync(filtro, info);
 
             foreach (string dato in datos)
             {
@@ -272,7 +274,7 @@ namespace AppCamiones
         }
 
 
-        public List<string> GetFilterInfo(string filtro, string info)
+        public async Task<List<string>> GetFilterInfoAsync(string filtro, string info)
         {
             camiones.Clear();
             clientes.Clear();
@@ -281,7 +283,21 @@ namespace AppCamiones
             {
                 if (filtro == "Camion")
                 {
-                    camiones.Add(info);
+
+                    CamionViewModel cmv = new CamionViewModel();
+                    var idCamion = await cmv.InsertarCamion(info);
+                    MessageBox.Show(idCamion.Value + " ");
+                    if (idCamion.IsSuccess)
+                    {
+                        
+                        camiones.Add(info);
+                    }
+                    else
+                    {
+                        MessageBox.Show(idCamion.Error + " ");
+                        Console.WriteLine(idCamion.Error);
+                    }
+
                 }
                 else if (filtro == "Cliente")
                 {

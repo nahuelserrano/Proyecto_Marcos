@@ -56,16 +56,16 @@ namespace Proyecto_camiones.Presentacion.Models
             Tarifa = tarifa;
         }
 
-        public ViajeDTO toDTO(string nombreChofer, string nombreCliente)
-        {
-            return new ViajeDTO(FechaInicio, LugarPartida, Destino, Remito, Kg, Carga, 
-                nombreCliente, nombreChofer, Km, Tarifa);
-        }
+        //public ViajeDTO toDTO(string nombreChofer, string nombreCliente)
+        //{
+        //    return new ViajeDTO(FechaInicio, LugarPartida, Destino, Remito, Kg, Carga, 
+        //        nombreCliente, nombreChofer, Km, Tarifa);
+        //}
 
-        public ViajeDTO toDTO(string nombreCliente)
-        {
-            return new ViajeDTO(FechaInicio, LugarPartida, Destino, Remito, Kg, Carga,
-                nombreCliente, NombreChofer, Km, Tarifa);
-        }
+        //public ViajeDTO toDTO(string nombreCliente)
+        //{
+        //    return new ViajeDTO(FechaInicio, LugarPartida, Destino, Remito, Kg, Carga,
+        //        nombreCliente, NombreChofer, Km, Tarifa);
+        //}
     }
 }

@@ -54,8 +54,6 @@ public class ApplicationDbContext : DbContext
             entity.ToTable("camion");
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Id).HasColumnName("idcamion");
-            entity.Property(e => e.peso_max).HasColumnName("peso_max");
-            entity.Property(e => e.tara).HasColumnName("tara");
             entity.Property(e => e.Patente).HasColumnName("patente");
             entity.Property(e => e.nombre_chofer).HasColumnName("nombre_chofer");
         });

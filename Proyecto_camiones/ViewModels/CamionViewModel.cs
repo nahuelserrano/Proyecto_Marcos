@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Proyecto_camiones.ViewModels
 {
@@ -19,8 +20,7 @@ namespace Proyecto_camiones.ViewModels
 
         public CamionViewModel()
         {
-            var dbContext = General.obtenerInstancia();
-            var camionRepository = new CamionRepository(dbContext);
+            var camionRepository = new CamionRepository(General.obtenerInstancia());
             this._camionService = new CamionService(camionRepository);
         }
 
@@ -29,28 +29,32 @@ namespace Proyecto_camiones.ViewModels
             return await this._camionService.ProbarConexionAsync();
         }
 
-        public async Task<Result<int>> InsertarCamion(float peso_max, float tara, string patente, string nombre)
+        public async Task<Result<int>> InsertarCamion(string patente)
         {
-            if (this.testearConexion().Result)
+            MessageBox.Show("h");
+            bool result = await this.testearConexion();
+            if (result)
             {
-                Console.WriteLine("omg entré!!");
-                var resultado = await this._camionService.CrearCamionAsync(peso_max, tara, patente, nombre);
+                MessageBox.Show("Conexión");
+                var resultado = await this._camionService.CrearCamionAsync( patente);
 
                 // Ahora puedes acceder al resultado
                 if (resultado.IsSuccess)
                 {
                     // La operación fue exitosa
                     int idCamion = resultado.Value;
+                    MessageBox.Show("Se creo el camión");
                     Console.WriteLine($"Camión creado con ID: {idCamion}");
                     return resultado;
                 }
                 else
                 {
                     // Si la operación falló, maneja el error
-                    Console.WriteLine($"Error al crear el camión: {resultado.Error}");
+                    MessageBox.Show("Falló la operación");
                     return Result<int>.Failure(resultado.Error);
                 }
             }
+            MessageBox.Show("Error de conexión");
             return Result<int>.Failure("La conexión no pude establecerse");
         }
 
