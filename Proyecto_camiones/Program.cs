@@ -299,7 +299,7 @@ namespace Proyecto_camiones.Presentacion
 
         public static async void ProbarObtenerClientePorNombre(string nombre)
         {
-
+            
         }
 
         public static async void ProbarObtenerCliente(int id)
