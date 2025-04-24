@@ -1,4 +1,4 @@
-﻿x|using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +10,7 @@ using Proyecto_camiones.Repositories;
 
 namespace Proyecto_camiones.Services
 {
-    class PagoServices
+    public class PagoService
     {
         /*
 
@@ -86,5 +86,5 @@ namespace Proyecto_camiones.Services
             PagoRepository.MarcarComoPagado(id,pagado,id_sueldo);
         } */
     }
-    }
+}
 

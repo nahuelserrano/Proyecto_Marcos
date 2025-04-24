@@ -31,12 +31,6 @@
     <Compile Include="DTOs\ViajeDTO.cs" />
     <Compile Include="DTOs\ViajeFleteDTO.cs" />
     <Compile Include="DTOs\ViajeMixtoDTO.cs" />
-    <Compile Include="Forms\Formulario_Viajes.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Formulario_Viajes.Designer.cs">
-      <DependentUpon>Formulario_Viajes.cs</DependentUpon>
-    </Compile>
     <Compile Include="Models\Camion.cs" />
     <Compile Include="Models\Cheque.cs" />
     <Compile Include="Models\Chofer.cs" />
@@ -86,5 +80,9 @@
     <Compile Include="ViewModels\ViajeFleteViewModel.cs" />
     <Compile Include="ViewModels\General.cs" />
     <Compile Include="ViewModels\ViajeViewModel.cs" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="Forms\" />
   </ItemGroup>
 </Project>

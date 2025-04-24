@@ -135,6 +135,11 @@ public class ApplicationDbContext : DbContext
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Id).HasColumnName("idCliente");
             entity.Property(e => e.Nombre).HasColumnName("nombre");
+
+            entity.HasMany(c => c.Viajes)
+                .WithOne(v => v.ClienteNavigation)
+                .HasForeignKey(v => v.Cliente)
+                .OnDelete(DeleteBehavior.Restrict);
         });
 
         modelBuilder.Entity<ViajeFlete>(entity =>

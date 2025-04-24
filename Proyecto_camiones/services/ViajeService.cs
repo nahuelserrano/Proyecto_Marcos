@@ -29,6 +29,7 @@ namespace Proyecto_camiones.Presentacion.Services
 
         public async Task<bool> ProbarConexionAsync()
         {
+            Console.WriteLine("probar service");
             bool result = await _viajeRepository.ProbarConexionAsync();
             return result;
         }
@@ -220,7 +221,7 @@ namespace Proyecto_camiones.Presentacion.Services
         }
         public async Task<Result<List<ViajeDTO>>> ObtenerPorClienteAsync(int idCliente)
         {
-            if (idCliente <= 0)
+            if (idCliente < 0)
             {
                 return Result<List<ViajeDTO>>.Failure(MensajeError.idInvalido(idCliente));
             }

@@ -14,14 +14,12 @@ namespace Proyecto_camiones.Presentacion.Services
     public class ClienteService
     {
         private ClienteRepository _clienteRepository;
-        private ViajeRepository _viajeRepository;
-        private ViajeFleteRepository _viajeFleteRepository;
+        //private ViajeFleteRepository _viajeFleteRepository;
 
         public ClienteService(ClienteRepository clienteRepository)
         {
             this._clienteRepository = clienteRepository ?? throw new ArgumentNullException(nameof(_clienteRepository));
-            this._viajeRepository = new ViajeRepository(General.obtenerInstancia());
-            this._viajeFleteRepository = new ViajeFleteRepository();
+            //this._viajeFleteRepository = new ViajeFleteRepository();
         }
 
         public async Task<bool> ProbarConexionAsync()
@@ -32,10 +30,10 @@ namespace Proyecto_camiones.Presentacion.Services
 
         public async Task<Result<Cliente>> ObtenerPorIdAsync(int id)
         {
-            if (id < 0)
+            if (id <= 0)
                 return Result<Cliente>.Failure(MensajeError.idInvalido(id));
 
-            Cliente cliente = await this._clienteRepository.ObtenerPorId(id);
+            Cliente? cliente = await this._clienteRepository.ObtenerPorId(id);
 
             if (cliente == null)
                 return Result<Cliente>.Failure(MensajeError.objetoNulo(nameof(cliente)));
@@ -46,7 +44,7 @@ namespace Proyecto_camiones.Presentacion.Services
 
         public async Task<Result<bool>> EliminarAsync(int clienteId)
         {
-            if (clienteId < 0) return Result<bool>.Failure(MensajeError.idInvalido(clienteId));
+            if (clienteId <= 0) return Result<bool>.Failure(MensajeError.idInvalido(clienteId));
 
             bool result = await this._clienteRepository.Eliminar(clienteId);
 
@@ -77,12 +75,13 @@ namespace Proyecto_camiones.Presentacion.Services
             if (id < 0)
                 return Result<Cliente>.Failure("El id es inválido");
 
-           Cliente cliente = await _clienteRepository.ActualizarAsync(id, nombre);
+            Cliente cliente = await _clienteRepository.ActualizarAsync(id, nombre);
             if (cliente != null) return Result<Cliente>.Success(cliente);
 
             return Result<Cliente>.Failure("No existe un cliente con ese id");
         }
 
+        /*
         internal async Task<Result<List<ViajeMixtoDTO>>> ObtenerViajesDeUnCliente(string cliente)
         {
             Cliente c = _clienteRepository.ObtenerPorNombre(cliente).Result;
@@ -99,5 +98,6 @@ namespace Proyecto_camiones.Presentacion.Services
             }
             return Result<List<ViajeMixtoDTO>>.Failure("No existe un cliente con ese nombre");
         }
+        */
     }
 }

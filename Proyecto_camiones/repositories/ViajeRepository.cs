@@ -397,6 +397,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
         public async Task<List<ViajeDTO>> ObtenerPorClienteAsync(int clienteId)
         {
+            Console.WriteLine("REPO");
             try
             {
 
@@ -423,6 +424,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             catch (Exception ex)
             {
                 Console.WriteLine($"Error al obtener viajes por cliente: {ex.Message}");
+                Console.WriteLine(ex.InnerException);
                 return new List<ViajeDTO>();
             }
         }

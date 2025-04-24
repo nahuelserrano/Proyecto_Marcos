@@ -99,8 +99,10 @@ CREATE TABLE `cliente` (
 INSERT INTO `cliente` (`idCliente`, `nombre`) VALUES
 (2, 'Cliente1'),
 (3, 'COOPERATIVA'),
-(4, 'COOPERATIVA'),
-(5, 'MACHACA');
+(4, 'MACHACA'),
+(5, 'TRANSPORTES DEL SUR'),
+(6, 'CARGA PESADA SA'),
+(7, 'DISTRIBUIDORA TANDIL');
 
 -- --------------------------------------------------------
 
@@ -216,6 +218,20 @@ CREATE TABLE `viaje` (
   `tarifa` float NOT NULL,
   `nombre_chofer` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `viaje`
+--
+
+INSERT INTO `viaje` (`idviaje`, `partida`, `origen`, `destino`, `remito`, `kg`, `carga`, `idcliente`, `idcamion`, `km`, `tarifa`, `nombre_chofer`) VALUES
+(1, '2025-04-05', 'Tandil', 'Buenos Aires', 10001, 5000, 'Cereales', 3, 2, 370, 25, 'x'),
+(2, '2025-04-07', 'Mar del Plata', 'Bahía Blanca', 10002, 7500, 'Frutas', 3, 3, 420, 28, 'juan'),
+(3, '2025-04-10', 'La Plata', 'Rosario', 10003, 6200, 'Muebles', 3, 4, 390, 26, 'juan'),
+(4, '2025-04-12', 'Córdoba', 'Mendoza', 10004, 8000, 'Maquinaria', 4, 5, 700, 35, 'carlos'),
+(5, '2025-04-15', 'Santa Fe', 'Tucumán', 10005, 5800, 'Alimentos', 5, 6, 780, 38, 'mili'),
+(6, '2025-04-18', 'Salta', 'Jujuy', 10006, 4500, 'Textiles', 6, 10, 150, 18, 'lauti'),
+(7, '2025-04-20', 'Buenos Aires', 'Córdoba', 10007, 9000, 'Electrónicos', 7, 11, 700, 36, 'roman'),
+(8, '2025-04-22', 'Rosario', 'Santa Fe', 10008, 6700, 'Papel', 7, 12, 160, 15, 'Pepito');
 
 -- --------------------------------------------------------
 

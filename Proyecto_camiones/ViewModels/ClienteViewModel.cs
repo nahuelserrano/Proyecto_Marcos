@@ -14,26 +14,25 @@ namespace Proyecto_camiones.ViewModels
     public class ClienteViewModel
     {
 
-        private ClienteService clienteService;
+        private readonly ClienteService _clienteService;
 
         public ClienteViewModel()
         {
             var dbContext = General.obtenerInstancia();
             var clienteRepo = new ClienteRepository(dbContext);
-            this.clienteService = new ClienteService(clienteRepo);
+            this._clienteService = new ClienteService(clienteRepo);
         }
 
         public async Task<bool> testearConexion()
         {
-            return await this.clienteService.ProbarConexionAsync();
+            return await this._clienteService.ProbarConexionAsync();
         }
 
         public async Task<Result<int>> InsertarCliente(string nombre)
         {
-            if (this.testearConexion().Result)
+            if (await this.testearConexion())
             {
-                Console.WriteLine("omg entré!!");
-                var resultado = await this.clienteService.InsertarAsync(nombre);
+                var resultado = await this._clienteService.InsertarAsync(nombre);
 
                 // Ahora puedes acceder al resultado
                 if (resultado.IsSuccess)
@@ -55,29 +54,32 @@ namespace Proyecto_camiones.ViewModels
 
         public async Task<Result<Cliente>> ObtenerById(int id)
         {
-            if (this.testearConexion().Result){
-                return await this.clienteService.ObtenerPorIdAsync(id);
+            if (await this.testearConexion()){
+                Console.WriteLine("ENTRE");
+                return await this._clienteService.ObtenerPorIdAsync(id);
             }
             return Result<Cliente>.Failure("No se pudo establecer la conexion");
         }
 
         public async Task<Result<bool>> Eliminar(int id)
         {
-            if (this.testearConexion().Result)
+            if (await this.testearConexion())
             {
-                return await this.clienteService.EliminarAsync(id);
+                return await this._clienteService.EliminarAsync(id);
             }
             return Result<bool>.Failure("No se pudo establecer la conexión");
         } 
 
+        /*
         public async Task<Result<List<ViajeMixtoDTO>>> ObtenerViajesDeUnCliente(string cliente)
         {
-            if (this.testearConexion().Result)
+            if (await this.testearConexion())
             {
                 return await this.clienteService.ObtenerViajesDeUnCliente(cliente.ToUpper());
             }
             return Result<List<ViajeMixtoDTO>>.Failure("No se pudo establecer la conexión");
         }
+        */
 
     }
 }
