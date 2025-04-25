@@ -26,16 +26,21 @@
     <Compile Include="DTOs\SueldoDTO.cs" />
     <Compile Include="DTOs\ChequeDTO.cs" />
     <Compile Include="DTOs\ChoferDTO.cs" />
+    <Compile Include="DTOs\CuentaCorrienteDTO.cs" />
     <Compile Include="DTOs\FleteDTO.cs" />
+    <Compile Include="DTOs\SueldoDTO.cs" />
     <Compile Include="DTOs\ViajeDTO.cs" />
     <Compile Include="DTOs\ViajeFleteDTO.cs" />
     <Compile Include="DTOs\ViajeMixtoDTO.cs" />
+<<<<<<< HEAD
     <Compile Include="Forms\Formulario_Viajes.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\Formulario_Viajes.Designer.cs">
       <DependentUpon>Formulario_Viajes.cs</DependentUpon>
     </Compile>
+=======
+>>>>>>> 05e3f5d98b2f92eaa726809ab033b119be5101d9
     <Compile Include="Models\Camion.cs" />
     <Compile Include="Models\Cheque.cs" />
     <Compile Include="Models\Chofer.cs" />
@@ -69,13 +74,13 @@
     <compile Include="Services\ViajeService.cs" />
     <compile Include="Services\FleteService.cs" />
     <compile Include="Services\PagoService.cs" />
-
     <Compile Include="Utils\MensajesError\MensajeError.cs" />
     <Compile Include="Utils\Validadores\ValidadorCheque.cs" />
     <Compile Include="Utils\Result.cs" />
     <Compile Include="Utils\Validadores\ValidadorCamion.cs" />
     <Compile Include="Utils\Validadores\ValidadorChofer.cs" />
     <Compile Include="Utils\Validadores\ValidadorCliente.cs" />
+    <Compile Include="Utils\Validadores\ValidadorSueldo.cs" />
     <Compile Include="Utils\Validadores\ValidadorViaje.cs" />
     <Compile Include="Utils\Validadores\ValidadorSueldo.cs" />
     <Compile Include="ViewModels\CamionViewModel.cs" />
@@ -88,5 +93,9 @@
     <Compile Include="ViewModels\ViajeFleteViewModel.cs" />
     <Compile Include="ViewModels\General.cs" />
     <Compile Include="ViewModels\ViajeViewModel.cs" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="Forms\" />
   </ItemGroup>
 </Project>

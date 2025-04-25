@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace Proyecto_camiones.Models
 {
-
     public class Pago
     {
         public int Id { get; set; }
@@ -27,10 +26,14 @@ namespace Proyecto_camiones.Models
             Id_sueldo = null;
             Pagado = false;
             Monto_Pagado = monto_pagado;
-
         }
 
+<<<<<<< HEAD
         
+=======
+        public Pago()
+        {
+        }
+>>>>>>> 05e3f5d98b2f92eaa726809ab033b119be5101d9
     }
-        
-    }
+}

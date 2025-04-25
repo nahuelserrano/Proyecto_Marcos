@@ -8,6 +8,7 @@ using MySql.Data.MySqlClient;
 using MySqlX.XDevAPI;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Models;
+using Proyecto_camiones.Presentacion.Utils;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace Proyecto_camiones.Presentacion.Repositories
@@ -66,9 +67,11 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     Console.WriteLine("No se puede conectar a la base de datos");
                     return null;
                 }
+                var camionEntity = await _context.Camiones.FindAsync(camion);
+
 
                 var viaje = new Viaje(fechaInicio, lugarPartida, destino, remito, kg,
-                    carga, cliente, camion, km, tarifa);
+                    carga, cliente, camion, km, tarifa, camionEntity.nombre_chofer);
 
                 _context.Viajes.Add(viaje);
 
@@ -83,7 +86,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 // Si se insertó correctamente, devolver el viaje como DTO
 
                 var clienteEntity = await _context.Clientes.FindAsync(cliente);
-                var camionEntity = await _context.Camiones.FindAsync(camion);
 
                 if (clienteEntity != null && camionEntity != null)
                 {
@@ -360,8 +362,42 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
         // Obtener viajes por cliente
+        public async Task<List<ViajeMixtoDTO>> ObtenerViajeMixtoPorClienteAsync(int clienteId)
+        {
+            try
+            {
+
+                var viajes = await _context.Viajes
+                    .AsNoTracking()
+                    .Include(v => v.ClienteNavigation)
+                    .Include(v => v.CamionNavigation)
+                    .Where(v => v.Cliente == clienteId)
+                    .Select(v => new ViajeMixtoDTO
+                    {
+                        Fecha_salida = v.FechaInicio,
+                        Origen = v.LugarPartida,
+                        Destino = v.Destino,
+                        Remito = v.Remito,
+                        Kg = v.Kg,
+                        Carga = v.Carga,
+                        Nombre_chofer = v.NombreChofer,
+                        Km = v.Km,
+                        Tarifa = v.Tarifa,
+                        Camion = v.CamionNavigation.Patente
+                    }).ToListAsync();
+
+                return viajes;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al obtener viajes por cliente: {ex.Message}");
+                return new List<ViajeMixtoDTO>();
+            }
+        }
+
         public async Task<List<ViajeDTO>> ObtenerPorClienteAsync(int clienteId)
         {
+            Console.WriteLine("REPO");
             try
             {
 
@@ -388,7 +424,45 @@ namespace Proyecto_camiones.Presentacion.Repositories
             catch (Exception ex)
             {
                 Console.WriteLine($"Error al obtener viajes por cliente: {ex.Message}");
+                Console.WriteLine(ex.InnerException);
                 return new List<ViajeDTO>();
+            }
+        }
+
+        public async Task<List<ViajeDTO>> ObtenerPorChoferAsync(string chofer)
+        {
+            try
+            {
+                var viajes = await _context.Viajes
+                    .AsNoTracking()
+                    .Include(v => v.ClienteNavigation)
+                    .Where(v => v.NombreChofer == chofer)
+                    .Select(v => new ViajeDTO()
+                    {
+                        FechaInicio = v.FechaInicio,
+                        LugarPartida = v.LugarPartida,
+                        Destino = v.Destino,
+                        Remito = v.Remito,
+                        Kg = v.Kg,
+                        Carga = v.Carga,
+                        NombreCliente = v.ClienteNavigation.Nombre,
+                        NombreChofer = v.NombreChofer,
+                        Km = v.Km,
+                        Tarifa = v.Tarifa,
+                    }).ToListAsync();
+
+                if (viajes.Count == 0)
+                {
+                    Console.WriteLine($"No hay viajes con ese chofer");
+                }
+
+                return viajes;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al obtener viajes por chofer: {ex.Message}");
+                throw;
             }
         }
     }

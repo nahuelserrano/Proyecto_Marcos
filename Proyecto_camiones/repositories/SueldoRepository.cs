@@ -56,7 +56,11 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 var sueldo = new Sueldo(monto, Id_Chofer, pagadoDesde, pagadoHasta);
 
 
+<<<<<<< HEAD
                 await _context.Sueldos.AddAsync(sueldo);
+=======
+                _context.Sueldos.Add(pago);
+>>>>>>> 05e3f5d98b2f92eaa726809ab033b119be5101d9
 
                
                 int registrosAfectados = await _context.SaveChangesAsync();
@@ -83,7 +87,11 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
       public async Task<SueldoDTO?> ObtenerPorId(int id)
       {
+<<<<<<< HEAD
             Sueldo sueldo= await _context.Sueldos.FindAsync(id);
+=======
+            Sueldo sueldo = await _context.Sueldos.FindAsync(id);
+>>>>>>> 05e3f5d98b2f92eaa726809ab033b119be5101d9
     
             if (sueldo == null)
                 return null;

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Models;
 using Proyecto_camiones.Presentacion;
 using Proyecto_camiones.Presentacion.Models;
@@ -143,7 +144,7 @@ namespace Proyecto_camiones.Repositories
             }
         }
 
-        internal async Task<List<CuentaCorriente>> ObtenerCuentasByIdCliente(int id)
+        internal async Task<List<CuentaCorrienteDTO>> ObtenerCuentasByIdCliente(int id)
         {
             try
             {
@@ -153,17 +154,53 @@ namespace Proyecto_camiones.Repositories
                     return null;
                 }
 
-                List<CuentaCorriente> result = new List<CuentaCorriente>();
-                var cuentas = await this._context.Cuentas.Where(c => c.IdCliente == id).ToListAsync();
-                foreach(var c in cuentas)
-                {
-                    CuentaCorriente cuenta = new CuentaCorriente(c.IdCliente, -2, c.Fecha_factura, c.Nro_factura, c.Adeuda, c.Pagado);
-                    result.Add(cuenta);
-                }
-                return result;
+                List<CuentaCorrienteDTO> result = new List<CuentaCorrienteDTO>();
+                var cuentas = await _context.Cuentas
+                            .Where(c => c.IdCliente == id)
+                            .Select(c => new CuentaCorrienteDTO(
+                            
+                                c.Fecha_factura,
+                                c.Nro_factura,
+                                c.Adeuda,
+                                c.Pagado,
+                                c.Saldo_Total
+                            )).ToListAsync();
+                return cuentas;
             }catch(Exception e)
             {
                 Console.WriteLine(e.Message);
+                Console.WriteLine(e.InnerException);
+                return null;
+            }
+        }
+
+        internal async Task<List<CuentaCorrienteDTO>> ObtenerCuentasDeUnFletero(int id)
+        {
+            try
+            {
+                if (!await _context.Database.CanConnectAsync())
+                {
+                    Console.WriteLine("No se puede conectar a la base de datos");
+                    return null;
+                }
+
+                List<CuentaCorrienteDTO> result = new List<CuentaCorrienteDTO>();
+                var cuentas = await _context.Cuentas
+                            .Where(c => c.IdFletero == id)
+                            .Select(c => new CuentaCorrienteDTO(
+
+                                c.Fecha_factura,
+                                c.Nro_factura,
+                                c.Adeuda,
+                                c.Pagado,
+                                c.Saldo_Total
+                            )).ToListAsync();
+                return cuentas;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.InnerException);
                 return null;
             }
         }

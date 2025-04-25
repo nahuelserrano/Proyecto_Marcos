@@ -45,7 +45,7 @@ namespace Proyecto_camiones.Presentacion.Services
 
             if (chofer == null) return Result<bool>.Failure(MensajeError.objetoNulo(nameof(chofer)));
 
-            this._choferRepository.EliminarAsync(id);
+            await this._choferRepository.EliminarAsync(id);
 
             return Result<bool>.Success(true);
         }

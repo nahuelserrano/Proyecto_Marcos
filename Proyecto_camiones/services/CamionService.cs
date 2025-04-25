@@ -6,17 +6,20 @@ using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Utils;
+using Proyecto_camiones.ViewModels;
 
 namespace Proyecto_camiones.Presentacion.Services
 {
     public class CamionService
     {
         private CamionRepository _camionRepository;
+        private ChoferRepository _choferRepository;
 
 
         public CamionService(CamionRepository camionR)
         {
             this._camionRepository = camionR ?? throw new ArgumentNullException(nameof(camionR));
+            this._choferRepository = new ChoferRepository(General.obtenerInstancia());
         }
 
         //PROBAR CONEXION
@@ -55,7 +58,14 @@ namespace Proyecto_camiones.Presentacion.Services
                 Camion response = await _camionRepository.InsertarCamionAsync(peso, tara, patente, nombre);
                 if (response != null)
                 {
-                    return Result<int>.Success(response.Id);
+                    Chofer chofer = await this._choferRepository.InsertarAsync(nombre); 
+                    if(chofer != null)
+                    {
+                        return Result<int>.Success(response.Id);
+                    }
+                    else
+                    {
+                        return Result<int>.Failure("Error al insertar el chofer de ese camión, modifiquelo y vuelva a intentar");                    }
                 }
                 else
                 {

@@ -29,6 +29,7 @@ namespace Proyecto_camiones.Presentacion.Services
 
         public async Task<bool> ProbarConexionAsync()
         {
+            Console.WriteLine("probar service");
             bool result = await _viajeRepository.ProbarConexionAsync();
             return result;
         }
@@ -216,6 +217,51 @@ namespace Proyecto_camiones.Presentacion.Services
             catch (Exception ex)
             {
                 return Result<List<ViajeDTO>>.Failure($"Error al obtener viajes por camión: {ex.Message}");
+            }
+        }
+        public async Task<Result<List<ViajeDTO>>> ObtenerPorClienteAsync(int idCliente)
+        {
+            if (idCliente < 0)
+            {
+                return Result<List<ViajeDTO>>.Failure(MensajeError.idInvalido(idCliente));
+            }
+            try
+            {
+                // Verificar que el cliente existe usando el servicio
+                
+                var clienteResult = await _clienteService.ObtenerPorIdAsync(idCliente);
+                if (clienteResult == null)
+                    return Result<List<ViajeDTO>>.Failure($"El cliente especificado no existe: {clienteResult}");
+                
+                var viajes = await _viajeRepository.ObtenerPorClienteAsync(idCliente);
+                return Result<List<ViajeDTO>>.Success(viajes);
+            }
+            catch (Exception ex)
+            {
+                return Result<List<ViajeDTO>>.Failure($"Error al obtener viajes por cliente: {ex.Message}");
+            }
+        }
+
+        public async Task<Result<List<ViajeDTO>>> ObtenerPorChoferAsync(int idChofer)
+        {
+            if (idChofer <= 0)
+            {
+                return Result<List<ViajeDTO>>.Failure(MensajeError.idInvalido(idChofer));
+            }
+            try
+            {
+                // Verificar que el chofer existe usando el servicio
+                var choferResult = await _choferService.ObtenerPorIdAsync(idChofer);
+
+                if (choferResult == null)
+                    return Result<List<ViajeDTO>>.Failure($"El chofer especificado no existe: {choferResult}");
+
+                var viajes = await _viajeRepository.ObtenerPorChoferAsync(choferResult.Value.Nombre);
+                return Result<List<ViajeDTO>>.Success(viajes);
+            }
+            catch (Exception ex)
+            {
+                return Result<List<ViajeDTO>>.Failure($"Error al obtener viajes por chofer: {ex.Message}");
             }
         }
     }

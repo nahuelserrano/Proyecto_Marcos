@@ -26,6 +26,22 @@ namespace Proyecto_camiones.Presentacion.Models
         public Camion CamionNavigation { get; set; } // La entidad Camión relacionada
 
         public Viaje(DateOnly fechaInicio, string lugarPartida, string destino, int remito, float kg,
+            string carga, int cliente, int camion, float km, float tarifa, string nombreChofer)
+        {
+            FechaInicio = fechaInicio;
+            LugarPartida = lugarPartida;
+            Destino = destino;
+            Remito = remito;
+            Kg = kg;
+            Carga = carga;
+            Cliente = cliente;
+            Camion = camion;
+            Km = km;
+            Tarifa = tarifa;
+            NombreChofer = nombreChofer;
+        }
+
+        public Viaje(DateOnly fechaInicio, string lugarPartida, string destino, int remito, float kg,
             string carga, int cliente, int camion, float km,  float tarifa)
         {
             FechaInicio = fechaInicio;

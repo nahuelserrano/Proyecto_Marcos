@@ -15,14 +15,38 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
         public ClienteRepository(ApplicationDbContext context)
         {
-            _context = context;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<bool> ProbarConexionAsync()
         {
             try
             {
+                Console.WriteLine("Iniciando prueba de conexión...");
+                // Verificamos si el contexto existe
+                if (_context == null)
+                {
+                    Console.WriteLine("ERROR: _context es NULL");
+                    return false;
+                }
+
+                Console.WriteLine("Accediendo a Database...");
+                // Verificamos si la propiedad Database existe
+                if (_context.Database == null)
+                {
+                    Console.WriteLine("ERROR: _context.Database es NULL");
+                    return false;
+                }
+
+                Console.WriteLine("Llamando a CanConnectAsync...");
+                // Aquí es donde parece detenerse la ejecución
+                bool puedeConectar = await _context.Database.CanConnectAsync();
+
+                Console.WriteLine("Resultado de conexión: " + puedeConectar);
+                return puedeConectar;
+                /*
                 // Intentar comprobar si la conexión a la base de datos es exitosa
+                Console.WriteLine("Probar conexión");
                 bool puedeConectar = await _context.Database.CanConnectAsync();
                 Console.WriteLine("rompió acá no??");
                 if (puedeConectar)
@@ -35,6 +59,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 }
 
                 return puedeConectar;
+                */
             }
             catch (Exception ex)
             {
@@ -45,11 +70,15 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
 
-        public async Task<Cliente> ObtenerPorId(int? id)
+        public async Task<Cliente?> ObtenerPorId(int? id)
         {
             try
             {
                 var cliente = await _context.Clientes.FindAsync(id);
+
+                if (cliente == null)
+                    return null;
+                
                 return cliente;
             }catch(Exception e)
             {
@@ -147,11 +176,11 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
         }
 
-        public async Task<Cliente> ObtenerPorNombre(string nombre_cliente)
+        public async Task<Cliente?> ObtenerPorNombre(string nombre_cliente)
         {
             try
             {
-                  Cliente cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Nombre == nombre_cliente);
+                Cliente cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Nombre == nombre_cliente);
                 return cliente;
 
             }

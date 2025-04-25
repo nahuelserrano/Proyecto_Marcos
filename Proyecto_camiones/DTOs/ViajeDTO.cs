@@ -52,6 +52,12 @@ namespace Proyecto_camiones.DTOs
             Km = 0;
             Tarifa = 1200;
         }
+
+        override
+            public string ToString()
+        {
+            return "${ " + this.LugarPartida + "}";
+        }
     }
 }
 

@@ -16,13 +16,11 @@ namespace Proyecto_camiones.ViewModels
         public ViajeViewModel()
         {
             // Obtenemos la instancia de la base de datos
-            var dbContext = General.obtenerInstancia();
-
             // Creamos las dependencias necesarias
-            var viajeRepository = new ViajeRepository(dbContext);
-            var camionRepository = new CamionRepository(dbContext);
-            var clienteRepository = new ClienteRepository(dbContext);
-            var choferRepository = new ChoferRepository(dbContext);
+            var viajeRepository = new ViajeRepository(General.obtenerInstancia());
+            var camionRepository = new CamionRepository(General.obtenerInstancia());
+            var clienteRepository = new ClienteRepository(General.obtenerInstancia());
+            var choferRepository = new ChoferRepository(General.obtenerInstancia());
 
             // Creamos los servicios que ViajeService necesita
             var camionService = new CamionService(camionRepository);
@@ -73,7 +71,7 @@ namespace Proyecto_camiones.ViewModels
                 Console.WriteLine($"Viaje creado con éxito");
                 return resultado;
             }
-            
+
             Console.WriteLine($"Error al crear el viaje: {resultado.Error}");
             return Result<ViajeDTO>.Failure(resultado.Error);
         }
@@ -92,6 +90,7 @@ namespace Proyecto_camiones.ViewModels
                 return Result<ViajeDTO>.Failure(resultado.Error);
 
             }
+
             return Result<ViajeDTO>.Failure("La conexión no pudo establecerse");
         }
 
@@ -106,10 +105,11 @@ namespace Proyecto_camiones.ViewModels
                 {
                     return resultado;
                 }
-                
+
                 return Result<List<ViajeDTO>>.Failure(resultado.Error);
-                
+
             }
+
             return Result<List<ViajeDTO>>.Failure("La conexión no pudo establecerse");
         }
 
@@ -134,6 +134,7 @@ namespace Proyecto_camiones.ViewModels
                 // Por ahora, solo devolvemos todos los viajes
                 return viajes;
             }
+
             return Result<List<ViajeDTO>>.Failure("La conexión no pudo establecerse");
         }
 
@@ -159,6 +160,7 @@ namespace Proyecto_camiones.ViewModels
 
                 return resultado;
             }
+
             return Result<bool>.Failure("La conexión no pudo establecerse");
         }
 
@@ -178,6 +180,7 @@ namespace Proyecto_camiones.ViewModels
                     return Result<string>.Failure(resultado.Error);
                 }
             }
+
             return Result<string>.Failure("Error de conexión");
         }
 
@@ -188,6 +191,32 @@ namespace Proyecto_camiones.ViewModels
             {
                 return await _viajeService.ObtenerPorCamionAsync(camionId);
             }
+
+            return Result<List<ViajeDTO>>.Failure("La conexión no pudo establecerse");
+        }
+
+        public async Task<Result<List<ViajeDTO>>> ObtenerPorChoferAsync(int choferId)
+        {
+            if (await this.TestearConexion())
+            {
+                return await _viajeService.ObtenerPorChoferAsync(choferId);
+            }
+
+            return Result<List<ViajeDTO>>.Failure("La conexión no pudo establecerse");
+        }
+
+        public async Task<Result<List<ViajeDTO>>> ObtenerPorClienteAsync(int clienteId)
+        {
+            Console.WriteLine(clienteId);
+            Console.WriteLine(await this.TestearConexion());
+            if (await this.TestearConexion())
+            {
+                Console.WriteLine("if" + clienteId);
+
+                return await _viajeService.ObtenerPorClienteAsync(clienteId);
+            }
+            Console.WriteLine("pre-return" + clienteId);
+
             return Result<List<ViajeDTO>>.Failure("La conexión no pudo establecerse");
         }
     }

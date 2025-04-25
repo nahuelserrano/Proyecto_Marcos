@@ -104,7 +104,11 @@ namespace Proyecto_camiones.Presentacion
             //Console.WriteLine(response.Value);
 
 
+<<<<<<< HEAD
            // CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
+=======
+            //CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
+>>>>>>> 05e3f5d98b2f92eaa726809ab033b119be5101d9
 
             //INSERCION PARA CUENTA CORRIENTE DE UN FLETERO FUNCIONANDO CORRECTAMENTE
 
@@ -133,11 +137,11 @@ namespace Proyecto_camiones.Presentacion
             //Console.WriteLine(cuenta2.Value);
 
 
-            //OBTENER CUENTAS DE UN CLIENTE
-            //var cuentasCliente5 = await ccvm.ObtenerCuentasByClienteId(5);
+            //OBTENER CUENTAS DE UN CLIENTE POR SU NOMBRE
+            //var cuentasCliente5 = await ccvm.ObtenerCuentasByCliente("machaca");
             //if (cuentasCliente5.IsSuccess)
             //{
-            //    foreach(CuentaCorriente c in cuentasCliente5.Value)
+            //    foreach (CuentaCorrienteDTO c in cuentasCliente5.Value)
             //    {
             //        Console.WriteLine(c);
             //    }
@@ -147,7 +151,25 @@ namespace Proyecto_camiones.Presentacion
             //    Console.WriteLine(cuentasCliente5.Error);
             //}
 
+            //OBTENER LAS CUENTAS DE UN FLETERO POR SU NOMBRE
 
+<<<<<<< HEAD
+=======
+            //var cuentasFleteCarlos = await ccvm.ObtenerCuentasByFletero("carlos");
+            //if (cuentasFleteCarlos.IsSuccess)
+            //{
+            //    foreach (CuentaCorrienteDTO c in cuentasFleteCarlos.Value)
+            //    {
+            //        Console.WriteLine(c);
+            //    }
+            //}
+            //else
+            //{
+            //    Console.WriteLine(cuentasFleteCarlos.Error);
+            //}
+
+
+>>>>>>> 05e3f5d98b2f92eaa726809ab033b119be5101d9
             //ClienteViewModel clvm = new ClienteViewModel();
 
             //INSERCION
@@ -173,33 +195,131 @@ namespace Proyecto_camiones.Presentacion
             //}
 
 
-                //OBTENER BY ID
-                //var cliente = await clvm.ObtenerById(4);
-                //if (cliente.IsSuccess)
-                //{
-                //    Console.WriteLine(cliente.Value);
-                //}
+            //OBTENER BY ID
+            //var cliente = await clvm.ObtenerById(4);
+            //if (cliente.IsSuccess)
+            //{
+            //    Console.WriteLine(cliente.Value);
+            //}
 
 
-                //ELIMINAR 
-                //var result = await clvm.Eliminar(1);
-                //Console.WriteLine(result.Value);
+            //ELIMINAR 
+            //var result = await clvm.Eliminar(1);
+            //Console.WriteLine(result.Value);
 
-                //ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
+            //ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
 
-                //INSERTAR
+            //INSERTAR
 
-                //var idViaje = await vfvm.InsertarViajeFlete("Tandil", "Necochea", 40, "trigo", 120, 130, 19000, 12345, "MACHACA", "CARLOS", "Chofer de Carlos", 10, new DateOnly(2025, 4, 11));
-                //if (idViaje.IsSuccess)
-                //{
-                //    Console.WriteLine("Viaje ingresado con el id: " + idViaje.Value);
-                //}
-                //Console.WriteLine(idViaje.Error);
+            //var idViaje = await vfvm.InsertarViajeFlete("Tandil", "Necochea", 40, "trigo", 120, 130, 19000, 12345, "MACHACA", "CARLOS", "Chofer de Carlos", 10, new DateOnly(2025, 4, 11));
+            //if (idViaje.IsSuccess)
+            //{
+            //    Console.WriteLine("Viaje ingresado con el id: " + idViaje.Value);
+            //}
+            //Console.WriteLine(idViaje.Error);
+
+            //try
+            //{
+            // PRUEBAS CHOFER
+            //await ProbarInsertarChofer("McLovin");
+            //await ProbarObtenerChoferPorId(1);
+            //await ProbarObtenerTodosChoferes();
+            //await ProbarActualizarChofer(1, "McLovin Actualizado");
+            //await ProbarEliminarChofer(2);
+
+            //await ProbarInsertarViaje("Tandil", "Miami");
+            //await ProbarObtenerViajePorId(1);
+            //await ProbarObtenerTodosViajes();
+            //await ProbarObtenerViajesPorCamion(3);
+            //await ProbarActualizarViaje(1, destino: "Las Vegas");
+            //await ProbarEliminarViaje(1);
 
 
-                //ProbarInsertarChofer("Juan Alpaca");
+            //ProbarInsertarChofer("Juan Alpaca");
+
+            //OBTENER VIAJES DE UN FLETERO
+
+            //var viajes = await vfvm.ObtenerViajesDeUnFletero("Carlos");
+            //if (viajes.IsSuccess)
+            //{
+            //    foreach(var viaje in viajes.Value)
+            //    {
+            //        Console.WriteLine(viaje);
+            //    }
+            //}
+            //else
+            //{
+            //    Console.WriteLine(viajes.Error);
+            //}
+
+            //ProbarInsertarViaje("Tandil", "Azul");
+
+            //ProbarInsertarChofer("Juan Alpaca");
+
+            //FleteViewModel fvm = new FleteViewModel();
+
+            //INSERTAR FLETERO
+            //var idFletero = await fvm.InsertarFletero("Carlos");
+            //if (idFletero.IsSuccess)
+            //{
+            //    Console.WriteLine("Fletero insertado con el id: " + idFletero.Value);
+            //}
+            //else
+            //{
+            //    Console.WriteLine(idFletero.Error);
+            //}
+
+            //OBTENER POR NOMBRE
+            //var fletero = await fvm.ObtenerFletePorNombre("Carlos");
+            //if (fletero.IsSuccess)
+            //{
+            //    Console.WriteLine(fletero.Value);
+            //}
+            //else
+            //{
+            //    Console.WriteLine(fletero.Error);
+            //}
+
+            //ProbarEliminarChofer(2);
+
+            //Console.WriteLine(1);
+            //ProbarInsertarViaje("Tandil", "Azul");
+
+            /*
+            try
+            {
+                // PRUEBAS CHOFER
+                //await ProbarInsertarChofer("McLovin");
+                //await ProbarObtenerChoferPorId(1);
+                //await ProbarObtenerTodosChoferes();
+                //await ProbarActualizarChofer(2, "McLovin Actualizado");
+                ////await ProbarEliminarChofer(1);
+
+                //await ProbarInsertarViaje("Tandil", "Miami");
+
+                //await ProbarObtenerViajePorId(2);
+                //await ProbarObtenerTodosViajes();
+                //await ProbarObtenerViajesPorCamion(3);
+                //await ProbarActualizarViaje(1, destino: "Las Vegas");
+                //await ProbarEliminarViaje(1);
+
+                Console.WriteLine("¡Todas las pruebas completadas!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"¡ERROR CRÍTICO! {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                if (ex.InnerException != null)
+                    Console.WriteLine($"Error interno: {ex.InnerException.Message}");
+            }
+            */
+            //ProbarObtenerViajesPorCliente(3);
+            //ProbarObtenerViajesPorChofer(2);
+            //Console.WriteLine(await new ViajeRepository(General.obtenerInstancia()).ProbarConexionAsync());
+            //await ProbarConexionAsync(General.obtenerInstancia());
 
 
+<<<<<<< HEAD
                 //OBTENER VIAJES DE UN FLETERO
 
                 //var viajes = await vfvm.ObtenerViajesDeUnFletero("Carlos");
@@ -274,8 +394,115 @@ namespace Proyecto_camiones.Presentacion
         //          if (ex.InnerException != null)
         //              Console.WriteLine($"Error interno: {ex.InnerException.Message}");
         //      }
+=======
+            ProbarObtenerCliente(2);
+            
+>>>>>>> 05e3f5d98b2f92eaa726809ab033b119be5101d9
         }
 
+        // En General.cs - Un solo método centralizado para probar conexión
+        public static async Task<bool> ProbarConexionAsync(ApplicationDbContext context)
+        {
+            try
+            {
+                // Usa una consulta simple en lugar de CanConnectAsync
+                return await context.Database.ExecuteSqlRawAsync("SELECT 1") > 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error de conexión: {ex.Message}");
+                return false;
+            }
+        }
+
+        public static async void ProbarObtenerClientePorNombre(string nombre)
+        {
+            
+        }
+
+        public static async void ProbarObtenerCliente(int id)
+        {
+            try
+            {
+                Console.WriteLine($"\n=== OBTENIENDO CLIENTE CON ID: {id} ===");
+                ClienteViewModel cvm = new ClienteViewModel();
+
+                var resultado = await cvm.ObtenerById(id);
+
+                if (resultado.IsSuccess)
+                {
+                    Console.WriteLine($"Cliente encontrado: {resultado.Value.Nombre}");
+                }
+                else
+                {
+                    Console.WriteLine($"[ERROR] No se pudieron obtener el cliente: {resultado.Error}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[EXCEPCIÓN] Al obtenr un cliente: {ex.Message}");
+            }
+        }
+
+        public static async void ProbarObtenerViajesPorChofer(int id)
+        {
+            try
+            {
+                Console.WriteLine($"\n=== OBTENIENDO VIAJE POR CHOFER CON ID: {id} ===");
+                ViajeViewModel vvm = new ViajeViewModel();
+
+                var resultado = await vvm.ObtenerPorChoferAsync(id);
+                Console.WriteLine("Superamos");
+
+                if (resultado.IsSuccess)
+                {
+                    Console.WriteLine($"[ÉXITO] Viajes encontrados: {resultado.Value.Count}");
+                    foreach (var viaje in resultado.Value)
+                    {
+                        //Console.WriteLine($"  - {viaje.FechaInicio}: {viaje.LugarPartida} → {viaje.Destino} (${viaje.PrecioViaje:F2})");
+                        Console.WriteLine(viaje.ToString());
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"[ERROR] No se pudieron obtener los viajes: {resultado.Error}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[EXCEPCIÓN] Al obtener todos los viajes: {ex.Message}");
+            }
+        }
+
+        public static async void ProbarObtenerViajesPorCliente(int id)
+        {
+            try
+            {
+                Console.WriteLine($"\n=== OBTENIENDO VIAJE POR CLIENTE CON ID: {id} ===");
+                ViajeViewModel vvm = new ViajeViewModel();
+
+                var resultado = await vvm.ObtenerPorClienteAsync(id);
+                Console.WriteLine("Superamos");
+
+                if (resultado.IsSuccess)
+                {
+                    Console.WriteLine($"[ÉXITO] Viajes encontrados: {resultado.Value.Count}");
+                    foreach (var viaje in resultado.Value)
+                    {
+                        //Console.WriteLine($"  - {viaje.FechaInicio}: {viaje.LugarPartida} → {viaje.Destino} (${viaje.PrecioViaje:F2})");
+                        Console.WriteLine(viaje.ToString());
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"[ERROR] No se pudieron obtener los viajes: {resultado.Error}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[EXCEPCIÓN] Al obtener todos los viajes: {ex.Message}");
+            }
+        }
 
         public static async Task<ViajeDTO> ProbarInsertarViaje(string origen, string destino)
         {

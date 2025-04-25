@@ -80,9 +80,6 @@ public class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<Viaje>(entity =>
         {
-            // Configuración existente...
-
-            // RELACIONES (AQUÍ ESTÁ LA MAGIA)
             entity.HasOne(v => v.ClienteNavigation)
                 .WithMany(c => c.Viajes)
                 .HasForeignKey(v => v.Cliente)
@@ -118,7 +115,11 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.Pagado).HasColumnName("pagado");
             entity.Property(e => e.Id_Chofer).HasColumnName("idChofer");
             entity.Property(e => e.Id_Viaje).HasColumnName("idViaje");
+<<<<<<< HEAD
             entity.Property(e => e.Id_sueldo).HasColumnName("idSueldo");
+=======
+            entity.Property(e => e.Id_sueldo).HasColumnName("idsueldo");
+>>>>>>> 05e3f5d98b2f92eaa726809ab033b119be5101d9
         });
         modelBuilder.Entity<Sueldo>(entity =>
         {
@@ -138,6 +139,11 @@ public class ApplicationDbContext : DbContext
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Id).HasColumnName("idCliente");
             entity.Property(e => e.Nombre).HasColumnName("nombre");
+
+            entity.HasMany(c => c.Viajes)
+                .WithOne(v => v.ClienteNavigation)
+                .HasForeignKey(v => v.Cliente)
+                .OnDelete(DeleteBehavior.Restrict);
         });
 
         modelBuilder.Entity<ViajeFlete>(entity =>
@@ -174,10 +180,9 @@ public class ApplicationDbContext : DbContext
         {
             entity.ToTable("chofer");
             entity.HasKey(e => e.Id);
-            entity.Property(e => e.Id).HasColumnName("idchofer");
+            entity.Property(e => e.Id).HasColumnName("idChofer");
             entity.Property(e => e.Nombre).HasColumnName("nombre");
         });
     }
-
 }
 

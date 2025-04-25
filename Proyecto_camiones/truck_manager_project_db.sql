@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generaciÛn: 25-04-2025 a las 23:35:13
--- VersiÛn del servidor: 10.4.32-MariaDB
--- VersiÛn de PHP: 8.2.12
+-- Tiempo de generaci√≥n: 25-04-2025 a las 23:35:13
+-- Versi√≥n del servidor: 10.4.32-MariaDB
+-- Versi√≥n de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -40,14 +40,25 @@ CREATE TABLE `sueldo` (
 -- Volcado de datos para la tabla `sueldo`
 --
 
-INSERT INTO `sueldo` (`idsueldo`, `idchofer`, `fecha_desde`, `fecha_hasta`, `fecha_pago`, `monto_total`) VALUES
-(1, 1, '0001-01-01', '9999-12-31', '2025-04-25', 2340),
-(2, 1, '0001-01-01', '9999-12-31', '2025-04-25', 2340),
-(3, 1, '0001-01-01', '9999-12-31', '2025-04-25', 2340),
-(4, 1, '0001-01-01', '9999-12-31', '2025-04-25', 2340);
+CREATE TABLE `viaje` (
+  `idviaje` int(11) NOT NULL,
+  `partida` date NOT NULL,
+  `origen` varchar(45) NOT NULL,
+  `destino` varchar(45) NOT NULL,
+  `remito` int(11) DEFAULT NULL,
+  `kg` float NOT NULL,
+  `carga` varchar(180) DEFAULT NULL,
+  `idcliente` int(11) NOT NULL,
+  `idcamion` int(11) NOT NULL,
+  `km` float DEFAULT NULL,
+  `tarifa` float NOT NULL,
+  `nombre_chofer` varchar(45) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
 
 --
--- Õndices para tablas volcadas
+-- √çndices para tablas volcadas
 --
 
 --
