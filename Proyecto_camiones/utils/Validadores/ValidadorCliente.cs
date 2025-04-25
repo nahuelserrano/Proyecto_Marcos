@@ -16,7 +16,7 @@ namespace Proyecto_camiones.Presentacion.Utils
 
         public ValidadorCliente( string Nombre)
         {
-            //this.Id_Cliente = id;
+           
             this.Nombre = Nombre;
             _errores = new List<string>();
         }
@@ -26,7 +26,6 @@ namespace Proyecto_camiones.Presentacion.Utils
         public ValidadorCliente ValidarDatos()
         {
 
-            //if (this.Id_Cliente <=0) return this; 
 
             if (string.IsNullOrWhiteSpace(this.Nombre))
                 _errores.Add(MensajeError.ausenciaDeDatos(nameof(this.Nombre)));

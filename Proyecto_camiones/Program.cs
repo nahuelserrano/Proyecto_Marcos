@@ -30,6 +30,40 @@ namespace Proyecto_camiones.Presentacion
 
         {
 
+            PagoViewModel pw = new PagoViewModel();
+           
+
+
+
+
+            //float suel=  await pw.ObtenerSueldoCalculado(1, DateOnly.MinValue, DateOnly.MaxValue);
+
+
+            SueldoViewModel sueldoViewModel = new SueldoViewModel();
+            await sueldoViewModel.InsertarSueldo(1, DateOnly.MinValue, DateOnly.MaxValue);
+          //  Console.WriteLine("sueldo calculado : " + suel);
+
+            //SueldoViewModel sw = new SueldoViewModel();
+            //sw.InsertarSueldo(1,DateOnly.Parse("2025/7/3"), DateOnly.Parse("2025/7/3"), DateOnly.MaxValue).Wait();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             //PRUEBA PAGOS
             //PagoRepository pr = new PagoRepository(General.obtenerInstancia());
             //PagosService pagosService = new PagosService(pr);
@@ -70,7 +104,7 @@ namespace Proyecto_camiones.Presentacion
             //Console.WriteLine(response.Value);
 
 
-            CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
+           // CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
 
             //INSERCION PARA CUENTA CORRIENTE DE UN FLETERO FUNCIONANDO CORRECTAMENTE
 
@@ -114,7 +148,7 @@ namespace Proyecto_camiones.Presentacion
             //}
 
 
-            ClienteViewModel clvm = new ClienteViewModel();
+            //ClienteViewModel clvm = new ClienteViewModel();
 
             //INSERCION
             //var cliente = await clvm.InsertarCliente("MACHACA");
@@ -214,14 +248,14 @@ namespace Proyecto_camiones.Presentacion
                 //Console.WriteLine(1);
                 //ProbarInsertarViaje("Tandil", "Azul");
 
-                //try
-                //{
-                //    // PRUEBAS CHOFER
-                //    await ProbarInsertarChofer("McLovin");
-                //    await ProbarObtenerChoferPorId(1);
-                //    await ProbarObtenerTodosChoferes();
-                //    await ProbarActualizarChofer(1, "McLovin Actualizado");
-                //    await ProbarEliminarChofer(1);
+               //try
+               //{
+               // PRUEBAS CHOFER
+                    //await ProbarInsertarChofer("McLovin");
+                    //await ProbarObtenerChoferPorId(1);
+                    //await ProbarObtenerTodosChoferes();
+                    //await ProbarActualizarChofer(1, "McLovin Actualizado");
+                    //await ProbarEliminarChofer(1);
 
                 //    await ProbarInsertarViaje("Tandil", "Miami");
 
@@ -233,13 +267,13 @@ namespace Proyecto_camiones.Presentacion
 
                 //    Console.WriteLine("¡Todas las pruebas completadas!");
                 //}
-                //catch (Exception ex)
-                //{
-                //    Console.WriteLine($"¡ERROR CRÍTICO! {ex.Message}");
-                //    Console.WriteLine($"Stack Trace: {ex.StackTrace}");
-                //    if (ex.InnerException != null)
-                //        Console.WriteLine($"Error interno: {ex.InnerException.Message}");
-                //}
+        //       catch (Exception ex)
+        //       {
+        //          Console.WriteLine($"¡ERROR CRÍTICO! {ex.Message}");
+        //          Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+        //          if (ex.InnerException != null)
+        //              Console.WriteLine($"Error interno: {ex.InnerException.Message}");
+        //      }
         }
 
 
