@@ -69,8 +69,6 @@ namespace Proyecto_camiones.Repositories
             }
         }
 
-
-
         public async Task<bool> Actualizar(int? id=null,int? id_Sueldo=null,int?id_viaje=null, float? monto_pagado_nuevo = null)
         {
             try

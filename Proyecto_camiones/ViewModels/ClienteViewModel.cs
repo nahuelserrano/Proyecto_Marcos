@@ -54,10 +54,9 @@ namespace Proyecto_camiones.ViewModels
 
         public async Task<Result<Cliente>> ObtenerById(int id)
         {
-            if (await this.testearConexion()){
-                Console.WriteLine("ENTRE");
+            if (await this.testearConexion())
                 return await this._clienteService.ObtenerPorIdAsync(id);
-            }
+            
             return Result<Cliente>.Failure("No se pudo establecer la conexion");
         }
 

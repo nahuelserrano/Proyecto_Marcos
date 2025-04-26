@@ -76,21 +76,15 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.Km).HasColumnName("km");
             entity.Property(e => e.Tarifa).HasColumnName("tarifa");
             entity.Property(e => e.NombreChofer).HasColumnName("nombre_chofer");
-        });
-
-        modelBuilder.Entity<Viaje>(entity =>
-        {
             entity.HasOne(v => v.ClienteNavigation)
                 .WithMany(c => c.Viajes)
                 .HasForeignKey(v => v.Cliente)
                 .OnDelete(DeleteBehavior.Restrict); // Impide que se elimine un cliente con viajes
-
             entity.HasOne(v => v.CamionNavigation)
                 .WithMany(c => c.Viajes)
                 .HasForeignKey(v => v.Camion)
                 .OnDelete(DeleteBehavior.Restrict); // Impide que se elimine un camión con viajes
         });
-
 
         modelBuilder.Entity<CuentaCorriente>(entity =>
         {
@@ -170,7 +164,6 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.nombre).HasColumnName("nombre");
         });
 
-        base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<Chofer>(entity =>
         {
@@ -179,6 +172,8 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.Id).HasColumnName("idChofer");
             entity.Property(e => e.Nombre).HasColumnName("nombre");
         });
+
+        base.OnModelCreating(modelBuilder);
     }
 }
 

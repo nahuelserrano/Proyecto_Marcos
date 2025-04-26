@@ -43,14 +43,14 @@ namespace Proyecto_camiones.Presentacion.Repositories
         // CRUD OPERATIONS
 
         // CREATE - Insertar un nuevo chofer
-        public async Task<Chofer> InsertarAsync(string nombre)
+        public async Task<int> InsertarAsync(string nombre)
         {
             try
             {
                 if (!await _context.Database.CanConnectAsync())
                 {
                     Console.WriteLine("No se puede conectar a la base de datos");
-                    return null; // Mejor retornar un valor específico de error que null
+                    return -1; // Mejor retornar un valor específico de error que null
                 }
 
                 var chofer = new Chofer(nombre);
@@ -60,16 +60,16 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 int registrosafectados = await _context.SaveChangesAsync();
 
                 if (registrosafectados > 0)
-                    return chofer;
+                    return chofer.Id;
                     
-                return null;
+                return -1;
 
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error al insertar chofer: {ex.Message}");
                 Console.WriteLine($"Stack trace: {ex.StackTrace}");
-                return null; // Mejor retornar un valor específico de error
+                return -1; // Mejor retornar un valor específico de error
             }
         }
 

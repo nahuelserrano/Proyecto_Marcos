@@ -58,19 +58,17 @@ namespace Proyecto_camiones.Presentacion.Services
                 Camion response = await _camionRepository.InsertarCamionAsync(peso, tara, patente, nombre);
                 if (response != null)
                 {
-                    Chofer chofer = await this._choferRepository.InsertarAsync(nombre); 
-                    if(chofer != null)
+                    int id = await this._choferRepository.InsertarAsync(nombre);
+
+                    if (id != -1)
                     {
                         return Result<int>.Success(response.Id);
                     }
-                    else
-                    {
-                        return Result<int>.Failure("Error al insertar el chofer de ese camión, modifiquelo y vuelva a intentar");                    }
+
+                    return Result<int>.Failure(
+                        "Error al insertar el chofer de ese camión, modifiquelo y vuelva a intentar");
                 }
-                else
-                {
-                    return Result<int>.Failure("El camion no pudo ser incertado");
-                }
+                return Result<int>.Failure("Hubo un error al crear el camion");
             }
             catch (Exception ex)
             {

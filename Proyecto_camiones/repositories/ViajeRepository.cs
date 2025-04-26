@@ -26,16 +26,13 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                bool puedeConectar = await _context.Database.CanConnectAsync();
+                var puedeConectar = await _context.Database.CanConnectAsync();
 
                 if (puedeConectar)
-                {
                     Console.WriteLine("Conexión exitosa a la base de datos.");
-                }
                 else
-                {
-                    Console.WriteLine("No se puede conectar a la base de datos.");
-                }
+                    Console.WriteLine(MensajeError.errorConexion());
+                
 
                 return puedeConectar;
             }
@@ -47,7 +44,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
         // CREATE - Insertar un nuevo viaje
-        public async Task<ViajeDTO?> InsertarAsync(
+        public async Task<int> InsertarAsync(
             DateOnly fechaInicio,
             string lugarPartida,
             string destino,
@@ -65,8 +62,9 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 if (!await _context.Database.CanConnectAsync())
                 {
                     Console.WriteLine("No se puede conectar a la base de datos");
-                    return null;
+                    return -1;
                 }
+
                 var camionEntity = await _context.Camiones.FindAsync(camion);
 
 
@@ -81,29 +79,17 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 if (registrosAfectados == 0)
                 {
                     Console.WriteLine("No se insertó ningún registro");
-                    return null;
+                    return -1;
                 }
                 // Si se insertó correctamente, devolver el viaje como DTO
 
                 var clienteEntity = await _context.Clientes.FindAsync(cliente);
 
                 if (clienteEntity != null && camionEntity != null)
-                {
-                    return new ViajeDTO(
-                        viaje.FechaInicio,
-                        viaje.LugarPartida,
-                        viaje.Destino,
-                        viaje.Remito,
-                        viaje.Kg,
-                        viaje.Carga,
-                        clienteEntity.Nombre,
-                        camionEntity.nombre_chofer,
-                        viaje.Km,
-                        viaje.Tarifa
-                    );
-                }
+                    return viaje.Id;
+                
 
-                return null;
+                return -1;
             }
             catch (Exception ex) 
             {
@@ -116,7 +102,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 {
                     Console.WriteLine($"Error interno: {ex.InnerException.Message}");
                 }
-                return null;
+                return -1;
             }
         }
 
@@ -143,9 +129,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     }).ToListAsync();
 
                 if (viajes.Count == 0)
-                {
                     Console.WriteLine("No hay viajes");
-                }
+                
 
                 return viajes;
             }
@@ -222,7 +207,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     Remito = v.Remito,
                     Kg = v.Kg,
                     Carga = v.Carga,
-                    NombreCliente =v.ClienteNavigation.Nombre,
+                    NombreCliente = v.ClienteNavigation.Nombre,
                     NombreChofer = v.NombreChofer,
                     Km = v.Km,
                     Tarifa = v.Tarifa,
@@ -397,7 +382,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
         public async Task<List<ViajeDTO>> ObtenerPorClienteAsync(int clienteId)
         {
-            Console.WriteLine("REPO");
             try
             {
 
@@ -462,7 +446,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             catch (Exception ex)
             {
                 Console.WriteLine($"Error al obtener viajes por chofer: {ex.Message}");
-                throw;
+                return new List<ViajeDTO>();
             }
         }
     }

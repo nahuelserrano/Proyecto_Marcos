@@ -50,29 +50,29 @@ namespace Proyecto_camiones.Presentacion.Services
             return Result<bool>.Success(true);
         }
 
-        public async Task<Result<ChoferDTO>> CrearAsync(string nombre)
+        public async Task<Result<int>> CrearAsync(string nombre)
         {
 
             ValidadorChofer validador = new ValidadorChofer(nombre);
             Result<bool> resultadoValidacion = validador.ValidarCompleto();
 
             if (!resultadoValidacion.IsSuccess)
-                return Result<ChoferDTO>.Failure(resultadoValidacion.Error);
+                return Result<int>.Failure(resultadoValidacion.Error);
 
 
             try
             {
-                Chofer? chofer = await _choferRepository.InsertarAsync(nombre);
+                int id = await _choferRepository.InsertarAsync(nombre);
 
-                if (chofer == null)
-                    return Result<ChoferDTO>.Failure("Hubo un error al crear el chofer");
+                if (id == -1)
+                    return Result<int>.Failure("Hubo un error al crear el chofer");
                 
 
-                return Result<ChoferDTO>.Success(chofer.toDTO());
+                return Result<int>.Success(id);
             }
             catch (Exception ex)
             {
-                return Result<ChoferDTO>.Failure("Hubo un error al crear el chofer: " + ex.Message);
+                return Result<int>.Failure("Hubo un error al crear el chofer: " + ex.Message);
             }
         }
 

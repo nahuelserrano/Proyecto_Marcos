@@ -244,21 +244,22 @@ namespace Proyecto_camiones.Presentacion
             //Console.WriteLine(1);
             //ProbarInsertarViaje("Tandil", "Azul");
 
-            /*
+            
             try
             {
                 // PRUEBAS CHOFER
-                //await ProbarInsertarChofer("McLovin");
-                //await ProbarObtenerChoferPorId(1);
+                //await ProbarInsertarChofer("Messi");
+                //await ProbarObtenerChoferPorId(2);
                 //await ProbarObtenerTodosChoferes();
-                //await ProbarActualizarChofer(2, "McLovin Actualizado");
-                ////await ProbarEliminarChofer(1);
+                //await ProbarActualizarChofer(3, "Messi Actualizado");
+                //await ProbarEliminarChofer(2);
 
                 //await ProbarInsertarViaje("Tandil", "Miami");
 
                 //await ProbarObtenerViajePorId(2);
                 //await ProbarObtenerTodosViajes();
                 //await ProbarObtenerViajesPorCamion(3);
+                //await ProbarObtenerViajesPorChofer("juan");
                 //await ProbarActualizarViaje(1, destino: "Las Vegas");
                 //await ProbarEliminarViaje(1);
 
@@ -271,15 +272,17 @@ namespace Proyecto_camiones.Presentacion
                 if (ex.InnerException != null)
                     Console.WriteLine($"Error interno: {ex.InnerException.Message}");
             }
-            */
-            //ProbarObtenerViajesPorCliente(3);
-            //ProbarObtenerViajesPorChofer(2);
+
+
+            
+            //await ProbarObtenerViajesPorCliente(3);
+            await ProbarObtenerViajesPorChofer(3);
             //Console.WriteLine(await new ViajeRepository(General.obtenerInstancia()).ProbarConexionAsync());
             //await ProbarConexionAsync(General.obtenerInstancia());
 
 
-            ProbarObtenerCliente(2);
-            
+            //await ProbarObtenerCliente(2);
+
         }
 
         // En General.cs - Un solo método centralizado para probar conexión
@@ -297,12 +300,12 @@ namespace Proyecto_camiones.Presentacion
             }
         }
 
-        public static async void ProbarObtenerClientePorNombre(string nombre)
+        public static async Task ProbarObtenerClientePorNombre(string nombre)
         {
             
         }
 
-        public static async void ProbarObtenerCliente(int id)
+        public static async Task ProbarObtenerCliente(int id)
         {
             try
             {
@@ -326,7 +329,7 @@ namespace Proyecto_camiones.Presentacion
             }
         }
 
-        public static async void ProbarObtenerViajesPorChofer(int id)
+        public static async Task ProbarObtenerViajesPorChofer(int id)
         {
             try
             {
@@ -356,15 +359,24 @@ namespace Proyecto_camiones.Presentacion
             }
         }
 
-        public static async void ProbarObtenerViajesPorCliente(int id)
+        public static async Task ProbarObtenerViajesPorChofer(string nombre)
         {
             try
             {
-                Console.WriteLine($"\n=== OBTENIENDO VIAJE POR CLIENTE CON ID: {id} ===");
+                Console.WriteLine($"\n=== OBTENIENDO VIAJE POR CHOFER CON NOMBRE: {nombre} ===");
                 ViajeViewModel vvm = new ViajeViewModel();
 
-                var resultado = await vvm.ObtenerPorClienteAsync(id);
+                var resultado = await vvm.ObtenerPorChoferAsync(nombre);
                 Console.WriteLine("Superamos");
+
+                var viajeRepository = new ViajeRepository(General.obtenerInstancia());
+
+                //var prueba = await viajeRepository.ObtenerPorChoferAsync(nombre);
+
+                //foreach (var VARIABLE in prueba)
+                //{
+                //    Console.WriteLine(VARIABLE);
+                //}
 
                 if (resultado.IsSuccess)
                 {
@@ -386,7 +398,36 @@ namespace Proyecto_camiones.Presentacion
             }
         }
 
-        public static async Task<ViajeDTO> ProbarInsertarViaje(string origen, string destino)
+        public static async Task ProbarObtenerViajesPorCliente(int id)
+        {
+            try
+            {
+                Console.WriteLine($"\n=== OBTENIENDO VIAJE POR CLIENTE CON ID: {id} ===");
+                ViajeViewModel vvm = new ViajeViewModel();
+
+                var resultado = await vvm.ObtenerPorClienteAsync(id);
+                Console.WriteLine("Superamos");
+
+                if (resultado.IsSuccess)
+                {
+                    Console.WriteLine($"[ÉXITO] Viajes encontrados: {resultado.Value.Count}");
+                    foreach (var viaje in resultado.Value)
+                    {
+                        Console.WriteLine($"  - {viaje.FechaInicio}: {viaje.LugarPartida} → {viaje.Destino} (${viaje.PrecioViaje:F2})");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"[ERROR] No se pudieron obtener los viajes: {resultado.Error}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[EXCEPCIÓN] Al obtener todos los viajes: {ex.Message}");
+            }
+        }
+
+        public static async Task<int> ProbarInsertarViaje(string origen, string destino)
         {
             Console.WriteLine(2);
 
@@ -414,7 +455,7 @@ namespace Proyecto_camiones.Presentacion
             }
 
             Console.WriteLine("Resultado de la creación del viaje: " + resultadoCreacion1.Value);
-            return new ViajeDTO();
+            return -1;
         }
 
 
@@ -428,7 +469,7 @@ namespace Proyecto_camiones.Presentacion
                 var resultadoCreacion = await cvm.CrearAsync(nombre);
                 if (resultadoCreacion.IsSuccess)
                 {
-                    Console.WriteLine($"[ÉXITO] Chofer creado: {resultadoCreacion.Value.Nombre} - ID generado o asignado por la DB");
+                    Console.WriteLine($"[ÉXITO] Chofer creado: {resultadoCreacion.Value} - ID generado o asignado por la DB");
                 }
                 else
                 {

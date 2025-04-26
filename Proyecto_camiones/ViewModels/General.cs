@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Proyecto_camiones.Presentacion;
 using System;
 using System.Collections.Generic;
@@ -17,8 +18,11 @@ namespace Proyecto_camiones.ViewModels
 
             // Crear la configuración del DbContext
                 var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)); // Usar el proveedor de MySQL
-
+            optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
+                //.EnableSensitiveDataLogging()
+                //.LogTo(Console.WriteLine, LogLevel.Information) // Usar el proveedor de MySQL
+                //.EnableDetailedErrors()
+                ;
             // Crear una instancia del contexto
             var dbContext = new ApplicationDbContext(optionsBuilder.Options);
             return dbContext;

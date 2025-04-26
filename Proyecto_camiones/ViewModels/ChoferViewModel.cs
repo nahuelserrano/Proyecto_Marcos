@@ -27,18 +27,10 @@ namespace Proyecto_camiones.ViewModels
             return result;
         }
 
-        public async Task<Result<ChoferDTO>> CrearAsync(string nombre)
+        public async Task<Result<int>> CrearAsync(string nombre)
         {
-            Result<ChoferDTO> chofer = await _choferService.CrearAsync(nombre);
-
-            if (chofer.IsSuccess)
-            {
-                return Result<ChoferDTO>.Success(chofer.Value);
-            }
-            else
-            {
-                return Result<ChoferDTO>.Failure(chofer.Error);
-            }
+            Result<int> result = await _choferService.CrearAsync(nombre);
+            return result;
         }
 
         public async Task<Result<ChoferDTO>> ObtenerPorIdAsync(int id)

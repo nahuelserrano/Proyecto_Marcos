@@ -39,7 +39,7 @@ namespace Proyecto_camiones.ViewModels
         }
 
         // Método para crear un nuevo viaje
-        public async Task<Result<ViajeDTO>> CrearAsync(
+        public async Task<Result<int>> CrearAsync(
             DateOnly fechaInicio,
             string lugarPartida,
             string destino,
@@ -59,7 +59,7 @@ namespace Proyecto_camiones.ViewModels
 
             if (!conexionExitosa)
             {
-                return Result<ViajeDTO>.Failure(MensajeError.errorConexion());
+                return Result<int>.Failure(MensajeError.errorConexion());
             }
 
             var resultado = await _viajeService.CrearAsync(
@@ -73,7 +73,7 @@ namespace Proyecto_camiones.ViewModels
             }
 
             Console.WriteLine($"Error al crear el viaje: {resultado.Error}");
-            return Result<ViajeDTO>.Failure(resultado.Error);
+            return Result<int>.Failure(resultado.Error);
         }
 
         // Método para obtener un viaje por ID
@@ -207,15 +207,18 @@ namespace Proyecto_camiones.ViewModels
 
         public async Task<Result<List<ViajeDTO>>> ObtenerPorClienteAsync(int clienteId)
         {
-            Console.WriteLine(clienteId);
-            Console.WriteLine(await this.TestearConexion());
+            if (await this.TestearConexion())
+                return await _viajeService.ObtenerPorClienteAsync(clienteId);
+
+            return Result<List<ViajeDTO>>.Failure("La conexión no pudo establecerse");
+        }
+
+        public async Task<Result<List<ViajeDTO>>> ObtenerPorChoferAsync(string nombreChofer)
+        {
             if (await this.TestearConexion())
             {
-                Console.WriteLine("if" + clienteId);
-
-                return await _viajeService.ObtenerPorClienteAsync(clienteId);
+                return await _viajeService.ObtenerPorChoferAsync(nombreChofer);
             }
-            Console.WriteLine("pre-return" + clienteId);
 
             return Result<List<ViajeDTO>>.Failure("La conexión no pudo establecerse");
         }
