@@ -11,20 +11,18 @@ namespace Proyecto_camiones.Presentacion.Models
     {
         public int Id { get; set; }
         public int Id_Chofer { get; set; }
-        public float Monto_Pagado { get; set; }
         public DateOnly pagadoDesde { get; set; }
         public DateOnly pagadoHasta { get; set; }
         public float Monto { get; internal set; }
         public DateOnly FechaPago { get; internal set; }
 
-        public Sueldo(float monto, int Id_Chofer, DateOnly pagadoDesde, DateOnly pagadoHasta, DateOnly FechaPago)
+        public Sueldo(float monto, int Id_Chofer, DateOnly pagadoDesde, DateOnly pagadoHasta)
         {
             this.Id_Chofer = Id_Chofer;
-            this.FechaPago = FechaPago;
-            this.Monto_Pagado = monto;
+            this.FechaPago = DateOnly.FromDateTime(DateTime.Now);
+            this.Monto = monto;
             this.pagadoDesde = pagadoDesde;
             this.pagadoHasta = pagadoHasta;
         }
-
     }
 }

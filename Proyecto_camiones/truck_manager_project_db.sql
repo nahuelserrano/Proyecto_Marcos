@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 22-04-2025 a las 04:01:57
+-- Tiempo de generación: 25-04-2025 a las 23:35:13
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -168,8 +168,6 @@ CREATE TABLE `pago` (
   `idSueldo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
-
 --
 -- Estructura de tabla para la tabla `sueldo`
 --
@@ -182,6 +180,11 @@ CREATE TABLE `sueldo` (
   `fecha_pago` date DEFAULT NULL,
   `monto_total` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `sueldo`
+--
+
 
 -- --------------------------------------------------------
 
@@ -330,22 +333,7 @@ ALTER TABLE `pago`
   ADD KEY `fk_pago_viaje_idx` (`idViaje`),
   ADD KEY `fk_pago_sueldo_idx` (`idSueldo`);
 
---
--- Indices de la tabla `sueldo`
---
-ALTER TABLE `sueldo`
-  ADD PRIMARY KEY (`idsueldo`),
-  ADD KEY `fk_sueldo_chofer_idx` (`idchofer`);
 
---
--- Indices de la tabla `usuario`
---
-ALTER TABLE `usuario`
-  ADD PRIMARY KEY (`idUsuario`);
-
---
--- Indices de la tabla `viaje`
---
 ALTER TABLE `viaje`
   ADD PRIMARY KEY (`idviaje`),
   ADD KEY `viaje_camion_fk_idx` (`idcamion`),
@@ -359,9 +347,28 @@ ALTER TABLE `viaje_flete`
   ADD KEY `fk_flete_cliente_idx` (`idCliente`),
   ADD KEY `fk_flete_fletero_idx` (`fletero`);
 
+-- --------------------------------------------------------
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `sueldo`
+--
+ALTER TABLE `sueldo`
+  ADD PRIMARY KEY (`idsueldo`),
+  ADD KEY `fk_sueldo_chofer_idx` (`idchofer`);
+
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
+
+--
+-- AUTO_INCREMENT de la tabla `sueldo`
+--
+ALTER TABLE `sueldo`
+  MODIFY `idsueldo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `camion`
@@ -404,12 +411,6 @@ ALTER TABLE `fletero`
 --
 ALTER TABLE `pago`
   MODIFY `idpago` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `sueldo`
---
-ALTER TABLE `sueldo`
-  MODIFY `idsueldo` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
@@ -455,12 +456,6 @@ ALTER TABLE `pago`
   ADD CONSTRAINT `fk_pago_viaje` FOREIGN KEY (`idViaje`) REFERENCES `viaje` (`idviaje`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Filtros para la tabla `sueldo`
---
-ALTER TABLE `sueldo`
-  ADD CONSTRAINT `fk_sueldo_chofer` FOREIGN KEY (`idchofer`) REFERENCES `chofer` (`idChofer`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
 -- Filtros para la tabla `viaje`
 --
 ALTER TABLE `viaje`
@@ -473,6 +468,21 @@ ALTER TABLE `viaje`
 ALTER TABLE `viaje_flete`
   ADD CONSTRAINT `fk_flete_cliente` FOREIGN KEY (`idCliente`) REFERENCES `cliente` (`idCliente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_flete_fletero` FOREIGN KEY (`fletero`) REFERENCES `fletero` (`idFletero`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `sueldo`
+--
+ALTER TABLE `sueldo`
+  ADD CONSTRAINT `fk_sueldo_chofer` FOREIGN KEY (`idchofer`) REFERENCES `chofer` (`idChofer`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

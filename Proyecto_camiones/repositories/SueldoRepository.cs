@@ -43,7 +43,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
 
-        public async Task<int> Insertar(float monto, int Id_Chofer, DateOnly pagadoDesde, DateOnly pagadoHasta, DateOnly FechaPago)
+        public async Task<int> Insertar(float monto, int Id_Chofer, DateOnly pagadoDesde, DateOnly pagadoHasta)
         {
             try
             {
@@ -53,12 +53,10 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     return -1;
                 }
               
-                var pago = new Sueldo(monto, Id_Chofer, pagadoDesde, pagadoHasta, FechaPago);
+                var sueldo = new Sueldo(monto, Id_Chofer, pagadoDesde, pagadoHasta);
 
-
-                _context.Sueldos.Add(pago);
-
-                await _context.SaveChangesAsync();
+                await _context.Sueldos.AddAsync(sueldo);
+               
                 int registrosAfectados = await _context.SaveChangesAsync();
 
                 if (registrosAfectados > 0)
@@ -72,9 +70,9 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al insertar pago: {ex.Message}");
+                Console.WriteLine($"Error al insertar pago: {ex.InnerException}");
 
-                Console.WriteLine($"Stack trace: {ex.StackTrace}");
+             
                 return -1;
             }
         }
@@ -89,7 +87,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 return null;
 
             SueldoDTO sueldoS = new SueldoDTO(
-                sueldo.Monto_Pagado,
+                sueldo.Monto,
                 sueldo.Id_Chofer,
                 sueldo.pagadoDesde,
                 sueldo.pagadoHasta,
@@ -105,7 +103,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             
                 var sueldo = await _context.Sueldos.Select(p => new SueldoDTO
                 {
-                    Monto_Pagado = p.Monto_Pagado,
+                    Monto_Pagado = p.Monto,
                     Id_Chofer = p.Id_Chofer,
                     pagadoDesde = p.pagadoDesde,
                     pagadoHasta = p.pagadoHasta,

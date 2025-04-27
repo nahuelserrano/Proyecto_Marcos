@@ -1,0 +1,73 @@
+﻿using Proyecto_camiones.Presentacion.Repositories;
+using Proyecto_camiones.Presentacion.Services;
+using Proyecto_camiones.Presentacion.Utils;
+using Proyecto_camiones.Repositories;
+using Proyecto_camiones.Services;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Proyecto_camiones.ViewModels
+{
+    class SueldoViewModel
+    {
+
+        private SueldoService sueldoService;
+        private PagoService pagoService;
+
+        public SueldoViewModel()
+        {
+            var dbContext = General.obtenerInstancia();
+            var sueldoRepo = new SueldoRepository(dbContext);
+            var pagoRepo = new PagoRepository(dbContext);
+            this.pagoService = new PagoService(pagoRepo);
+            this.sueldoService = new SueldoService(sueldoRepo,pagoService);
+        }
+
+        public async Task<bool> testearConexion()
+        {
+            return await this.sueldoService.ProbarConexionAsync();
+        }
+
+        public async Task<Result<int>> InsertarSueldo(int Id_Chofer, DateOnly pagoDesde, DateOnly pagoHasta)
+        {
+            if (await this.testearConexion())
+            {
+                Console.WriteLine("omg entré!!");
+                var resultado = await this.sueldoService.CrearAsync(Id_Chofer, pagoDesde, pagoHasta);
+
+               
+                // Ahora puedes acceder al resultado
+                if (resultado.IsSuccess)
+                {
+                    // La operación fue exitosa
+                    int idSueldo = resultado.Value;
+                    Console.WriteLine($"sueldo creado con ID: {idSueldo}");
+                    return Result<int>.Success(resultado.Value);
+                }
+                else
+                {
+                    // Si la operación falló, maneja el error
+                    Console.WriteLine($"Error al crear el sueldo: "+resultado);
+                    return Result<int>.Failure(nameof(resultado));
+                }
+            }
+            return Result<int>.Failure("La conexión no pude establecerse");
+        }
+
+
+
+
+
+        public async Task<Result<bool>> Eliminar(int id)
+        {
+            if (this.testearConexion().Result)
+            {
+                return await this.sueldoService.EliminarAsync(id);
+            }
+            return Result<bool>.Failure("No se pudo establecer la conexión");
+        }
+    }
+}

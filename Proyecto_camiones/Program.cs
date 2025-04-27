@@ -30,6 +30,40 @@ namespace Proyecto_camiones.Presentacion
 
         {
 
+            PagoViewModel pw = new PagoViewModel();
+           
+
+
+
+
+            //float suel=  await pw.ObtenerSueldoCalculado(1, DateOnly.MinValue, DateOnly.MaxValue);
+
+
+            SueldoViewModel sueldoViewModel = new SueldoViewModel();
+            await sueldoViewModel.InsertarSueldo(1, DateOnly.MinValue, DateOnly.MaxValue);
+          //  Console.WriteLine("sueldo calculado : " + suel);
+
+            //SueldoViewModel sw = new SueldoViewModel();
+            //sw.InsertarSueldo(1,DateOnly.Parse("2025/7/3"), DateOnly.Parse("2025/7/3"), DateOnly.MaxValue).Wait();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             //PRUEBA PAGOS
             //PagoRepository pr = new PagoRepository(General.obtenerInstancia());
             //PagosService pagosService = new PagosService(pr);
@@ -69,6 +103,8 @@ namespace Proyecto_camiones.Presentacion
             //var response = await cvm.Eliminar(8);
             //Console.WriteLine(response.Value);
 
+
+           // CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
 
             //CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
 
@@ -114,6 +150,7 @@ namespace Proyecto_camiones.Presentacion
             //}
 
             //OBTENER LAS CUENTAS DE UN FLETERO POR SU NOMBRE
+
 
             //var cuentasFleteCarlos = await ccvm.ObtenerCuentasByFletero("carlos");
             //if (cuentasFleteCarlos.IsSuccess)
@@ -272,17 +309,6 @@ namespace Proyecto_camiones.Presentacion
                 if (ex.InnerException != null)
                     Console.WriteLine($"Error interno: {ex.InnerException.Message}");
             }
-
-
-            
-            //await ProbarObtenerViajesPorCliente(3);
-            //await ProbarObtenerViajesPorChofer(3);
-            //Console.WriteLine(await new ViajeRepository(General.obtenerInstancia()).ProbarConexionAsync());
-            //await ProbarConexionAsync(General.obtenerInstancia());
-
-
-            //await ProbarObtenerCliente(2);
-
         }
 
         // En General.cs - Un solo método centralizado para probar conexión

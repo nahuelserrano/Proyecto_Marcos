@@ -56,16 +56,18 @@ namespace Proyecto_camiones.Repositories
                 var pago = new Pago( id_chofer, id_viaje,monto_pagado);
 
                 _context.Pagos.Add(pago);
-                int registrosAfectados = this._context.SaveChanges();
+                int registrosAfectados = await this._context.SaveChangesAsync();
+                Console.WriteLine($"Registros afectados: {registrosAfectados}");
                 if (registrosAfectados > 0)
                 {
                     return pago.Id;
                 }
-                return -1;
+                return -2;
             }
             catch (Exception e)
             {
-                return -1;
+                Console.WriteLine($"Error al insertar el pago: {e.InnerException}");
+                return -3;
             }
         }
 
@@ -121,12 +123,12 @@ namespace Proyecto_camiones.Repositories
 
 
 
-        public async Task<List<Pago>> ObtenerPagosAsync(int idViaje, DateOnly fechaDesde, DateOnly fechaHasta)
+        public async Task<List<Pago>> ObtenerPagosAsync(int idChofer, DateOnly fechaDesde, DateOnly fechaHasta)
         {
             try
             {
                 var pagosPorViajeEnRango = await _context.Pagos
-                    .Where(pago => pago.Id_Viaje == idViaje && pago.Pagado == false) // Filtrar pagos por el Id_Viaje y ver si esta pago o no
+                    .Where(pago => pago.Id_Chofer == idChofer && pago.Pagado == false) // Filtrar pagos por el Id_Viaje y ver si esta pago o no
                     .Join(
                         _context.Viajes,
                         pago => pago.Id_Viaje,
@@ -141,7 +143,7 @@ namespace Proyecto_camiones.Repositories
             }
             catch (Exception ex)
             {
-
+                Console.WriteLine($"Error al obtener los pagos: {ex.Message}");
                 return new List<Pago>();
             }
         }
