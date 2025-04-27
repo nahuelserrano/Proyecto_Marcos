@@ -82,7 +82,6 @@
     <!-- Utils y Validadores -->
     <Compile Include="Utils\MensajesError\MensajeError.cs" />
     <Compile Include="Utils\Result.cs" />
-    <Compile Include="Utils\Validadores\ValidadorCamion.cs" />
     <Compile Include="Utils\Validadores\ValidadorCheque.cs" />
     <Compile Include="Utils\Validadores\ValidadorChofer.cs" />
     <Compile Include="Utils\Validadores\ValidadorCliente.cs" />

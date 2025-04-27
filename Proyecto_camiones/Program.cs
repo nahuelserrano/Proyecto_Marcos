@@ -59,14 +59,14 @@ namespace Proyecto_camiones.Presentacion
             //}
 
             //PRUEBA SELECT ALL
-            var camiones = await cvm.ObtenerTodos();
-            if (camiones.IsSuccess)
-            {
-                foreach (var camion in camiones.Value)
-                {
-                    Console.WriteLine(camion.ToString());
-                }
-            }
+            //var camiones = await cvm.ObtenerTodos();
+            //if (camiones.IsSuccess)
+            //{
+            //    foreach (var camion in camiones.Value)
+            //    {
+            //        Console.WriteLine(camion.ToString());
+            //    }
+            //}
 
             //PRUEBA UPDATE CAMION
             //var camionUpdated = await cvm.Actualizar(2, 100, null, "HIJ429", "JUAN");
