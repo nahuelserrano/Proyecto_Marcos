@@ -5,6 +5,7 @@ using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Utils;
+using Proyecto_camiones.Services;
 
 namespace Proyecto_camiones.Presentacion.Services
 {
@@ -14,17 +15,20 @@ namespace Proyecto_camiones.Presentacion.Services
         private readonly CamionService _camionService;
         private readonly ClienteService _clienteService;
         private readonly ChoferService _choferService;
+        private readonly PagoService _pagoService;
 
         public ViajeService(
             ViajeRepository viajeRepository,
             CamionService camionService,
             ClienteService clienteService,
-            ChoferService choferService)
+            ChoferService choferService,
+            PagoService pagoService)
         {
             _viajeRepository = viajeRepository ?? throw new ArgumentNullException(nameof(viajeRepository));
             _camionService = camionService ?? throw new ArgumentNullException(nameof(camionService));
             _clienteService = clienteService ?? throw new ArgumentNullException(nameof(clienteService));
             _choferService = choferService ?? throw new ArgumentNullException(nameof(choferService));
+            _pagoService = pagoService ?? throw new ArgumentNullException(nameof(pagoService));
         }
 
         public async Task<bool> ProbarConexionAsync()
@@ -60,7 +64,8 @@ namespace Proyecto_camiones.Presentacion.Services
             int cliente,
             int camion,
             float km,
-            float tarifa)
+            float tarifa,
+            string nombreChofer)
         {
 
             try{
@@ -92,7 +97,7 @@ namespace Proyecto_camiones.Presentacion.Services
                 
                 int id = await _viajeRepository.InsertarAsync(
                     fechaInicio, lugarPartida, destino, remito, kg,
-                    carga, cliente, camion, km, tarifa);
+                    carga, cliente, camion, km, tarifa, nombreChofer);
 
                 if (id == -1)
                     return Result<int>.Failure("No se pudo crear el viaje en la base de datos");
@@ -125,15 +130,16 @@ namespace Proyecto_camiones.Presentacion.Services
         public async Task<Result<bool>> ActualizarAsync(
            int id,
            DateOnly? fechaInicio = null,
-           string lugarPartida = null,
-           string destino = null,
+           string? lugarPartida = null,
+           string? destino = null,
            int? remito = null,
            float? kg = null,
-           string carga = null,
+           string? carga = null,
            int? cliente = null,
            int? camion = null,
            float? km = null,
-           float? tarifa = null)
+           float? tarifa = null,
+           string chofer = null)
         {
             if (id <= 0)
                 return Result<bool>.Failure(MensajeError.idInvalido(id));
@@ -158,6 +164,12 @@ namespace Proyecto_camiones.Presentacion.Services
                 if (!resultado)
                     return Result<bool>.Failure("No se pudo actualizar el viaje en la base de datos");
 
+                // Actualizar el pago asociado al viaje
+                //bool seActualizoPago = await _pagoService.ActualizarAsync(id, kg, tarifa, chofer)
+
+                //if (!seActualizoPago)
+                //    return Result<bool>.Failure("No se pudo actualizar el pago asociado al viaje");
+
                 return Result<bool>.Success(true);
             }
             catch (Exception ex)
@@ -173,7 +185,7 @@ namespace Proyecto_camiones.Presentacion.Services
 
             try
             {
-                ViajeDTO viaje = await _viajeRepository.ObtenerPorIdAsync(id);
+                ViajeDTO? viaje = await _viajeRepository.ObtenerPorIdAsync(id);
 
                 if (viaje == null)
                     return Result<bool>.Failure(MensajeError.NoExisteId(nameof(Viaje), id));
@@ -182,6 +194,11 @@ namespace Proyecto_camiones.Presentacion.Services
 
                 if (!resultado)
                     return Result<bool>.Failure("No se pudo eliminar el viaje de la base de datos");
+
+                //bool seEliminoPago = await _pagoService.EliminarAsync(id);
+
+                //if (!seEliminoPago)
+                //    return Result<bool>.Failure("No se pudo eliminar el pago asociado al viaje");
 
                 return Result<bool>.Success(true);
             }

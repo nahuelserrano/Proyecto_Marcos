@@ -28,7 +28,7 @@ namespace Proyecto_camiones.ViewModels
             return await this.fleteService.ProbarConexionAsync();
         }
 
-        public async Task<Result<int>> InsertarViajeFlete(string origen, string destino, float remito, string carga, float km, float kg, float tarifa, int factura, string nombre_cliente, string nombre_fletero, string nombre_chofer, float comision, DateOnly fecha_salida)
+        public async Task<Result<int>> InsertarViajeFlete(string? origen, string destino, float remito, string carga, float km, float kg, float tarifa, int factura, string nombre_cliente, string nombre_fletero, string nombre_chofer, float comision, DateOnly fecha_salida)
         {
             if (this.testearConexion().Result)
             {

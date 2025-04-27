@@ -30,14 +30,14 @@ namespace Proyecto_camiones.Presentacion.Utils
             string carga,
             float km)
         {
-            _destino = destino;
+            _fechaInicio = fechaInicio;
             _lugarPartida = lugarPartida;
+            _destino = destino;
             _kg = kg;
             _remito = remito;
             _tarifa = tarifa;
             _cliente = cliente;
             _camion = camion;
-            _fechaInicio = fechaInicio;
             _carga = carga;
             _km = km;
             _errores = new List<string>();

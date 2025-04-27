@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Proyecto_camiones.Repositories
 {
-    class PagoRepository
+    public class PagoRepository
     {
         private readonly ApplicationDbContext _context;
 

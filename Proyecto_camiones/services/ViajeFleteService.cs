@@ -31,7 +31,7 @@ namespace Proyecto_camiones.Services
             return result;
         }
 
-        internal async Task<Result<int>> InsertarViajeFlete(string origen, string destino, float remito, string carga, float km, float kg, float tarifa, int factura, string nombre_cliente, string nombre_fletero, string nombre_chofer, float comision, DateOnly fecha_salida)
+        internal async Task<Result<int>> InsertarViajeFlete(string? origen, string destino, float remito, string carga, float km, float kg, float tarifa, int factura, string nombre_cliente, string nombre_fletero, string nombre_chofer, float comision, DateOnly fecha_salida)
         {
             Cliente cliente = await this.clienteRepository.ObtenerPorNombre(nombre_cliente);
             Flete fletero = await this.fleteRepository.ObtenerPorNombre(nombre_fletero);

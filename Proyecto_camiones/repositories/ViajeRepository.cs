@@ -54,7 +54,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
             int cliente,
             int camion,
             float km,
-            float tarifa
+            float tarifa,
+            string nombreChofer
             )
         {
             try
@@ -69,7 +70,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
 
                 var viaje = new Viaje(fechaInicio, lugarPartida, destino, remito, kg,
-                    carga, cliente, camion, km, tarifa, camionEntity.nombre_chofer);
+                    carga, cliente, camion, km, tarifa, nombreChofer);
 
                 _context.Viajes.Add(viaje);
 
@@ -87,7 +88,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
                 if (clienteEntity != null && camionEntity != null)
                     return viaje.Id;
-                
 
                 return -1;
             }
@@ -236,7 +236,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
             int? cliente = null,
             int? camion = null,
             float? tarifa = null,
-            float? km = null
+            float? km = null,
+            string nombreChofer = null
             )
         {
             try
@@ -247,20 +248,23 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     return false;
 
                 // Actualizar sólo los campos proporcionados
-                if (!string.IsNullOrWhiteSpace(destino))
-                    viaje.Destino = destino;
+                if (fechaInicio.HasValue)
+                    viaje.FechaInicio = fechaInicio.Value;
 
                 if (!string.IsNullOrWhiteSpace(lugarPartida))
                     viaje.LugarPartida = lugarPartida;
 
-                if (kg.HasValue)
-                    viaje.Kg = kg.Value;
+                if (!string.IsNullOrWhiteSpace(destino))
+                    viaje.Destino = destino;
 
                 if (remito.HasValue)
                     viaje.Remito = remito.Value;
+                
+                if (!string.IsNullOrWhiteSpace(carga))
+                    viaje.Carga = carga;
 
-                if (tarifa.HasValue)
-                    viaje.Tarifa = tarifa.Value;
+                if (kg.HasValue) 
+                    viaje.Kg = kg.Value;
 
                 if (cliente.HasValue)
                     viaje.Cliente = cliente.Value;
@@ -268,16 +272,23 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 if (camion.HasValue)
                     viaje.Camion = camion.Value;
 
-                if (fechaInicio.HasValue)
-                    viaje.FechaInicio = fechaInicio.Value;
-
-                if (!string.IsNullOrWhiteSpace(carga))
-                    viaje.Carga = carga;
-
                 if (km.HasValue)
                     viaje.Km = km.Value;
 
-                await _context.SaveChangesAsync();
+                if (tarifa.HasValue)
+                    viaje.Tarifa = tarifa.Value;
+
+                if (!string.IsNullOrWhiteSpace(nombreChofer))
+                    viaje.NombreChofer = nombreChofer;
+
+
+                int registorsAfectados = await _context.SaveChangesAsync();
+
+                if (registorsAfectados == 0)
+                {
+                    Console.WriteLine("No se actualizó ningún registro");
+                    return false;
+                }
 
                 return true;
             }

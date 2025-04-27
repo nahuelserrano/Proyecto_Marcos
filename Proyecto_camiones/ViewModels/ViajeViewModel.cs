@@ -6,6 +6,8 @@ using Proyecto_camiones.Presentacion.Utils;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Proyecto_camiones.Repositories;
+using Proyecto_camiones.Services;
 
 namespace Proyecto_camiones.ViewModels
 {
@@ -21,15 +23,17 @@ namespace Proyecto_camiones.ViewModels
             var camionRepository = new CamionRepository(General.obtenerInstancia());
             var clienteRepository = new ClienteRepository(General.obtenerInstancia());
             var choferRepository = new ChoferRepository(General.obtenerInstancia());
+            var pagoRepository = new PagoRepository(General.obtenerInstancia());
 
             // Creamos los servicios que ViajeService necesita
             var camionService = new CamionService(camionRepository);
             var clienteService = new ClienteService(clienteRepository);
             var choferService = new ChoferService(choferRepository);
+            var pagoService = new PagoService(pagoRepository);
 
 
             // Finalmente creamos el servicio de viajes con todas sus dependencias
-            _viajeService = new ViajeService(viajeRepository, camionService, clienteService, choferService);
+            _viajeService = new ViajeService(viajeRepository, camionService, clienteService, choferService, pagoService);
         }
 
         // Método para probar la conexión
@@ -49,7 +53,8 @@ namespace Proyecto_camiones.ViewModels
             int cliente,
             int camion,
             float km,
-            float tarifa)
+            float tarifa,
+            string nombreChofer)
         {
             Console.WriteLine(4);
 
@@ -64,7 +69,7 @@ namespace Proyecto_camiones.ViewModels
 
             var resultado = await _viajeService.CrearAsync(
                 fechaInicio, lugarPartida, destino, remito,
-                kg, carga, cliente, camion, km, tarifa);
+                kg, carga, cliente, camion, km, tarifa, nombreChofer);
 
             if (resultado.IsSuccess)
             {
@@ -150,13 +155,14 @@ namespace Proyecto_camiones.ViewModels
             int? cliente = null,
             int? camion = null,
             float? km = null,
-            float? tarifa = null)
+            float? tarifa = null,
+            string nombreChofer = null)
         {
             if (await this.TestearConexion())
             {
                 var resultado = await _viajeService.ActualizarAsync(
                     id, fechaInicio, lugarPartida, destino, remito,
-                    kg, carga, cliente, camion, km, tarifa);
+                    kg, carga, cliente, camion, km, tarifa, nombreChofer);
 
                 return resultado;
             }

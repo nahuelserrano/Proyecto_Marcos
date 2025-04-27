@@ -12,6 +12,12 @@ namespace Proyecto_camiones.Services
 {
     public class PagoService
     {
+        private readonly PagoRepository PagoRepository;
+
+        public PagoService(PagoRepository pagoRepository)
+        {
+            PagoRepository = pagoRepository;
+        }
         /*
 
         public Result<int> CrearAsync(int id_chofer, int id_viaje, float monto_pagado)

@@ -259,7 +259,7 @@ namespace Proyecto_camiones.Presentacion
                 //await ProbarObtenerViajePorId(2);
                 //await ProbarObtenerTodosViajes();
                 //await ProbarObtenerViajesPorCamion(3);
-                //await ProbarObtenerViajesPorChofer("juan");
+                //await ProbarObtenerViajesPorChofer("Pepito");
                 //await ProbarActualizarViaje(1, destino: "Las Vegas");
                 //await ProbarEliminarViaje(1);
 
@@ -276,7 +276,7 @@ namespace Proyecto_camiones.Presentacion
 
             
             //await ProbarObtenerViajesPorCliente(3);
-            await ProbarObtenerViajesPorChofer(3);
+            //await ProbarObtenerViajesPorChofer(3);
             //Console.WriteLine(await new ViajeRepository(General.obtenerInstancia()).ProbarConexionAsync());
             //await ProbarConexionAsync(General.obtenerInstancia());
 
@@ -300,9 +300,30 @@ namespace Proyecto_camiones.Presentacion
             }
         }
 
-        public static async Task ProbarObtenerClientePorNombre(string nombre)
+        public static async Task ProbarObtenerCliente(string nombre)
         {
-            
+            try
+            {
+                Console.WriteLine($"\n=== OBTENIENDO CLIENTE CON NOMBRE: {nombre} ===");
+                ClienteViewModel cvm = new ClienteViewModel();
+
+                /*
+                var resultado = await cvm.;
+
+                if (resultado.IsSuccess)
+                {
+                    Console.WriteLine($"Cliente encontrado: {resultado.Value.Nombre}");
+                }
+                else
+                {
+                    Console.WriteLine($"[ERROR] No se pudieron obtener el cliente: {resultado.Error}");
+                }
+                */
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[EXCEPCIÓN] Al obtenr un cliente: {ex.Message}");
+            }
         }
 
         public static async Task ProbarObtenerCliente(int id)
@@ -427,23 +448,34 @@ namespace Proyecto_camiones.Presentacion
             }
         }
 
-        public static async Task<int> ProbarInsertarViaje(string origen, string destino)
+        public static async Task<int> ProbarInsertarViaje(DateOnly fechaInicio,
+            string lugarPartida,
+            string destino,
+            int remito,
+            float kg,
+            string carga,
+            int cliente,
+            int camion,
+            float km,
+            float tarifa,
+            string nombreChofer)
         {
             Console.WriteLine(2);
 
             ViajeViewModel vvm = new ViajeViewModel();
 
             var resultadoCreacion1 = await vvm.CrearAsync(
-                fechaInicio: new DateOnly(2025, 4, 11),
-                lugarPartida: origen,
+                fechaInicio: fechaInicio,
+                lugarPartida: lugarPartida,
                 destino: destino,
-                remito: 12345,
-                carga: "Materiales de construcción",
-                kg: 5000.5f,
-                cliente: 2, // Asumiendo que el ID 2 existe
-                camion: 3, // Asumiendo que el ID 3 existe
-                km: 650.75f,
-                tarifa: 10.5f
+                remito: remito,
+                carga: carga,
+                kg: kg,
+                cliente: cliente, // Asumiendo que el ID 2 existe
+                camion: camion, // Asumiendo que el ID 3 existe
+                km: km,
+                tarifa: tarifa,
+                nombreChofer: nombreChofer // Asumiendo que el chofer existe
             );
 
             Console.WriteLine(3);
@@ -674,7 +706,8 @@ namespace Proyecto_camiones.Presentacion
             int? cliente = null,
             int? camion = null,
             float? km = null,
-            float? tarifa = null)
+            float? tarifa = null,
+            string nombreChofer = null)
         {
             Console.WriteLine($"\n=== ACTUALIZANDO VIAJE ID: {id} ===");
             ViajeViewModel vvm = new ViajeViewModel();
