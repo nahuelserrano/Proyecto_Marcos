@@ -19,8 +19,7 @@ namespace Proyecto_camiones.ViewModels
 
         public CamionViewModel()
         {
-            var dbContext = General.obtenerInstancia();
-            var camionRepository = new CamionRepository(dbContext);
+            var camionRepository = new CamionRepository(General.obtenerInstancia());
             this._camionService = new CamionService(camionRepository);
         }
 

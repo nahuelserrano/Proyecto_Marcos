@@ -31,7 +31,7 @@ namespace Proyecto_camiones.Presentacion
         {
 
             PagoViewModel pw = new PagoViewModel();
-           
+
 
 
 
@@ -41,7 +41,7 @@ namespace Proyecto_camiones.Presentacion
 
             SueldoViewModel sueldoViewModel = new SueldoViewModel();
             //await sueldoViewModel.InsertarSueldo(1, DateOnly.MinValue, DateOnly.MaxValue);
-          //  Console.WriteLine("sueldo calculado : " + suel);
+            //  Console.WriteLine("sueldo calculado : " + suel);
 
             //SueldoViewModel sw = new SueldoViewModel();
             //sw.InsertarSueldo(1,DateOnly.Parse("2025/7/3"), DateOnly.Parse("2025/7/3"), DateOnly.MaxValue).Wait();
@@ -70,9 +70,9 @@ namespace Proyecto_camiones.Presentacion
 
             //pagosService.Crear(1, DateOnly.MinValue, DateOnly.MaxValue, DateOnly.MaxValue);
 
-            //CamionViewModel cvm = new CamionViewModel();
+            CamionViewModel cvm = new CamionViewModel();
             ////PRUEBA INSERCION
-            //Result<int> id = cvm.InsertarCamion(120, 40, "MLA126", "Pepito").Result;
+            //Result<int> id = cvm.InsertarCamion("NCS234", "Mili").Result;
             //if (id.IsSuccess)
             //{
             //    Console.WriteLine("se pudo agregar con el id: " + id.Value);
@@ -92,7 +92,7 @@ namespace Proyecto_camiones.Presentacion
             //}
 
             //PRUEBA UPDATE CAMION
-            //var camionUpdated = await cvm.Actualizar(2, 100, null, "HIJ429", "JUAN");
+            //var camionUpdated = await cvm.Actualizar(11, "PUC111", "JUAN");
             //if (camionUpdated.IsSuccess)
             //{
             //    CamionDTO camion = camionUpdated.Value;
@@ -100,11 +100,12 @@ namespace Proyecto_camiones.Presentacion
             //}
 
             //PRUEBA ELIMINAR CAMION
-            //var response = await cvm.Eliminar(8);
-            //Console.WriteLine(response.Value);
+            var response = await cvm.Eliminar(12);
+            Console.WriteLine(response.Value);
+            Console.WriteLine(response.Error);
 
 
-           // CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
+            // CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
 
             //CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
 
@@ -281,35 +282,36 @@ namespace Proyecto_camiones.Presentacion
             //Console.WriteLine(1);
             //ProbarInsertarViaje("Tandil", "Azul");
 
-            
-            try
-            {
-                // PRUEBAS CHOFER
-                //await ProbarInsertarChofer("Messi");
-                //await ProbarObtenerChoferPorId(2);
-                //await ProbarObtenerTodosChoferes();
-                //await ProbarActualizarChofer(3, "Messi Actualizado");
-                //await ProbarEliminarChofer(2);
 
-                //await ProbarInsertarViaje("Tandil", "Miami");
+            //try
+            //{
+            //    // PRUEBAS CHOFER
+            //    //await ProbarInsertarChofer("Messi");
+            //    //await ProbarObtenerChoferPorId(2);
+            //    //await ProbarObtenerTodosChoferes();
+            //    //await ProbarActualizarChofer(3, "Messi Actualizado");
+            //    //await ProbarEliminarChofer(2);
 
-                //await ProbarObtenerViajePorId(2);
-                //await ProbarObtenerTodosViajes();
-                //await ProbarObtenerViajesPorCamion(3);
-                //await ProbarObtenerViajesPorChofer("Pepito");
-                //await ProbarActualizarViaje(1, destino: "Las Vegas");
-                //await ProbarEliminarViaje(1);
+            //    //await ProbarInsertarViaje("Tandil", "Miami");
 
-                Console.WriteLine("¡Todas las pruebas completadas!");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"¡ERROR CRÍTICO! {ex.Message}");
-                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
-                if (ex.InnerException != null)
-                    Console.WriteLine($"Error interno: {ex.InnerException.Message}");
-            }
+            //    //await ProbarObtenerViajePorId(2);
+            //    //await ProbarObtenerTodosViajes();
+            //    //await ProbarObtenerViajesPorCamion(3);
+            //    //await ProbarObtenerViajesPorChofer("Pepito");
+            //    //await ProbarActualizarViaje(1, destino: "Las Vegas");
+            //    //await ProbarEliminarViaje(1);
+
+            //    Console.WriteLine("¡Todas las pruebas completadas!");
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine($"¡ERROR CRÍTICO! {ex.Message}");
+            //    Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+            //    if (ex.InnerException != null)
+            //        Console.WriteLine($"Error interno: {ex.InnerException.Message}");
+            //}
         }
+        
 
         // En General.cs - Un solo método centralizado para probar conexión
         public static async Task<bool> ProbarConexionAsync(ApplicationDbContext context)

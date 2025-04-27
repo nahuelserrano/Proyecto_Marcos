@@ -148,6 +148,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             try
             {
                 var camion = await _context.Camiones.FindAsync(id);
+                Console.WriteLine("se encontró el camión");
 
                 if (camion == null)
                     return false;
@@ -158,8 +159,10 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.InnerException);
                 return false;
             }
         } 

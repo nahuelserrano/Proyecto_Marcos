@@ -14,12 +14,14 @@ namespace Proyecto_camiones.Presentacion.Services
     {
         private CamionRepository _camionRepository;
         private ChoferRepository _choferRepository;
+        private ViajeRepository _viajeRepo;
 
 
         public CamionService(CamionRepository camionR)
         {
             this._camionRepository = camionR ?? throw new ArgumentNullException(nameof(camionR));
             this._choferRepository = new ChoferRepository(General.obtenerInstancia());
+            this._viajeRepo = new ViajeRepository(General.obtenerInstancia());
         }
 
         //PROBAR CONEXION
@@ -45,12 +47,6 @@ namespace Proyecto_camiones.Presentacion.Services
         //CREAR CAMION
         public async Task<Result<int>> CrearCamionAsync(string patente, string nombre)
         {
-            ValidadorCamion validador = new ValidadorCamion(peso, tara, patente, nombre);
-
-            Result<bool> resultadoValidacion = validador.ValidarCompleto();
-
-            if (!resultadoValidacion.IsSuccess)
-                return Result<int>.Failure(resultadoValidacion.Error);
 
             try
             {
@@ -115,7 +111,15 @@ namespace Proyecto_camiones.Presentacion.Services
 
         public async Task<Result<string>> Eliminar(int id)
         {
+            var viajes = await this._viajeRepo.ObtenerPorFechaYCamionAsync(id);
+            if(viajes.Count > 0)
+            {
+                Console.WriteLine("entramos al if");
+                return Result<string>.Failure("No se puede eliminar el camión con el id:" + id + " porque el camión tiene viajes registrados");
+            }
             bool success = await this._camionRepository.EliminarCamionAsync(id);
+            
+            Console.WriteLine("rompimos acá?");
             if (success)
             {
                 Console.WriteLine("holu ya se eliminó el camión");
