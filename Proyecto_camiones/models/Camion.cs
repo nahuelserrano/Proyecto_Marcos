@@ -12,9 +12,9 @@ namespace Proyecto_camiones.Presentacion.Models
         public int Id { get; set; }
         public String Patente { get; set; }
 
-        public string nombre_chofer { get; set; }
+        public string? nombre_chofer { get; set; }
 
-        public Camion( string Patente, string nombre)
+        public Camion( string Patente, string? nombre)
         {
             this.Patente = Patente;
             this.nombre_chofer = nombre;
