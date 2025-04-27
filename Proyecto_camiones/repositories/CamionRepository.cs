@@ -106,7 +106,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
         }
 
-        public async Task<bool> Actualizar(int id, float? peso_max, float? tara, string? patente, string? nombre)
+        public async Task<bool> Actualizar(int id, string? patente, string? nombre)
         {
             try
             {

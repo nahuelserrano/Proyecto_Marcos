@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 22-04-2025 a las 04:01:57
+-- Tiempo de generación: 28-04-2025 a las 01:29:33
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -29,8 +29,6 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `camion` (
   `idcamion` int(11) NOT NULL,
-  `peso_max` float DEFAULT NULL,
-  `tara` float DEFAULT NULL,
   `patente` varchar(45) NOT NULL,
   `nombre_chofer` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -39,17 +37,20 @@ CREATE TABLE `camion` (
 -- Volcado de datos para la tabla `camion`
 --
 
-INSERT INTO `camion` (`idcamion`, `peso_max`, `tara`, `patente`, `nombre_chofer`) VALUES
-(2, 100, 100, 'HIJ429', 'x'),
-(3, 150, 100, 'WWW123', 'juan'),
-(4, 150, 100, 'WWW123', 'juan'),
-(5, 150, 100, 'WWW123', 'carlos'),
-(6, 150, 100, 'WWW123', 'mili'),
-(7, 150, 100, 'WWW123', 'tobias'),
-(10, 200, 20, 'HJK092', 'lauti'),
-(11, 200, 20, 'HJK092', 'roman'),
-(12, 120, 40, 'MLA126', 'Pepito'),
-(13, 120, 40, 'MLA126', 'Pepito');
+INSERT INTO `camion` (`idcamion`, `patente`, `nombre_chofer`) VALUES
+(2, 'HIJ429', 'x'),
+(3, 'WWW123', 'juan'),
+(4, 'WWW123', 'juan'),
+(5, 'WWW123', 'carlos'),
+(6, 'WWW123', 'mili'),
+(7, 'WWW123', 'tobias'),
+(10, 'HJK092', 'lauti'),
+(11, 'PUC111', 'JUAN'),
+(12, 'MLA126', 'Pepito'),
+(13, 'MLA126', 'Pepito'),
+(14, 'NCS234', 'Mili'),
+(15, 'NCS234', 'Mili'),
+(16, 'NCS234', 'Mili');
 
 -- --------------------------------------------------------
 
@@ -81,6 +82,15 @@ CREATE TABLE `chofer` (
   `nombre` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `chofer`
+--
+
+INSERT INTO `chofer` (`idChofer`, `nombre`) VALUES
+(1, 'Mili'),
+(2, 'Mili'),
+(3, 'Mili');
+
 -- --------------------------------------------------------
 
 --
@@ -99,8 +109,10 @@ CREATE TABLE `cliente` (
 INSERT INTO `cliente` (`idCliente`, `nombre`) VALUES
 (2, 'Cliente1'),
 (3, 'COOPERATIVA'),
-(4, 'COOPERATIVA'),
-(5, 'MACHACA');
+(4, 'MACHACA'),
+(5, 'TRANSPORTES DEL SUR'),
+(6, 'CARGA PESADA SA'),
+(7, 'DISTRIBUIDORA TANDIL');
 
 -- --------------------------------------------------------
 
@@ -216,6 +228,20 @@ CREATE TABLE `viaje` (
   `tarifa` float NOT NULL,
   `nombre_chofer` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `viaje`
+--
+
+INSERT INTO `viaje` (`idviaje`, `partida`, `origen`, `destino`, `remito`, `kg`, `carga`, `idcliente`, `idcamion`, `km`, `tarifa`, `nombre_chofer`) VALUES
+(1, '2025-04-05', 'Tandil', 'Buenos Aires', 10001, 5000, 'Cereales', 3, 2, 370, 25, 'x'),
+(2, '2025-04-07', 'Mar del Plata', 'Bahía Blanca', 10002, 7500, 'Frutas', 3, 3, 420, 28, 'juan'),
+(3, '2025-04-10', 'La Plata', 'Rosario', 10003, 6200, 'Muebles', 3, 4, 390, 26, 'juan'),
+(4, '2025-04-12', 'Córdoba', 'Mendoza', 10004, 8000, 'Maquinaria', 4, 5, 700, 35, 'carlos'),
+(5, '2025-04-15', 'Santa Fe', 'Tucumán', 10005, 5800, 'Alimentos', 5, 6, 780, 38, 'mili'),
+(6, '2025-04-18', 'Salta', 'Jujuy', 10006, 4500, 'Textiles', 6, 10, 150, 18, 'lauti'),
+(7, '2025-04-20', 'Buenos Aires', 'Córdoba', 10007, 9000, 'Electrónicos', 7, 11, 700, 36, 'roman'),
+(8, '2025-04-22', 'Rosario', 'Santa Fe', 10008, 6700, 'Papel', 7, 12, 160, 15, 'Pepito');
 
 -- --------------------------------------------------------
 
@@ -351,7 +377,7 @@ ALTER TABLE `viaje_flete`
 -- AUTO_INCREMENT de la tabla `camion`
 --
 ALTER TABLE `camion`
-  MODIFY `idcamion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `idcamion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `cheque`
@@ -363,13 +389,13 @@ ALTER TABLE `cheque`
 -- AUTO_INCREMENT de la tabla `chofer`
 --
 ALTER TABLE `chofer`
-  MODIFY `idChofer` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idChofer` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `idCliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `idCliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `cuenta_corriente`
@@ -393,7 +419,7 @@ ALTER TABLE `pago`
 -- AUTO_INCREMENT de la tabla `sueldo`
 --
 ALTER TABLE `sueldo`
-  MODIFY `idsueldo` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idsueldo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
@@ -405,7 +431,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `viaje`
 --
 ALTER TABLE `viaje`
-  MODIFY `idviaje` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idviaje` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `viaje_flete`
@@ -437,12 +463,6 @@ ALTER TABLE `pago`
   ADD CONSTRAINT `fk_pago_chofer` FOREIGN KEY (`idChofer`) REFERENCES `chofer` (`idChofer`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_pago_sueldo` FOREIGN KEY (`idSueldo`) REFERENCES `sueldo` (`idsueldo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_pago_viaje` FOREIGN KEY (`idViaje`) REFERENCES `viaje` (`idviaje`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Filtros para la tabla `sueldo`
---
-ALTER TABLE `sueldo`
-  ADD CONSTRAINT `fk_sueldo_chofer` FOREIGN KEY (`idchofer`) REFERENCES `chofer` (`idChofer`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `viaje`

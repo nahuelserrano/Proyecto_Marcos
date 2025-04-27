@@ -69,11 +69,11 @@ namespace Proyecto_camiones.ViewModels
             return Result<List<CamionDTO>>.Failure("La conexión no pudo establecerse");
         }
 
-        public async Task<Result<CamionDTO>> Actualizar(int id, float? peso_max, float? tara, string? patente, string? nombre)
+        public async Task<Result<CamionDTO>> Actualizar(int id,string? patente, string? nombre)
         {
             if (this.testearConexion().Result)
             {
-                Result<CamionDTO> camion = await this._camionService.Actualizar(id, peso_max, tara, patente, nombre);
+                Result<CamionDTO> camion = await this._camionService.Actualizar(id, patente, nombre);
                 if(camion.IsSuccess)
                 {
                     return camion;

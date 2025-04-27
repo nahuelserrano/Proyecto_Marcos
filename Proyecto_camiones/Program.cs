@@ -48,25 +48,25 @@ namespace Proyecto_camiones.Presentacion
 
             CamionViewModel cvm = new CamionViewModel();
             //PRUEBA INSERCION
-            Result<int> id = cvm.InsertarCamion("FFFMQI").Result;
-            if (id.IsSuccess)
-            {
-                Console.WriteLine("se pudo agregar con el id: " + id.Value);
-            }
-            else
-            {
-                Console.WriteLine(id.Error);
-            }
+            //Result<int> id = cvm.InsertarCamion("FFFMQI").Result;
+            //if (id.IsSuccess)
+            //{
+            //    Console.WriteLine("se pudo agregar con el id: " + id.Value);
+            //}
+            //else
+            //{
+            //    Console.WriteLine(id.Error);
+            //}
 
             //PRUEBA SELECT ALL
-            //var camiones = await cvm.ObtenerTodos();
-            //if (camiones.IsSuccess)
-            //{
-            //    foreach (var camion in camiones.Value)
-            //    {
-            //        Console.WriteLine(camion.ToString());
-            //    }
-            //}
+            var camiones = await cvm.ObtenerTodos();
+            if (camiones.IsSuccess)
+            {
+                foreach (var camion in camiones.Value)
+                {
+                    Console.WriteLine(camion.ToString());
+                }
+            }
 
             //PRUEBA UPDATE CAMION
             //var camionUpdated = await cvm.Actualizar(2, 100, null, "HIJ429", "JUAN");
