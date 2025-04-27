@@ -43,7 +43,7 @@ namespace Proyecto_camiones.Presentacion.Services
 
 
         //CREAR CAMION
-        public async Task<Result<int>> CrearCamionAsync(float peso, float tara, string patente, string nombre)
+        public async Task<Result<int>> CrearCamionAsync(string patente, string nombre)
         {
             ValidadorCamion validador = new ValidadorCamion(peso, tara, patente, nombre);
 
@@ -55,7 +55,7 @@ namespace Proyecto_camiones.Presentacion.Services
             try
             {
                 // Intentar insertar en la base de datos
-                Camion response = await _camionRepository.InsertarCamionAsync(peso, tara, patente, nombre);
+                Camion response = await _camionRepository.InsertarCamionAsync( patente, nombre);
                 if (response != null)
                 {
                     int id = await this._choferRepository.InsertarAsync(nombre);
@@ -92,11 +92,11 @@ namespace Proyecto_camiones.Presentacion.Services
             }
         }
 
-        internal async Task<Result<CamionDTO>> Actualizar(int id, float? peso_max, float? tara, string? patente, string? nombre)
+        internal async Task<Result<CamionDTO>> Actualizar(int id,  string? patente, string? nombre)
         {
             if (id <= 0)
                 return Result<CamionDTO>.Failure(MensajeError.idInvalido(id));
-            if (peso_max == null && tara == null && patente == null && nombre == null)
+            if (patente == null && nombre == null)
                 return Result<CamionDTO>.Failure("No se han proporcionado datos para actualizar");
             var camionExistente = await _camionRepository.ObtenerPorId(id);
 
@@ -104,12 +104,7 @@ namespace Proyecto_camiones.Presentacion.Services
             return Result<CamionDTO>.Failure(MensajeError.objetoNulo(nameof(camionExistente)));
             }
 
-            if (peso_max != null && peso_max <= 0||tara!=null && peso_max<tara) {
-
-                return Result<CamionDTO>.Failure("El peso es inválido");
-            }
-
-            bool success = await this._camionRepository.Actualizar(id, peso_max, tara, patente, nombre);
+            bool success = await this._camionRepository.Actualizar(id, patente, nombre);
             if (success)
             {
                 CamionDTO result = await this._camionRepository.ObtenerPorId(id);

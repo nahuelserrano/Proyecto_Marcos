@@ -43,7 +43,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
         //agrego el signo de pregunta luego de Camion para decir que el result puede ser null
-        public async Task<Camion?> InsertarCamionAsync(float peso_max, float tara, string patente, string nombre)
+        public async Task<Camion?> InsertarCamionAsync( string patente, string nombre)
         {
             try
             {
@@ -54,7 +54,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                         return null;
                     }
 
-                var camion = new Camion(peso_max, tara, patente, nombre);
+                var camion = new Camion(patente, nombre);
 
                 // Agregar el camión a la base de datos (esto solo marca el objeto para insertar)
                 _context.Camiones.Add(camion);
@@ -86,8 +86,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
             {
                 var camiones = await _context.Camiones.Select(c => new CamionDTO
                 {
-                    peso_max = c.peso_max,
-                    tara = c.tara,
                     Patente = c.Patente,
                     Nombre_Chofer = c.nombre_chofer
                 }).ToListAsync();
@@ -103,23 +101,13 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
         }
 
-        public async Task<bool> Actualizar(int id, float? peso_max, float? tara, string? patente, string? nombre)
+        public async Task<bool> Actualizar(int id, string? patente, string? nombre)
         {
             try
             {
                 var camion = await _context.Camiones.FindAsync(id);
                 if (camion == null) return false;
                 
-
-                if (peso_max.HasValue)  // Mejor usar HasValue para tipos nullable
-                {
-                    camion.peso_max = peso_max.Value; 
-                }
-
-                if (tara.HasValue)
-                {
-                    camion.tara = tara.Value;
-                }
 
                 if (!string.IsNullOrEmpty(patente))  // Mejor verificación para strings
                 {
@@ -149,7 +137,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             Camion camion = await _context.Camiones.FindAsync(id);
             if (camion != null)
             {
-                CamionDTO nuevo = new CamionDTO(camion.peso_max, camion.tara, camion.Patente, camion.nombre_chofer);
+                CamionDTO nuevo = new CamionDTO(camion.Patente, camion.nombre_chofer);
                 return nuevo;
             }
             return null;

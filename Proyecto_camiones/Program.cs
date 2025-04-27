@@ -40,7 +40,7 @@ namespace Proyecto_camiones.Presentacion
 
 
             SueldoViewModel sueldoViewModel = new SueldoViewModel();
-            await sueldoViewModel.InsertarSueldo(1, DateOnly.MinValue, DateOnly.MaxValue);
+            //await sueldoViewModel.InsertarSueldo(1, DateOnly.MinValue, DateOnly.MaxValue);
           //  Console.WriteLine("sueldo calculado : " + suel);
 
             //SueldoViewModel sw = new SueldoViewModel();
