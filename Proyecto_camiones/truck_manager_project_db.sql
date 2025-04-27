@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-04-2025 a las 00:51:45
+-- Tiempo de generación: 28-04-2025 a las 01:34:16
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `camion` (
   `idcamion` int(11) NOT NULL,
   `patente` varchar(45) NOT NULL,
-  `nombre_chofer` varchar(45) NOT NULL
+  `nombre_chofer` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -45,9 +45,12 @@ INSERT INTO `camion` (`idcamion`, `patente`, `nombre_chofer`) VALUES
 (6, 'WWW123', 'mili'),
 (7, 'WWW123', 'tobias'),
 (10, 'HJK092', 'lauti'),
-(11, 'HJK092', 'roman'),
+(11, 'PUC111', 'JUAN'),
 (12, 'MLA126', 'Pepito'),
-(13, 'MLA126', 'Pepito');
+(13, 'MLA126', 'Pepito'),
+(14, 'NCS234', 'Mili'),
+(15, 'NCS234', 'Mili'),
+(16, 'NCS234', 'Mili');
 
 -- --------------------------------------------------------
 
@@ -78,6 +81,15 @@ CREATE TABLE `chofer` (
   `idChofer` int(11) NOT NULL,
   `nombre` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `chofer`
+--
+
+INSERT INTO `chofer` (`idChofer`, `nombre`) VALUES
+(1, 'Mili'),
+(2, 'Mili'),
+(3, 'Mili');
 
 -- --------------------------------------------------------
 
@@ -365,7 +377,7 @@ ALTER TABLE `viaje_flete`
 -- AUTO_INCREMENT de la tabla `camion`
 --
 ALTER TABLE `camion`
-  MODIFY `idcamion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `idcamion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `cheque`
@@ -377,7 +389,7 @@ ALTER TABLE `cheque`
 -- AUTO_INCREMENT de la tabla `chofer`
 --
 ALTER TABLE `chofer`
-  MODIFY `idChofer` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idChofer` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `cliente`
