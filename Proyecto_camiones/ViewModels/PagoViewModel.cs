@@ -35,7 +35,7 @@ namespace Proyecto_camiones.ViewModels
                 var resultado = await this.pagoService.CrearAsync(id_chofer, id_viaje, monto_pagado);
 
 
-                Console.WriteLine(resultado+"resultado de viewmodel");
+                Console.WriteLine(resultado + "resultado de viewmodel");
                 // Ahora puedes acceder al resultado
                 if (resultado > 0)
                 {

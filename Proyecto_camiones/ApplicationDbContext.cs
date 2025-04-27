@@ -105,7 +105,7 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.IdFletero).HasColumnName("idfletero");
             entity.Property(e => e.Saldo_Total).HasColumnName("saldo");
         });
-        
+
         modelBuilder.Entity<Pago>(entity =>
         {
             entity.ToTable("pago");
@@ -115,11 +115,7 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.Pagado).HasColumnName("pagado");
             entity.Property(e => e.Id_Chofer).HasColumnName("idChofer");
             entity.Property(e => e.Id_Viaje).HasColumnName("idViaje");
-<<<<<<< HEAD
             entity.Property(e => e.Id_sueldo).HasColumnName("idSueldo");
-=======
-            entity.Property(e => e.Id_sueldo).HasColumnName("idsueldo");
->>>>>>> 05e3f5d98b2f92eaa726809ab033b119be5101d9
         });
         modelBuilder.Entity<Sueldo>(entity =>
         {

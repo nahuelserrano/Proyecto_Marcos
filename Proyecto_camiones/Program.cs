@@ -104,11 +104,9 @@ namespace Proyecto_camiones.Presentacion
             //Console.WriteLine(response.Value);
 
 
-<<<<<<< HEAD
            // CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
-=======
+
             //CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
->>>>>>> 05e3f5d98b2f92eaa726809ab033b119be5101d9
 
             //INSERCION PARA CUENTA CORRIENTE DE UN FLETERO FUNCIONANDO CORRECTAMENTE
 
@@ -153,8 +151,7 @@ namespace Proyecto_camiones.Presentacion
 
             //OBTENER LAS CUENTAS DE UN FLETERO POR SU NOMBRE
 
-<<<<<<< HEAD
-=======
+
             //var cuentasFleteCarlos = await ccvm.ObtenerCuentasByFletero("carlos");
             //if (cuentasFleteCarlos.IsSuccess)
             //{
@@ -169,7 +166,6 @@ namespace Proyecto_camiones.Presentacion
             //}
 
 
->>>>>>> 05e3f5d98b2f92eaa726809ab033b119be5101d9
             //ClienteViewModel clvm = new ClienteViewModel();
 
             //INSERCION
@@ -319,7 +315,7 @@ namespace Proyecto_camiones.Presentacion
             //await ProbarConexionAsync(General.obtenerInstancia());
 
 
-<<<<<<< HEAD
+
                 //OBTENER VIAJES DE UN FLETERO
 
                 //var viajes = await vfvm.ObtenerViajesDeUnFletero("Carlos");
@@ -394,10 +390,9 @@ namespace Proyecto_camiones.Presentacion
         //          if (ex.InnerException != null)
         //              Console.WriteLine($"Error interno: {ex.InnerException.Message}");
         //      }
-=======
+
             ProbarObtenerCliente(2);
             
->>>>>>> 05e3f5d98b2f92eaa726809ab033b119be5101d9
         }
 
         // En General.cs - Un solo método centralizado para probar conexión
