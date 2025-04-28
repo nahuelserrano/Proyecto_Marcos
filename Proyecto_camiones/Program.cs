@@ -29,40 +29,15 @@ namespace Proyecto_camiones.Presentacion
         static async Task Main(string[] args)
 
         {
-
-            PagoViewModel pw = new PagoViewModel();
-           
-
-
-
-
+            //PagoViewModel pw = new PagoViewModel();
             //float suel=  await pw.ObtenerSueldoCalculado(1, DateOnly.MinValue, DateOnly.MaxValue);
 
-
-            SueldoViewModel sueldoViewModel = new SueldoViewModel();
-            await sueldoViewModel.InsertarSueldo(1, DateOnly.MinValue, DateOnly.MaxValue);
+            //SueldoViewModel sueldoViewModel = new SueldoViewModel();
+            //await sueldoViewModel.InsertarSueldo(1, DateOnly.MinValue, DateOnly.MaxValue);
           //  Console.WriteLine("sueldo calculado : " + suel);
 
             //SueldoViewModel sw = new SueldoViewModel();
             //sw.InsertarSueldo(1,DateOnly.Parse("2025/7/3"), DateOnly.Parse("2025/7/3"), DateOnly.MaxValue).Wait();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
             //PRUEBA PAGOS
             //PagoRepository pr = new PagoRepository(General.obtenerInstancia());
@@ -165,40 +140,6 @@ namespace Proyecto_camiones.Presentacion
             //    Console.WriteLine(cuentasFleteCarlos.Error);
             //}
 
-
-            //ClienteViewModel clvm = new ClienteViewModel();
-
-            //INSERCION
-            //var cliente = await clvm.InsertarCliente("MACHACA");
-            //if (cliente.IsSuccess)
-            //{
-            //    Console.WriteLine("Cliente insertado con el id: " + cliente.Value);
-            //}
-
-            //OBTENER VIAJES DE UN CLIENTE
-
-            //var viajes = clvm.ObtenerViajesDeUnCliente("cooperativa");
-            //if (viajes.Result.IsSuccess)
-            //{
-            //    foreach(var viaje in viajes.Result.Value)
-            //    {
-            //        Console.WriteLine(viaje.ToString());
-            //    }
-            //}
-            //else
-            //{
-            //    Console.WriteLine(viajes.Result.Error);
-            //}
-
-
-            //OBTENER BY ID
-            //var cliente = await clvm.ObtenerById(4);
-            //if (cliente.IsSuccess)
-            //{
-            //    Console.WriteLine(cliente.Value);
-            //}
-
-
             //ELIMINAR 
             //var result = await clvm.Eliminar(1);
             //Console.WriteLine(result.Value);
@@ -214,24 +155,6 @@ namespace Proyecto_camiones.Presentacion
             //}
             //Console.WriteLine(idViaje.Error);
 
-            //try
-            //{
-            // PRUEBAS CHOFER
-            //await ProbarInsertarChofer("McLovin");
-            //await ProbarObtenerChoferPorId(1);
-            //await ProbarObtenerTodosChoferes();
-            //await ProbarActualizarChofer(1, "McLovin Actualizado");
-            //await ProbarEliminarChofer(2);
-
-            //await ProbarInsertarViaje("Tandil", "Miami");
-            //await ProbarObtenerViajePorId(1);
-            //await ProbarObtenerTodosViajes();
-            //await ProbarObtenerViajesPorCamion(3);
-            //await ProbarActualizarViaje(1, destino: "Las Vegas");
-            //await ProbarEliminarViaje(1);
-
-
-            //ProbarInsertarChofer("Juan Alpaca");
 
             //OBTENER VIAJES DE UN FLETERO
 
@@ -276,509 +199,43 @@ namespace Proyecto_camiones.Presentacion
             //    Console.WriteLine(fletero.Error);
             //}
 
-            //ProbarEliminarChofer(2);
-
-            //Console.WriteLine(1);
-            //ProbarInsertarViaje("Tandil", "Azul");
-
-            
             try
             {
-                // PRUEBAS CHOFER
-                //await ProbarInsertarChofer("Messi");
-                //await ProbarObtenerChoferPorId(2);
-                //await ProbarObtenerTodosChoferes();
-                //await ProbarActualizarChofer(3, "Messi Actualizado");
-                //await ProbarEliminarChofer(2);
 
-                //await ProbarInsertarViaje("Tandil", "Miami");
+                // Descomentar la prueba que se desea ejecutar
 
-                //await ProbarObtenerViajePorId(2);
-                //await ProbarObtenerTodosViajes();
-                //await ProbarObtenerViajesPorCamion(3);
-                //await ProbarObtenerViajesPorChofer("Pepito");
-                //await ProbarActualizarViaje(1, destino: "Las Vegas");
-                //await ProbarEliminarViaje(1);
+                // PRUEBAS DE CLIENTE
+                //await ClienteTests.EjecutarTodasLasPruebas();
 
-                Console.WriteLine("¡Todas las pruebas completadas!");
+                // PRUEBAS DE CHOFER
+                //await ChoferTests.EjecutarTodasLasPruebas();
+
+                // PRUEBAS DE VIAJE
+                await ViajeTests.EjecutarTodasLasPruebas();
+
+                // O EJECUTAR PRUEBAS INDIVIDUALES:
+
+                // CLIENTE
+                //int idCliente await ClienteTests.ProbarInsertarCliente("TRANSPORTES TEST");
+                //await ClienteTests.ProbarObtenerClientePorId(idCliente);
+                //await ClienteTests.ProbarEliminarCliente(idCliente);
+
+                // CHOFER
+                //await ChoferTests.ProbarInsertarChofer("Chofer Test");
+                //await ChoferTests.ProbarObtenerChoferPorId(1);
+                //await ChoferTests.ProbarEliminarChofer(2);
+
+                // VIAJE
+                //DateOnly fecha = new DateOnly(2025, 4, 28);
+                //int idViaje = await ViajeTests.ProbarInsertarViaje(fecha, "Tandil", "Buenos Aires", 123, 1000.5f, "Trigo", 1, 1, 350.5f, 5000.0f, "Chofer Test");
+                //await ViajeTests.ProbarObtenerViajePorId(idViaje);
+                //await ViajeTests.ProbarEliminarViaje(idViaje);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"¡ERROR CRÍTICO! {ex.Message}");
+                Console.WriteLine($"\n¡ERROR CRÍTICO EN EL PROGRAMA DE PRUEBAS!");
+                Console.WriteLine($"Mensaje: {ex.Message}");
                 Console.WriteLine($"Stack Trace: {ex.StackTrace}");
-                if (ex.InnerException != null)
-                    Console.WriteLine($"Error interno: {ex.InnerException.Message}");
-            }
-        }
-
-        // En General.cs - Un solo método centralizado para probar conexión
-        public static async Task<bool> ProbarConexionAsync(ApplicationDbContext context)
-        {
-            try
-            {
-                // Usa una consulta simple en lugar de CanConnectAsync
-                return await context.Database.ExecuteSqlRawAsync("SELECT 1") > 0;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error de conexión: {ex.Message}");
-                return false;
-            }
-        }
-
-        public static async Task ProbarObtenerCliente(string nombre)
-        {
-            try
-            {
-                Console.WriteLine($"\n=== OBTENIENDO CLIENTE CON NOMBRE: {nombre} ===");
-                ClienteViewModel cvm = new ClienteViewModel();
-
-                /*
-                var resultado = await cvm.;
-
-                if (resultado.IsSuccess)
-                {
-                    Console.WriteLine($"Cliente encontrado: {resultado.Value.Nombre}");
-                }
-                else
-                {
-                    Console.WriteLine($"[ERROR] No se pudieron obtener el cliente: {resultado.Error}");
-                }
-                */
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[EXCEPCIÓN] Al obtenr un cliente: {ex.Message}");
-            }
-        }
-
-        public static async Task ProbarObtenerCliente(int id)
-        {
-            try
-            {
-                Console.WriteLine($"\n=== OBTENIENDO CLIENTE CON ID: {id} ===");
-                ClienteViewModel cvm = new ClienteViewModel();
-
-                var resultado = await cvm.ObtenerById(id);
-
-                if (resultado.IsSuccess)
-                {
-                    Console.WriteLine($"Cliente encontrado: {resultado.Value.Nombre}");
-                }
-                else
-                {
-                    Console.WriteLine($"[ERROR] No se pudieron obtener el cliente: {resultado.Error}");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[EXCEPCIÓN] Al obtenr un cliente: {ex.Message}");
-            }
-        }
-
-        public static async Task ProbarObtenerViajesPorChofer(int id)
-        {
-            try
-            {
-                Console.WriteLine($"\n=== OBTENIENDO VIAJE POR CHOFER CON ID: {id} ===");
-                ViajeViewModel vvm = new ViajeViewModel();
-
-                var resultado = await vvm.ObtenerPorChoferAsync(id);
-                Console.WriteLine("Superamos");
-
-                if (resultado.IsSuccess)
-                {
-                    Console.WriteLine($"[ÉXITO] Viajes encontrados: {resultado.Value.Count}");
-                    foreach (var viaje in resultado.Value)
-                    {
-                        //Console.WriteLine($"  - {viaje.FechaInicio}: {viaje.LugarPartida} → {viaje.Destino} (${viaje.PrecioViaje:F2})");
-                        Console.WriteLine(viaje.ToString());
-                    }
-                }
-                else
-                {
-                    Console.WriteLine($"[ERROR] No se pudieron obtener los viajes: {resultado.Error}");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[EXCEPCIÓN] Al obtener todos los viajes: {ex.Message}");
-            }
-        }
-
-        public static async Task ProbarObtenerViajesPorChofer(string nombre)
-        {
-            try
-            {
-                Console.WriteLine($"\n=== OBTENIENDO VIAJE POR CHOFER CON NOMBRE: {nombre} ===");
-                ViajeViewModel vvm = new ViajeViewModel();
-
-                var resultado = await vvm.ObtenerPorChoferAsync(nombre);
-                Console.WriteLine("Superamos");
-
-                var viajeRepository = new ViajeRepository(General.obtenerInstancia());
-
-                //var prueba = await viajeRepository.ObtenerPorChoferAsync(nombre);
-
-                //foreach (var VARIABLE in prueba)
-                //{
-                //    Console.WriteLine(VARIABLE);
-                //}
-
-                if (resultado.IsSuccess)
-                {
-                    Console.WriteLine($"[ÉXITO] Viajes encontrados: {resultado.Value.Count}");
-                    foreach (var viaje in resultado.Value)
-                    {
-                        //Console.WriteLine($"  - {viaje.FechaInicio}: {viaje.LugarPartida} → {viaje.Destino} (${viaje.PrecioViaje:F2})");
-                        Console.WriteLine(viaje.ToString());
-                    }
-                }
-                else
-                {
-                    Console.WriteLine($"[ERROR] No se pudieron obtener los viajes: {resultado.Error}");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[EXCEPCIÓN] Al obtener todos los viajes: {ex.Message}");
-            }
-        }
-
-        public static async Task ProbarObtenerViajesPorCliente(int id)
-        {
-            try
-            {
-                Console.WriteLine($"\n=== OBTENIENDO VIAJE POR CLIENTE CON ID: {id} ===");
-                ViajeViewModel vvm = new ViajeViewModel();
-
-                var resultado = await vvm.ObtenerPorClienteAsync(id);
-                Console.WriteLine("Superamos");
-
-                if (resultado.IsSuccess)
-                {
-                    Console.WriteLine($"[ÉXITO] Viajes encontrados: {resultado.Value.Count}");
-                    foreach (var viaje in resultado.Value)
-                    {
-                        Console.WriteLine($"  - {viaje.FechaInicio}: {viaje.LugarPartida} → {viaje.Destino} (${viaje.PrecioViaje:F2})");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine($"[ERROR] No se pudieron obtener los viajes: {resultado.Error}");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[EXCEPCIÓN] Al obtener todos los viajes: {ex.Message}");
-            }
-        }
-
-        public static async Task<int> ProbarInsertarViaje(DateOnly fechaInicio,
-            string lugarPartida,
-            string destino,
-            int remito,
-            float kg,
-            string carga,
-            int cliente,
-            int camion,
-            float km,
-            float tarifa,
-            string nombreChofer)
-        {
-            Console.WriteLine(2);
-
-            ViajeViewModel vvm = new ViajeViewModel();
-
-            var resultadoCreacion1 = await vvm.CrearAsync(
-                fechaInicio: fechaInicio,
-                lugarPartida: lugarPartida,
-                destino: destino,
-                remito: remito,
-                carga: carga,
-                kg: kg,
-                cliente: cliente, // Asumiendo que el ID 2 existe
-                camion: camion, // Asumiendo que el ID 3 existe
-                km: km,
-                tarifa: tarifa,
-                nombreChofer: nombreChofer // Asumiendo que el chofer existe
-            );
-
-            Console.WriteLine(3);
-
-            if (!resultadoCreacion1.IsSuccess)
-            {
-                Console.WriteLine("Error al crear el viaje: " + resultadoCreacion1.Error);
-                return resultadoCreacion1.Value;
-            }
-
-            Console.WriteLine("Resultado de la creación del viaje: " + resultadoCreacion1.Value);
-            return -1;
-        }
-
-
-        private static async Task ProbarInsertarChofer(string nombre, string descripcion = null)
-        {
-            Console.WriteLine($"\n=== INSERTANDO CHOFER: {nombre} ===");
-            ChoferViewModel cvm = new ChoferViewModel();
-
-            try
-            {
-                var resultadoCreacion = await cvm.CrearAsync(nombre);
-                if (resultadoCreacion.IsSuccess)
-                {
-                    Console.WriteLine($"[ÉXITO] Chofer creado: {resultadoCreacion.Value} - ID generado o asignado por la DB");
-                }
-                else
-                {
-                    Console.WriteLine($"[ERROR] No se pudo crear el chofer: {resultadoCreacion.Error}");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[EXCEPCIÓN] Al crear chofer: {ex.Message}");
-                Console.WriteLine($"Stack: {ex.StackTrace}");
-            }
-        }
-
-        private static async Task ProbarObtenerChoferPorId(int id)
-        {
-            Console.WriteLine($"\n=== OBTENIENDO CHOFER ID: {id} ===");
-            ChoferViewModel cvm = new ChoferViewModel();
-
-            try
-            {
-                var resultado = await cvm.ObtenerPorIdAsync(id);
-                if (resultado.IsSuccess)
-                {
-                    Console.WriteLine($"[ÉXITO] Chofer encontrado: {resultado.Value.Nombre}");
-                }
-                else
-                {
-                    Console.WriteLine($"[ERROR] No se encontró el chofer: {resultado.Error}");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[EXCEPCIÓN] Al obtener chofer: {ex.Message}");
-            }
-        }
-
-        private static async Task ProbarObtenerTodosChoferes()
-        {
-            Console.WriteLine("\n=== OBTENIENDO TODOS LOS CHOFERES ===");
-            ChoferViewModel cvm = new ChoferViewModel();
-
-            try
-            {
-                var resultado = await cvm.ObtenerTodosAsync();
-                if (resultado.IsSuccess)
-                {
-                    Console.WriteLine($"[ÉXITO] Choferes encontrados: {resultado.Value.Count}");
-                    foreach (var chofer in resultado.Value)
-                    {
-                        Console.WriteLine($"  - {chofer.Nombre}");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine($"[ERROR] No se pudieron obtener los choferes: {resultado.Error}");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[EXCEPCIÓN] Al obtener todos los choferes: {ex.Message}");
-            }
-        }
-
-        private static async Task ProbarActualizarChofer(int id, string nuevoNombre)
-        {
-            Console.WriteLine($"\n=== ACTUALIZANDO CHOFER ID {id} A NOMBRE: {nuevoNombre} ===");
-            ChoferViewModel cvm = new ChoferViewModel();
-
-            try
-            {
-                var resultado = await cvm.ActualizarAsync(id, nuevoNombre);
-                if (resultado.IsSuccess)
-                {
-                    Console.WriteLine($"[ÉXITO] Chofer actualizado: {resultado.Value.Nombre}");
-                }
-                else
-                {
-                    Console.WriteLine($"[ERROR] No se pudo actualizar el chofer: {resultado.Error}");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[EXCEPCIÓN] Al actualizar chofer: {ex.Message}");
-            }
-        }
-
-        private static async Task ProbarEliminarChofer(int id)
-        {
-            Console.WriteLine($"\n=== ELIMINANDO CHOFER ID: {id} ===");
-            ChoferViewModel cvm = new ChoferViewModel();
-
-            try
-            {
-                var resultado = await cvm.EliminarAsync(id);
-                if (resultado.IsSuccess)
-                {
-                    Console.WriteLine($"[ÉXITO] Chofer eliminado correctamente: {resultado.Value}");
-                }
-                else
-                {
-                    Console.WriteLine($"[ERROR] No se pudo eliminar el chofer: {resultado.Error}");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[EXCEPCIÓN] Al eliminar chofer: {ex.Message}");
-            }
-        }
-
-        // MÉTODOS DE PRUEBA PARA VIAJE
-
-        private static async Task ProbarObtenerViajePorId(int id)
-        {
-            Console.WriteLine($"\n=== OBTENIENDO VIAJE ID: {id} ===");
-            ViajeViewModel vvm = new ViajeViewModel();
-
-            try
-            {
-                // Este método no existe en tu ViajeViewModel, deberías agregarlo
-                // Este es solo un ejemplo de cómo debería ser
-                var resultado = await vvm.ObtenerPorIdAsync(id);
-                if (resultado.IsSuccess)
-                {
-                    var viaje = resultado.Value;
-                    Console.WriteLine($"[ÉXITO] Viaje encontrado: {viaje.LugarPartida} → {viaje.Destino}");
-                    Console.WriteLine($"  Cliente: {viaje.NombreCliente}, Chofer: {viaje.NombreChofer}");
-                    Console.WriteLine($"  Precio total: ${viaje.PrecioViaje:F2}");
-                }
-                else
-                {
-                    Console.WriteLine($"[ERROR] No se encontró el viaje: {resultado.Error}");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[EXCEPCIÓN] Al obtener viaje: {ex.Message}");
-            }
-        }
-
-        private static async Task ProbarObtenerTodosViajes()
-        {
-            Console.WriteLine("\n=== OBTENIENDO TODOS LOS VIAJES ===");
-            ViajeViewModel vvm = new ViajeViewModel();
-
-            try
-            {
-                var resultado = await vvm.ObtenerTodosAsync();
-                if (resultado.IsSuccess)
-                {
-                    Console.WriteLine($"[ÉXITO] Viajes encontrados: {resultado.Value.Count}");
-                    foreach (var viaje in resultado.Value)
-                    {
-                        Console.WriteLine($"  - {viaje.FechaInicio}: {viaje.LugarPartida} → {viaje.Destino} (${viaje.PrecioViaje:F2})");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine($"[ERROR] No se pudieron obtener los viajes: {resultado.Error}");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[EXCEPCIÓN] Al obtener todos los viajes: {ex.Message}");
-            }
-        }
-
-        private static async Task ProbarObtenerViajesPorCamion(int camionId)
-        {
-            Console.WriteLine($"\n=== OBTENIENDO VIAJES POR CAMIÓN ID: {camionId} ===");
-            ViajeViewModel vvm = new ViajeViewModel();
-
-            try
-            {
-                var resultado = await vvm.ObtenerPorCamionAsync(camionId);
-                if (resultado.IsSuccess)
-                {
-                    Console.WriteLine($"[ÉXITO] Viajes encontrados para el camión {camionId}: {resultado.Value.Count}");
-                    foreach (var viaje in resultado.Value)
-                    {
-                        Console.WriteLine($"  - {viaje.FechaInicio}: {viaje.LugarPartida} → {viaje.Destino} (${viaje.PrecioViaje:F2})");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine($"[ERROR] No se pudieron obtener los viajes: {resultado.Error}");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[EXCEPCIÓN] Al obtener viajes por camión: {ex.Message}");
-            }
-        }
-
-        private static async Task ProbarActualizarViaje(
-            int id,
-            DateOnly? fechaInicio = null,
-            string lugarPartida = null,
-            string destino = null,
-            int? remito = null,
-            string carga = null,
-            float? kg = null,
-            int? cliente = null,
-            int? camion = null,
-            float? km = null,
-            float? tarifa = null,
-            string nombreChofer = null)
-        {
-            Console.WriteLine($"\n=== ACTUALIZANDO VIAJE ID: {id} ===");
-            ViajeViewModel vvm = new ViajeViewModel();
-
-            try
-            {
-                var resultado = await vvm.ActualizarAsync(
-                    id, fechaInicio, lugarPartida, destino,
-                    remito, carga, kg, cliente, camion, km, tarifa);
-
-                if (resultado.IsSuccess)
-                {
-                    Console.WriteLine($"[ÉXITO] Viaje actualizado correctamente");
-                }
-                else
-                {
-                    Console.WriteLine($"[ERROR] No se pudo actualizar el viaje: {resultado.Error}");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[EXCEPCIÓN] Al actualizar viaje: {ex.Message}");
-            }
-        }
-
-        private static async Task ProbarEliminarViaje(int id)
-        {
-            Console.WriteLine($"\n=== ELIMINANDO VIAJE ID: {id} ===");
-            ViajeViewModel vvm = new ViajeViewModel();
-
-            try
-            {
-                var resultado = await vvm.EliminarAsync(id);
-                if (resultado.IsSuccess)
-                {
-                    Console.WriteLine($"[ÉXITO] Viaje eliminado correctamente: {resultado.Value}");
-                }
-                else
-                {
-                    Console.WriteLine($"[ERROR] No se pudo eliminar el viaje: {resultado.Error}");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[EXCEPCIÓN] Al eliminar viaje: {ex.Message}");
             }
         }
     }

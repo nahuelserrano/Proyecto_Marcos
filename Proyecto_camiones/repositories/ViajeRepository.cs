@@ -68,7 +68,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
                 var camionEntity = await _context.Camiones.FindAsync(camion);
 
-
                 var viaje = new Viaje(fechaInicio, lugarPartida, destino, remito, kg,
                     carga, cliente, camion, km, tarifa, nombreChofer);
 

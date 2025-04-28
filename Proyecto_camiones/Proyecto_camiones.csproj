@@ -69,6 +69,9 @@
     <compile Include="Services\ViajeService.cs" />
     <compile Include="Services\FleteService.cs" />
     <compile Include="Services\PagoService.cs" />
+    <Compile Include="Tests\ChoferTest.cs" />
+    <Compile Include="Tests\ClienteTest.cs" />
+    <Compile Include="Tests\ViajeTest.cs" />
     <Compile Include="Utils\MensajesError\MensajeError.cs" />
     <Compile Include="Utils\Validadores\ValidadorCheque.cs" />
     <Compile Include="Utils\Result.cs" />

@@ -67,10 +67,8 @@ namespace Proyecto_camiones.Presentacion.Services
             float tarifa,
             string nombreChofer)
         {
-
+            
             try{
-                
-
                 ValidadorViaje validador = new ValidadorViaje(fechaInicio, lugarPartida, destino, kg, remito,
                     tarifa, cliente, camion, carga, km);
 
