@@ -273,7 +273,7 @@ namespace AppCamiones
             buttonBack.ForeColor = System.Drawing.Color.FromArgb(218, 218, 28);
         }
 
-
+        //AGREGAR CARD
         public async Task<List<string>> GetFilterInfoAsync(string filtro, string info)
         {
             camiones.Clear();
@@ -283,7 +283,6 @@ namespace AppCamiones
             {
                 if (filtro == "Camion")
                 {
-
                     CamionViewModel cmv = new CamionViewModel();
                     var idCamion = await cmv.InsertarCamion(info);
                     MessageBox.Show(idCamion.Value + " ");

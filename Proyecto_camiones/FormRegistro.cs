@@ -148,8 +148,7 @@ namespace AppCamiones
             FormProperties(cant);
             LayoutFormProperties(cant);
             TextoBoxAndLabelProperties(cant, campos);
-            //PanelButtonProperties(filtro);
-            ButtonsPropertiesForm();
+            ButtonsPropertiesForm(filtro);
             AddControls();
 
         }
@@ -157,12 +156,23 @@ namespace AppCamiones
         //FormProperties
         private void FormProperties(int cant)
         {
-            formPanel.Size = new Size(110 * cant, 80);
-            formPanel.AutoScroll = true;
-            formPanel.HorizontalScroll.Enabled = true;
-            formPanel.HorizontalScroll.Visible = true;
-            formPanel.VerticalScroll.Enabled = false;
-            formPanel.VerticalScroll.Visible = false;
+            if (cant > 8)
+            {
+                formPanel.Size = new Size(this.Width - btnVolver.Width - btnCargar.Width - 120, 80);
+                formPanel.AutoScroll = true;
+                formPanel.HorizontalScroll.Enabled = true;
+                formPanel.HorizontalScroll.Visible = true;
+                formPanel.VerticalScroll.Enabled = false;
+                formPanel.VerticalScroll.Visible = false;
+            }
+            else
+            {
+                formPanel.AutoScroll = false;
+                formPanel.Size = new Size(110 * cant, 80);
+
+            }
+
+
 
             this.Resize += (s, e) =>
             {
@@ -207,8 +217,8 @@ namespace AppCamiones
             {
                 Panel campoPanel = PropertiesFormPanel();
 
-                TextBox textBoxForm = CreateTextBoxAndProperties(campo);
-                Label labelForm = CreateLabelAndProperties(campo);
+                TextBox textBoxForm = CreateTextBoxAndProperties(campo, cant);
+                Label labelForm = CreateLabelAndProperties(campo, cant);
 
                 formFLLabel.Controls.Add(labelForm);
 
@@ -220,13 +230,13 @@ namespace AppCamiones
         private Panel PropertiesFormPanel()
         {
             Panel campoTextBox = new Panel();
-            campoTextBox.Size = new Size(105, 30);
+            campoTextBox.AutoSize = true;
             campoTextBox.AutoSizeMode = AutoSizeMode.GrowAndShrink;
 
             return campoTextBox;
         }
 
-        private Label CreateLabelAndProperties(object campo)
+        private Label CreateLabelAndProperties(object campo, int cant)
         {
             Label ll = new Label();
 
@@ -235,29 +245,28 @@ namespace AppCamiones
             ll.ForeColor = System.Drawing.Color.FromArgb(224, 224, 224);
             ll.BackColor = Color.Transparent;
             ll.Margin = new Padding(10, 0, 0, 0);
-            ll.TextAlign = ContentAlignment.MiddleCenter;
+            ll.TextAlign = ContentAlignment.MiddleLeft;
+
+            ll.AutoSize = false; // Muy importante: si no, el Size no se aplica
+            ll.Size = new Size((formPanel.Width / cant) - 10, 20); // Ajustá el tamaño como quieras
 
             return ll;
         }
-        private TextBox CreateTextBoxAndProperties(object campo)
+        private TextBox CreateTextBoxAndProperties(object campo, int cant)
         {
             TextBox textBoxCampo = new TextBox();
             textBoxCampo.Font = new Font("Nunito", 12, FontStyle.Regular);
             textBoxCampo.BackColor = System.Drawing.Color.FromArgb(153, 145, 145);
             textBoxCampo.Multiline = true;
-            textBoxCampo.Width = 200;
-            textBoxCampo.Height = 20;
-            textBoxCampo.MinimumSize = new Size(200, 40);
+            textBoxCampo.Width = (formPanel.Width / cant) - 10;
+            textBoxCampo.Height = 30;
             textBoxCampo.BorderStyle = BorderStyle.FixedSingle;
-            textBoxCampo.ForeColor = System.Drawing.Color.Gray;
             textBoxCampo.TextAlign = HorizontalAlignment.Left;
             textBoxCampo.ForeColor = System.Drawing.Color.FromArgb(81, 77, 77);
 
             string placeholderDefault = !string.IsNullOrWhiteSpace(campo?.ToString()) ? campo.ToString() : "Placeholder";
 
-            //PlaceHolersProperties
             string placeholderText = campo.ToString();
-
             textBoxCampo.Name = placeholderText;
             textBoxCampo.Text = placeholderText;
 
@@ -266,7 +275,6 @@ namespace AppCamiones
                 if (textBoxCampo.Text == placeholderText)
                 {
                     textBoxCampo.Text = "";
-
                     textBoxCampo.ForeColor = Color.Black;
                 }
             };
@@ -280,13 +288,9 @@ namespace AppCamiones
                 }
             };
 
-            textBoxCampo.SizeChanged += (s, e) =>
-            {
-                textBoxCampo.Height = 40;
-            };
-
             return textBoxCampo;
         }
+
 
 
         //GridProperties
@@ -361,12 +365,23 @@ namespace AppCamiones
 
                 cheq.Columns.Add(btnModificar);
             }
+
+            if (cheq.Columns["Pagado"] == null)
+            {
+                DataGridViewButtonColumn btnPagado = new DataGridViewButtonColumn();
+                btnPagado.Name = "Pagado";
+                btnPagado.HeaderText = "Pagado";  // Puedes dejarlo vacío si prefieres
+                btnPagado.Text = "✏️"; // Ícono de modificar
+                btnPagado.UseColumnTextForButtonValue = true; // Hace que todas las celdas muestren "M"
+                btnPagado.Width = 40; // Ajustar tamaño
+                cheq.Columns.Add(btnPagado);
+            }
         }
 
         private void cargaClickEvent(object sender, EventArgs e, string filtro)
         {
             // Obtener los valores de los TextBox
-            List<string> datos = new List<string>();
+            //List<string> datos = new List<string>();
 
             foreach (Control control in formFLTextBox.Controls)
             {
@@ -397,7 +412,7 @@ namespace AppCamiones
                                             return;
                                         }
                                     }
-                                    else if(campo == "Km" || campo == "Kg" || campo == "Tarifa" || campo == "RTO o CPE")
+                                    else if (campo == "Km" || campo == "Kg" || campo == "Tarifa" || campo == "RTO o CPE")
                                     {
                                         TextBox campoKm = textBox;
                                         int km;
@@ -410,17 +425,21 @@ namespace AppCamiones
                                     }
                                 }
                             }
-                            
-                            datos.Add(textBox.Text); // Agregar el texto de cada TextBox
+
+                            //LLAMAR EL AGREGAR DEL BACKEND
+
+                            //datos.Add(textBox.Text); // Agregar el texto de cada TextBox
                         }
                     }
                 }
             }
 
+            
+
             // Verificar que los datos no estén vacíos
-            if (datos.All(dato => !string.IsNullOrWhiteSpace(dato)))
-            {
-                cheq.Rows.Add(datos.ToArray());
+            //if (datos.All(dato => !string.IsNullOrWhiteSpace(dato)))
+            //{
+            //    cheq.Rows.Add(datos.ToArray());
 
                 foreach (Control control in formFLTextBox.Controls)
                 {
@@ -438,7 +457,7 @@ namespace AppCamiones
                         }
                     }
                 }
-            }
+            //}
         }
 
         private void EliminarFila(object sender, DataGridViewCellEventArgs e)
@@ -541,7 +560,7 @@ namespace AppCamiones
                 btnCuentaCorriente.Font = new Font("Nunito", 16, FontStyle.Regular);
                 btnCuentaCorriente.BackColor = System.Drawing.Color.FromArgb(48, 48, 48);
                 btnCuentaCorriente.ForeColor = System.Drawing.Color.FromArgb(218, 218, 28);
-                
+
                 btnCuentaCorriente.Click += (s, e) =>
                 {
                     this.Hide();
@@ -578,26 +597,13 @@ namespace AppCamiones
             this.Controls.Add(btnSueldoMensual);
         }
 
-
-        //ButtonProperties
-        //private void PanelButtonProperties(string filtro)
-        //{
-        //    btnPanel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-        //    btnPanel.Location = new Point(btnPanel.Width - btnCargar.Width - 20, 150);
-        //    btnPanel.Width = this.ClientSize.Width;
-        //    btnPanel.Size = new Size(110, 30);
-        //    btnPanel.BackColor = Color.Transparent;
-        //    this.Controls.Add(btnPanel);
-        //}
-
-        private void ButtonsPropertiesForm()
+        private void ButtonsPropertiesForm(string filtro)
         {
-            btnCargar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            
+            btnCargar.Anchor = AnchorStyles.Right | AnchorStyles.Top;
+
 
             btnCargar.BackColor = System.Drawing.Color.FromArgb(218, 218, 28);
             btnCargar.Size = new Size(110, 30);
-            btnCargar.Location = new Point(btnPanel.Width - btnCargar.Width - 20, 150);
 
             btnCargar.Text = "Cargar";
             btnCargar.FlatStyle = FlatStyle.Flat;
@@ -605,15 +611,28 @@ namespace AppCamiones
             btnCargar.ForeColor = Color.Black;
             btnCargar.Font = new Font("Nunito", 12, FontStyle.Bold);
 
+            int marginRight = 20;
+
+
             if (!this.Controls.Contains(btnCargar))
             {
                 this.Controls.Add(btnCargar);
             }
 
-            //if (!btnPanel.Controls.Contains(btnCargar))
-            //{
-            //    btnPanel.Controls.Add(btnCargar);
-            //}
+            if (filtro == "cuenta corriente" || filtro == "sueldo")
+            {
+                this.Resize += (s, e) =>
+                {
+                    btnCargar.Location = new Point((this.ClientSize.Width / 2) + formPanel.Width - marginRight, 125);
+                };
+            }
+            else
+            {
+                this.Resize += (s, e) =>
+                {
+                    btnCargar.Location = new Point(this.ClientSize.Width - btnCargar.Width - marginRight, 125);
+                };
+            }
         }
     }
 }
