@@ -19,8 +19,7 @@ namespace Proyecto_camiones.ViewModels
 
         public CamionViewModel()
         {
-            var dbContext = General.obtenerInstancia();
-            var camionRepository = new CamionRepository(dbContext);
+            var camionRepository = new CamionRepository(General.obtenerInstancia());
             this._camionService = new CamionService(camionRepository);
         }
 
@@ -29,12 +28,12 @@ namespace Proyecto_camiones.ViewModels
             return await this._camionService.ProbarConexionAsync();
         }
 
-        public async Task<Result<int>> InsertarCamion(float peso_max, float tara, string patente, string nombre)
+        public async Task<Result<int>> InsertarCamion( string patente, string nombre)
         {
             if (this.testearConexion().Result)
             {
                 Console.WriteLine("omg entré!!");
-                var resultado = await this._camionService.CrearCamionAsync(peso_max, tara, patente, nombre);
+                var resultado = await this._camionService.CrearCamionAsync( patente, nombre);
 
                 // Ahora puedes acceder al resultado
                 if (resultado.IsSuccess)
@@ -65,11 +64,11 @@ namespace Proyecto_camiones.ViewModels
             return Result<List<CamionDTO>>.Failure("La conexión no pudo establecerse");
         }
 
-        public async Task<Result<CamionDTO>> Actualizar(int id, float? peso_max, float? tara, string? patente, string? nombre)
+        public async Task<Result<CamionDTO>> Actualizar(int id, string? patente, string? nombre)
         {
             if (this.testearConexion().Result)
             {
-                Result<CamionDTO> camion = await this._camionService.Actualizar(id, peso_max, tara, patente, nombre);
+                Result<CamionDTO> camion = await this._camionService.Actualizar(id, patente, nombre);
                 if(camion.IsSuccess)
                 {
                     return camion;

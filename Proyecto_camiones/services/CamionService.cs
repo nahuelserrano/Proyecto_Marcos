@@ -14,12 +14,14 @@ namespace Proyecto_camiones.Presentacion.Services
     {
         private CamionRepository _camionRepository;
         private ChoferRepository _choferRepository;
+        private ViajeRepository _viajeRepo;
 
 
         public CamionService(CamionRepository camionR)
         {
             this._camionRepository = camionR ?? throw new ArgumentNullException(nameof(camionR));
             this._choferRepository = new ChoferRepository(General.obtenerInstancia());
+            this._viajeRepo = new ViajeRepository(General.obtenerInstancia());
         }
 
         //PROBAR CONEXION
@@ -43,19 +45,13 @@ namespace Proyecto_camiones.Presentacion.Services
 
 
         //CREAR CAMION
-        public async Task<Result<int>> CrearCamionAsync(float peso, float tara, string patente, string nombre)
+        public async Task<Result<int>> CrearCamionAsync(string patente, string nombre)
         {
-            ValidadorCamion validador = new ValidadorCamion(peso, tara, patente, nombre);
-
-            Result<bool> resultadoValidacion = validador.ValidarCompleto();
-
-            if (!resultadoValidacion.IsSuccess)
-                return Result<int>.Failure(resultadoValidacion.Error);
 
             try
             {
                 // Intentar insertar en la base de datos
-                Camion response = await _camionRepository.InsertarCamionAsync(peso, tara, patente, nombre);
+                Camion response = await _camionRepository.InsertarCamionAsync( patente, nombre);
                 if (response != null)
                 {
                     int id = await this._choferRepository.InsertarAsync(nombre);
@@ -92,11 +88,11 @@ namespace Proyecto_camiones.Presentacion.Services
             }
         }
 
-        internal async Task<Result<CamionDTO>> Actualizar(int id, float? peso_max, float? tara, string? patente, string? nombre)
+        internal async Task<Result<CamionDTO>> Actualizar(int id,  string? patente, string? nombre)
         {
             if (id <= 0)
                 return Result<CamionDTO>.Failure(MensajeError.idInvalido(id));
-            if (peso_max == null && tara == null && patente == null && nombre == null)
+            if (patente == null && nombre == null)
                 return Result<CamionDTO>.Failure("No se han proporcionado datos para actualizar");
             var camionExistente = await _camionRepository.ObtenerPorId(id);
 
@@ -104,12 +100,7 @@ namespace Proyecto_camiones.Presentacion.Services
             return Result<CamionDTO>.Failure(MensajeError.objetoNulo(nameof(camionExistente)));
             }
 
-            if (peso_max != null && peso_max <= 0||tara!=null && peso_max<tara) {
-
-                return Result<CamionDTO>.Failure("El peso es inválido");
-            }
-
-            bool success = await this._camionRepository.Actualizar(id, peso_max, tara, patente, nombre);
+            bool success = await this._camionRepository.Actualizar(id, patente, nombre);
             if (success)
             {
                 CamionDTO result = await this._camionRepository.ObtenerPorId(id);
@@ -120,7 +111,15 @@ namespace Proyecto_camiones.Presentacion.Services
 
         public async Task<Result<string>> Eliminar(int id)
         {
+            var viajes = await this._viajeRepo.ObtenerPorFechaYCamionAsync(id);
+            if(viajes.Count > 0)
+            {
+                Console.WriteLine("entramos al if");
+                return Result<string>.Failure("No se puede eliminar el camión con el id:" + id + " porque el camión tiene viajes registrados");
+            }
             bool success = await this._camionRepository.EliminarCamionAsync(id);
+            
+            Console.WriteLine("rompimos acá?");
             if (success)
             {
                 Console.WriteLine("holu ya se eliminó el camión");

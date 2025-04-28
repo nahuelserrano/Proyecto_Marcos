@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-04-2025 a las 23:35:13
+-- Tiempo de generación: 28-04-2025 a las 01:34:16
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -29,27 +29,28 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `camion` (
   `idcamion` int(11) NOT NULL,
-  `peso_max` float DEFAULT NULL,
-  `tara` float DEFAULT NULL,
   `patente` varchar(45) NOT NULL,
-  `nombre_chofer` varchar(45) NOT NULL
+  `nombre_chofer` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `camion`
 --
 
-INSERT INTO `camion` (`idcamion`, `peso_max`, `tara`, `patente`, `nombre_chofer`) VALUES
-(2, 100, 100, 'HIJ429', 'x'),
-(3, 150, 100, 'WWW123', 'juan'),
-(4, 150, 100, 'WWW123', 'juan'),
-(5, 150, 100, 'WWW123', 'carlos'),
-(6, 150, 100, 'WWW123', 'mili'),
-(7, 150, 100, 'WWW123', 'tobias'),
-(10, 200, 20, 'HJK092', 'lauti'),
-(11, 200, 20, 'HJK092', 'roman'),
-(12, 120, 40, 'MLA126', 'Pepito'),
-(13, 120, 40, 'MLA126', 'Pepito');
+INSERT INTO `camion` (`idcamion`, `patente`, `nombre_chofer`) VALUES
+(2, 'HIJ429', 'x'),
+(3, 'WWW123', 'juan'),
+(4, 'WWW123', 'juan'),
+(5, 'WWW123', 'carlos'),
+(6, 'WWW123', 'mili'),
+(7, 'WWW123', 'tobias'),
+(10, 'HJK092', 'lauti'),
+(11, 'PUC111', 'JUAN'),
+(12, 'MLA126', 'Pepito'),
+(13, 'MLA126', 'Pepito'),
+(14, 'NCS234', 'Mili'),
+(15, 'NCS234', 'Mili'),
+(16, 'NCS234', 'Mili');
 
 -- --------------------------------------------------------
 
@@ -80,6 +81,15 @@ CREATE TABLE `chofer` (
   `idChofer` int(11) NOT NULL,
   `nombre` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `chofer`
+--
+
+INSERT INTO `chofer` (`idChofer`, `nombre`) VALUES
+(1, 'Mili'),
+(2, 'Mili'),
+(3, 'Mili');
 
 -- --------------------------------------------------------
 
@@ -168,6 +178,8 @@ CREATE TABLE `pago` (
   `idSueldo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
 --
 -- Estructura de tabla para la tabla `sueldo`
 --
@@ -180,11 +192,6 @@ CREATE TABLE `sueldo` (
   `fecha_pago` date DEFAULT NULL,
   `monto_total` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `sueldo`
---
-
 
 -- --------------------------------------------------------
 
@@ -333,7 +340,22 @@ ALTER TABLE `pago`
   ADD KEY `fk_pago_viaje_idx` (`idViaje`),
   ADD KEY `fk_pago_sueldo_idx` (`idSueldo`);
 
+--
+-- Indices de la tabla `sueldo`
+--
+ALTER TABLE `sueldo`
+  ADD PRIMARY KEY (`idsueldo`),
+  ADD KEY `fk_sueldo_chofer_idx` (`idchofer`);
 
+--
+-- Indices de la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  ADD PRIMARY KEY (`idUsuario`);
+
+--
+-- Indices de la tabla `viaje`
+--
 ALTER TABLE `viaje`
   ADD PRIMARY KEY (`idviaje`),
   ADD KEY `viaje_camion_fk_idx` (`idcamion`),
@@ -347,34 +369,15 @@ ALTER TABLE `viaje_flete`
   ADD KEY `fk_flete_cliente_idx` (`idCliente`),
   ADD KEY `fk_flete_fletero_idx` (`fletero`);
 
--- --------------------------------------------------------
-
---
--- Índices para tablas volcadas
---
-
---
--- Indices de la tabla `sueldo`
---
-ALTER TABLE `sueldo`
-  ADD PRIMARY KEY (`idsueldo`),
-  ADD KEY `fk_sueldo_chofer_idx` (`idchofer`);
-
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT de la tabla `sueldo`
---
-ALTER TABLE `sueldo`
-  MODIFY `idsueldo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
 -- AUTO_INCREMENT de la tabla `camion`
 --
 ALTER TABLE `camion`
-  MODIFY `idcamion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `idcamion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `cheque`
@@ -386,13 +389,13 @@ ALTER TABLE `cheque`
 -- AUTO_INCREMENT de la tabla `chofer`
 --
 ALTER TABLE `chofer`
-  MODIFY `idChofer` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idChofer` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `idCliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `idCliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `cuenta_corriente`
@@ -413,6 +416,12 @@ ALTER TABLE `pago`
   MODIFY `idpago` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `sueldo`
+--
+ALTER TABLE `sueldo`
+  MODIFY `idsueldo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
@@ -422,7 +431,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `viaje`
 --
 ALTER TABLE `viaje`
-  MODIFY `idviaje` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idviaje` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `viaje_flete`
@@ -468,21 +477,6 @@ ALTER TABLE `viaje`
 ALTER TABLE `viaje_flete`
   ADD CONSTRAINT `fk_flete_cliente` FOREIGN KEY (`idCliente`) REFERENCES `cliente` (`idCliente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_flete_fletero` FOREIGN KEY (`fletero`) REFERENCES `fletero` (`idFletero`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
---
--- Restricciones para tablas volcadas
---
-
---
--- Filtros para la tabla `sueldo`
---
-ALTER TABLE `sueldo`
-  ADD CONSTRAINT `fk_sueldo_chofer` FOREIGN KEY (`idchofer`) REFERENCES `chofer` (`idChofer`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
