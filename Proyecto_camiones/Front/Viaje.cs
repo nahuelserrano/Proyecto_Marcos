@@ -15,11 +15,10 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Diagnostics;
 using Proyecto_camiones.ViewModels;
 using Proyecto_camiones.Presentacion.Utils;
-<<<<<<< HEAD
 using Proyecto_camiones.Models;
-=======
->>>>>>> 1f18f50fbc400e8f5d7dbcfd01a8ece3e8071ac1
 using Proyecto_camiones.DTOs;
+using NPOI.SS.Formula.Functions;
+using Proyecto_camiones.Presentacion.Models;
 
 namespace AplicacionCamiones.Front;
 
@@ -61,7 +60,10 @@ internal class Viaje : Home
 
 
     //Card
-    private FlowLayoutPanel cardsContainer = new FlowLayoutPanel();
+    private Panel cardsContainer = new Panel();
+    private FlowLayoutPanel cardsContainerFL = new FlowLayoutPanel();
+
+    private CamionViewModel cvm = new CamionViewModel();
 
 
 
@@ -87,9 +89,9 @@ internal class Viaje : Home
         //camionFilter.Click += (s, e) => ClickEffects(s, e);
 
         //Events
-        fleteFilter.Click += (s, e) => CardGenerator("Flete", " ");
-        clienteFilter.Click += (s, e) => CardGenerator("Cliente", " ");
-        camionFilter.Click += (s, e) => CardGenerator("Camion", " ");
+        fleteFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Flete", " ");
+        clienteFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Cliente", " ");
+        camionFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Camion", " ");
 
        
     }
@@ -100,7 +102,7 @@ internal class Viaje : Home
         ResaltarBoton(viajesMenu);
         if (filtro != null)
         {
-            CardGenerator(filtro, " ");
+            ObtenerTodosSegunFiltro(filtro, " ");
         }
     }
 
@@ -116,7 +118,6 @@ internal class Viaje : Home
     }
 
 
-
     //Initializations
 
     private void InitializeFilterCards()
@@ -125,6 +126,7 @@ internal class Viaje : Home
         LayoutOptionsMenuProperties();
         ButtonsProperties();
         CardProperties();
+        CardFLProperties();
         AddItemsToFilter();
         ButtonNewAddProperties();
     }
@@ -133,6 +135,7 @@ internal class Viaje : Home
     {
         this.Controls.Add(filter);
         this.Controls.Add(cardsContainer);
+        this.cardsContainer.Controls.Add(cardsContainerFL);
         filter.Controls.Add(filterFL);
     }
 
@@ -161,21 +164,48 @@ internal class Viaje : Home
 
     private void AddButtonNewAdd()
     {
-        cardsContainer.Controls.Add(buttonAddNew);
+        cardsContainerFL.Controls.Add(buttonAddNew);
     }
 
     //InfoFunctions
-    public async void CardGenerator(string filtro, string info)
+    public async void ObtenerTodosSegunFiltro(string filtro, string info)
     {
+        if (filtro == "Camion")
+        {
+            var resultado = await cvm.ObtenerTodos();
+            if (resultado.IsSuccess)
+            {
+                CardCamionGenerator("Camion", resultado); 
+            }
+            else
+            {
+                MessageBox.Show("No se pudo obtener la lista de camiones");
+            }
+        }
+        else if (filtro == "Cliente")
+        {
+            ClienteViewModel cvm = new ClienteViewModel();
+            var resultado = await cvm.ObtenerById(1);
 
-        cardsContainer.Controls.Clear();
-        buttonAddNew.Visible = false;
-        formCargarSection.Visible = false;
+            //if (resultado.IsSuccess)
+            //{
+            //    CardGenerator("Cliente", resultado);
+            //}
+            //else
+            //{
+            //    MessageBox.Show("No se pudo obtener la lista de camiones");
+            //}
+        }
+        else if (filtro == "Flete")
+        {
+            //
+        }
+    }
 
-
-        List<string> datos = await GetFilterInfoAsync(filtro, info);
-
-        foreach (string dato in datos)
+    private void CardCamionGenerator(string filtro, Result<List<CamionDTO?>> resultado)
+    {
+        string dato = " ";
+        foreach (var item in resultado.Value)
         {
             Panel card = new Panel
             {
@@ -187,7 +217,8 @@ internal class Viaje : Home
 
             Label label = new Label
             {
-                Text = dato,
+               
+                Text = item.Patente,
                 ForeColor = System.Drawing.Color.FromArgb(218, 218, 28),
                 AutoSize = true,
                 TextAlign = ContentAlignment.TopCenter,
@@ -205,12 +236,14 @@ internal class Viaje : Home
 
                 FlatStyle = FlatStyle.Flat,
             };
+
             remove.FlatAppearance.BorderColor = Color.FromArgb(48, 48, 48);
             remove.FlatAppearance.BorderSize = 1;
 
             card.Controls.Add(label);
             card.Controls.Add(remove);
-            cardsContainer.Controls.Add(card);
+            cardsContainerFL.Controls.Add(card);
+           
 
 
             // Evento para eliminar la card
@@ -218,7 +251,7 @@ internal class Viaje : Home
             {
                 RoundButton btn = (RoundButton)s;
                 Panel parentCard = (Panel)btn.Parent;
-                cardsContainer.Controls.Remove(parentCard);
+                cardsContainerFL.Controls.Remove(parentCard);
                 parentCard.Dispose(); // opcional
             };
 
@@ -226,23 +259,8 @@ internal class Viaje : Home
             {
                 campos.Clear();
                 camposFaltantesTabla.Clear();
-                //CamionViewModel cvm = new CamionViewModel();
-                //var result = await cvm.ObtenerTodos();
-                //if (result.IsSuccess)
-                //{
-                //    List<CamionDTO> camiones = result.Value;
-                //    foreach(CamionDTO camion in camiones)
-                //    {
-                //        MessageBox.Show(camion.ToString());
-                //    }
-                //}
-                //else
-                //{
-                //    MessageBox.Show(result.Error);
-                //}
                 this.campos = new List<string> { "Fecha", "Origen", "Destino", "RTO o CPE", "Carga", "Km", "Kg", "Tarifa", "Porcentaje", "Chofer", "Cliente" };
                 cantCamposTabla = campos.Count();
-
 
                 this.camposFaltantesTabla = new List<string> { "Total", "Monto chofer" };
             }
@@ -252,7 +270,7 @@ internal class Viaje : Home
                 camposFaltantesTabla.Clear();
                 this.campos = new List<string> { "Fecha", "Origen", "Destino", "RTO o CPE", "Carga", "Km", "Kg", "Tarifa", "Chofer", "Camión", "Flete" };
                 cantCamposTabla = campos.Count();
-
+               
 
                 this.camposFaltantesTabla = new List<string> { "Total" };
             }
@@ -270,61 +288,45 @@ internal class Viaje : Home
             card.Click += (s, e) =>
             {
                 this.Hide();
-                ViajeFiltro form = new ViajeFiltro(dato, cantCamposTabla, campos, filtro, camposFaltantesTabla);
+                ViajeFiltro form = new ViajeFiltro(item.Patente, cantCamposTabla, campos, filtro, camposFaltantesTabla);
                 form.TopLevel = true;
                 form.ShowDialog();
             };
         }
         buttonBack.Click += (s, e) => ButtonNewAddProperties();
         buttonBack.Visible = true;
+        buttonAddNew.Visible = false;
+        formCargarSection.Visible = false;
         this.Controls.Add(buttonBack);
         ButtonProperties();
     }
 
-    private void ButtonProperties()
-    {
-        buttonBack.Text = "Volver";
-        buttonBack.Size = new Size(140, 40);
-        buttonBack.FlatAppearance.BorderSize = 0;
-        buttonBack.FlatStyle = FlatStyle.Flat;
-        buttonBack.Location = new Point(40, 100);
-        buttonBack.Font = new Font("Nunito", 16, FontStyle.Regular);
-        buttonBack.BackColor = System.Drawing.Color.FromArgb(48, 48, 48);
-        buttonBack.ForeColor = System.Drawing.Color.FromArgb(218, 218, 28);
-    }
-
     //AGREGAR CARD
-    public async Task<List<string>> GetFilterInfoAsync(string filtro, string info)
+    public async void GetFilterInfoAsync(string filtro, string info)
     {
-        
-        int i = 0;
+         
         if (!string.IsNullOrWhiteSpace(info))
         {
+            int i = 0;
             if (filtro == "Camion")
             {
-                CamionViewModel cmv = new CamionViewModel();
-                var idCamion = await cmv.InsertarCamion(info);
+                var idCamion = await cvm.InsertarCamion(info);
 
-                if (idCamion.IsSuccess && i == 0)
+                if (idCamion.IsSuccess)
                 {
-<<<<<<< HEAD
-                    camiones.Add(info);
-                    i = 1;
-=======
-                    MessageBox.Show("todavía no rompió");
-                    var resultado = await cmv.ObtenerPorId(idCamion.Value);
-                    if (resultado.IsSuccess)
+                    var resultado = await cvm.ObtenerPorId(idCamion.Value);
+
+                    if (resultado.IsSuccess && i == 0)
                     {
-                        MessageBox.Show("Entramos al success de obtener por id");
+                        i = 1;
                         CamionDTO camion = resultado.Value;
-                        camiones.Add(camion.Patente);
+                        
                     }
                     else
                     {
                         MessageBox.Show("No se pudo obtener el camión");
                     }
                     
->>>>>>> 1f18f50fbc400e8f5d7dbcfd01a8ece3e8071ac1
                 }
                 else
                 {
@@ -338,9 +340,19 @@ internal class Viaje : Home
                 ClienteViewModel cmv = new ClienteViewModel();
                 var idCliente = await cmv.InsertarCliente(info);
 
-                if (idCliente.IsSuccess && i == 0) {
-                    clientes.Add(info);
-                    i = 1;
+                if (idCliente.IsSuccess) {
+
+                    var resultado = await cvm.ObtenerPorId(idCliente.Value);
+
+                    if (resultado.IsSuccess && i == 0)
+                    {
+                        i = 1;
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("No se pudo obtener el camión");
+                    }
                 }
                 else
                 {
@@ -354,15 +366,20 @@ internal class Viaje : Home
                 fletes.Add(info);
             }
         }
-
+        ObtenerTodosSegunFiltro(filtro, info);
         // Retornar la lista correspondiente
-        return filtro switch
-        {
-            "Camion" => camiones,
-            "Cliente" => clientes,
-            "Flete" => fletes,
-            _ => new List<string>()
-        };
+    }
+
+    private void ButtonProperties()
+    {
+        buttonBack.Text = "Volver";
+        buttonBack.Size = new Size(140, 40);
+        buttonBack.FlatAppearance.BorderSize = 0;
+        buttonBack.FlatStyle = FlatStyle.Flat;
+        buttonBack.Location = new Point(40, 100);
+        buttonBack.Font = new Font("Nunito", 16, FontStyle.Regular);
+        buttonBack.BackColor = System.Drawing.Color.FromArgb(48, 48, 48);
+        buttonBack.ForeColor = System.Drawing.Color.FromArgb(218, 218, 28);
     }
 
     private void ButtonsProperties()
@@ -400,7 +417,7 @@ internal class Viaje : Home
 
             btn.Click += (s, e) =>
             {
-                CardGenerator(btn.Text, " ");
+                ObtenerTodosSegunFiltro(btn.Text, " ");
             };
 
             filterFL.Controls.Add(btn);
@@ -408,15 +425,10 @@ internal class Viaje : Home
     }
 
 
-
     //CardProperties
     private void CardProperties()
     {
         cardsContainer.Size = new Size(800, 400);
-        cardsContainer.AutoScroll = true;
-        cardsContainer.FlowDirection = FlowDirection.LeftToRight;
-        cardsContainer.WrapContents = true;
-        cardsContainer.Margin = new Padding(10, 10, 10, 10);
         cardsContainer.BackColor = System.Drawing.Color.FromArgb(200, Color.Black);
 
         this.Resize += (s, e) =>
@@ -425,9 +437,20 @@ internal class Viaje : Home
         };
     }
 
+    private void CardFLProperties()
+    {
+        cardsContainerFL.Size = new Size(700, 300);
+        cardsContainerFL.FlowDirection = FlowDirection.LeftToRight;
+        cardsContainerFL.WrapContents = true;
+        cardsContainerFL.BackColor = Color.Transparent;
+        cardsContainerFL.AutoScroll = true;
+        cardsContainerFL.Visible = true;
+        cardsContainerFL.Location = new Point((cardsContainer.Width - cardsContainerFL.Width) / 2, ((cardsContainer.Height - cardsContainerFL.Height) / 2));
+    }
+
     private void ButtonNewAddProperties()
     {
-        cardsContainer.Controls.Clear();
+        cardsContainerFL.Controls.Clear();
 
         buttonAddNew.Visible = true;
         buttonAddNew.Size = new Size(200, 150);
@@ -438,7 +461,7 @@ internal class Viaje : Home
         buttonAddNew.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(218, 218, 28); // Color del borde
         buttonAddNew.ForeColor = System.Drawing.Color.FromArgb(218, 218, 28);
         buttonAddNew.Font = new Font("Nunito", 24, FontStyle.Bold);
-        buttonAddNew.Margin = new Padding((cardsContainer.Width - buttonAddNew.Width) / 2, (cardsContainer.Height - buttonAddNew.Height) / 2, 0, 0);
+        buttonAddNew.Margin = new Padding((cardsContainerFL.Width - buttonAddNew.Width) / 2, (cardsContainerFL.Height - buttonAddNew.Height) / 2, 0, 0);
 
         buttonBack.Visible = false;
 
@@ -447,6 +470,8 @@ internal class Viaje : Home
         buttonAddNew.Click += (s, e) => FormAddNew();
     }
 
+
+    //FROM NEW ELEMENT
     private void FormAddNew()
     {
         layourFormSection.Controls.Clear();
@@ -462,9 +487,9 @@ internal class Viaje : Home
     private void FormProperties()
     {
         formCargarSection.Size = new Size(200, 300);
-        formCargarSection.Margin = new Padding((cardsContainer.Width - formCargarSection.Width) / 2, (cardsContainer.Height - formCargarSection.Height) / 2, 0, 0);
+        formCargarSection.Margin = new Padding((cardsContainerFL.Width - formCargarSection.Width) / 2, (cardsContainerFL.Height - formCargarSection.Height) / 2, 0, 0);
         formCargarSection.BackColor = System.Drawing.Color.FromArgb(48, 48, 48);
-        cardsContainer.Controls.Add(formCargarSection);
+        cardsContainerFL.Controls.Add(formCargarSection);
         formCargarSection.Controls.Add(layourFormSection);
         formCargarSection.Controls.Add(buttonAcept);
     }
@@ -580,7 +605,7 @@ internal class Viaje : Home
 
         }
         string seleccion = select.SelectedItem.ToString();
-        CardGenerator(seleccion, textBoxNombre.Text);
+        GetFilterInfoAsync(seleccion, textBoxNombre.Text);
     }
 
     private void CenterButtonFormSection()

@@ -56,7 +56,8 @@ namespace Proyecto_camiones.ViewModels
 
         public async Task<Result<List<CamionDTO>>> ObtenerTodos() 
         {
-            if (this.testearConexion().Result)
+            bool result = await this.testearConexion();
+            if (result)
             {
                 var camiones = await this._camionService.ObtenerCamionesAsync();
                 Console.WriteLine("no rompió ante la llamada");
@@ -90,11 +91,9 @@ namespace Proyecto_camiones.ViewModels
 
         public async Task<Result<CamionDTO>> ObtenerPorId(int id)
         {
-            MessageBox.Show("hola cvm");
             bool result = await this.testearConexion();
             if (result)
             {
-                MessageBox.Show("hola cvm");
                 CamionDTO camion = await this._camionService.ObtenerPorIdAsync(id);
                 if(camion != null)
                 {

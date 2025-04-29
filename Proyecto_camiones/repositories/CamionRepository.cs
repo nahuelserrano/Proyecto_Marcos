@@ -20,6 +20,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
         public async Task<bool> ProbarConexionAsync()
         {
+            //MessageBox.Show("testeando conexión");
             try
             {
                 // Intentar comprobar si la conexión a la base de datos es exitosa
@@ -38,24 +39,24 @@ namespace Proyecto_camiones.Presentacion.Repositories
             catch (Exception ex)
             {
                 // Si ocurre un error (por ejemplo, si la base de datos no está disponible)
-                Console.WriteLine($"Error al intentar conectar: {ex.Message}");
+                MessageBox.Show($"Error al intentar conectar: {ex.Message}");
                 return false;
             }
         }
 
         //agrego el signo de pregunta luego de Camion para decir que el result puede ser null
-        public async Task<Camion?> InsertarCamionAsync( string patente)
+        public async Task<Camion?> InsertarCamionAsync(string patente)
         {
             try
             {
 
-                    if (!await _context.Database.CanConnectAsync())
-                    {
-                        Console.WriteLine("No se puede conectar a la base de datos");
-                        return null;
-                    }
+                if (!await _context.Database.CanConnectAsync())
+                {
+                    Console.WriteLine("No se puede conectar a la base de datos");
+                    return null;
+                }
 
-                var camion = new Camion( patente, null);
+                var camion = new Camion(patente, null);
 
                 // Agregar el camión a la base de datos (esto solo marca el objeto para insertar)
                 _context.Camiones.Add(camion);
@@ -77,8 +78,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 Console.WriteLine($"Error al insertar camión: {ex.Message}");
                 // Para debuggear, también es útil ver la excepción completa:
                 Console.WriteLine($"Stack trace: {ex.StackTrace}");
-                MessageBox.Show("Error de conexión"+ ex.Message);
-                MessageBox.Show("Error de conexión"+ex.InnerException);
+                MessageBox.Show("Error de conexión" + ex.Message);
+                MessageBox.Show("Error de conexión" + ex.InnerException);
                 return null;
             }
         }
@@ -89,8 +90,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             {
                 var camiones = await _context.Camiones.Select(c => new CamionDTO
                 {
-                    Patente = c.Patente,
-                    Nombre_Chofer = c.nombre_chofer
+                    Patente = c.Patente
                 }).ToListAsync();
 
                 return camiones;
@@ -110,14 +110,14 @@ namespace Proyecto_camiones.Presentacion.Repositories
             {
                 var camion = await _context.Camiones.FindAsync(id);
                 if (camion == null) return false;
-                
+
 
                 if (!string.IsNullOrEmpty(patente))  // Mejor verificación para strings
                 {
                     camion.Patente = patente;
                 }
 
-                if(!string.IsNullOrEmpty(nombre))  // Mejor verificación para strings
+                if (!string.IsNullOrEmpty(nombre))  // Mejor verificación para strings
                 {
                     camion.nombre_chofer = nombre;
                 }
@@ -126,7 +126,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 await _context.SaveChangesAsync();
                 return true;
 
-               
+
             }
             catch (Exception ex)
             {
@@ -139,7 +139,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                MessageBox.Show("hola repo");
                 Camion camion = await _context.Camiones.FindAsync(id);
                 if (camion != null)
                 {
@@ -154,7 +153,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 MessageBox.Show(e.InnerException.ToString());
                 return null;
             }
-            
+
         }
 
         public async Task<bool> EliminarCamionAsync(int id)
@@ -176,6 +175,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
             {
                 return false;
             }
-        } 
+        }
     }
 }
