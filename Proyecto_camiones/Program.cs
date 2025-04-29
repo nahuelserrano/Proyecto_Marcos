@@ -210,10 +210,10 @@ namespace Proyecto_camiones.Presentacion
                 //await ClienteTests.EjecutarTodasLasPruebas();
 
                 // PRUEBAS DE CHOFER
-                //await ChoferTests.EjecutarTodasLasPruebas();
+                await ChoferTests.EjecutarTodasLasPruebas();
 
                 // PRUEBAS DE VIAJE
-                await ViajeTests.EjecutarTodasLasPruebas();
+                //await ViajeTests.EjecutarTodasLasPruebas();
 
                 // O EJECUTAR PRUEBAS INDIVIDUALES:
 

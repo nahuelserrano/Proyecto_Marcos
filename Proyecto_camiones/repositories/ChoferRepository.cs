@@ -91,7 +91,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
         // READ - Obtener un chofer específico por ID
-        public async Task<Chofer> ObtenerPorIdAsync(int id)
+        public async Task<Chofer?> ObtenerPorIdAsync(int id)
         {
             try
             {
@@ -109,6 +109,30 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     return null;
                 }
 
+                return chofer;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al obtener chofer: {ex.Message}");
+                return null;
+            }
+        }
+
+        public async Task<Chofer?> ObtenerPorNombreAsync(string nombre)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(nombre))
+                {
+                    Console.WriteLine("Nombre inválido");
+                    return null;
+                }
+                var chofer = await _context.Choferes.FirstOrDefaultAsync(c => c.Nombre == nombre);
+                if (chofer == null)
+                {
+                    Console.WriteLine($"Chofer con nombre {nombre} no encontrado");
+                    return null;
+                }
                 return chofer;
             }
             catch (Exception ex)

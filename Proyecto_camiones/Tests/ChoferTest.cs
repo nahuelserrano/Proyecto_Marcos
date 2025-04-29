@@ -18,6 +18,7 @@ namespace Proyecto_camiones.Presentacion
             {
                 int id = await ProbarInsertarChofer("McLovin");
                 await ProbarObtenerChoferPorId(id);
+                await ProbarObtenerChoferPorNombre("McLovin");
                 await ProbarObtenerTodosChoferes();
                 await ProbarActualizarChofer(id, "McLovin Actualizado");
                 await ProbarEliminarChofer(id);
@@ -65,6 +66,29 @@ namespace Proyecto_camiones.Presentacion
             try
             {
                 var resultado = await cvm.ObtenerPorIdAsync(id);
+                if (resultado.IsSuccess)
+                {
+                    Console.WriteLine($"[ÉXITO] Chofer encontrado: {resultado.Value.Nombre}");
+                }
+                else
+                {
+                    Console.WriteLine($"[ERROR] No se encontró el chofer: {resultado.Error}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[EXCEPCIÓN] Al obtener chofer: {ex.Message}");
+            }
+        }
+
+        public static async Task ProbarObtenerChoferPorNombre(string nombre)
+        {
+            Console.WriteLine($"\n=== OBTENIENDO CHOFER nombre: {nombre} ===");
+            ChoferViewModel cvm = new ChoferViewModel();
+
+            try
+            {
+                var resultado = await cvm.ObetenerPorNombreAsync(nombre);
                 if (resultado.IsSuccess)
                 {
                     Console.WriteLine($"[ÉXITO] Chofer encontrado: {resultado.Value.Nombre}");

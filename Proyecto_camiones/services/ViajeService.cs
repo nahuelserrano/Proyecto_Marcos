@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Transactions;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Repositories;
@@ -83,6 +84,7 @@ namespace Proyecto_camiones.Presentacion.Services
                 
                 var clienteResult = await _clienteService.ObtenerPorIdAsync(cliente);
                 CamionDTO? camionResult = await _camionService.ObtenerPorIdAsync(camion);
+                var ChoferRsult = await _choferService.ObtenerPorNombreAsync(nombreChofer);
 
                 validador.ValidarExistencia(clienteResult.IsSuccess, camionResult != null);
 
@@ -92,15 +94,26 @@ namespace Proyecto_camiones.Presentacion.Services
                 {
                     return Result<int>.Failure(resultadoValidacion.Error);
                 }
-                
-                int id = await _viajeRepository.InsertarAsync(
-                    fechaInicio, lugarPartida, destino, remito, kg,
-                    carga, cliente, camion, km, tarifa, nombreChofer);
 
-                if (id == -1)
-                    return Result<int>.Failure("No se pudo crear el viaje en la base de datos");
+                using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                {
+                    // Crear el viaje
+                    int id = await _viajeRepository.InsertarAsync(
+                        fechaInicio, lugarPartida, destino, remito, kg,
+                        carga, cliente, camion, km, tarifa, nombreChofer);
 
-                return Result<int>.Success(id);
+                    if (id == -1)
+                        return Result<int>.Failure("No se pudo crear el viaje en la base de datos");
+                    // Crear el pago asociado al viaje
+
+                    int idPago = await _pagoService.CrearAsync(ChoferRsult.Value.Id, id, tarifa * kg * 0.18f);
+
+                    if (idPago == -1)
+                        return Result<int>.Failure("No se pudo crear el pago en la base de datos");
+
+                    scope.Complete();
+                    return Result<int>.Success(id);
+                }
             }
             catch (Exception ex)
             {

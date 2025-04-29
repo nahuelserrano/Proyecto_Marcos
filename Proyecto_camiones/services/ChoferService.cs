@@ -118,5 +118,31 @@ namespace Proyecto_camiones.Presentacion.Services
                 throw;
             }
         }
+
+        public async Task<Result<Chofer>> ObtenerPorNombreAsync(string nombre)
+        {
+            try
+            {
+                ValidadorChofer validador = new ValidadorChofer(nombre);
+
+                Result<bool> resultadoValidarCompleto = validador.ValidarCompleto();
+
+                if (!resultadoValidarCompleto.IsSuccess)
+                    return Result<Chofer>.Failure(resultadoValidarCompleto.Error);
+
+                var chofer = await _choferRepository.ObtenerPorNombreAsync(nombre);
+
+                if (chofer == null)
+                    return Result<Chofer>.Failure(MensajeError.objetoNulo(nameof(Chofer)));
+
+
+                return Result<Chofer>.Success(chofer);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
     }
 }
