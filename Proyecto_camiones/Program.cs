@@ -15,6 +15,7 @@ using MySqlX.XDevAPI.Common;
 using System.Data;
 using MySql.Data.MySqlClient;
 using Proyecto_camiones.Presentacion.Models;
+using System.Collections.Generic;
 
 
 namespace Proyecto_camiones.Presentacion
@@ -178,7 +179,7 @@ namespace Proyecto_camiones.Presentacion
 
             //ProbarInsertarChofer("Juan Alpaca");
 
-            //FleteViewModel fvm = new FleteViewModel();
+            FleteViewModel fvm = new FleteViewModel();
 
             //INSERTAR FLETERO
             //var idFletero = await fvm.InsertarFletero("Carlos");
@@ -201,6 +202,21 @@ namespace Proyecto_camiones.Presentacion
             //{
             //    Console.WriteLine(fletero.Error);
             //}
+
+            //OBTENER TODOS
+            var fleteros = await fvm.ObtenerTodosAsync();
+            if (fleteros.IsSuccess)
+            {
+                List<Flete> fletes = fleteros.Value;
+                foreach(Flete f in fletes)
+                {
+                    Console.WriteLine(f.ToString());
+                }
+            }
+            else
+            {
+                Console.WriteLine(fleteros.Error);
+            }
 
             //try
             //{
@@ -241,15 +257,15 @@ namespace Proyecto_camiones.Presentacion
             //    Console.WriteLine($"Stack Trace: {ex.StackTrace}");
             //}
 
-            ClienteViewModel clientevm = new ClienteViewModel();
-            var response = await clientevm.ObtenerTodosAsync();
-            if (response.IsSuccess)
-            {
-                foreach(Cliente c in response.Value)
-                {
-                    Console.WriteLine(c.ToString());
-                }
-            }
+            //ClienteViewModel clientevm = new ClienteViewModel();
+            //var response = await clientevm.ObtenerTodosAsync();
+            //if (response.IsSuccess)
+            //{
+            //    foreach(Cliente c in response.Value)
+            //    {
+            //        Console.WriteLine(c.ToString());
+            //    }
+            //}
         }
     }
 }

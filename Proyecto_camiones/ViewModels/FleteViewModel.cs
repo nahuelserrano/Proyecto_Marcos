@@ -44,5 +44,25 @@ namespace Proyecto_camiones.ViewModels
             }
             return Result<Flete>.Failure("No se pudo establecer la conexion con la base de datos");
         }
+
+        public async Task<Result<List<Flete>>> ObtenerTodosAsync()
+        {
+            bool conexion = await this.TestearConexion();
+            if (conexion)
+            {
+                return await this.fleteService.ObtenerTodosAsync();
+            }
+            return Result<List<Flete>>.Failure("No se pudo establecer la conexión con la base de datos");
+        }
+
+        public async Task<Result<Flete>> ObtenerPorIdAsync(int id)
+        {
+            bool conexion = await this.TestearConexion();
+            if (conexion)
+            {
+                return await this.fleteService.ObtenerPorIdAsync(id);
+            }
+            return Result<Flete>.Failure("No se pudo establecer la conexión con la base de datos");
+        }
     }
 }
