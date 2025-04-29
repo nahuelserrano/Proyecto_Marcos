@@ -55,5 +55,29 @@ namespace Proyecto_camiones.Services
             }
             return Result<Flete>.Failure("El nombre no puede ser nulo");
         }
+
+        internal async Task<Result<List<Flete>>> ObtenerTodosAsync()
+        {
+            List<Flete> fleteros = await this.fleteRepository.ObtenerTodosAsync();
+            if(fleteros != null)
+            {
+                return Result<List<Flete>>.Success(fleteros);
+            }
+            return Result<List<Flete>>.Failure("No se pudo realizar la petición a la base de datos");
+        }
+
+        internal async Task<Result<Flete>> ObtenerPorIdAsync(int id)
+        {
+            if (id <0)
+            {
+                return Result<Flete>.Failure("No existen ids negativos");
+            }
+            Flete fletero = await this.fleteRepository.ObtenerPorIdAsync(id);
+            if(fletero != null)
+            {
+                return Result<Flete>.Success(fletero);
+            }
+            return Result<Flete>.Failure("No existe un fletero con ese id");
+        }
     }
 }

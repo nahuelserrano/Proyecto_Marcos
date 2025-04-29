@@ -354,6 +354,7 @@ internal class Viaje : Home
                     else
                     {
                         MessageBox.Show("No se pudo obtener el cliente");
+                        MessageBox.Show(resultado.Error);
                     }
                 }
                 else
@@ -364,8 +365,27 @@ internal class Viaje : Home
             }
             else if (filtro == "Flete")
             {
-                
-                fletes.Add(info);
+                MessageBox.Show("hola filtro de flete");
+                FleteViewModel fvm = new FleteViewModel();
+                var response = await fvm.InsertarFletero(info);
+                if (response.IsSuccess)
+                {
+                    int idfletero = response.Value;
+                    MessageBox.Show("id: " + idfletero);
+                    var fletero = await fvm.ObtenerPorIdAsync(idfletero);
+                    if (fletero.IsSuccess)
+                    {
+                        MessageBox.Show("Fletero con el nombre: "+fletero.Value.nombre+" y id: "+ fletero.Value.Id+" insertado correctamente");
+                    }
+                    else
+                    {
+                        MessageBox.Show(fletero.Error);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(response.Error);
+                }
             }
         }
         ObtenerTodosSegunFiltro(filtro, info);

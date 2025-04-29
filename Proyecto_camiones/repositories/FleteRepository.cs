@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Proyecto_camiones.Repositories
 {
@@ -52,6 +53,7 @@ namespace Proyecto_camiones.Repositories
                 await this._context.Fletes.AddAsync(nuevo);
                 int registrosAfectados = await this._context.SaveChangesAsync();
                 Console.WriteLine($"Registros afectados: {registrosAfectados}");
+                MessageBox.Show("Registros afectados: " + registrosAfectados);
                 if (registrosAfectados > 0)
                 {
                     return nuevo.Id;
@@ -77,6 +79,34 @@ namespace Proyecto_camiones.Repositories
             {
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e.InnerException);
+                return null;
+            }
+        }
+
+        internal async Task<List<Flete>> ObtenerTodosAsync()
+        {
+            try
+            {
+                List<Flete> fleteros = await this._context.Fletes.ToListAsync();
+                return fleteros;
+            }catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.InnerException.ToString());
+                return null;
+            }
+        }
+
+        internal async Task<Flete> ObtenerPorIdAsync(int id)
+        {
+            try
+            {
+                Flete fletero = await this._context.Fletes.FindAsync(id);
+                return fletero;
+            }catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.InnerException.ToString());
                 return null;
             }
         }
