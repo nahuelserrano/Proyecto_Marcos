@@ -185,16 +185,16 @@ internal class Viaje : Home
         else if (filtro == "Cliente")
         {
             ClienteViewModel cvm = new ClienteViewModel();
-            var resultado = await cvm.ObtenerById(1);
+            var resultado = await cvm.ObtenerTodosAsync();
 
-            //if (resultado.IsSuccess)
-            //{
-            //    CardGenerator("Cliente", resultado);
-            //}
-            //else
-            //{
-            //    MessageBox.Show("No se pudo obtener la lista de camiones");
-            //}
+            if (resultado.IsSuccess)
+            {
+                //CardClienteGenerator("Cliente", resultado);
+            }
+            else
+            {
+                MessageBox.Show("No se pudo obtener la lista de camiones");
+            }
         }
         else if (filtro == "Flete")
         {
@@ -337,21 +337,23 @@ internal class Viaje : Home
             }
             else if (filtro == "Cliente")
             {
+                MessageBox.Show("hola if del filtro cliente");
                 ClienteViewModel cmv = new ClienteViewModel();
                 var idCliente = await cmv.InsertarCliente(info);
 
                 if (idCliente.IsSuccess) {
 
-                    var resultado = await cvm.ObtenerPorId(idCliente.Value);
+                    var resultado = await cmv.ObtenerById(idCliente.Value);
 
                     if (resultado.IsSuccess && i == 0)
                     {
                         i = 1;
-
+                        Cliente cliente = resultado.Value;
+                        MessageBox.Show(cliente.ToString());
                     }
                     else
                     {
-                        MessageBox.Show("No se pudo obtener el camión");
+                        MessageBox.Show("No se pudo obtener el cliente");
                     }
                 }
                 else
