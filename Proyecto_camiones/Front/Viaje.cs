@@ -220,6 +220,20 @@ internal class Viaje : Home
             {
                 campos.Clear();
                 camposFaltantesTabla.Clear();
+                //CamionViewModel cvm = new CamionViewModel();
+                //var result = await cvm.ObtenerTodos();
+                //if (result.IsSuccess)
+                //{
+                //    List<CamionDTO> camiones = result.Value;
+                //    foreach(CamionDTO camion in camiones)
+                //    {
+                //        MessageBox.Show(camion.ToString());
+                //    }
+                //}
+                //else
+                //{
+                //    MessageBox.Show(result.Error);
+                //}
                 this.campos = new List<string> { "Fecha", "Origen", "Destino", "RTO o CPE", "Carga", "Km", "Kg", "Tarifa", "Porcentaje", "Chofer", "Cliente" };
                 cantCamposTabla = campos.Count();
 
