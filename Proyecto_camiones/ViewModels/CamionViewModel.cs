@@ -20,6 +20,7 @@ namespace Proyecto_camiones.ViewModels
 
         public CamionViewModel()
         {
+            MessageBox.Show("clase");
             var camionRepository = new CamionRepository(General.obtenerInstancia());
             this._camionService = new CamionService(camionRepository);
         }

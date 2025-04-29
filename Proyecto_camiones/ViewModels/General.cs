@@ -16,7 +16,7 @@ namespace Proyecto_camiones.ViewModels
             var connectionString = "server=localhost;user=root;password=;database=truck_manager_project_db;";
 
             // Crear la configuración del DbContext
-                var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+            var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
             optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)); // Usar el proveedor de MySQL
 
             // Crear una instancia del contexto

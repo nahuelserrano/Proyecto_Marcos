@@ -15,6 +15,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
         public CamionRepository(ApplicationDbContext context)
         {
+            MessageBox.Show("hola");
             _context = context;
         }
 

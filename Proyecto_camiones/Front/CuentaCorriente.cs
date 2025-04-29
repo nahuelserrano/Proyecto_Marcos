@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace AppCamiones
+namespace AplicacionCamiones.Front
 {
     internal class CuentaCorriente : FormRegistro
     {

@@ -87,15 +87,15 @@
     <Compile Include="Utils\Validadores\ValidadorCliente.cs" />
     <Compile Include="Utils\Validadores\ValidadorSueldo.cs" />
     <Compile Include="Utils\Validadores\ValidadorViaje.cs" />
-    <Compile Include="SueldoMensual.cs" />
-<Compile Include="Viaje.cs" />
-<Compile Include="CuentaCorriente.cs" />
-<Compile Include="Cheque.cs" />
-<Compile Include="ViajeFiltro.cs" />
-<Compile Include="FormRegistro.cs" />
-<Compile Include="Home.cs" />
-<Compile Include="NewRoundPanel.cs" />
-<Compile Include="RoundButton.cs" />
+<Compile Include="Front\SueldoMensual.cs" />
+<Compile Include="Front\Viaje.cs" />
+<Compile Include="Front\CuentaCorriente.cs" />
+<Compile Include="Front\Cheque.cs" />
+<Compile Include="Front\ViajeFiltro.cs" />
+<Compile Include="Front\FormRegistro.cs" />
+<Compile Include="Front\Home.cs" />
+<Compile Include="Front\NewRoundPanel.cs" />
+<Compile Include="Front\RoundButton.cs" />
 
     <!-- Core -->
     <Compile Include="Program.cs" />
