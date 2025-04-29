@@ -191,11 +191,5 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
         }
 
-        //PARA QUE SE USA? NECESARIO?
-        //public async Task<List<Viaje>> ObtenerHistorialViajes(int clienteId)
-        //{
-        //    // Devolvemos una lista vacía de viajes para simular
-        //    return new List<Viaje>();
-        //}
     }
 }

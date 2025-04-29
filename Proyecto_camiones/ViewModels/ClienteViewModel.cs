@@ -80,5 +80,15 @@ namespace Proyecto_camiones.ViewModels
         }
         */
 
+        public async Task<Result<List<Cliente>>> ObtenerTodosAsync()
+        {
+            bool conexion = await this.testearConexion();
+            if (conexion)
+            {
+                return await this._clienteService.ObtenerTodosAsync();
+            }
+            return Result<List<Cliente>>.Failure("No se pudo establecer la conexión");
+        }
+
     }
 }
