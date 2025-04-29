@@ -15,7 +15,10 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Diagnostics;
 using Proyecto_camiones.ViewModels;
 using Proyecto_camiones.Presentacion.Utils;
+<<<<<<< HEAD
 using Proyecto_camiones.Models;
+=======
+>>>>>>> 1f18f50fbc400e8f5d7dbcfd01a8ece3e8071ac1
 using Proyecto_camiones.DTOs;
 
 namespace AplicacionCamiones.Front;
@@ -223,6 +226,20 @@ internal class Viaje : Home
             {
                 campos.Clear();
                 camposFaltantesTabla.Clear();
+                //CamionViewModel cvm = new CamionViewModel();
+                //var result = await cvm.ObtenerTodos();
+                //if (result.IsSuccess)
+                //{
+                //    List<CamionDTO> camiones = result.Value;
+                //    foreach(CamionDTO camion in camiones)
+                //    {
+                //        MessageBox.Show(camion.ToString());
+                //    }
+                //}
+                //else
+                //{
+                //    MessageBox.Show(result.Error);
+                //}
                 this.campos = new List<string> { "Fecha", "Origen", "Destino", "RTO o CPE", "Carga", "Km", "Kg", "Tarifa", "Porcentaje", "Chofer", "Cliente" };
                 cantCamposTabla = campos.Count();
 
@@ -290,8 +307,24 @@ internal class Viaje : Home
 
                 if (idCamion.IsSuccess && i == 0)
                 {
+<<<<<<< HEAD
                     camiones.Add(info);
                     i = 1;
+=======
+                    MessageBox.Show("todavía no rompió");
+                    var resultado = await cmv.ObtenerPorId(idCamion.Value);
+                    if (resultado.IsSuccess)
+                    {
+                        MessageBox.Show("Entramos al success de obtener por id");
+                        CamionDTO camion = resultado.Value;
+                        camiones.Add(camion.Patente);
+                    }
+                    else
+                    {
+                        MessageBox.Show("No se pudo obtener el camión");
+                    }
+                    
+>>>>>>> 1f18f50fbc400e8f5d7dbcfd01a8ece3e8071ac1
                 }
                 else
                 {

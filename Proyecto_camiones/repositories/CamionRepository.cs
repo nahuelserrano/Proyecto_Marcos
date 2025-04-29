@@ -137,13 +137,24 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
         internal async Task<CamionDTO?> ObtenerPorId(int id)
         {
-            Camion camion = await _context.Camiones.FindAsync(id);
-            if (camion != null)
+            try
             {
-                CamionDTO nuevo = new CamionDTO( camion.Patente, camion.nombre_chofer);
-                return nuevo;
+                MessageBox.Show("hola repo");
+                Camion camion = await _context.Camiones.FindAsync(id);
+                if (camion != null)
+                {
+                    CamionDTO nuevo = new CamionDTO(camion.Patente, camion.nombre_chofer);
+                    return nuevo;
+                }
+                return null;
             }
-            return null;
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                MessageBox.Show(e.InnerException.ToString());
+                return null;
+            }
+            
         }
 
         public async Task<bool> EliminarCamionAsync(int id)

@@ -70,6 +70,7 @@ namespace Proyecto_camiones.Presentacion.Services
         {
             try
             {
+                MessageBox.Show("estamos en el service");
                 CamionDTO camion = await _camionRepository.ObtenerPorId(id);
                 return camion;
             }
