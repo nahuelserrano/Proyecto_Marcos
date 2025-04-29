@@ -93,6 +93,25 @@ namespace Proyecto_camiones.ViewModels
             return Result<string>.Failure("error de conexión");
         }
 
+        public async Task<Result<CamionDTO>> ObtenerPorId(int id)
+        {
+            MessageBox.Show("hola cvm");
+            bool result = await this.testearConexion();
+            if (result)
+            {
+                MessageBox.Show("hola cvm");
+                CamionDTO camion = await this._camionService.ObtenerPorIdAsync(id);
+                if(camion != null)
+                {
+                    return Result<CamionDTO>.Success(camion);
+                }
+                MessageBox.Show("No se pudo obtener");
+                return Result<CamionDTO>.Failure("No se pudo obtener el camión con ese id");
+            }
+            MessageBox.Show("error de conexion wtf");
+            return Result<CamionDTO>.Failure("error de conexión");
+        }
+
 
     }
 }

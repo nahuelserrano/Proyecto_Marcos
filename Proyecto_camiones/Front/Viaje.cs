@@ -15,6 +15,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Diagnostics;
 using Proyecto_camiones.ViewModels;
 using Proyecto_camiones.Presentacion.Utils;
+using Proyecto_camiones.DTOs;
 
 namespace AplicacionCamiones.Front;
 
@@ -302,7 +303,19 @@ internal class Viaje : Home
                 MessageBox.Show(idCamion.Value + " ");
                 if (idCamion.IsSuccess)
                 {
-                    camiones.Add(info);
+                    MessageBox.Show("todavía no rompió");
+                    var resultado = await cmv.ObtenerPorId(idCamion.Value);
+                    if (resultado.IsSuccess)
+                    {
+                        MessageBox.Show("Entramos al success de obtener por id");
+                        CamionDTO camion = resultado.Value;
+                        camiones.Add(camion.Patente);
+                    }
+                    else
+                    {
+                        MessageBox.Show("No se pudo obtener el camión");
+                    }
+                    
                 }
                 else
                 {
