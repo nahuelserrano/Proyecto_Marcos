@@ -50,12 +50,9 @@ namespace Proyecto_camiones.Presentacion.Services
             try
             {
                 // Intentar insertar en la base de datos
-                MessageBox.Show("Entramos!!!!");
-                Camion response = await _camionRepository.InsertarCamionAsync( patente);
-                MessageBox.Show("Se insertó");
+                Camion response = await _camionRepository.InsertarCamionAsync(patente);
                 if (response != null)
                 {
-                    MessageBox.Show("Bien");
                     return Result<int>.Success(response.Id);
                 }
                     return Result<int>.Failure("El camion no pudo ser incertado");

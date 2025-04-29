@@ -20,7 +20,6 @@ namespace Proyecto_camiones.ViewModels
 
         public CamionViewModel()
         {
-            MessageBox.Show("clase");
             var camionRepository = new CamionRepository(General.obtenerInstancia());
             this._camionService = new CamionService(camionRepository);
         }
@@ -32,26 +31,22 @@ namespace Proyecto_camiones.ViewModels
 
         public async Task<Result<int>> InsertarCamion(string patente)
         {
-            MessageBox.Show("h");
             bool result = await this.testearConexion();
             if (result)
             {
-                MessageBox.Show("Conexión");
-                var resultado = await this._camionService.CrearCamionAsync( patente);
+                var resultado = await this._camionService.CrearCamionAsync(patente);
 
                 // Ahora puedes acceder al resultado
                 if (resultado.IsSuccess)
                 {
                     // La operación fue exitosa
                     int idCamion = resultado.Value;
-                    MessageBox.Show("Se creo el camión");
                     Console.WriteLine($"Camión creado con ID: {idCamion}");
                     return resultado;
                 }
                 else
                 {
                     // Si la operación falló, maneja el error
-                    MessageBox.Show("Falló la operación");
                     return Result<int>.Failure(resultado.Error);
                 }
             }

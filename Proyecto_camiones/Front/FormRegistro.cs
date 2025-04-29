@@ -11,6 +11,10 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 using static System.Windows.Forms.DataFormats;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 using Label = System.Windows.Forms.Label;
+using Proyecto_camiones.ViewModels;
+using Proyecto_camiones.Presentacion.Utils;
+using Proyecto_camiones.Models;
+using Proyecto_camiones.DTOs;
 
 namespace AplicacionCamiones.Front;
 
@@ -381,7 +385,7 @@ public class FormRegistro : Home
     private void cargaClickEvent(object sender, EventArgs e, string filtro)
     {
         // Obtener los valores de los TextBox
-        //List<string> datos = new List<string>();
+        List<string> datos = new List<string>();
 
         foreach (Control control in formFLTextBox.Controls)
         {
@@ -427,37 +431,36 @@ public class FormRegistro : Home
                         }
 
                         //LLAMAR EL AGREGAR DEL BACKEND
-
-                        //datos.Add(textBox.Text); // Agregar el texto de cada TextBox
+                        datos.Add(textBox.Text); // Agregar el texto de cada TextBox
                     }
                 }
             }
         }
 
-        
+
 
         // Verificar que los datos no estén vacíos
-        //if (datos.All(dato => !string.IsNullOrWhiteSpace(dato)))
-        //{
-        //    cheq.Rows.Add(datos.ToArray());
+        if (datos.All(dato => !string.IsNullOrWhiteSpace(dato)))
+        {
+            cheq.Rows.Add(datos.ToArray());
 
             foreach (Control control in formFLTextBox.Controls)
+        {
+            if (control is Panel panel)
             {
-                if (control is Panel panel)
+                foreach (Control child in panel.Controls)
                 {
-                    foreach (Control child in panel.Controls)
+                    if (child is TextBox textBox)
                     {
-                        if (child is TextBox textBox)
-                        {
-                            string placeholderText = textBox.Text;
-                            textBox.Clear();
-                            textBox.Text = placeholderText; // Restaurar el placeholder??????????
-                            textBox.ForeColor = Color.Black;
-                        }
+                        string placeholderText = textBox.Text;
+                        textBox.Clear();
+                        textBox.Text = placeholderText; // Restaurar el placeholder??????????
+                        textBox.ForeColor = Color.Black;
                     }
                 }
             }
-        //}
+        }
+        }
     }
 
     private void EliminarFila(object sender, DataGridViewCellEventArgs e)

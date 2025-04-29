@@ -15,6 +15,8 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Diagnostics;
 using Proyecto_camiones.ViewModels;
 using Proyecto_camiones.Presentacion.Utils;
+using Proyecto_camiones.Models;
+using Proyecto_camiones.DTOs;
 
 namespace AplicacionCamiones.Front;
 
@@ -207,6 +209,7 @@ internal class Viaje : Home
             card.Controls.Add(remove);
             cardsContainer.Controls.Add(card);
 
+
             // Evento para eliminar la card
             remove.Click += (s, e) =>
             {
@@ -276,19 +279,19 @@ internal class Viaje : Home
     //AGREGAR CARD
     public async Task<List<string>> GetFilterInfoAsync(string filtro, string info)
     {
-        camiones.Clear();
-        clientes.Clear();
-        fletes.Clear();
+        
+        int i = 0;
         if (!string.IsNullOrWhiteSpace(info))
         {
             if (filtro == "Camion")
             {
                 CamionViewModel cmv = new CamionViewModel();
                 var idCamion = await cmv.InsertarCamion(info);
-                MessageBox.Show(idCamion.Value + " ");
-                if (idCamion.IsSuccess)
+
+                if (idCamion.IsSuccess && i == 0)
                 {
                     camiones.Add(info);
+                    i = 1;
                 }
                 else
                 {
@@ -299,10 +302,22 @@ internal class Viaje : Home
             }
             else if (filtro == "Cliente")
             {
-                clientes.Add(info);
+                ClienteViewModel cmv = new ClienteViewModel();
+                var idCliente = await cmv.InsertarCliente(info);
+
+                if (idCliente.IsSuccess && i == 0) {
+                    clientes.Add(info);
+                    i = 1;
+                }
+                else
+                {
+                    MessageBox.Show(idCliente.Error + " ");
+                    Console.WriteLine(idCliente.Error);
+                }
             }
             else if (filtro == "Flete")
             {
+                
                 fletes.Add(info);
             }
         }

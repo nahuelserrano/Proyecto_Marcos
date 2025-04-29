@@ -15,7 +15,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
         public CamionRepository(ApplicationDbContext context)
         {
-            MessageBox.Show("hola");
             _context = context;
         }
 
@@ -60,13 +59,11 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
                 // Agregar el camión a la base de datos (esto solo marca el objeto para insertar)
                 _context.Camiones.Add(camion);
-                MessageBox.Show("Agregado de add");
 
                 Console.WriteLine($"SQL a ejecutar: {_context.ChangeTracker.DebugView.LongView}");
 
                 // Guardar los cambios en la base de datos (aquí se genera el SQL real y se ejecuta)
                 int registrosAfectados = await _context.SaveChangesAsync();
-                MessageBox.Show("Guardado en la db");
 
                 if (registrosAfectados > 0)
                 {
