@@ -184,12 +184,12 @@ internal class Viaje : Home
         }
         else if (filtro == "Cliente")
         {
-            ClienteViewModel cvm = new ClienteViewModel();
-            var resultado = await cvm.ObtenerById(1);
+            //ClienteViewModel cvm = new ClienteViewModel();
+            //var resultado = await cvm.ObtenerById(1);
 
             //if (resultado.IsSuccess)
             //{
-            //    CardGenerator("Cliente", resultado);
+            //    CardClienteGenerator("Cliente", resultado);
             //}
             //else
             //{
@@ -198,13 +198,21 @@ internal class Viaje : Home
         }
         else if (filtro == "Flete")
         {
-            //
+            //FleteViewModel fvm = new FleteViewModel();
+            //var resultado = await fvm.ObtenerTodos();
+            //if (resultado.IsSuccess)
+            //{
+            //    CardCamionGenerator("Flete", resultado);
+            //}
+            //else
+            //{
+            //    MessageBox.Show("No se pudo obtener la lista de fletero");
+            //}
         }
     }
 
     private void CardCamionGenerator(string filtro, Result<List<CamionDTO?>> resultado)
     {
-        string dato = " ";
         foreach (var item in resultado.Value)
         {
             Panel card = new Panel
@@ -264,26 +272,6 @@ internal class Viaje : Home
 
                 this.camposFaltantesTabla = new List<string> { "Total", "Monto chofer" };
             }
-            else if (filtro == "Cliente")
-            {
-                campos.Clear();
-                camposFaltantesTabla.Clear();
-                this.campos = new List<string> { "Fecha", "Origen", "Destino", "RTO o CPE", "Carga", "Km", "Kg", "Tarifa", "Chofer", "Camión", "Flete" };
-                cantCamposTabla = campos.Count();
-               
-
-                this.camposFaltantesTabla = new List<string> { "Total" };
-            }
-            else if (filtro == "Flete")
-            {
-                campos.Clear();
-                camposFaltantesTabla.Clear();
-                this.campos = new List<string> { "Fecha", "Origen", "Destino", "RTO o CPE", "Carga", "Km", "Kg", "Tarifa", "Factura", "Comisión", "Cliente" };
-                cantCamposTabla = campos.Count();
-
-
-                this.camposFaltantesTabla = new List<string> { "Total", "Total comisión" };
-            }
 
             card.Click += (s, e) =>
             {
@@ -300,6 +288,171 @@ internal class Viaje : Home
         this.Controls.Add(buttonBack);
         ButtonProperties();
     }
+
+    //private void CardClienteGenerator(string filtro, Result<List<ClienteDTO>> resultado)
+    //{
+    //    string dato = " ";
+    //    foreach (var item in resultado.Value)
+    //    {
+    //        Panel card = new Panel
+    //        {
+    //            Size = new Size(200, 100),
+    //            BackColor = System.Drawing.Color.FromArgb(48, 48, 48),
+    //            Margin = new Padding(10),
+    //            Font = new Font("Nunito", 16, FontStyle.Regular),
+    //        };
+
+    //        Label label = new Label
+    //        {
+
+    //            Text = item.Patente,
+    //            ForeColor = System.Drawing.Color.FromArgb(218, 218, 28),
+    //            AutoSize = true,
+    //            TextAlign = ContentAlignment.TopCenter,
+    //            Location = new Point(10, 10),
+    //            BackColor = Color.Transparent
+    //        };
+
+    //        RoundButton remove = new RoundButton
+    //        {
+    //            Text = "🗑️",
+    //            BackColor = System.Drawing.Color.FromArgb(48, 48, 48),
+    //            ForeColor = System.Drawing.Color.FromArgb(218, 218, 28),
+    //            Size = new Size(30, 40),
+    //            Location = new Point(170, 60),
+
+    //            FlatStyle = FlatStyle.Flat,
+    //        };
+
+    //        remove.FlatAppearance.BorderColor = Color.FromArgb(48, 48, 48);
+    //        remove.FlatAppearance.BorderSize = 1;
+
+    //        card.Controls.Add(label);
+    //        card.Controls.Add(remove);
+    //        cardsContainerFL.Controls.Add(card);
+
+
+
+    //        // Evento para eliminar la card
+    //        remove.Click += (s, e) =>
+    //        {
+    //            RoundButton btn = (RoundButton)s;
+    //            Panel parentCard = (Panel)btn.Parent;
+    //            cardsContainerFL.Controls.Remove(parentCard);
+    //            parentCard.Dispose(); // opcional
+    //        };
+
+    //        if (filtro == "Cliente")
+    //        {
+    //            campos.Clear();
+    //            camposFaltantesTabla.Clear();
+    //            this.campos = new List<string> { "Fecha", "Origen", "Destino", "RTO o CPE", "Carga", "Km", "Kg", "Tarifa", "Chofer", "Camión", "Flete" };
+    //            cantCamposTabla = campos.Count();
+
+
+    //            this.camposFaltantesTabla = new List<string> { "Total" };
+    //        }
+
+    //        card.Click += (s, e) =>
+    //        {
+    //            this.Hide();
+    //            ViajeFiltro form = new ViajeFiltro(item.Patente, cantCamposTabla, campos, filtro, camposFaltantesTabla);
+    //            form.TopLevel = true;
+    //            form.ShowDialog();
+    //        };
+    //    }
+    //    buttonBack.Click += (s, e) => ButtonNewAddProperties();
+    //    buttonBack.Visible = true;
+    //    buttonAddNew.Visible = false;
+    //    formCargarSection.Visible = false;
+    //    this.Controls.Add(buttonBack);
+    //    ButtonProperties();
+    //}
+
+    private void CardFleteGenerator(string filtro, Result<List<FleteDTO>> resultado)
+    {
+        foreach (var item in resultado.Value)
+        {
+            Panel card = new Panel
+            {
+                Size = new Size(200, 100),
+                BackColor = System.Drawing.Color.FromArgb(48, 48, 48),
+                Margin = new Padding(10),
+                Font = new Font("Nunito", 16, FontStyle.Regular),
+            };
+
+            Label label = new Label
+            {
+
+                Text = item.Nombre,
+                ForeColor = System.Drawing.Color.FromArgb(218, 218, 28),
+                AutoSize = true,
+                TextAlign = ContentAlignment.TopCenter,
+                Location = new Point(10, 10),
+                BackColor = Color.Transparent
+            };
+
+            RoundButton remove = new RoundButton
+            {
+                Text = "🗑️",
+                BackColor = System.Drawing.Color.FromArgb(48, 48, 48),
+                ForeColor = System.Drawing.Color.FromArgb(218, 218, 28),
+                Size = new Size(30, 40),
+                Location = new Point(170, 60),
+
+                FlatStyle = FlatStyle.Flat,
+            };
+
+            remove.FlatAppearance.BorderColor = Color.FromArgb(48, 48, 48);
+            remove.FlatAppearance.BorderSize = 1;
+
+            card.Controls.Add(label);
+            card.Controls.Add(remove);
+            cardsContainerFL.Controls.Add(card);
+
+
+
+            // Evento para eliminar la card
+            remove.Click += (s, e) =>
+            {
+                RoundButton btn = (RoundButton)s;
+                Panel parentCard = (Panel)btn.Parent;
+                cardsContainerFL.Controls.Remove(parentCard);
+                parentCard.Dispose(); // opcional
+            };
+
+            if (filtro == "Flete")
+            {
+                campos.Clear();
+                camposFaltantesTabla.Clear();
+                this.campos = new List<string> { "Fecha", "Origen", "Destino", "RTO o CPE", "Carga", "Km", "Kg", "Tarifa", "Factura", "Comisión", "Cliente" };
+                cantCamposTabla = campos.Count();
+
+
+                this.camposFaltantesTabla = new List<string> { "Total", "Total comisión" };
+            }
+
+            card.Click += (s, e) =>
+            {
+                this.Hide();
+                ViajeFiltro form = new ViajeFiltro(item.Nombre
+                   , cantCamposTabla, campos, filtro, camposFaltantesTabla);
+                form.TopLevel = true;
+                form.ShowDialog();
+            };
+        }
+        buttonBack.Click += (s, e) => ButtonNewAddProperties();
+        buttonBack.Visible = true;
+        buttonAddNew.Visible = false;
+        formCargarSection.Visible = false;
+        this.Controls.Add(buttonBack);
+        ButtonProperties();
+    }
+
+
+
+
+
 
     //AGREGAR CARD
     public async void GetFilterInfoAsync(string filtro, string info)
