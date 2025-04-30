@@ -243,10 +243,10 @@ namespace Proyecto_camiones.Presentacion.Services
                 return Result<List<ViajeDTO>>.Failure($"Error al obtener viajes por camión: {ex.Message}");
             }
         }
-        public async Task<Result<List<ViajeDTO>>> ObtenerPorClienteAsync(int idCliente)
+        public async Task<Result<List<ViajeMixtoDTO>>> ObtenerPorClienteAsync(int idCliente)
         {
             if (idCliente < 0)
-                return Result<List<ViajeDTO>>.Failure(MensajeError.idInvalido(idCliente));
+                return Result<List<ViajeMixtoDTO>>.Failure(MensajeError.idInvalido(idCliente));
             
             try
             {
@@ -254,14 +254,14 @@ namespace Proyecto_camiones.Presentacion.Services
                 
                 var clienteResult = await _clienteService.ObtenerPorIdAsync(idCliente);
                 if (clienteResult == null)
-                    return Result<List<ViajeDTO>>.Failure($"El cliente especificado no existe: {clienteResult}");
+                    return Result<List<ViajeMixtoDTO>>.Failure($"El cliente especificado no existe: {clienteResult}");
                 
                 var viajes = await _viajeRepository.ObtenerPorClienteAsync(idCliente);
-                return Result<List<ViajeDTO>>.Success(viajes);
+                return Result<List<ViajeMixtoDTO>>.Success(viajes);
             }
             catch (Exception ex)
             {
-                return Result<List<ViajeDTO>>.Failure($"Error al obtener viajes por cliente: {ex.Message}");
+                return Result<List<ViajeMixtoDTO>>.Failure($"Error al obtener viajes por cliente: {ex.Message}");
             }
         }
 

@@ -204,19 +204,19 @@ namespace Proyecto_camiones.Presentacion
             //}
 
             //OBTENER TODOS
-            var fleteros = await fvm.ObtenerTodosAsync();
-            if (fleteros.IsSuccess)
-            {
-                List<Flete> fletes = fleteros.Value;
-                foreach(Flete f in fletes)
-                {
-                    Console.WriteLine(f.ToString());
-                }
-            }
-            else
-            {
-                Console.WriteLine(fleteros.Error);
-            }
+            //var fleteros = await fvm.ObtenerTodosAsync();
+            //if (fleteros.IsSuccess)
+            //{
+            //    List<Flete> fletes = fleteros.Value;
+            //    foreach(Flete f in fletes)
+            //    {
+            //        Console.WriteLine(f.ToString());
+            //    }
+            //}
+            //else
+            //{
+            //    Console.WriteLine(fleteros.Error);
+            //}
 
             //try
             //{
@@ -257,7 +257,7 @@ namespace Proyecto_camiones.Presentacion
             //    Console.WriteLine($"Stack Trace: {ex.StackTrace}");
             //}
 
-            //ClienteViewModel clientevm = new ClienteViewModel();
+            ClienteViewModel clientevm = new ClienteViewModel();
             //var response = await clientevm.ObtenerTodosAsync();
             //if (response.IsSuccess)
             //{
@@ -265,6 +265,20 @@ namespace Proyecto_camiones.Presentacion
             //    {
             //        Console.WriteLine(c.ToString());
             //    }
+            //}
+
+            //OBTENER TODOS LOS VIAJES DE UN CLIENTE
+            //var viajes = await clientevm.ObtenerViajesDeUnCliente("cooperativa");
+            //if (viajes.IsSuccess)
+            //{
+            //    foreach(ViajeMixtoDTO viaje in viajes.Value)
+            //    {
+            //        Console.WriteLine(viaje.ToString());
+            //    }
+            //}
+            //else
+            //{
+            //    Console.WriteLine(viajes.Error);
             //}
         }
     }

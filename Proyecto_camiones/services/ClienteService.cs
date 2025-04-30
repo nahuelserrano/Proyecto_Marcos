@@ -14,12 +14,14 @@ namespace Proyecto_camiones.Presentacion.Services
     public class ClienteService
     {
         private ClienteRepository _clienteRepository;
-        //private ViajeFleteRepository _viajeFleteRepository;
+        private ViajeFleteRepository _viajeFleteRepository;
+        private ViajeRepository _viajeRepository;
 
         public ClienteService(ClienteRepository clienteRepository)
         {
             this._clienteRepository = clienteRepository ?? throw new ArgumentNullException(nameof(_clienteRepository));
-            //this._viajeFleteRepository = new ViajeFleteRepository();
+            this._viajeFleteRepository = new ViajeFleteRepository();
+            this._viajeRepository = new ViajeRepository(General.obtenerInstancia());
         }
 
         public async Task<bool> ProbarConexionAsync()
@@ -81,24 +83,23 @@ namespace Proyecto_camiones.Presentacion.Services
             return Result<Cliente>.Failure("No existe un cliente con ese id");
         }
 
-        /*
+        
         internal async Task<Result<List<ViajeMixtoDTO>>> ObtenerViajesDeUnCliente(string cliente)
         {
-            Cliente c = _clienteRepository.ObtenerPorNombre(cliente).Result;
+            Cliente? c = _clienteRepository.ObtenerPorNombre(cliente).Result;
             if(c != null)
             {
-                List<ViajeMixtoDTO> viajesFlete = this._viajeFleteRepository.ObtenerViajesDeUnCliente(c.Id).Result;
-                //List<ViajeMixtoDTO> viajes = this._viajeRepository.ObtenerPorClienteAsync(c.Id);
-                //viajesFlete.AddRange(viajes);
-                if(viajesFlete != null)
+                List<ViajeMixtoDTO> viajesFlete = await this._viajeFleteRepository.ObtenerViajesDeUnCliente(c.Id);
+                List<ViajeMixtoDTO> viajes = await this._viajeRepository.ObtenerViajeMixtoPorClienteAsync(c.Id);
+                if(viajesFlete != null && viajes != null)
                 {
+                    viajesFlete.AddRange(viajes);
                     return Result<List<ViajeMixtoDTO>>.Success(viajesFlete);
                 }
-                return Result<List<ViajeMixtoDTO>>.Failure("Hubo un error al obtener los viajes");
+                return Result<List<ViajeMixtoDTO>>.Failure("No se pudieron obtener los viajes");
             }
             return Result<List<ViajeMixtoDTO>>.Failure("No existe un cliente con ese nombre");
         }
-        */
 
         public async Task<Result<List<Cliente>>> ObtenerTodosAsync()
         {

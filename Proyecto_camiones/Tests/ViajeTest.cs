@@ -242,7 +242,7 @@ namespace Proyecto_camiones.Presentacion
                     Console.WriteLine($"[ÉXITO] Viajes encontrados: {resultado.Value.Count}");
                     foreach (var viaje in resultado.Value)
                     {
-                        Console.WriteLine($"  - {viaje.FechaInicio}: {viaje.LugarPartida} → {viaje.Destino} (${viaje.PrecioViaje:F2})");
+                        Console.WriteLine($"  - {viaje.Fecha_salida}: {viaje.Origen} → {viaje.Destino} (${viaje.Tarifa:F2})");
                     }
                 }
                 else

@@ -390,7 +390,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
         }
 
-        public async Task<List<ViajeDTO>> ObtenerPorClienteAsync(int clienteId)
+        public async Task<List<ViajeMixtoDTO>> ObtenerPorClienteAsync(int clienteId)
         {
             try
             {
@@ -399,19 +399,23 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     .AsNoTracking()
                     .Include(v => v.ClienteNavigation)
                     .Where(v => v.Cliente == clienteId)
-                    .Select(v => new ViajeDTO
-                    {
-                        FechaInicio = v.FechaInicio,
-                        LugarPartida = v.LugarPartida,
-                        Destino = v.Destino,
-                        Remito = v.Remito,
-                        Kg = v.Kg,
-                        Carga = v.Carga,
-                        NombreCliente = v.ClienteNavigation.Nombre,
-                        NombreChofer = v.NombreChofer,
-                        Km = v.Km,
-                        Tarifa = v.Tarifa,
-                    }).ToListAsync();
+                    .Join(
+                    this._context.Camiones,
+                    v=> v.Camion,
+                    c=> c.Id,
+                    (v,c) => new ViajeMixtoDTO
+                    (
+                       v.LugarPartida,
+                       v.Destino,
+                       v.FechaInicio,
+                       v.Remito,
+                       v.NombreChofer,
+                       v.Carga,
+                       v.Km,
+                       v.Kg,
+                       v.Tarifa,
+                       c.Patente
+                    )).ToListAsync();
 
                 return viajes;
             }
@@ -419,7 +423,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             {
                 Console.WriteLine($"Error al obtener viajes por cliente: {ex.Message}");
                 Console.WriteLine(ex.InnerException);
-                return new List<ViajeDTO>();
+                return null;
             }
         }
 

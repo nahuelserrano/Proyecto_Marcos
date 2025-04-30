@@ -211,12 +211,12 @@ namespace Proyecto_camiones.ViewModels
             return Result<List<ViajeDTO>>.Failure("La conexión no pudo establecerse");
         }
 
-        public async Task<Result<List<ViajeDTO>>> ObtenerPorClienteAsync(int clienteId)
+        public async Task<Result<List<ViajeMixtoDTO>>> ObtenerPorClienteAsync(int clienteId)
         {
             if (await this.TestearConexion())
                 return await _viajeService.ObtenerPorClienteAsync(clienteId);
 
-            return Result<List<ViajeDTO>>.Failure("La conexión no pudo establecerse");
+            return Result<List<ViajeMixtoDTO>>.Failure("La conexión no pudo establecerse");
         }
 
         public async Task<Result<List<ViajeDTO>>> ObtenerPorChoferAsync(string nombreChofer)

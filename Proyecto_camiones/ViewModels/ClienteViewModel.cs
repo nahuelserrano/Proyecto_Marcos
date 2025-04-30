@@ -69,16 +69,14 @@ namespace Proyecto_camiones.ViewModels
             return Result<bool>.Failure("No se pudo establecer la conexión");
         } 
 
-        /*
         public async Task<Result<List<ViajeMixtoDTO>>> ObtenerViajesDeUnCliente(string cliente)
         {
             if (await this.testearConexion())
             {
-                return await this.clienteService.ObtenerViajesDeUnCliente(cliente.ToUpper());
+                return await this._clienteService.ObtenerViajesDeUnCliente(cliente.ToUpper());
             }
             return Result<List<ViajeMixtoDTO>>.Failure("No se pudo establecer la conexión");
         }
-        */
 
         public async Task<Result<List<Cliente>>> ObtenerTodosAsync()
         {

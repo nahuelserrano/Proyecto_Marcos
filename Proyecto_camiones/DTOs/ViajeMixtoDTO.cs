@@ -67,7 +67,7 @@ namespace Proyecto_camiones.DTOs
         override
             public String ToString()
         {
-            return "Origen: " + this.Origen + ", DESTINO: " + this.Destino + " , TOTAL: " + this.Total + ", TOTAL COMISION: " + this.Total_comision + " , FLETERO:" + this.Fletero;
+            return "Origen: " + this.Origen + ", DESTINO: " + this.Destino + " , TOTAL: " + this.Total + ", TOTAL COMISION: " + this.Total_comision + " , FLETERO:" + this.Fletero+" , PATENTE CAMIÓN: "+this.Camion;
         }
     }
 }
