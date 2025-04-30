@@ -184,6 +184,7 @@ internal class Viaje : Home
         }
         else if (filtro == "Cliente")
         {
+<<<<<<< HEAD
             //ClienteViewModel cvm = new ClienteViewModel();
             //var resultado = await cvm.ObtenerById(1);
 
@@ -195,6 +196,19 @@ internal class Viaje : Home
             //{
             //    MessageBox.Show("No se pudo obtener la lista de camiones");
             //}
+=======
+            ClienteViewModel cvm = new ClienteViewModel();
+            var resultado = await cvm.ObtenerTodosAsync();
+
+            if (resultado.IsSuccess)
+            {
+                //CardClienteGenerator("Cliente", resultado);
+            }
+            else
+            {
+                MessageBox.Show("No se pudo obtener la lista de camiones");
+            }
+>>>>>>> dc993c3d9b49e391fac64595d303ca266c865390
         }
         else if (filtro == "Flete")
         {
@@ -490,21 +504,24 @@ internal class Viaje : Home
             }
             else if (filtro == "Cliente")
             {
+                MessageBox.Show("hola if del filtro cliente");
                 ClienteViewModel cmv = new ClienteViewModel();
                 var idCliente = await cmv.InsertarCliente(info);
 
                 if (idCliente.IsSuccess) {
 
-                    var resultado = await cvm.ObtenerPorId(idCliente.Value);
+                    var resultado = await cmv.ObtenerById(idCliente.Value);
 
                     if (resultado.IsSuccess && i == 0)
                     {
                         i = 1;
-
+                        Cliente cliente = resultado.Value;
+                        MessageBox.Show(cliente.ToString());
                     }
                     else
                     {
-                        MessageBox.Show("No se pudo obtener el camión");
+                        MessageBox.Show("No se pudo obtener el cliente");
+                        MessageBox.Show(resultado.Error);
                     }
                 }
                 else
@@ -515,8 +532,27 @@ internal class Viaje : Home
             }
             else if (filtro == "Flete")
             {
-                
-                fletes.Add(info);
+                MessageBox.Show("hola filtro de flete");
+                FleteViewModel fvm = new FleteViewModel();
+                var response = await fvm.InsertarFletero(info);
+                if (response.IsSuccess)
+                {
+                    int idfletero = response.Value;
+                    MessageBox.Show("id: " + idfletero);
+                    var fletero = await fvm.ObtenerPorIdAsync(idfletero);
+                    if (fletero.IsSuccess)
+                    {
+                        MessageBox.Show("Fletero con el nombre: "+fletero.Value.nombre+" y id: "+ fletero.Value.Id+" insertado correctamente");
+                    }
+                    else
+                    {
+                        MessageBox.Show(fletero.Error);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(response.Error);
+                }
             }
         }
         ObtenerTodosSegunFiltro(filtro, info);

@@ -99,5 +99,19 @@ namespace Proyecto_camiones.Presentacion.Services
             return Result<List<ViajeMixtoDTO>>.Failure("No existe un cliente con ese nombre");
         }
         */
+
+        public async Task<Result<List<Cliente>>> ObtenerTodosAsync()
+        {
+            List<Cliente> clientes = await this._clienteRepository.ObtenerTodos();
+            if (clientes != null)
+            {
+                return Result<List<Cliente>>.Success(clientes);
+            }
+            else
+            {
+                return Result<List<Cliente>>.Failure("No se pudieron obtener los clientes");
+            }
+        }
     }
+
 }

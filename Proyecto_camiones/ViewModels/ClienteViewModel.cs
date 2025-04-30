@@ -32,7 +32,7 @@ namespace Proyecto_camiones.ViewModels
         {
             if (await this.testearConexion())
             {
-                var resultado = await this._clienteService.InsertarAsync(nombre);
+                var resultado = await this._clienteService.InsertarAsync(nombre.ToUpper());
 
                 // Ahora puedes acceder al resultado
                 if (resultado.IsSuccess)
@@ -79,6 +79,16 @@ namespace Proyecto_camiones.ViewModels
             return Result<List<ViajeMixtoDTO>>.Failure("No se pudo establecer la conexión");
         }
         */
+
+        public async Task<Result<List<Cliente>>> ObtenerTodosAsync()
+        {
+            bool conexion = await this.testearConexion();
+            if (conexion)
+            {
+                return await this._clienteService.ObtenerTodosAsync();
+            }
+            return Result<List<Cliente>>.Failure("No se pudo establecer la conexión");
+        }
 
     }
 }
