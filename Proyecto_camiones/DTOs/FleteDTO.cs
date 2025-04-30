@@ -18,9 +18,5 @@ namespace Proyecto_camiones.DTOs
             Nombre = "default";
             // Constructor vacío
         }
-<<<<<<< HEAD
-=======
-
->>>>>>> dc993c3d9b49e391fac64595d303ca266c865390
     }
 }

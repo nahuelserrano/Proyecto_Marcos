@@ -32,12 +32,17 @@ namespace AplicacionCamiones.Front
             btnVolver.Font = new Font("Nunito", 16, FontStyle.Regular);
             btnVolver.BackColor = System.Drawing.Color.FromArgb(48, 48, 48);
             btnVolver.ForeColor = System.Drawing.Color.FromArgb(218, 218, 28);
+
             btnVolver.Click += (s, e) =>
             {
                 this.Hide();
-                int cantCamposTabla = 0;
-                List<string> campos = new List<string>();
-                List<string> camposFaltantesTabla = new List<string>();
+
+                List<string> campos = new List<string> { "Fecha", "Origen", "Destino", "RTO o CPE", "Carga", "Km", "Kg", "Tarifa", "Chofer", "Camión", "Flete" };
+                int cantCamposTabla = campos.Count;
+
+                List<string> camposFaltantesTabla = new List<string> { "Total" };
+
+                ViajeFiltro form = new ViajeFiltro(dato, cantCamposTabla, campos, filtro, camposFaltantesTabla);
 
                 this.Controls.Add(btnVolver);
             };

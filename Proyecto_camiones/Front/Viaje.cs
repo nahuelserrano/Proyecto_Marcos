@@ -184,49 +184,122 @@ internal class Viaje : Home
         }
         else if (filtro == "Cliente")
         {
-<<<<<<< HEAD
-            //ClienteViewModel cvm = new ClienteViewModel();
-            //var resultado = await cvm.ObtenerById(1);
-
-            //if (resultado.IsSuccess)
-            //{
-            //    CardClienteGenerator("Cliente", resultado);
-            //}
-            //else
-            //{
-            //    MessageBox.Show("No se pudo obtener la lista de camiones");
-            //}
-=======
             ClienteViewModel cvm = new ClienteViewModel();
             var resultado = await cvm.ObtenerTodosAsync();
 
             if (resultado.IsSuccess)
             {
-                //CardClienteGenerator("Cliente", resultado);
+                CardClienteGenerator("Cliente", resultado);
             }
             else
             {
                 MessageBox.Show("No se pudo obtener la lista de camiones");
             }
->>>>>>> dc993c3d9b49e391fac64595d303ca266c865390
         }
         else if (filtro == "Flete")
         {
-            //FleteViewModel fvm = new FleteViewModel();
-            //var resultado = await fvm.ObtenerTodos();
-            //if (resultado.IsSuccess)
-            //{
-            //    CardCamionGenerator("Flete", resultado);
-            //}
-            //else
-            //{
-            //    MessageBox.Show("No se pudo obtener la lista de fletero");
-            //}
+            FleteViewModel fvm = new FleteViewModel();
+            var resultado = await fvm.ObtenerTodosAsync();
+            if (resultado.IsSuccess)
+            {
+                CardCamionGenerator("Flete", resultado);
+            }
+            else
+            {
+                MessageBox.Show("No se pudo obtener la lista de fletero");
+            }
         }
+    }
+
+    private void CardCamionGenerator(string filtro, Result<List<Flete>> resultado)
+    {
+        cardsContainerFL.Controls.Clear();
+        foreach (var item in resultado.Value)
+        {
+            Panel card = new Panel
+            {
+                Size = new Size(200, 100),
+                BackColor = System.Drawing.Color.FromArgb(48, 48, 48),
+                Margin = new Padding(10),
+                Font = new Font("Nunito", 16, FontStyle.Regular),
+            };
+
+            Label label = new Label
+            {
+
+                Text = item.nombre,
+                ForeColor = System.Drawing.Color.FromArgb(218, 218, 28),
+                AutoSize = true,
+                TextAlign = ContentAlignment.TopCenter,
+                Location = new Point(10, 10),
+                BackColor = Color.Transparent
+            };
+
+            RoundButton remove = new RoundButton
+            {
+                Text = "🗑️",
+                BackColor = System.Drawing.Color.FromArgb(48, 48, 48),
+                ForeColor = System.Drawing.Color.FromArgb(218, 218, 28),
+                Size = new Size(30, 40),
+                Location = new Point(170, 60),
+
+                FlatStyle = FlatStyle.Flat,
+            };
+
+            remove.FlatAppearance.BorderColor = Color.FromArgb(48, 48, 48);
+            remove.FlatAppearance.BorderSize = 1;
+
+            card.Controls.Add(label);
+            card.Controls.Add(remove);
+            cardsContainerFL.Controls.Add(card);
+
+
+
+            // Evento para eliminar la card
+            remove.Click += (s, e) =>
+            {
+                RoundButton btn = (RoundButton)s;
+                Panel parentCard = (Panel)btn.Parent;
+                cardsContainerFL.Controls.Remove(parentCard);
+                parentCard.Dispose(); // opcional
+            };
+
+            if (filtro == "Flete")
+            {
+                campos.Clear();
+                camposFaltantesTabla.Clear();
+                this.campos = new List<string> { "Fecha", "Origen", "Destino", "RTO o CPE", "Carga", "Km", "Kg", "Tarifa", "Factura", "Comisión", "Cliente" };
+                cantCamposTabla = campos.Count();
+
+
+                this.camposFaltantesTabla = new List<string> { "Total", "Total comisión" };
+            }
+
+            card.Click += (s, e) =>
+            {
+                this.Hide(); // opcional, si querés ocultar la ventana actual
+                using ViajeFiltro form = new ViajeFiltro(item.nombre, cantCamposTabla, campos, filtro, camposFaltantesTabla);
+
+                form.TopLevel = true;
+                form.ShowDialog();
+               
+                //this.Hide();
+                //ViajeFiltro form = new ViajeFiltro(item.nombre, cantCamposTabla, campos, filtro, camposFaltantesTabla);
+                //form.TopLevel = true;
+                //form.ShowDialog();
+            };
+        }
+        buttonBack.Click += (s, e) => ButtonNewAddProperties();
+        buttonBack.Visible = true;
+        buttonAddNew.Visible = false;
+        formCargarSection.Visible = false;
+        this.Controls.Add(buttonBack);
+        ButtonProperties();
     }
 
     private void CardCamionGenerator(string filtro, Result<List<CamionDTO?>> resultado)
     {
+        cardsContainerFL.Controls.Clear();
         foreach (var item in resultado.Value)
         {
             Panel card = new Panel
@@ -303,88 +376,9 @@ internal class Viaje : Home
         ButtonProperties();
     }
 
-    //private void CardClienteGenerator(string filtro, Result<List<ClienteDTO>> resultado)
-    //{
-    //    string dato = " ";
-    //    foreach (var item in resultado.Value)
-    //    {
-    //        Panel card = new Panel
-    //        {
-    //            Size = new Size(200, 100),
-    //            BackColor = System.Drawing.Color.FromArgb(48, 48, 48),
-    //            Margin = new Padding(10),
-    //            Font = new Font("Nunito", 16, FontStyle.Regular),
-    //        };
-
-    //        Label label = new Label
-    //        {
-
-    //            Text = item.Patente,
-    //            ForeColor = System.Drawing.Color.FromArgb(218, 218, 28),
-    //            AutoSize = true,
-    //            TextAlign = ContentAlignment.TopCenter,
-    //            Location = new Point(10, 10),
-    //            BackColor = Color.Transparent
-    //        };
-
-    //        RoundButton remove = new RoundButton
-    //        {
-    //            Text = "🗑️",
-    //            BackColor = System.Drawing.Color.FromArgb(48, 48, 48),
-    //            ForeColor = System.Drawing.Color.FromArgb(218, 218, 28),
-    //            Size = new Size(30, 40),
-    //            Location = new Point(170, 60),
-
-    //            FlatStyle = FlatStyle.Flat,
-    //        };
-
-    //        remove.FlatAppearance.BorderColor = Color.FromArgb(48, 48, 48);
-    //        remove.FlatAppearance.BorderSize = 1;
-
-    //        card.Controls.Add(label);
-    //        card.Controls.Add(remove);
-    //        cardsContainerFL.Controls.Add(card);
-
-
-
-    //        // Evento para eliminar la card
-    //        remove.Click += (s, e) =>
-    //        {
-    //            RoundButton btn = (RoundButton)s;
-    //            Panel parentCard = (Panel)btn.Parent;
-    //            cardsContainerFL.Controls.Remove(parentCard);
-    //            parentCard.Dispose(); // opcional
-    //        };
-
-    //        if (filtro == "Cliente")
-    //        {
-    //            campos.Clear();
-    //            camposFaltantesTabla.Clear();
-    //            this.campos = new List<string> { "Fecha", "Origen", "Destino", "RTO o CPE", "Carga", "Km", "Kg", "Tarifa", "Chofer", "Camión", "Flete" };
-    //            cantCamposTabla = campos.Count();
-
-
-    //            this.camposFaltantesTabla = new List<string> { "Total" };
-    //        }
-
-    //        card.Click += (s, e) =>
-    //        {
-    //            this.Hide();
-    //            ViajeFiltro form = new ViajeFiltro(item.Patente, cantCamposTabla, campos, filtro, camposFaltantesTabla);
-    //            form.TopLevel = true;
-    //            form.ShowDialog();
-    //        };
-    //    }
-    //    buttonBack.Click += (s, e) => ButtonNewAddProperties();
-    //    buttonBack.Visible = true;
-    //    buttonAddNew.Visible = false;
-    //    formCargarSection.Visible = false;
-    //    this.Controls.Add(buttonBack);
-    //    ButtonProperties();
-    //}
-
-    private void CardFleteGenerator(string filtro, Result<List<FleteDTO>> resultado)
+    private void CardClienteGenerator(string filtro, Result<List<Cliente>> resultado)
     {
+        cardsContainerFL.Controls.Clear();
         foreach (var item in resultado.Value)
         {
             Panel card = new Panel
@@ -425,7 +419,6 @@ internal class Viaje : Home
             cardsContainerFL.Controls.Add(card);
 
 
-
             // Evento para eliminar la card
             remove.Click += (s, e) =>
             {
@@ -435,22 +428,21 @@ internal class Viaje : Home
                 parentCard.Dispose(); // opcional
             };
 
-            if (filtro == "Flete")
+            if (filtro == "Cliente")
             {
                 campos.Clear();
                 camposFaltantesTabla.Clear();
-                this.campos = new List<string> { "Fecha", "Origen", "Destino", "RTO o CPE", "Carga", "Km", "Kg", "Tarifa", "Factura", "Comisión", "Cliente" };
+                this.campos = new List<string> { "Fecha", "Origen", "Destino", "RTO o CPE", "Carga", "Km", "Kg", "Tarifa", "Chofer", "Camión", "Flete" };
                 cantCamposTabla = campos.Count();
 
 
-                this.camposFaltantesTabla = new List<string> { "Total", "Total comisión" };
+                this.camposFaltantesTabla = new List<string> { "Total" };
             }
 
             card.Click += (s, e) =>
             {
                 this.Hide();
-                ViajeFiltro form = new ViajeFiltro(item.Nombre
-                   , cantCamposTabla, campos, filtro, camposFaltantesTabla);
+                ViajeFiltro form = new ViajeFiltro(item.Nombre, cantCamposTabla, campos, filtro, camposFaltantesTabla);
                 form.TopLevel = true;
                 form.ShowDialog();
             };
@@ -462,10 +454,6 @@ internal class Viaje : Home
         this.Controls.Add(buttonBack);
         ButtonProperties();
     }
-
-
-
-
 
 
     //AGREGAR CARD
@@ -504,11 +492,11 @@ internal class Viaje : Home
             }
             else if (filtro == "Cliente")
             {
-                MessageBox.Show("hola if del filtro cliente");
+              
                 ClienteViewModel cmv = new ClienteViewModel();
                 var idCliente = await cmv.InsertarCliente(info);
 
-                if (idCliente.IsSuccess) {
+                if (idCliente.IsSuccess) { 
 
                     var resultado = await cmv.ObtenerById(idCliente.Value);
 
@@ -532,16 +520,15 @@ internal class Viaje : Home
             }
             else if (filtro == "Flete")
             {
-                MessageBox.Show("hola filtro de flete");
                 FleteViewModel fvm = new FleteViewModel();
                 var response = await fvm.InsertarFletero(info);
                 if (response.IsSuccess)
                 {
                     int idfletero = response.Value;
-                    MessageBox.Show("id: " + idfletero);
                     var fletero = await fvm.ObtenerPorIdAsync(idfletero);
                     if (fletero.IsSuccess)
                     {
+                        i = 1;
                         MessageBox.Show("Fletero con el nombre: "+fletero.Value.nombre+" y id: "+ fletero.Value.Id+" insertado correctamente");
                     }
                     else
