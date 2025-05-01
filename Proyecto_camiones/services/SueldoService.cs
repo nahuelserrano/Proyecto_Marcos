@@ -121,8 +121,6 @@ namespace Proyecto_camiones.Presentacion.Services
             }
             return Result<SueldoDTO>.Failure("No se pudo realizar la actualización");
         }
-       
-
     }
  }
  

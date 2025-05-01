@@ -102,12 +102,11 @@ namespace Proyecto_camiones.Repositories
                     pagoExistente.Pagado = true;
                     pagoExistente.Id_sueldo = id_Sueldo;
                     return true;
-
                 }
 
 
 
-
+                  
                 int registrosAfectados = this._context.SaveChanges();
                 if (registrosAfectados > 0)
                 {

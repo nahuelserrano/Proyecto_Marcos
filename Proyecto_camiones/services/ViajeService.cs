@@ -66,7 +66,8 @@ namespace Proyecto_camiones.Presentacion.Services
             int camion,
             float km,
             float tarifa,
-            string nombreChofer)
+            string nombreChofer,
+            double porcentajeChofer)
         {
             
             try{
@@ -84,31 +85,48 @@ namespace Proyecto_camiones.Presentacion.Services
                 
                 var clienteResult = await _clienteService.ObtenerPorIdAsync(cliente);
                 CamionDTO? camionResult = await _camionService.ObtenerPorIdAsync(camion);
-                var ChoferRsult = await _choferService.ObtenerPorNombreAsync(nombreChofer);
 
                 validador.ValidarExistencia(clienteResult.IsSuccess, camionResult != null);
 
                 Result<bool> resultadoValidacion = validador.ValidarCompleto();
 
                 if (!resultadoValidacion.IsSuccess)
-                {
                     return Result<int>.Failure(resultadoValidacion.Error);
-                }
+                
 
                 using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
+                    var obtenerChoferResult = await _choferService.ObtenerPorNombreAsync(nombreChofer);
+                    int idChofer;
+
+                    if (!obtenerChoferResult.IsSuccess)
+                    {
+                        Result<int> crearChoferResult = await _choferService.CrearAsync(nombreChofer);
+
+                        if (crearChoferResult.IsSuccess)
+                            idChofer = crearChoferResult.Value;
+                        else
+                            return Result<int>.Failure($"Error al crear el chofer: {crearChoferResult.Error}");
+                    }
+                    else
+                        idChofer = obtenerChoferResult.Value.Id;
+
                     // Crear el viaje
                     int id = await _viajeRepository.InsertarAsync(
                         fechaInicio, lugarPartida, destino, remito, kg,
-                        carga, cliente, camion, km, tarifa, nombreChofer);
+                        carga, cliente, camion, km, tarifa, nombreChofer, porcentajeChofer);
 
                     if (id == -1)
                         return Result<int>.Failure("No se pudo crear el viaje en la base de datos");
+
                     // Crear el pago asociado al viaje
+                    float pago_monto = (float)(tarifa * kg * porcentajeChofer);
 
-                    int idPago = await _pagoService.CrearAsync(ChoferRsult.Value.Id, id, tarifa * kg * 0.18f);
+                    int idPago = await _pagoService.CrearAsync(idChofer, id, pago_monto);
+                    //int idPago = await _pagoService.CrearAsync(idChofer, id, tarifa * kg, porcentajeChofer);
 
-                    if (idPago == -1)
+
+                    if (idPago <= 0)
                         return Result<int>.Failure("No se pudo crear el pago en la base de datos");
 
                     scope.Complete();

@@ -57,10 +57,6 @@ namespace Proyecto_camiones.ViewModels
             return Result<int>.Failure("La conexión no pude establecerse");
         }
 
-
-
-
-
         public async Task<Result<bool>> Eliminar(int id)
         {
             if (this.testearConexion().Result)

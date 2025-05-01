@@ -55,7 +55,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
             int camion,
             float km,
             float tarifa,
-            string nombreChofer
+            string nombreChofer,
+            double porcentajeChofer
             )
         {
             try
@@ -69,7 +70,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 var camionEntity = await _context.Camiones.FindAsync(camion);
 
                 var viaje = new Viaje(fechaInicio, lugarPartida, destino, remito, kg,
-                    carga, cliente, camion, km, tarifa, nombreChofer);
+                    carga, cliente, camion, km, tarifa, nombreChofer, porcentajeChofer);
 
                 _context.Viajes.Add(viaje);
 

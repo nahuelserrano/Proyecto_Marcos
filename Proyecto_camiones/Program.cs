@@ -16,6 +16,7 @@ using System.Data;
 using MySql.Data.MySqlClient;
 using Proyecto_camiones.Presentacion.Models;
 using System.Collections.Generic;
+using Proyecto_camiones.Tests;
 
 
 namespace Proyecto_camiones.Presentacion
@@ -245,8 +246,8 @@ namespace Proyecto_camiones.Presentacion
             //    //await ChoferTests.ProbarEliminarChofer(2);
 
             //    // VIAJE
-            //    //DateOnly fecha = new DateOnly(2025, 4, 28);
-            //    //int idViaje = await ViajeTests.ProbarInsertarViaje(fecha, "Tandil", "Buenos Aires", 123, 1000.5f, "Trigo", 1, 1, 350.5f, 5000.0f, "Chofer Test");
+            DateOnly fecha = new DateOnly(2025, 4, 28);
+            int idViaje = await ViajeTests.ProbarInsertarViaje(fecha, "Tandil", "Buenos Aires", 123, 1000.5f, "Trigo", 2, 2, 350.5f, 5000.0f, "Chofer Test", 0.18);
             //    //await ViajeTests.ProbarObtenerViajePorId(idViaje);
             //    //await ViajeTests.ProbarEliminarViaje(idViaje);
             //}
