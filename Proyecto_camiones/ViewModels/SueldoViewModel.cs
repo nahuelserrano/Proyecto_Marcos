@@ -31,7 +31,7 @@ namespace Proyecto_camiones.ViewModels
             return await this.sueldoService.ProbarConexionAsync();
         }
 
-        public async Task<Result<int>> InsertarSueldo(int Id_Chofer, DateOnly pagoDesde, DateOnly pagoHasta)
+        public async Task<Result<int>> CrearAsync(int Id_Chofer, DateOnly pagoDesde, DateOnly pagoHasta)
         {
             if (await this.testearConexion())
             {
@@ -61,7 +61,7 @@ namespace Proyecto_camiones.ViewModels
 
 
 
-        public async Task<Result<bool>> Eliminar(int id)
+        public async Task<Result<bool>> EliminarAsync(int id)
         {
             if (this.testearConexion().Result)
             {

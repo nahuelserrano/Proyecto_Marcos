@@ -31,7 +31,7 @@ namespace Proyecto_camiones.Services
             try
             {
 
-                int idPago = await _pagoRepository.Insertar(id_chofer, id_viaje, monto_pagado);
+                int idPago = await _pagoRepository.InsertarAsync(id_chofer, id_viaje, monto_pagado);
                 if (idPago > 0)
                 {
                     return idPago;
@@ -49,20 +49,23 @@ namespace Proyecto_camiones.Services
 
         }
 
-        //public async Task<bool> MarcarPagos(int id_chofer, DateOnly desde, DateOnly hasta, int id_Sueldo) {
-        //    try
-        //    {
+        public async Task<Result<bool>> MarcarPagos(int id_chofer, DateOnly desde, DateOnly hasta, int id_Sueldo) {
+            try
+            {
+                bool actualizado=await _pagoRepository.ActualizarAsync(id_chofer, desde, hasta, id_Sueldo);
+                if (actualizado) {
+                    return Result<bool>.Success(actualizado);
+                }
+                return Result<bool>.Failure("No se pudo marcar los pagos");
 
+            }
+            catch (Exception ex)
+            {
+                return Result<bool>.Failure("error al marcar como pagados los pagos correspondientes al sueldo");
+                Console.WriteLine($"Error al marcar los pagos: {ex.Message}");
+            }
 
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Manejo de excepciones
-        //        Console.WriteLine($"Error al marcar los pagos: {ex.Message}");
-        //    }
-
-        //}
+        }
 
 
 

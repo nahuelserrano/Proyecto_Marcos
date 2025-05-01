@@ -34,8 +34,8 @@ namespace Proyecto_camiones.Presentacion
             //PagoViewModel pw = new PagoViewModel();
             //float suel=  await pw.ObtenerSueldoCalculado(1, DateOnly.MinValue, DateOnly.MaxValue);
 
-            //SueldoViewModel sueldoViewModel = new SueldoViewModel();
-            //await sueldoViewModel.InsertarSueldo(1, DateOnly.MinValue, DateOnly.MaxValue);
+           SueldoViewModel sueldoViewModel = new SueldoViewModel();
+           await sueldoViewModel.CrearAsync(1, DateOnly.MinValue, DateOnly.MaxValue);
           //  Console.WriteLine("sueldo calculado : " + suel);
 
 

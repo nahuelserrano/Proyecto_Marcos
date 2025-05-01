@@ -43,7 +43,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
 
-        public async Task<int> Insertar(float monto, int Id_Chofer, DateOnly pagadoDesde, DateOnly pagadoHasta)
+        public async Task<int> InsertarAsync(float monto, int Id_Chofer, DateOnly pagadoDesde, DateOnly pagadoHasta)
         {
             try
             {
@@ -61,7 +61,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
                 if (registrosAfectados > 0)
                 {
-                    return 1;
+                    return sueldo.Id;
                 }
                 Console.WriteLine("No se insertó ningún registro");
                 return -1;
@@ -116,7 +116,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
 
-        public async Task<bool> Actualizar(int id,int id_Chofer, DateOnly? pagadoDesde = null, DateOnly? pagadoHasta = null, float? monto = null, DateOnly? FechaPago = null)
+        public async Task<bool> ActualizarAsync(int id,int id_Chofer, DateOnly? pagadoDesde = null, DateOnly? pagadoHasta = null, float? monto = null, DateOnly? FechaPago = null)
         {
             try
             {
@@ -167,7 +167,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 return false;
             }
         }
-        public async Task<bool> Eliminar(int id)
+        public async Task<bool> EliminarAsync(int id)
         {
             try
             {
