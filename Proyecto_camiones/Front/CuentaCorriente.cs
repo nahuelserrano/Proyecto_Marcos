@@ -10,7 +10,7 @@ namespace AplicacionCamiones.Front
         private RoundButton btnVolver = new RoundButton();
 
         public CuentaCorriente(string dato, string filtro)
-            : base(new List<string> { "Fecha", "Nro factura", "Pagó", "Debe" }, 4, dato, "cuenta corriente", new List<string> { "Total " })
+            : base(new List<string> { "Fecha", "Nro factura", "Pagó", "Debe" }, 4, dato, "cuenta corriente", new List<string> { "Total" })
         {
             InitializeUI(dato, filtro);
         }

@@ -93,7 +93,7 @@ internal class Viaje : Home
         clienteFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Cliente", " ");
         camionFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Camion", " ");
 
-       
+
     }
 
     public Viaje(string filtro)
@@ -175,7 +175,7 @@ internal class Viaje : Home
             var resultado = await cvm.ObtenerTodos();
             if (resultado.IsSuccess)
             {
-                CardCamionGenerator("Camion", resultado); 
+                CardCamionGenerator("Camion", resultado);
             }
             else
             {
@@ -216,164 +216,19 @@ internal class Viaje : Home
         cardsContainerFL.Controls.Clear();
         foreach (var item in resultado.Value)
         {
-            Panel card = new Panel
-            {
-                Size = new Size(200, 100),
-                BackColor = System.Drawing.Color.FromArgb(48, 48, 48),
-                Margin = new Padding(10),
-                Font = new Font("Nunito", 16, FontStyle.Regular),
-            };
-
-            Label label = new Label
-            {
-
-                Text = item.nombre,
-                ForeColor = System.Drawing.Color.FromArgb(218, 218, 28),
-                AutoSize = true,
-                TextAlign = ContentAlignment.TopCenter,
-                Location = new Point(10, 10),
-                BackColor = Color.Transparent
-            };
-
-            RoundButton remove = new RoundButton
-            {
-                Text = "🗑️",
-                BackColor = System.Drawing.Color.FromArgb(48, 48, 48),
-                ForeColor = System.Drawing.Color.FromArgb(218, 218, 28),
-                Size = new Size(30, 40),
-                Location = new Point(170, 60),
-
-                FlatStyle = FlatStyle.Flat,
-            };
-
-            remove.FlatAppearance.BorderColor = Color.FromArgb(48, 48, 48);
-            remove.FlatAppearance.BorderSize = 1;
-
-            card.Controls.Add(label);
-            card.Controls.Add(remove);
-            cardsContainerFL.Controls.Add(card);
-
-
-
-            // Evento para eliminar la card
-            remove.Click += (s, e) =>
-            {
-                RoundButton btn = (RoundButton)s;
-                Panel parentCard = (Panel)btn.Parent;
-                cardsContainerFL.Controls.Remove(parentCard);
-                parentCard.Dispose(); // opcional
-            };
-
-            if (filtro == "Flete")
-            {
-                campos.Clear();
-                camposFaltantesTabla.Clear();
-                this.campos = new List<string> { "Fecha", "Origen", "Destino", "RTO o CPE", "Carga", "Km", "Kg", "Tarifa", "Factura", "Comisión", "Cliente" };
-                cantCamposTabla = campos.Count();
-
-
-                this.camposFaltantesTabla = new List<string> { "Total", "Total comisión" };
-            }
-
-            card.Click += (s, e) =>
-            {
-                this.Hide(); // opcional, si querés ocultar la ventana actual
-                using ViajeFiltro form = new ViajeFiltro(item.nombre, cantCamposTabla, campos, filtro, camposFaltantesTabla);
-
-                form.TopLevel = true;
-                form.ShowDialog();
-               
-                //this.Hide();
-                //ViajeFiltro form = new ViajeFiltro(item.nombre, cantCamposTabla, campos, filtro, camposFaltantesTabla);
-                //form.TopLevel = true;
-                //form.ShowDialog();
-            };
+            GeneratorCard(item, filtro);
         }
-        buttonBack.Click += (s, e) => ButtonNewAddProperties();
-        buttonBack.Visible = true;
-        buttonAddNew.Visible = false;
-        formCargarSection.Visible = false;
-        this.Controls.Add(buttonBack);
-        ButtonProperties();
+        buttonsVisibleOrInvisible();
     }
 
-    private void CardCamionGenerator(string filtro, Result<List<CamionDTO?>> resultado)
+    private void CardCamionGenerator(string filtro, Result<List<CamionDTO>> resultado)
     {
         cardsContainerFL.Controls.Clear();
         foreach (var item in resultado.Value)
         {
-            Panel card = new Panel
-            {
-                Size = new Size(200, 100),
-                BackColor = System.Drawing.Color.FromArgb(48, 48, 48),
-                Margin = new Padding(10),
-                Font = new Font("Nunito", 16, FontStyle.Regular),
-            };
-
-            Label label = new Label
-            {
-               
-                Text = item.Patente,
-                ForeColor = System.Drawing.Color.FromArgb(218, 218, 28),
-                AutoSize = true,
-                TextAlign = ContentAlignment.TopCenter,
-                Location = new Point(10, 10),
-                BackColor = Color.Transparent
-            };
-
-            RoundButton remove = new RoundButton
-            {
-                Text = "🗑️",
-                BackColor = System.Drawing.Color.FromArgb(48, 48, 48),
-                ForeColor = System.Drawing.Color.FromArgb(218, 218, 28),
-                Size = new Size(30, 40),
-                Location = new Point(170, 60),
-
-                FlatStyle = FlatStyle.Flat,
-            };
-
-            remove.FlatAppearance.BorderColor = Color.FromArgb(48, 48, 48);
-            remove.FlatAppearance.BorderSize = 1;
-
-            card.Controls.Add(label);
-            card.Controls.Add(remove);
-            cardsContainerFL.Controls.Add(card);
-           
-
-
-            // Evento para eliminar la card
-            remove.Click += (s, e) =>
-            {
-                RoundButton btn = (RoundButton)s;
-                Panel parentCard = (Panel)btn.Parent;
-                cardsContainerFL.Controls.Remove(parentCard);
-                parentCard.Dispose(); // opcional
-            };
-
-            if (filtro == "Camion")
-            {
-                campos.Clear();
-                camposFaltantesTabla.Clear();
-                this.campos = new List<string> { "Fecha", "Origen", "Destino", "RTO o CPE", "Carga", "Km", "Kg", "Tarifa", "Porcentaje", "Chofer", "Cliente" };
-                cantCamposTabla = campos.Count();
-
-                this.camposFaltantesTabla = new List<string> { "Total", "Monto chofer" };
-            }
-
-            card.Click += (s, e) =>
-            {
-                this.Hide();
-                ViajeFiltro form = new ViajeFiltro(item.Patente, cantCamposTabla, campos, filtro, camposFaltantesTabla);
-                form.TopLevel = true;
-                form.ShowDialog();
-            };
+            GeneratorCard(item, filtro);
         }
-        buttonBack.Click += (s, e) => ButtonNewAddProperties();
-        buttonBack.Visible = true;
-        buttonAddNew.Visible = false;
-        formCargarSection.Visible = false;
-        this.Controls.Add(buttonBack);
-        ButtonProperties();
+        buttonsVisibleOrInvisible();
     }
 
     private void CardClienteGenerator(string filtro, Result<List<Cliente>> resultado)
@@ -381,72 +236,232 @@ internal class Viaje : Home
         cardsContainerFL.Controls.Clear();
         foreach (var item in resultado.Value)
         {
-            Panel card = new Panel
-            {
-                Size = new Size(200, 100),
-                BackColor = System.Drawing.Color.FromArgb(48, 48, 48),
-                Margin = new Padding(10),
-                Font = new Font("Nunito", 16, FontStyle.Regular),
-            };
+            GeneratorCard(item, filtro);
+        }
 
-            Label label = new Label
-            {
-
-                Text = item.Nombre,
-                ForeColor = System.Drawing.Color.FromArgb(218, 218, 28),
-                AutoSize = true,
-                TextAlign = ContentAlignment.TopCenter,
-                Location = new Point(10, 10),
-                BackColor = Color.Transparent
-            };
-
-            RoundButton remove = new RoundButton
-            {
-                Text = "🗑️",
-                BackColor = System.Drawing.Color.FromArgb(48, 48, 48),
-                ForeColor = System.Drawing.Color.FromArgb(218, 218, 28),
-                Size = new Size(30, 40),
-                Location = new Point(170, 60),
-
-                FlatStyle = FlatStyle.Flat,
-            };
-
-            remove.FlatAppearance.BorderColor = Color.FromArgb(48, 48, 48);
-            remove.FlatAppearance.BorderSize = 1;
-
-            card.Controls.Add(label);
-            card.Controls.Add(remove);
-            cardsContainerFL.Controls.Add(card);
+        buttonsVisibleOrInvisible();
+    }
 
 
-            // Evento para eliminar la card
-            remove.Click += (s, e) =>
+    //GENERADOR DE CARDS
+
+    private void GeneratorCard(Flete item, string filtro)
+    {
+        Panel card = new Panel
+        {
+            Size = new Size(200, 100),
+            BackColor = System.Drawing.Color.FromArgb(48, 48, 48),
+            Margin = new Padding(10),
+            Font = new Font("Nunito", 16, FontStyle.Regular),
+        };
+
+        Label label = new Label
+        {
+
+            Text = item.nombre,
+            ForeColor = System.Drawing.Color.FromArgb(218, 218, 28),
+            AutoSize = true,
+            TextAlign = ContentAlignment.TopCenter,
+            Location = new Point(10, 10),
+            BackColor = Color.Transparent
+        };
+
+        RoundButton remove = new RoundButton
+        {
+            Text = "🗑️",
+            BackColor = System.Drawing.Color.FromArgb(48, 48, 48),
+            ForeColor = System.Drawing.Color.FromArgb(218, 218, 28),
+            Size = new Size(30, 40),
+            Location = new Point(170, 60),
+
+            FlatStyle = FlatStyle.Flat,
+        };
+
+        remove.FlatAppearance.BorderColor = Color.FromArgb(48, 48, 48);
+        remove.FlatAppearance.BorderSize = 1;
+
+        card.Controls.Add(label);
+        card.Controls.Add(remove);
+        cardsContainerFL.Controls.Add(card);
+
+
+
+        // Evento para eliminar la card
+        remove.Click += (s, e) =>
+        {
+            DialogResult resultado = MessageBox.Show("Si elimina este flete todo lo relacionado también se eliminará. ¿Desea eliminarlo de todas formas?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (resultado == DialogResult.Yes)
             {
                 RoundButton btn = (RoundButton)s;
                 Panel parentCard = (Panel)btn.Parent;
                 cardsContainerFL.Controls.Remove(parentCard);
                 parentCard.Dispose(); // opcional
-            };
-
-            if (filtro == "Cliente")
-            {
-                campos.Clear();
-                camposFaltantesTabla.Clear();
-                this.campos = new List<string> { "Fecha", "Origen", "Destino", "RTO o CPE", "Carga", "Km", "Kg", "Tarifa", "Chofer", "Camión", "Flete" };
-                cantCamposTabla = campos.Count();
-
-
-                this.camposFaltantesTabla = new List<string> { "Total" };
             }
+        };
 
-            card.Click += (s, e) =>
+        campos.Clear();
+        camposFaltantesTabla.Clear();
+        this.campos = new List<string> { "Fecha", "Origen", "Destino", "RTO o CPE", "Carga", "Km", "Kg", "Tarifa", "Factura", "Comisión", "Cliente" };
+        cantCamposTabla = campos.Count();
+
+        this.camposFaltantesTabla = new List<string> { "Total", "Total comisión" };
+
+
+        card.Click += (s, e) =>
+        {
+            this.Hide();
+            ViajeFiltro form = new ViajeFiltro(item.nombre, cantCamposTabla, campos, filtro, camposFaltantesTabla);
+            form.TopLevel = true;
+            form.ShowDialog();
+        };
+    }
+
+    private void GeneratorCard(Cliente item, string filtro)
+    {
+        Panel card = new Panel
+        {
+            Size = new Size(200, 100),
+            BackColor = System.Drawing.Color.FromArgb(48, 48, 48),
+            Margin = new Padding(10),
+            Font = new Font("Nunito", 16, FontStyle.Regular),
+        };
+
+        Label label = new Label
+        {
+
+            Text = item.Nombre,
+            ForeColor = System.Drawing.Color.FromArgb(218, 218, 28),
+            AutoSize = true,
+            TextAlign = ContentAlignment.TopCenter,
+            Location = new Point(10, 10),
+            BackColor = Color.Transparent
+        };
+
+        RoundButton remove = new RoundButton
+        {
+            Text = "🗑️",
+            BackColor = System.Drawing.Color.FromArgb(48, 48, 48),
+            ForeColor = System.Drawing.Color.FromArgb(218, 218, 28),
+            Size = new Size(30, 40),
+            Location = new Point(170, 60),
+
+            FlatStyle = FlatStyle.Flat,
+        };
+
+        remove.FlatAppearance.BorderColor = Color.FromArgb(48, 48, 48);
+        remove.FlatAppearance.BorderSize = 1;
+
+        card.Controls.Add(label);
+        card.Controls.Add(remove);
+        cardsContainerFL.Controls.Add(card);
+
+
+        // Evento para eliminar la card
+        remove.Click += (s, e) =>
+        {
+            DialogResult resultado = MessageBox.Show("Si elimina este cliente todo lo relacionado también se eliminará. ¿Desea eliminarlo de todas formas?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (resultado == DialogResult.Yes)
             {
-                this.Hide();
-                ViajeFiltro form = new ViajeFiltro(item.Nombre, cantCamposTabla, campos, filtro, camposFaltantesTabla);
-                form.TopLevel = true;
-                form.ShowDialog();
-            };
-        }
+                RoundButton btn = (RoundButton)s;
+                Panel parentCard = (Panel)btn.Parent;
+                cardsContainerFL.Controls.Remove(parentCard);
+                parentCard.Dispose(); // opcional
+            }
+        };
+
+        campos.Clear();
+        camposFaltantesTabla.Clear();
+        this.campos = new List<string> { "Fecha", "Origen", "Destino", "RTO o CPE", "Carga", "Km", "Kg", "Tarifa", "Chofer", "Camión", "Flete" };
+        cantCamposTabla = campos.Count();
+
+
+        this.camposFaltantesTabla = new List<string> { "Total" };
+
+
+        card.Click += (s, e) =>
+        {
+            this.Hide();
+            ViajeFiltro form = new ViajeFiltro(item.Nombre, cantCamposTabla, campos, filtro, camposFaltantesTabla);
+            form.TopLevel = true;
+            form.ShowDialog();
+        };
+    }
+
+    private void GeneratorCard(CamionDTO item, string filtro)
+    {
+        Panel card = new Panel
+        {
+            Size = new Size(200, 100),
+            BackColor = System.Drawing.Color.FromArgb(48, 48, 48),
+            Margin = new Padding(10),
+            Font = new Font("Nunito", 16, FontStyle.Regular),
+        };
+
+        Label label = new Label
+        {
+
+            Text = item.Patente,
+            ForeColor = System.Drawing.Color.FromArgb(218, 218, 28),
+            AutoSize = true,
+            TextAlign = ContentAlignment.TopCenter,
+            Location = new Point(10, 10),
+            BackColor = Color.Transparent
+        };
+
+        RoundButton remove = new RoundButton
+        {
+            Text = "🗑️",
+            BackColor = System.Drawing.Color.FromArgb(48, 48, 48),
+            ForeColor = System.Drawing.Color.FromArgb(218, 218, 28),
+            Size = new Size(30, 40),
+            Location = new Point(170, 60),
+
+            FlatStyle = FlatStyle.Flat,
+        };
+
+        remove.FlatAppearance.BorderColor = Color.FromArgb(48, 48, 48);
+        remove.FlatAppearance.BorderSize = 1;
+
+        card.Controls.Add(label);
+        card.Controls.Add(remove);
+        cardsContainerFL.Controls.Add(card);
+
+
+
+        // Evento para eliminar la card
+        remove.Click += (s, e) =>
+        {
+            DialogResult resultado = MessageBox.Show("Si elimina este camión todo lo relacionado también se eliminará. ¿Desea eliminarlo de todas formas?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (resultado == DialogResult.Yes)
+            {
+                RoundButton btn = (RoundButton)s;
+                Panel parentCard = (Panel)btn.Parent;
+                cardsContainerFL.Controls.Remove(parentCard);
+                parentCard.Dispose(); // opcional
+            }
+        };
+
+
+        campos.Clear();
+        camposFaltantesTabla.Clear();
+        this.campos = new List<string> { "Fecha", "Origen", "Destino", "RTO o CPE", "Carga", "Km", "Kg", "Tarifa", "Porcentaje", "Chofer", "Cliente" };
+        cantCamposTabla = campos.Count();
+
+        this.camposFaltantesTabla = new List<string> { "Total", "Monto chofer" };
+
+
+        card.Click += (s, e) =>
+        {
+            this.Hide();
+            ViajeFiltro form = new ViajeFiltro(item.Patente, cantCamposTabla, campos, filtro, camposFaltantesTabla);
+            form.TopLevel = true;
+            form.ShowDialog();
+        };
+    }
+
+
+    private void buttonsVisibleOrInvisible()
+    {
         buttonBack.Click += (s, e) => ButtonNewAddProperties();
         buttonBack.Visible = true;
         buttonAddNew.Visible = false;
@@ -455,11 +470,10 @@ internal class Viaje : Home
         ButtonProperties();
     }
 
-
     //AGREGAR CARD
     public async void GetFilterInfoAsync(string filtro, string info)
     {
-         
+
         if (!string.IsNullOrWhiteSpace(info))
         {
             int i = 0;
@@ -475,13 +489,13 @@ internal class Viaje : Home
                     {
                         i = 1;
                         CamionDTO camion = resultado.Value;
-                        
+
                     }
                     else
                     {
                         MessageBox.Show("No se pudo obtener el camión");
                     }
-                    
+
                 }
                 else
                 {
@@ -492,11 +506,12 @@ internal class Viaje : Home
             }
             else if (filtro == "Cliente")
             {
-              
+
                 ClienteViewModel cmv = new ClienteViewModel();
                 var idCliente = await cmv.InsertarCliente(info);
 
-                if (idCliente.IsSuccess) { 
+                if (idCliente.IsSuccess)
+                {
 
                     var resultado = await cmv.ObtenerById(idCliente.Value);
 
@@ -529,7 +544,7 @@ internal class Viaje : Home
                     if (fletero.IsSuccess)
                     {
                         i = 1;
-                        MessageBox.Show("Fletero con el nombre: "+fletero.Value.nombre+" y id: "+ fletero.Value.Id+" insertado correctamente");
+                        MessageBox.Show("Fletero con el nombre: " + fletero.Value.nombre + " y id: " + fletero.Value.Id + " insertado correctamente");
                     }
                     else
                     {

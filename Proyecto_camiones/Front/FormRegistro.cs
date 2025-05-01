@@ -474,7 +474,6 @@ public class FormRegistro : Home
             {
                 cheq.Rows.RemoveAt(e.RowIndex);
             }
-
         }
     }
     private void ModificarFila(object sender, DataGridViewCellEventArgs e)
