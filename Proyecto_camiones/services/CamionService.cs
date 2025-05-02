@@ -61,16 +61,15 @@ namespace Proyecto_camiones.Presentacion.Services
                         return Result<int>.Success(response.Id);
                     }
 
-                    return Result<int>.Failure(
-                        "Error al insertar el chofer de ese camión, modifiquelo y vuelva a intentar");
+                    return Result<int>.Failure(MensajeError.ErrorCreacion("camión"));
                 }
-                return Result<int>.Failure("Hubo un error al crear el camion");
+               return Result<int>.Failure(MensajeError.ErrorCreacion("camión"));
             }
             catch (Exception ex)
             {
                 // Si algo sale mal, registrar el error y devolver un mensaje amigable
                 //Logger.LogError($"Error al crear camion: {ex.Message}"); 
-                return Result<int>.Failure("Hubo un error al crear el camion");
+                return Result<int>.Failure(MensajeError.ErrorCreacion("camión"));
             }
         }
 
@@ -93,7 +92,7 @@ namespace Proyecto_camiones.Presentacion.Services
             if (id <= 0)
                 return Result<CamionDTO>.Failure(MensajeError.idInvalido(id));
             if (patente == null && nombre == null)
-                return Result<CamionDTO>.Failure("No se han proporcionado datos para actualizar");
+                return Result<CamionDTO>.Failure(MensajeError.errorActualizacion("camión"));
             var camionExistente = await _camionRepository.ObtenerPorIdAsync(id);
 
             if (camionExistente == null) { 
@@ -106,7 +105,7 @@ namespace Proyecto_camiones.Presentacion.Services
                 CamionDTO result = await this._camionRepository.ObtenerPorIdAsync(id);
                 return Result<CamionDTO>.Success(result);
             }
-            return Result<CamionDTO>.Failure("No se pudo realizar la actualización");
+            return Result<CamionDTO>.Failure(MensajeError.objetoNulo(nameof(camionExistente)));
         }
 
         public async Task<Result<string>> EliminarAsync(int id)
@@ -115,7 +114,7 @@ namespace Proyecto_camiones.Presentacion.Services
             if(viajes.Count > 0)
             {
                 Console.WriteLine("entramos al if");
-                return Result<string>.Failure("No se puede eliminar el camión con el id:" + id + " porque el camión tiene viajes registrados");
+                return Result<string>.Failure("No se pudo eliminar el camión ya que el mismo tiene viajes a cargo");
             }
             bool success = await this._camionRepository.EliminarAsync(id);
             

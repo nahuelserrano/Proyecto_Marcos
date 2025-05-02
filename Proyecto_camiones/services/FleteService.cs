@@ -36,7 +36,7 @@ namespace Proyecto_camiones.Services
                 {
                     return Result<int>.Success(id);
                 }
-                return Result<int>.Failure("Hubo un problema al intentar insertar el fletero");
+                return Result<int>.Failure(MensajeError.ErrorCreacion("fletero"));
             }
             return Result<int>.Failure("El campo nombre no puede ser nulo");
         }
@@ -53,7 +53,7 @@ namespace Proyecto_camiones.Services
                 }
                 return Result<Flete>.Failure("No existe un fletero con ese nombre");
             }
-            return Result<Flete>.Failure("El nombre no puede ser nulo");
+            return Result<Flete>.Failure(MensajeError.atributoRequerido("nombre del fletero"));
         }
 
         internal async Task<Result<List<Flete>>> ObtenerTodosAsync()
@@ -63,14 +63,14 @@ namespace Proyecto_camiones.Services
             {
                 return Result<List<Flete>>.Success(fleteros);
             }
-            return Result<List<Flete>>.Failure("No se pudo realizar la petición a la base de datos");
+            return Result<List<Flete>>.Failure("Hubo un error al conectar con la base de datos");
         }
 
         internal async Task<Result<Flete>> ObtenerPorIdAsync(int id)
         {
             if (id < 0)
             {
-                return Result<Flete>.Failure("No existen ids negativos");
+                return Result<Flete>.Failure(MensajeError.idInvalido(id));
             }
             Flete fletero = await this.fleteRepository.ObtenerPorIdAsync(id);
             if (fletero != null)

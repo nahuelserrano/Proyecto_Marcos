@@ -51,6 +51,9 @@ namespace Proyecto_camiones.Presentacion.Utils
                 ? $"No existen registros de {entidad}"
                 : $"No existen registros de {entidad} con: {filtro}";
 
+        public static string ErrorCreacion(string entidad) =>
+            $"No se pudo crear el objeto {entidad}";
+
     }
 
 }
