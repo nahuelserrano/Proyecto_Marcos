@@ -64,5 +64,15 @@ namespace Proyecto_camiones.ViewModels
             }
             return Result<Flete>.Failure("No se pudo establecer la conexión con la base de datos");
         }
+
+        public async Task<Result<bool>> EliminarAsync(int id)
+        {
+            bool conexion = await this.TestearConexion();
+            if (conexion)
+            {
+                return await this.fleteService.EliminarAsync(id);
+            }
+            return Result<bool>.Failure("No se pudo establecer la conexión con la base de datos");
+        }
     }
 }

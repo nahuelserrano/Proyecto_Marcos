@@ -78,11 +78,15 @@ namespace Proyecto_camiones.Presentacion
             //}
 
             //PRUEBA ELIMINAR CAMION
-            //var response = await cvm.EliminarAsync(12);
-            //Console.WriteLine(response.Value);
-            //Console.WriteLine(response.Error);
-
-
+            //var response = await cvm.EliminarAsync(2);
+            //if (response.IsSuccess)
+            //{
+            //    Console.WriteLine(response.Value);
+            //}
+            //else
+            //{
+            //    Console.WriteLine(response.Error);
+            //}
 
             CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
 
@@ -166,9 +170,20 @@ namespace Proyecto_camiones.Presentacion
             //    Console.WriteLine(viajes.Error);
             //}
 
-            //ProbarInsertarViaje("Tandil", "Azul");
+            //ELIMINAR VIAJE POR FLETERO
+            //var response = await vfvm.EliminarAsync(12);
+            //if (response.IsSuccess)
+            //{
+            //    Console.WriteLine(response.Value);
+            //}
+            //else
+            //{
+            //    Console.WriteLine(response.Error);
+            //}
 
-            //ProbarInsertarChofer("Juan Alpaca");
+                //ProbarInsertarViaje("Tandil", "Azul");
+
+                //ProbarInsertarChofer("Juan Alpaca");
 
             FleteViewModel fvm = new FleteViewModel();
 
@@ -209,46 +224,60 @@ namespace Proyecto_camiones.Presentacion
             //    Console.WriteLine(fleteros.Error);
             //}
 
-            //try
+            //ELIMINAR FLETERO
+
+            //var response = await fvm.EliminarAsync(1);
+            //if (response.IsSuccess)
             //{
-
-            //    // Descomentar la prueba que se desea ejecutar
-
-            //    // PRUEBAS DE CLIENTE
-            //    //await ClienteTests.EjecutarTodasLasPruebas();
-
-            //    // PRUEBAS DE CHOFER
-            //    await ChoferTests.EjecutarTodasLasPruebas();
-
-            //    // PRUEBAS DE VIAJE
-            //    //await ViajeTests.EjecutarTodasLasPruebas();
-
-            //    // O EJECUTAR PRUEBAS INDIVIDUALES:
-
-            //    // CLIENTE
-            //    //int idCliente await ClienteTests.ProbarInsertarCliente("TRANSPORTES TEST");
-            //    //await ClienteTests.ProbarObtenerClientePorId(idCliente);
-            //    //await ClienteTests.ProbarEliminarCliente(idCliente);
-
-            //    // CHOFER
-            //    //await ChoferTests.ProbarInsertarChofer("Chofer Test");
-            //    //await ChoferTests.ProbarObtenerChoferPorId(1);
-            //    //await ChoferTests.ProbarEliminarChofer(2);
-
-            //    // VIAJE
-            //    //DateOnly fecha = new DateOnly(2025, 4, 28);
-            //    //int idViaje = await ViajeTests.ProbarInsertarViaje(fecha, "Tandil", "Buenos Aires", 123, 1000.5f, "Trigo", 1, 1, 350.5f, 5000.0f, "Chofer Test");
-            //    //await ViajeTests.ProbarObtenerViajePorId(idViaje);
-            //    //await ViajeTests.ProbarEliminarViaje(idViaje);
+            //    Console.WriteLine(response.Value);
             //}
-            //catch (Exception ex)
+            //else
             //{
-            //    Console.WriteLine($"\n¡ERROR CRÍTICO EN EL PROGRAMA DE PRUEBAS!");
-            //    Console.WriteLine($"Mensaje: {ex.Message}");
-            //    Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+            //    Console.WriteLine(response.Error);
             //}
 
-            ClienteViewModel clientevm = new ClienteViewModel();
+                //try
+                //{
+
+                //    // Descomentar la prueba que se desea ejecutar
+
+                //    // PRUEBAS DE CLIENTE
+                //    //await ClienteTests.EjecutarTodasLasPruebas();
+
+                //    // PRUEBAS DE CHOFER
+                //    await ChoferTests.EjecutarTodasLasPruebas();
+
+                //    // PRUEBAS DE VIAJE
+                //    //await ViajeTests.EjecutarTodasLasPruebas();
+
+                //    // O EJECUTAR PRUEBAS INDIVIDUALES:
+
+                //    // CLIENTE
+                //    //int idCliente await ClienteTests.ProbarInsertarCliente("TRANSPORTES TEST");
+                //    //await ClienteTests.ProbarObtenerClientePorId(idCliente);
+                //    //await ClienteTests.ProbarEliminarCliente(idCliente);
+
+                //    // CHOFER
+                //    //await ChoferTests.ProbarInsertarChofer("Chofer Test");
+                //    //await ChoferTests.ProbarObtenerChoferPorId(1);
+                //    //await ChoferTests.ProbarEliminarChofer(2);
+
+                //    // VIAJE
+                //    //DateOnly fecha = new DateOnly(2025, 4, 28);
+                //    //int idViaje = await ViajeTests.ProbarInsertarViaje(fecha, "Tandil", "Buenos Aires", 123, 1000.5f, "Trigo", 1, 1, 350.5f, 5000.0f, "Chofer Test");
+                //    //await ViajeTests.ProbarObtenerViajePorId(idViaje);
+                //    //await ViajeTests.ProbarEliminarViaje(idViaje);
+                //}
+                //catch (Exception ex)
+                //{
+                //    Console.WriteLine($"\n¡ERROR CRÍTICO EN EL PROGRAMA DE PRUEBAS!");
+                //    Console.WriteLine($"Mensaje: {ex.Message}");
+                //    Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                //}
+
+                ClienteViewModel clientevm = new ClienteViewModel();
+            //OBTENER TODOS LOS CLIENTES
+
             //var response = await clientevm.ObtenerTodosAsync();
             //if (response.IsSuccess)
             //{
@@ -270,6 +299,18 @@ namespace Proyecto_camiones.Presentacion
             //else
             //{
             //    Console.WriteLine(viajes.Error);
+            //}
+
+            //ELIMINAR CLIENTE
+
+            //var response = await clientevm.EliminarAsync(3);
+            //if (response.IsSuccess)
+            //{
+            //    Console.WriteLine(response.Value);
+            //}
+            //else
+            //{
+            //    Console.WriteLine(response.Error);
             //}
         }
     }
