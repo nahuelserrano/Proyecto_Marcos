@@ -27,7 +27,7 @@ namespace Proyecto_camiones.ViewModels
             return await this.pagoService.ProbarConexionAsync();
         }
 
-        public async Task<Result<int>> InsertarPago(int id_chofer, int id_viaje, float monto_pagado)
+        public async Task<Result<int>> CrearAsync(int id_chofer, int id_viaje, float monto_pagado)
         {
             if (this.testearConexion().Result)
             {

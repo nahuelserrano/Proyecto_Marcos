@@ -39,11 +39,11 @@ namespace Proyecto_camiones.Presentacion.Services
             if (pagoId <= 0) return Result<bool>.Failure(MensajeError.idInvalido(pagoId));
            
 
-            SueldoDTO pago = await this._sueldoRepository.ObtenerPorId(pagoId);
+            SueldoDTO pago = await _sueldoRepository.ObtenerPorId(pagoId);
 
             if (pago == null) return Result<bool>.Failure(MensajeError.objetoNulo(nameof(pago)));
 
-            await _sueldoRepository.Eliminar(pagoId);
+            await _sueldoRepository.EliminarAsync(pagoId);
 
             return Result<bool>.Success(true);
         }
@@ -52,6 +52,8 @@ namespace Proyecto_camiones.Presentacion.Services
         {
             float monto = await calculadorSueldo(Id_Chofer,pagoDesde,pagoHasta);
 
+            if(monto <= 0)
+                return Result<int>.Failure("No se pudo calcular el sueldo ya que no hay pagos pendientes");
 
             ValidadorSueldo validador = new ValidadorSueldo(monto, Id_Chofer, pagoDesde, pagoHasta, pagoHasta);
          
@@ -65,10 +67,10 @@ namespace Proyecto_camiones.Presentacion.Services
             try
             {
 
-                int idSueldo = await _sueldoRepository.Insertar(monto, Id_Chofer, pagoDesde, pagoHasta);
+                int idSueldo = await _sueldoRepository.InsertarAsync(monto, Id_Chofer, pagoDesde, pagoHasta);
                 if (idSueldo<0)
                     return Result<int>.Failure("No se pudo crear el sueldo en services");
-                // await _pagoService.MarcarPagos(Id_Chofer, pagoDesde, pagoHasta,idSueldo);
+                 await _pagoService.MarcarPagos(Id_Chofer, pagoDesde, pagoHasta,idSueldo);
                 return Result<int>.Success(idSueldo);
             }
             catch (Exception ex)  
@@ -82,7 +84,7 @@ namespace Proyecto_camiones.Presentacion.Services
 
             float sueldo = await _pagoService.ObtenerSueldoCalculado(id_chofer, calcularDesde, calcularHasta);
 
-            return (float)(sueldo * 0.18);
+            return sueldo;
         }
       
 
@@ -112,7 +114,7 @@ namespace Proyecto_camiones.Presentacion.Services
 
             if (FechaPago != null)
                 pagoExistente.FechaDePago = FechaPago.Value;
-            bool success = await this._sueldoRepository.Actualizar(id, pagoExistente.Id_Chofer, pagoExistente.pagadoDesde, pagoExistente.pagadoHasta, pagoExistente.Monto_Pagado, pagoExistente.FechaDePago);
+            bool success = await this._sueldoRepository.ActualizarAsync(id, pagoExistente.Id_Chofer, pagoExistente.pagadoDesde, pagoExistente.pagadoHasta, pagoExistente.Monto_Pagado, pagoExistente.FechaDePago);
             
                 if (success)
             {

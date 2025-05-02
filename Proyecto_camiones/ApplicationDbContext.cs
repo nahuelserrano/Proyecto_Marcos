@@ -74,6 +74,7 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.Km).HasColumnName("km");
             entity.Property(e => e.Tarifa).HasColumnName("tarifa");
             entity.Property(e => e.NombreChofer).HasColumnName("nombre_chofer");
+            entity.Property(e => e.PorcentajeChofer).HasColumnName("comision_chofer");
             entity.HasOne(v => v.ClienteNavigation)
                 .WithMany(c => c.Viajes)
                 .HasForeignKey(v => v.Cliente)

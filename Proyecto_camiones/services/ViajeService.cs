@@ -122,12 +122,12 @@ namespace Proyecto_camiones.Presentacion.Services
                     // Crear el pago asociado al viaje
                     float pago_monto = (float)(tarifa * kg * porcentajeChofer);
 
-                    int idPago = await _pagoService.CrearAsync(idChofer, id, pago_monto);
+                    //int idPago = await _pagoService.CrearAsync(idChofer, id, pago_monto);
                     //int idPago = await _pagoService.CrearAsync(idChofer, id, tarifa * kg, porcentajeChofer);
 
 
-                    if (idPago <= 0)
-                        return Result<int>.Failure("No se pudo crear el pago en la base de datos");
+                    //if (idPago <= 0)
+                    //    return Result<int>.Failure("No se pudo crear el pago en la base de datos");
 
                     scope.Complete();
                     return Result<int>.Success(id);

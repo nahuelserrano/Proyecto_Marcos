@@ -9,6 +9,7 @@ using Proyecto_camiones.Models;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using Proyecto_camiones.DTOs;
 using Microsoft.EntityFrameworkCore;
+using Proyecto_camiones.Presentacion.Models;
 
 namespace Proyecto_camiones.Repositories
 {
@@ -44,7 +45,7 @@ namespace Proyecto_camiones.Repositories
             }
         }
     
-       public async Task<int> Insertar(int id_chofer, int id_viaje,  float monto_pagado)
+       public async Task<int> InsertarAsync(int id_chofer, int id_viaje,  float monto_pagado)
         {
             try
             {
@@ -71,42 +72,33 @@ namespace Proyecto_camiones.Repositories
             }
         }
 
-        public async Task<bool> Actualizar(int? id=null,int? id_Sueldo=null,int?id_viaje=null, float? monto_pagado_nuevo = null)
+        public async Task<bool> ActualizarAsync(int idChofer, DateOnly desde, DateOnly hasta, int id_Sueldo)
         {
             try
             {
-                if (!await _context.Database.CanConnectAsync())
+                
+                var pagosModificar = await _context.Pagos
+                .Where(pago => pago.Id_Chofer == idChofer && pago.Pagado == false) // Filtrar pagos por el Id_Viaje y ver si esta pago o no
+                .Join(
+                    _context.Viajes,
+                    pago => pago.Id_Viaje,
+                    viaje => viaje.Id,
+                    (pago, viaje) => new { Pago = pago, Viaje = viaje }
+                )
+                .Where(joinResult => joinResult.Viaje.FechaInicio >= desde && joinResult.Viaje.FechaInicio <= hasta)
+                .Select(joinResult => joinResult.Pago) // Seleccionamos solo los objetos Pago resultantes
+                .ToListAsync();
+
+                if (pagosModificar.Any())
                 {
-                    Console.WriteLine("No se puede conectar a la base de datos");
-                    return false;
-                }
-                if (id_viaje != null && monto_pagado_nuevo!=null)
-                {
-                    Pago pago = await _context.Pagos.FindAsync(id_viaje);
-                    if (pago == null)
+                    foreach (var pago in pagosModificar)
                     {
-                        return false;
+                        pago.Pagado = true;
+                        pago.Id_sueldo = id_Sueldo;
                     }
-                    pago.Monto_Pagado = monto_pagado_nuevo.Value;
-                    return true;
+
                 }
 
-
-                if (id != null&&id_Sueldo!=null)
-                {
-                    Pago pagoExistente = await _context.Pagos.FindAsync(id);
-                    if (pagoExistente == null)
-                    {
-                        return false;
-                    }
-                    pagoExistente.Pagado = true;
-                    pagoExistente.Id_sueldo = id_Sueldo;
-                    return true;
-                }
-
-
-
-                  
                 int registrosAfectados = this._context.SaveChanges();
                 if (registrosAfectados > 0)
                 {
@@ -119,8 +111,6 @@ namespace Proyecto_camiones.Repositories
                 return false;
             }
         }
-
-
 
         public async Task<List<Pago>> ObtenerPagosAsync(int idChofer, DateOnly fechaDesde, DateOnly fechaHasta)
         {
@@ -146,7 +136,5 @@ namespace Proyecto_camiones.Repositories
                 return new List<Pago>();
             }
         }
-
     }
-
 }
