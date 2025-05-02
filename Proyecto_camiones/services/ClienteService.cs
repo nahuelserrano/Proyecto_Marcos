@@ -35,7 +35,7 @@ namespace Proyecto_camiones.Presentacion.Services
             if (id <= 0)
                 return Result<Cliente>.Failure(MensajeError.idInvalido(id));
 
-            Cliente? cliente = await this._clienteRepository.ObtenerPorId(id);
+            Cliente? cliente = await this._clienteRepository.ObtenerPorIdAsync(id);
 
             if (cliente == null)
                 return Result<Cliente>.Failure(MensajeError.objetoNulo(nameof(cliente)));
@@ -48,7 +48,7 @@ namespace Proyecto_camiones.Presentacion.Services
         {
             if (clienteId <= 0) return Result<bool>.Failure(MensajeError.idInvalido(clienteId));
 
-            bool result = await this._clienteRepository.Eliminar(clienteId);
+            bool result = await this._clienteRepository.EliminarAsync(clienteId);
 
             if(result) return Result<bool>.Success(true);
             return Result<bool>.Failure("No se pudo eliminar el cliente o no existe un cliente con ese id");
@@ -84,12 +84,12 @@ namespace Proyecto_camiones.Presentacion.Services
         }
 
         
-        internal async Task<Result<List<ViajeMixtoDTO>>> ObtenerViajesDeUnCliente(string cliente)
+        internal async Task<Result<List<ViajeMixtoDTO>>> ObtenerViajesDeUnClienteAsync(string cliente)
         {
-            Cliente? c = _clienteRepository.ObtenerPorNombre(cliente).Result;
+            Cliente? c = _clienteRepository.ObtenerPorNombreAsync(cliente).Result;
             if(c != null)
             {
-                List<ViajeMixtoDTO> viajesFlete = await this._viajeFleteRepository.ObtenerViajesDeUnCliente(c.Id);
+                List<ViajeMixtoDTO> viajesFlete = await this._viajeFleteRepository.ObtenerViajesDeUnClienteAsync(c.Id);
                 List<ViajeMixtoDTO> viajes = await this._viajeRepository.ObtenerViajeMixtoPorClienteAsync(c.Id);
                 if(viajesFlete != null && viajes != null)
                 {
@@ -103,7 +103,7 @@ namespace Proyecto_camiones.Presentacion.Services
 
         public async Task<Result<List<Cliente>>> ObtenerTodosAsync()
         {
-            List<Cliente> clientes = await this._clienteRepository.ObtenerTodos();
+            List<Cliente> clientes = await this._clienteRepository.ObtenerTodosAsync();
             if(clientes != null)
             {
                 return Result<List<Cliente>>.Success(clientes);

@@ -28,26 +28,31 @@ namespace Proyecto_camiones.ViewModels
             return await this.fleteService.ProbarConexionAsync();
         }
 
-        public async Task<Result<int>> InsertarViajeFlete(string? origen, string destino, float remito, string carga, float km, float kg, float tarifa, int factura, string nombre_cliente, string nombre_fletero, string nombre_chofer, float comision, DateOnly fecha_salida)
+        public async Task<Result<int>> InsertarAsync(string? origen, string destino, float remito, string carga, float km, float kg, float tarifa, int factura, string nombre_cliente, string nombre_fletero, string nombre_chofer, float comision, DateOnly fecha_salida)
         {
             if (this.testearConexion().Result)
             {
                 nombre_cliente = nombre_cliente.ToUpper();
                 nombre_fletero = nombre_fletero.ToUpper();
-                return await this.fleteService.InsertarViajeFlete(origen, destino, remito, carga, km, kg, tarifa, factura, nombre_cliente, nombre_fletero, nombre_chofer, comision, fecha_salida);
+                return await this.fleteService.InsertarAsync(origen, destino, remito, carga, km, kg, tarifa, factura, nombre_cliente, nombre_fletero, nombre_chofer, comision, fecha_salida);
             }
             return Result<int>.Failure("No se pudo establecer la conexion con la db");
             
         }
 
-        public async Task<Result<List<ViajeFleteDTO>>> ObtenerViajesDeUnFletero(string fletero)
+        public async Task<Result<List<ViajeFleteDTO>>> ObtenerViajesDeUnFleteroAsync(string fletero)
         {
             if (this.testearConexion().Result)
             {
                 fletero = fletero.ToUpper();
-                return await this.fleteService.ObtenerViajesDeUnFletero(fletero);
+                return await this.fleteService.ObtenerViajesDeUnFleteroAsync(fletero);
             }
             return Result<List<ViajeFleteDTO>>.Failure("No se pudo acceder a la base de datos");
         }
+
+        //public async Task<Result<string>> EliminarAsync(int id)
+        //{
+
+        //}
     }
 }

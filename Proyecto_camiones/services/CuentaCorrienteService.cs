@@ -32,32 +32,32 @@ namespace Proyecto_camiones.Services
             return result;
         }
 
-        public async Task<List<CuentaCorriente>> ObtenerTodas()
+        public async Task<List<CuentaCorriente>> ObtenerTodosAsync()
         {
-            List<CuentaCorriente> result = await ccRepository.ObtenerTodas();
+            List<CuentaCorriente> result = await ccRepository.ObtenerTodosAsync();
             return result;
         }
 
         public async Task<CuentaCorriente> ObtenerCuentaMasRecienteByClientId(int id)
         {
-            Cliente c = await clienteRepository.ObtenerPorId(id);
+            Cliente c = await clienteRepository.ObtenerPorIdAsync(id);
             if(c == null)
             {
                 return null;
             }
-            CuentaCorriente result = await ccRepository.ObtenerCuentaMasRecienteByClienteId(id);
+            CuentaCorriente result = await ccRepository.ObtenerCuentaMasRecientePorClienteIdAsync(id);
             return result;
         }
 
-        public async Task<Result<List<CuentaCorrienteDTO>>> ObtenerCuentasByIdCliente(string cliente)
+        public async Task<Result<List<CuentaCorrienteDTO>>> ObtenerCuentasByIdClienteAsync(string cliente)
         {
-            Cliente c = await clienteRepository.ObtenerPorNombre(cliente.ToUpper());
+            Cliente c = await clienteRepository.ObtenerPorNombreAsync(cliente.ToUpper());
             if (c == null)
             {
                 return Result<List<CuentaCorrienteDTO>>.Failure("No existe un cliente con ese nombre");
             }
             int id = c.Id;
-            List<CuentaCorrienteDTO> cuentas = await this.ccRepository.ObtenerCuentasByIdCliente(id);
+            List<CuentaCorrienteDTO> cuentas = await this.ccRepository.ObtenerCuentasPorIdClienteAsync(id);
             if(cuentas == null || cuentas.Count() == 0)
             {
                 return Result<List<CuentaCorrienteDTO>>.Failure("No existen cuentas para ese cliente o hubo un fallo en la conexión");
@@ -67,13 +67,13 @@ namespace Proyecto_camiones.Services
 
         public async Task<Result<List<CuentaCorrienteDTO>>> ObtenerCuentasDeUnFletero(string fletero)
         {
-            Flete f = await this.fleteRepository.ObtenerPorNombre(fletero.ToUpper());
+            Flete f = await this.fleteRepository.ObtenerPorNombreAsync(fletero.ToUpper());
             if(f == null)
             {
                 return Result<List<CuentaCorrienteDTO>>.Failure("No existe un fletero con ese nombre");
             }
             int id = f.Id;
-            List<CuentaCorrienteDTO> cuentas = await this.ccRepository.ObtenerCuentasDeUnFletero(id);
+            List<CuentaCorrienteDTO> cuentas = await this.ccRepository.ObtenerCuentasDeUnFleteroAsync(id);
             if(cuentas == null || cuentas.Count() == 0)
             {
                 return Result<List<CuentaCorrienteDTO>>.Failure("No existen cuentas para ese fletero o hubo un fallo en la conexión");
@@ -87,13 +87,13 @@ namespace Proyecto_camiones.Services
             Cliente c;
             if(cliente != null)
             {
-                c = await clienteRepository.ObtenerPorNombre(cliente.ToUpper());
+                c = await clienteRepository.ObtenerPorNombreAsync(cliente.ToUpper());
                 if (c == null)
                 {
                     return -1;
                 }
                 Console.WriteLine("corroborado que el cliente/fletero existe y no se salió");
-                CuentaCorriente result = await ccRepository.InsertarCuentaCorriente(c.Id, null, fecha, nro, adeuda, pagado);
+                CuentaCorriente result = await ccRepository.InsertarAsync(c.Id, null, fecha, nro, adeuda, pagado);
                 Console.WriteLine("superado 1");
                 if (result != null)
                 {
@@ -104,9 +104,9 @@ namespace Proyecto_camiones.Services
             Flete flete;
             if(fletero != null)
             {
-                flete = await this.fleteRepository.ObtenerPorNombre(fletero.ToUpper());
+                flete = await this.fleteRepository.ObtenerPorNombreAsync(fletero.ToUpper());
                 if (flete == null) return -1;
-                CuentaCorriente result = await ccRepository.InsertarCuentaCorriente(null, flete.Id, fecha, nro, adeuda, pagado);
+                CuentaCorriente result = await ccRepository.InsertarAsync(null, flete.Id, fecha, nro, adeuda, pagado);
                 Console.WriteLine("superado 1");
                 if (result != null)
                 {

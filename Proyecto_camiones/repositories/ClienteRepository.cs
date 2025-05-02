@@ -70,7 +70,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
 
-        public async Task<Cliente?> ObtenerPorId(int? id)
+        public async Task<Cliente?> ObtenerPorIdAsync(int? id)
         {
             try
             {
@@ -87,7 +87,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
         }
 
-        public async Task<List<Cliente>> ObtenerTodos()
+        public async Task<List<Cliente>> ObtenerTodosAsync()
         {
             try
             {
@@ -155,7 +155,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
 
-        public async Task<bool> Eliminar(int id)
+        public async Task<bool> EliminarAsync(int id)
         {
             try
             {
@@ -176,7 +176,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
         }
 
-        public async Task<Cliente?> ObtenerPorNombre(string nombre_cliente)
+        public async Task<Cliente?> ObtenerPorNombreAsync(string nombre_cliente)
         {
             try
             {

@@ -45,7 +45,7 @@ namespace Proyecto_camiones.Repositories
             }
         }
 
-        public async Task<int> InsertarFletero(string nombre)
+        public async Task<int> InsertarAsync(string nombre)
         {
             try
             {
@@ -66,7 +66,7 @@ namespace Proyecto_camiones.Repositories
             }
         }
 
-        internal async Task<Flete> ObtenerPorNombre(string nombre)
+        internal async Task<Flete> ObtenerPorNombreAsync(string nombre)
         {
             try
             {

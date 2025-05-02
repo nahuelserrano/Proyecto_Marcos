@@ -48,7 +48,7 @@ namespace Proyecto_camiones.Repositories
             }
         }
 
-        internal async Task<int> InsertarViajeFlete(string? origen, string destino, float remito, string carga, float km, float kg, float tarifa, int factura, int idCliente, int idFlete, string nombre_chofer, float comision, DateOnly fecha_salida)
+        internal async Task<int> InsertarAsync(string? origen, string destino, float remito, string carga, float km, float kg, float tarifa, int factura, int idCliente, int idFlete, string nombre_chofer, float comision, DateOnly fecha_salida)
         {
             try
             {
@@ -68,7 +68,7 @@ namespace Proyecto_camiones.Repositories
             }
         }
 
-        internal async Task<List<ViajeMixtoDTO>> ObtenerViajesDeUnCliente(int id)
+        internal async Task<List<ViajeMixtoDTO>> ObtenerViajesDeUnClienteAsync(int id)
         {
             try
             {
@@ -97,7 +97,7 @@ namespace Proyecto_camiones.Repositories
             }
         }
 
-        internal async Task<List<ViajeFleteDTO>> ObtenerViajesPorFletero(int idFletero)
+        internal async Task<List<ViajeFleteDTO>> ObtenerViajesPorIdFleteroAsync(int idFletero)
         {
             try
             {

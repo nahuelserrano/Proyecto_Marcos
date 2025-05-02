@@ -31,7 +31,7 @@ namespace Proyecto_camiones.Services
             if(nombre!= null)
             {
                 nombre = nombre.ToUpper();
-                int id = await this.fleteRepository.InsertarFletero(nombre);
+                int id = await this.fleteRepository.InsertarAsync(nombre);
                 if (id > -1)
                 {
                     return Result<int>.Success(id);
@@ -41,12 +41,12 @@ namespace Proyecto_camiones.Services
             return Result<int>.Failure("El campo nombre no puede ser nulo");
         }
 
-        internal async Task<Result<Flete>> ObtenerPorNombre(string nombre)
+        internal async Task<Result<Flete>> ObtenerPorNombreAsync(string nombre)
         {
             if(nombre != null)
             {
                 nombre = nombre.ToUpper();
-                Flete fletero = await this.fleteRepository.ObtenerPorNombre(nombre);
+                Flete fletero = await this.fleteRepository.ObtenerPorNombreAsync(nombre);
                 if(fletero != null)
                 {
                     return Result<Flete>.Success(fletero);
