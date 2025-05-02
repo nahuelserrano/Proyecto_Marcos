@@ -1,4 +1,5 @@
 ﻿using MySqlX.XDevAPI.Common;
+using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Models;
 using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Utils;
@@ -15,10 +16,12 @@ namespace Proyecto_camiones.Services
     {
 
         public readonly FleteRepository fleteRepository;
+        public readonly ViajeFleteRepository viajeFleteRepository;
 
         public FleteService(FleteRepository fleteRepository)
         {
             this.fleteRepository = fleteRepository ?? throw new ArgumentNullException(nameof(fleteRepository));
+            this.viajeFleteRepository = new ViajeFleteRepository();
         }
 
         public async Task<bool> TestearConexion()
@@ -78,6 +81,25 @@ namespace Proyecto_camiones.Services
                 return Result<Flete>.Success(fletero);
             }
             return Result<Flete>.Failure("No existe un fletero con ese id");
+        }
+
+        internal async Task<Result<bool>> EliminarAsync(int id)
+        {
+            if (id < 0)
+            {
+                return Result<bool>.Failure(MensajeError.idInvalido(id));
+            }
+            List<ViajeFleteDTO> viajes = await this.viajeFleteRepository.ObtenerViajesPorIdFleteroAsync(id);
+            if (viajes.Count > 0)
+            {
+                return Result<bool>.Failure("No se puede eliminar el fletero ya que contiene viajes a cargo");
+            }
+            bool response = await this.fleteRepository.EliminarAsync(id);
+            if (response)
+            {
+                return Result<bool>.Success(response);
+            }
+            return Result<bool>.Failure("No se pudo eliminar el fletero, error interno en la base de datos");
         }
     }
 }
