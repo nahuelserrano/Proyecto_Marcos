@@ -41,12 +41,12 @@ namespace Proyecto_camiones.Presentacion.Services
         public async Task<Result<ViajeDTO>> ObtenerPorIdAsync(int id)
         {
             if (id <= 0)
-                return Result<ViajeDTO>.Failure(MensajeError.idInvalido(id));
+                return Result<ViajeDTO>.Failure(MensajeError.IdInvalido(id));
             try
             {
                 var viaje = await _viajeRepository.ObtenerPorIdAsync(id);
                 if (viaje == null)
-                    return Result<ViajeDTO>.Failure(MensajeError.NoExisteId(nameof(Viaje), id));
+                    return Result<ViajeDTO>.Failure(MensajeError.EntidadNoEncontrada(nameof(Viaje), id));
                 return Result<ViajeDTO>.Success(viaje);
             }
             catch (Exception ex)
@@ -66,7 +66,8 @@ namespace Proyecto_camiones.Presentacion.Services
             int camion,
             float km,
             float tarifa,
-            string nombreChofer)
+            string nombreChofer,
+            double porcentajeChofer)
         {
             
             try{
@@ -84,32 +85,49 @@ namespace Proyecto_camiones.Presentacion.Services
                 
                 var clienteResult = await _clienteService.ObtenerPorIdAsync(cliente);
                 CamionDTO? camionResult = await _camionService.ObtenerPorIdAsync(camion);
-                var ChoferRsult = await _choferService.ObtenerPorNombreAsync(nombreChofer);
 
                 validador.ValidarExistencia(clienteResult.IsSuccess, camionResult != null);
 
                 Result<bool> resultadoValidacion = validador.ValidarCompleto();
 
                 if (!resultadoValidacion.IsSuccess)
-                {
                     return Result<int>.Failure(resultadoValidacion.Error);
-                }
+                
 
                 using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
+                    var obtenerChoferResult = await _choferService.ObtenerPorNombreAsync(nombreChofer);
+                    int idChofer;
+
+                    if (!obtenerChoferResult.IsSuccess)
+                    {
+                        Result<int> crearChoferResult = await _choferService.CrearAsync(nombreChofer);
+
+                        if (crearChoferResult.IsSuccess)
+                            idChofer = crearChoferResult.Value;
+                        else
+                            return Result<int>.Failure($"Error al crear el chofer: {crearChoferResult.Error}");
+                    }
+                    else
+                        idChofer = obtenerChoferResult.Value.Id;
+
                     // Crear el viaje
                     int id = await _viajeRepository.InsertarAsync(
                         fechaInicio, lugarPartida, destino, remito, kg,
-                        carga, cliente, camion, km, tarifa, nombreChofer);
+                        carga, cliente, camion, km, tarifa, nombreChofer, porcentajeChofer);
 
                     if (id == -1)
                         return Result<int>.Failure("No se pudo crear el viaje en la base de datos");
+
                     // Crear el pago asociado al viaje
+                    float pago_monto = (float)(tarifa * kg * porcentajeChofer);
 
-                    int idPago = await _pagoService.CrearAsync(ChoferRsult.Value.Id, id, tarifa * kg * 0.18f);
+                    //int idPago = await _pagoService.CrearAsync(idChofer, id, pago_monto);
+                    //int idPago = await _pagoService.CrearAsync(idChofer, id, tarifa * kg, porcentajeChofer);
 
-                    if (idPago == -1)
-                        return Result<int>.Failure("No se pudo crear el pago en la base de datos");
+
+                    //if (idPago <= 0)
+                    //    return Result<int>.Failure("No se pudo crear el pago en la base de datos");
 
                     scope.Complete();
                     return Result<int>.Success(id);
@@ -153,7 +171,7 @@ namespace Proyecto_camiones.Presentacion.Services
            string chofer = null)
         {
             if (id <= 0)
-                return Result<bool>.Failure(MensajeError.idInvalido(id));
+                return Result<bool>.Failure(MensajeError.IdInvalido(id));
 
             if (fechaInicio == null && lugarPartida == null && destino == null && remito == null &&
                 kg == null && carga == null && cliente == null && camion == null && km == null && tarifa == null)
@@ -166,7 +184,7 @@ namespace Proyecto_camiones.Presentacion.Services
                 var viajeActual = await _viajeRepository.ObtenerPorIdAsync(id);
 
                 if (viajeActual == null)
-                    return Result<bool>.Failure(MensajeError.NoExisteId(nameof(Viaje), id));
+                    return Result<bool>.Failure(MensajeError.EntidadNoEncontrada(nameof(Viaje), id));
 
                 bool resultado = await _viajeRepository.ActualizarAsync(
                     id, fechaInicio, lugarPartida, destino, remito,
@@ -199,7 +217,7 @@ namespace Proyecto_camiones.Presentacion.Services
                 ViajeDTO? viaje = await _viajeRepository.ObtenerPorIdAsync(id);
 
                 if (viaje == null)
-                    return Result<bool>.Failure(MensajeError.NoExisteId(nameof(Viaje), id));
+                    return Result<bool>.Failure(MensajeError.EntidadNoEncontrada(nameof(Viaje), id));
 
                 bool resultado = await _viajeRepository.EliminarAsync(id);
 
@@ -222,7 +240,7 @@ namespace Proyecto_camiones.Presentacion.Services
         public async Task<Result<List<ViajeDTO>>> ObtenerPorCamionAsync(int idCamion)
         {
             if (idCamion <= 0)
-                return Result<List<ViajeDTO>>.Failure(MensajeError.idInvalido(idCamion));
+                return Result<List<ViajeDTO>>.Failure(MensajeError.IdInvalido(idCamion));
 
             try
             {
@@ -246,7 +264,7 @@ namespace Proyecto_camiones.Presentacion.Services
         public async Task<Result<List<ViajeMixtoDTO>>> ObtenerPorClienteAsync(int idCliente)
         {
             if (idCliente < 0)
-                return Result<List<ViajeMixtoDTO>>.Failure(MensajeError.idInvalido(idCliente));
+                return Result<List<ViajeMixtoDTO>>.Failure(MensajeError.IdInvalido(idCliente));
             
             try
             {
@@ -269,7 +287,7 @@ namespace Proyecto_camiones.Presentacion.Services
         {
             if (idChofer <= 0)
             {
-                return Result<List<ViajeDTO>>.Failure(MensajeError.idInvalido(idChofer));
+                return Result<List<ViajeDTO>>.Failure(MensajeError.IdInvalido(idChofer));
             }
             try
             {
@@ -277,7 +295,7 @@ namespace Proyecto_camiones.Presentacion.Services
                 var choferResult = await _choferService.ObtenerPorIdAsync(idChofer);
 
                 if (choferResult.Value == null)
-                    return Result<List<ViajeDTO>>.Failure($"El chofer especificado no existe: {choferResult}");
+                    return Result<List<ViajeDTO>>.Failure(MensajeError.EntidadNoEncontrada(nameof(choferResult.Value), idChofer));
 
                 var viajes = await _viajeRepository.ObtenerPorChoferAsync(choferResult.Value.Nombre);
                 return Result<List<ViajeDTO>>.Success(viajes);

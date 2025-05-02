@@ -47,9 +47,8 @@ namespace Proyecto_camiones.Presentacion.Services
 
         internal async Task<Result<bool>> EliminarAsync(int sueldoId)
         {
-            if (sueldoId <= 0) return Result<bool>.Failure(MensajeError.idInvalido(sueldoId));
+            if (sueldoId <= 0) return Result<bool>.Failure(MensajeError.IdInvalido(sueldoId));
            
-
             SueldoDTO sueldo = await _sueldoRepository.ObtenerPorId(sueldoId);
 
             if (sueldo == null) return Result<bool>.Failure(MensajeError.objetoNulo(nameof(sueldoId)));
@@ -104,7 +103,7 @@ namespace Proyecto_camiones.Presentacion.Services
         public async Task<Result<SueldoDTO>> ActualizarAsync(int id, float? monto = null, int? Id_Chofer = null, DateOnly? pagadoDesde = null, DateOnly? pagadoHasta = null, DateOnly? FechaPago = null)
         {
             if (id <= 0)
-                return Result<SueldoDTO>.Failure(MensajeError.idInvalido(id));
+                return Result<SueldoDTO>.Failure(MensajeError.IdInvalido(id));
             
 
             var pagoExistente = await _sueldoRepository.ObtenerPorId(id);
@@ -136,8 +135,6 @@ namespace Proyecto_camiones.Presentacion.Services
             }
             return Result<SueldoDTO>.Failure("No se pudo realizar la actualización");
         }
-       
-
     }
  }
  

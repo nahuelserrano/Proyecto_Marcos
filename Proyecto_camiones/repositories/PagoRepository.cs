@@ -113,8 +113,6 @@ namespace Proyecto_camiones.Repositories
             }
         }
 
-
-
         public async Task<List<Pago>> ObtenerPagosAsync(int idChofer, DateOnly fechaDesde, DateOnly fechaHasta)
         {
             try
@@ -139,7 +137,5 @@ namespace Proyecto_camiones.Repositories
                 return new List<Pago>();
             }
         }
-
     }
-
 }

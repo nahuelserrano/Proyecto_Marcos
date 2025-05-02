@@ -54,7 +54,8 @@ namespace Proyecto_camiones.ViewModels
             int camion,
             float km,
             float tarifa,
-            string nombreChofer)
+            string nombreChofer,
+            double porcentajeChofer)
         {
             Console.WriteLine(4);
 
@@ -68,8 +69,8 @@ namespace Proyecto_camiones.ViewModels
             }
 
             var resultado = await _viajeService.CrearAsync(
-                fechaInicio, lugarPartida, destino, remito,
-                kg, carga, cliente, camion, km, tarifa, nombreChofer);
+                fechaInicio, lugarPartida, destino, remito, kg, carga, 
+                cliente, camion, km, tarifa, nombreChofer, porcentajeChofer);
 
             if (resultado.IsSuccess)
             {

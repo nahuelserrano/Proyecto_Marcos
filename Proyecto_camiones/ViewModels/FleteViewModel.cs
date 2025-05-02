@@ -27,7 +27,7 @@ namespace Proyecto_camiones.ViewModels
             return await this.fleteService.TestearConexion();
         }
 
-        public async Task<Result<int>> InsertarFletero(string nombre)
+        public async Task<Result<int>> InsertarAsync(string nombre)
         {
             if (this.TestearConexion().Result)
             {
@@ -36,11 +36,11 @@ namespace Proyecto_camiones.ViewModels
             return Result<int>.Failure("No se pudo establecer la conexion con la base de datos");
         }
 
-        public async Task<Result<Flete>> ObtenerFletePorNombre(string nombre)
+        public async Task<Result<Flete>> ObtenerFletePorNombreAsync(string nombre)
         {
             if (this.TestearConexion().Result)
             {
-                return await this.fleteService.ObtenerPorNombre(nombre);
+                return await this.fleteService.ObtenerPorNombreAsync(nombre);
             }
             return Result<Flete>.Failure("No se pudo establecer la conexion con la base de datos");
         }
@@ -63,6 +63,16 @@ namespace Proyecto_camiones.ViewModels
                 return await this.fleteService.ObtenerPorIdAsync(id);
             }
             return Result<Flete>.Failure("No se pudo establecer la conexión con la base de datos");
+        }
+
+        public async Task<Result<bool>> EliminarAsync(int id)
+        {
+            bool conexion = await this.TestearConexion();
+            if (conexion)
+            {
+                return await this.fleteService.EliminarAsync(id);
+            }
+            return Result<bool>.Failure("No se pudo establecer la conexión con la base de datos");
         }
     }
 }

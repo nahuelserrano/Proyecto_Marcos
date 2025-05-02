@@ -16,6 +16,7 @@ using System.Data;
 using MySql.Data.MySqlClient;
 using Proyecto_camiones.Presentacion.Models;
 using System.Collections.Generic;
+using Proyecto_camiones.Tests;
 
 
 namespace Proyecto_camiones.Presentacion
@@ -40,25 +41,9 @@ namespace Proyecto_camiones.Presentacion
 
             //float suel=  await pw.ObtenerSueldoCalculado(1, DateOnly.MinValue, DateOnly.MaxValue);
 
-            SueldoViewModel sueldoViewModel = new SueldoViewModel();
-          await sueldoViewModel.EliminarAsync(15);
-
-
-            //await sueldoViewModel.CrearAsync(1, DateOnly.MinValue, DateOnly.MaxValue);
-
-            //var sueldosResult = await sueldoViewModel.ObtenerTodosAsync();
-            //if (sueldosResult.IsSuccess)
-            //{
-            //    foreach (var sueldo in sueldosResult.Value)
-            //    {
-            //        Console.WriteLine(sueldo.ToString());
-            //    }
-            //}
-            //else
-            //{
-            //    Console.WriteLine(sueldosResult.Error);
-            //}
-            //  Console.WriteLine("sueldo calculado : " + suel);
+           SueldoViewModel sueldoViewModel = new SueldoViewModel();
+           //await sueldoViewModel.CrearAsync(1, DateOnly.MinValue, DateOnly.MaxValue);
+          //  Console.WriteLine("sueldo calculado : " + suel);
 
 
             //SueldoViewModel sw = new SueldoViewModel();
@@ -72,7 +57,7 @@ namespace Proyecto_camiones.Presentacion
 
             CamionViewModel cvm = new CamionViewModel();
             ////PRUEBA INSERCION
-            //Result<int> id = cvm.InsertarCamion("NCS234", "Mili").Result;
+            //Result<int> id = cvm.InsertarAsync("NCS234", "Mili").Result;
             //if (id.IsSuccess)
             //{
             //    Console.WriteLine("se pudo agregar con el id: " + id.Value);
@@ -82,7 +67,7 @@ namespace Proyecto_camiones.Presentacion
             //    Console.WriteLine(id.Error);
 
             //PRUEBA SELECT ALL
-            //var camiones = await cvm.ObtenerTodos();
+            //var camiones = await cvm.ObtenerTodosAsync();
             //if (camiones.IsSuccess)
             //{
             //    foreach (var camion in camiones.Value)
@@ -92,7 +77,7 @@ namespace Proyecto_camiones.Presentacion
             //}
 
             //PRUEBA UPDATE CAMION
-            //var camionUpdated = await cvm.Actualizar(11, "PUC111", "JUAN");
+            //var camionUpdated = await cvm.ActualizarAsync(11, "PUC111", "JUAN");
             //if (camionUpdated.IsSuccess)
             //{
             //    CamionDTO camion = camionUpdated.Value;
@@ -100,18 +85,21 @@ namespace Proyecto_camiones.Presentacion
             //}
 
             //PRUEBA ELIMINAR CAMION
-            //var response = await cvm.Eliminar(12);
-            //Console.WriteLine(response.Value);
-            //Console.WriteLine(response.Error);
+            //var response = await cvm.EliminarAsync(2);
+            //if (response.IsSuccess)
+            //{
+            //    Console.WriteLine(response.Value);
+            //}
+            //else
+            //{
+            //    Console.WriteLine(response.Error);
+            //}
 
-
-            // CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
-
-            //CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
+            CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
 
             //INSERCION PARA CUENTA CORRIENTE DE UN FLETERO FUNCIONANDO CORRECTAMENTE
 
-            //var cuenta = await ccvm.Insertar(null, "carlos", new DateOnly(2025, 4, 21), 90, 1000, 600);
+            //var cuenta = await ccvm.InsertarAsync(null, "carlos", new DateOnly(2025, 4, 21), 90, 1000, 600);
             //if (cuenta.IsSuccess)
             //{
             //    Console.WriteLine("Id insertado: " + cuenta.Value);
@@ -120,7 +108,7 @@ namespace Proyecto_camiones.Presentacion
 
             //INSERCION PARA CUENTA CORRIENTE DE UN CLIENTE FUNCIONANDO CORRECTAMENTE
 
-            //var cuenta = await ccvm.Insertar("machaca", null, new DateOnly(2025, 4, 22), 92, 1000, 600);
+            //var cuenta = await ccvm.InsertarAsync("machaca", null, new DateOnly(2025, 4, 22), 92, 1000, 600);
             //if (cuenta.IsSuccess)
             //{
             //    Console.WriteLine("Id insertado: " + cuenta.Value);
@@ -128,16 +116,8 @@ namespace Proyecto_camiones.Presentacion
             //Console.WriteLine(cuenta.Value);
 
 
-            //var cuenta2 = await ccvm.Insertar(5, new DateOnly(2025, 4, 7), 8383, 99, 22);
-            //if (cuenta2.IsSuccess)
-            //{
-            //    Console.WriteLine("Id insertado: " + cuenta2.Value);
-            //}
-            //Console.WriteLine(cuenta2.Value);
-
-
             //OBTENER CUENTAS DE UN CLIENTE POR SU NOMBRE
-            //var cuentasCliente5 = await ccvm.ObtenerCuentasByCliente("machaca");
+            //var cuentasCliente5 = await ccvm.ObtenerCuentasByClienteAsync("machaca");
             //if (cuentasCliente5.IsSuccess)
             //{
             //    foreach (CuentaCorrienteDTO c in cuentasCliente5.Value)
@@ -153,7 +133,7 @@ namespace Proyecto_camiones.Presentacion
             //OBTENER LAS CUENTAS DE UN FLETERO POR SU NOMBRE
 
 
-            //var cuentasFleteCarlos = await ccvm.ObtenerCuentasByFletero("carlos");
+            //var cuentasFleteCarlos = await ccvm.ObtenerCuentasByFleteroAsync("carlos");
             //if (cuentasFleteCarlos.IsSuccess)
             //{
             //    foreach (CuentaCorrienteDTO c in cuentasFleteCarlos.Value)
@@ -167,14 +147,14 @@ namespace Proyecto_camiones.Presentacion
             //}
 
             //ELIMINAR 
-            //var result = await clvm.Eliminar(1);
+            //var result = await ccvm.EliminarAsync(1);
             //Console.WriteLine(result.Value);
 
-            //ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
+            ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
 
             //INSERTAR
 
-            //var idViaje = await vfvm.InsertarViajeFlete("Tandil", "Necochea", 40, "trigo", 120, 130, 19000, 12345, "MACHACA", "CARLOS", "Chofer de Carlos", 10, new DateOnly(2025, 4, 11));
+            //var idViaje = await vfvm.InsertarAsync("Tandil", "Necochea", 40, "trigo", 120, 130, 19000, 12345, "MACHACA", "CARLOS", "Chofer de Carlos", 10, new DateOnly(2025, 4, 11));
             //if (idViaje.IsSuccess)
             //{
             //    Console.WriteLine("Viaje ingresado con el id: " + idViaje.Value);
@@ -184,10 +164,10 @@ namespace Proyecto_camiones.Presentacion
 
             //OBTENER VIAJES DE UN FLETERO
 
-            //var viajes = await vfvm.ObtenerViajesDeUnFletero("Carlos");
+            //var viajes = await vfvm.ObtenerViajesDeUnFleteroAsync("Carlos");
             //if (viajes.IsSuccess)
             //{
-            //    foreach(var viaje in viajes.Value)
+            //    foreach (var viaje in viajes.Value)
             //    {
             //        Console.WriteLine(viaje);
             //    }
@@ -197,14 +177,25 @@ namespace Proyecto_camiones.Presentacion
             //    Console.WriteLine(viajes.Error);
             //}
 
-            //ProbarInsertarViaje("Tandil", "Azul");
+            //ELIMINAR VIAJE POR FLETERO
+            //var response = await vfvm.EliminarAsync(12);
+            //if (response.IsSuccess)
+            //{
+            //    Console.WriteLine(response.Value);
+            //}
+            //else
+            //{
+            //    Console.WriteLine(response.Error);
+            //}
 
-            //ProbarInsertarChofer("Juan Alpaca");
+                //ProbarInsertarViaje("Tandil", "Azul");
+
+                //ProbarInsertarChofer("Juan Alpaca");
 
             FleteViewModel fvm = new FleteViewModel();
 
             //INSERTAR FLETERO
-            //var idFletero = await fvm.InsertarFletero("Carlos");
+            //var idFletero = await fvm.InsertarAsync("Carlos");
             //if (idFletero.IsSuccess)
             //{
             //    Console.WriteLine("Fletero insertado con el id: " + idFletero.Value);
@@ -215,7 +206,7 @@ namespace Proyecto_camiones.Presentacion
             //}
 
             //OBTENER POR NOMBRE
-            //var fletero = await fvm.ObtenerFletePorNombre("Carlos");
+            //var fletero = await fvm.ObtenerFletePorNombreAsync("Carlos");
             //if (fletero.IsSuccess)
             //{
             //    Console.WriteLine(fletero.Value);
@@ -230,7 +221,7 @@ namespace Proyecto_camiones.Presentacion
             //if (fleteros.IsSuccess)
             //{
             //    List<Flete> fletes = fleteros.Value;
-            //    foreach(Flete f in fletes)
+            //    foreach (Flete f in fletes)
             //    {
             //        Console.WriteLine(f.ToString());
             //    }
@@ -238,6 +229,18 @@ namespace Proyecto_camiones.Presentacion
             //else
             //{
             //    Console.WriteLine(fleteros.Error);
+            //}
+
+            //ELIMINAR FLETERO
+
+            //var response = await fvm.EliminarAsync(1);
+            //if (response.IsSuccess)
+            //{
+            //    Console.WriteLine(response.Value);
+            //}
+            //else
+            //{
+            //    Console.WriteLine(response.Error);
             //}
 
             //try
@@ -252,7 +255,7 @@ namespace Proyecto_camiones.Presentacion
             //    await ChoferTests.EjecutarTodasLasPruebas();
 
             //    // PRUEBAS DE VIAJE
-            //    //await ViajeTests.EjecutarTodasLasPruebas();
+            //await ViajeTests.EjecutarTodasLasPruebas();
 
             //    // O EJECUTAR PRUEBAS INDIVIDUALES:
 
@@ -280,20 +283,22 @@ namespace Proyecto_camiones.Presentacion
             //}
 
             ClienteViewModel clientevm = new ClienteViewModel();
+            //OBTENER TODOS LOS CLIENTES
+
             //var response = await clientevm.ObtenerTodosAsync();
             //if (response.IsSuccess)
             //{
-            //    foreach(Cliente c in response.Value)
+            //    foreach (Cliente c in response.Value)
             //    {
             //        Console.WriteLine(c.ToString());
             //    }
             //}
 
             //OBTENER TODOS LOS VIAJES DE UN CLIENTE
-            //var viajes = await clientevm.ObtenerViajesDeUnCliente("cooperativa");
+            //var viajes = await clientevm.ObtenerViajesDeUnClienteAsync("cooperativa");
             //if (viajes.IsSuccess)
             //{
-            //    foreach(ViajeMixtoDTO viaje in viajes.Value)
+            //    foreach (ViajeMixtoDTO viaje in viajes.Value)
             //    {
             //        Console.WriteLine(viaje.ToString());
             //    }
@@ -301,6 +306,18 @@ namespace Proyecto_camiones.Presentacion
             //else
             //{
             //    Console.WriteLine(viajes.Error);
+            //}
+
+            //ELIMINAR CLIENTE
+
+            //var response = await clientevm.EliminarAsync(3);
+            //if (response.IsSuccess)
+            //{
+            //    Console.WriteLine(response.Value);
+            //}
+            //else
+            //{
+            //    Console.WriteLine(response.Error);
             //}
         }
     }

@@ -48,7 +48,31 @@ namespace Proyecto_camiones.Repositories
             }
         }
 
-        internal async Task<int> InsertarViajeFlete(string? origen, string destino, float remito, string carga, float km, float kg, float tarifa, int factura, int idCliente, int idFlete, string nombre_chofer, float comision, DateOnly fecha_salida)
+        internal async Task<bool> EliminarAsync(int id)
+        {
+            try
+            {
+                var viaje = await _context.ViajesFlete.FindAsync(id);
+                Console.WriteLine("se encontró el fletero");
+
+                if (viaje == null)
+                    return false;
+
+                _context.ViajesFlete.Remove(viaje);
+
+                await _context.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.InnerException);
+                return false;
+            }
+        }
+
+        internal async Task<int> InsertarAsync(string? origen, string destino, float remito, string carga, float km, float kg, float tarifa, int factura, int idCliente, int idFlete, string nombre_chofer, float comision, DateOnly fecha_salida)
         {
             try
             {
@@ -68,7 +92,7 @@ namespace Proyecto_camiones.Repositories
             }
         }
 
-        internal async Task<List<ViajeMixtoDTO>> ObtenerViajesDeUnCliente(int id)
+        internal async Task<List<ViajeMixtoDTO>> ObtenerViajesDeUnClienteAsync(int id)
         {
             try
             {
@@ -97,7 +121,7 @@ namespace Proyecto_camiones.Repositories
             }
         }
 
-        internal async Task<List<ViajeFleteDTO>> ObtenerViajesPorFletero(int idFletero)
+        internal async Task<List<ViajeFleteDTO>> ObtenerViajesPorIdFleteroAsync(int idFletero)
         {
             try
             {

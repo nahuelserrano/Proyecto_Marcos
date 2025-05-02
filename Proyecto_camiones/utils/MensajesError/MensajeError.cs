@@ -4,9 +4,41 @@ namespace Proyecto_camiones.Presentacion.Utils
 {
     public static class MensajeError
     {
-        // Mensajes genéricos para validaciones comunes
-        public static string idInvalido(int id) =>
-            $"El ID ingresado: {id} no puede ser menor a 0";
+        // 1. No se encontró X por id
+        public static string EntidadNoEncontrada(string nombreEntidad, int id) =>
+            $"No se encontró {nombreEntidad} con el id: {id}";
+
+        // 2. El id no es válido
+        public static string IdInvalido(int id) =>
+            $"El id: {id} no es válido. Debe ser mayor que cero";
+
+        // 3. No se pudo crear X
+        public static string ErrorCreacion(string nombreEntidad) =>
+            $"No se pudo crear {nombreEntidad} en la base de datos";
+
+        // 4. No se pudo eliminar X
+        public static string ErrorEliminacion(string nombreEntidad) =>
+            $"No se pudo eliminar {nombreEntidad} de la base de datos";
+
+        // 5. No se pudo actualizar X
+        public static string ErrorActualizacion(string nombreEntidad) =>
+            $"No se pudo actualizar {nombreEntidad} en la base de datos";
+
+        // 6. Error en la base de datos
+        public static string ErrorBaseDatos(string detalleError) =>
+            $"Error en la base de datos: {detalleError}";
+
+        // 7. X eliminado con éxito
+        public static string EliminacionExitosa(string nombreEntidad) =>
+            $"{nombreEntidad} eliminado con éxito";
+
+        // 8. X actualizado con éxito  
+        public static string ActualizacionExitosa(string nombreEntidad) =>
+            $"{nombreEntidad} actualizado con éxito";
+
+        // 9. X creado con el id: [id]
+        public static string CreacionExitosa(string nombreEntidad, int id) =>
+            $"{nombreEntidad} creado exitosamente con el id: {id}";
 
         public static string atributoRequerido(string nombreAtributo) =>
             $"El campo: {nombreAtributo} es obligatorio";
@@ -25,32 +57,13 @@ namespace Proyecto_camiones.Presentacion.Utils
          public static string numeroNoValido(string atributo) =>
             $"El numero del campo: {atributo} no puede ser menor o igual que 0";
         
-        public static string NoExisteId(string nombreEntidad, int id) =>
-            $"No existe ningún {nombreEntidad} con el id: {id}";
         public static string ausenciaDeDatos(String nombreDatoAusente) =>
             $"El ID colocado: {nombreDatoAusente} no corresponde a ningun objeto";
         public static string PesoIncorrecto(float peso) =>
             $"El peso colocado: {peso} no es válido en el contexto";
 
-        // Errores operacionales
-        public static string errorOperacion(string operacion, string entidad) =>
-            $"Ocurrió un error al {operacion} el/la {entidad}";
-
         // Errores de conexión
         public static string errorConexion() =>
             "No se pudo establecer la conexión con la base de datos";
-
-        // Errores de validación comunes
-
-        // Errores del CRUD
-        public static string errorActualizacion(string entidad) =>
-            $"No se pudo actualizar el/la {entidad}";
-
-        public static string noExistenRegistros(string entidad, string filtro = null) =>
-            filtro == null
-                ? $"No existen registros de {entidad}"
-                : $"No existen registros de {entidad} con: {filtro}";
-
     }
-
 }

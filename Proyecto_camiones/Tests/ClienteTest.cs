@@ -6,7 +6,7 @@ using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Utils;
 using Proyecto_camiones.ViewModels;
 
-namespace Proyecto_camiones.Presentacion
+namespace Proyecto_camiones.Tests
 {
     public static class ClienteTests
     {
@@ -93,7 +93,7 @@ namespace Proyecto_camiones.Presentacion
             try
             {
                 var clienteViewModel = new ClienteViewModel();
-                var resultado = await clienteViewModel.InsertarCliente(nombre);
+                var resultado = await clienteViewModel.InsertarAsync(nombre);
 
                 if (resultado.IsSuccess)
                 {
@@ -123,7 +123,7 @@ namespace Proyecto_camiones.Presentacion
             try
             {
                 var clienteViewModel = new ClienteViewModel();
-                var resultado = await clienteViewModel.ObtenerById(id);
+                var resultado = await clienteViewModel.ObtenerByIdAsync(id);
 
                 if (resultado.IsSuccess)
                 {
@@ -171,7 +171,7 @@ namespace Proyecto_camiones.Presentacion
             try
             {
                 var clienteViewModel = new ClienteViewModel();
-                var resultado = await clienteViewModel.Eliminar(id);
+                var resultado = await clienteViewModel.EliminarAsync(id);
 
                 if (resultado.IsSuccess)
                 {

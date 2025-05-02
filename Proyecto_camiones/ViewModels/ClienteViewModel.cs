@@ -28,7 +28,7 @@ namespace Proyecto_camiones.ViewModels
             return await this._clienteService.ProbarConexionAsync();
         }
 
-        public async Task<Result<int>> InsertarCliente(string nombre)
+        public async Task<Result<int>> InsertarAsync(string nombre)
         {
             if (await this.testearConexion())
             {
@@ -52,7 +52,7 @@ namespace Proyecto_camiones.ViewModels
             return Result<int>.Failure("La conexión no pude establecerse");
         }
 
-        public async Task<Result<Cliente>> ObtenerById(int id)
+        public async Task<Result<Cliente>> ObtenerByIdAsync(int id)
         {
             if (await this.testearConexion())
                 return await this._clienteService.ObtenerPorIdAsync(id);
@@ -60,7 +60,7 @@ namespace Proyecto_camiones.ViewModels
             return Result<Cliente>.Failure("No se pudo establecer la conexion");
         }
 
-        public async Task<Result<bool>> Eliminar(int id)
+        public async Task<Result<bool>> EliminarAsync(int id)
         {
             if (await this.testearConexion())
             {
@@ -69,11 +69,11 @@ namespace Proyecto_camiones.ViewModels
             return Result<bool>.Failure("No se pudo establecer la conexión");
         } 
 
-        public async Task<Result<List<ViajeMixtoDTO>>> ObtenerViajesDeUnCliente(string cliente)
+        public async Task<Result<List<ViajeMixtoDTO>>> ObtenerViajesDeUnClienteAsync(string cliente)
         {
             if (await this.testearConexion())
             {
-                return await this._clienteService.ObtenerViajesDeUnCliente(cliente.ToUpper());
+                return await this._clienteService.ObtenerViajesDeUnClienteAsync(cliente.ToUpper());
             }
             return Result<List<ViajeMixtoDTO>>.Failure("No se pudo establecer la conexión");
         }

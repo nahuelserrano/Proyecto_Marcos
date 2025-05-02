@@ -226,22 +226,23 @@ CREATE TABLE `viaje` (
   `idcamion` int(11) NOT NULL,
   `km` float DEFAULT NULL,
   `tarifa` float NOT NULL,
-  `nombre_chofer` varchar(45) NOT NULL
+  `nombre_chofer` varchar(45) NOT NULL,
+  `comision_chofer` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `viaje`
 --
 
-INSERT INTO `viaje` (`idviaje`, `partida`, `origen`, `destino`, `remito`, `kg`, `carga`, `idcliente`, `idcamion`, `km`, `tarifa`, `nombre_chofer`) VALUES
-(1, '2025-04-05', 'Tandil', 'Buenos Aires', 10001, 5000, 'Cereales', 3, 2, 370, 25, 'x'),
-(2, '2025-04-07', 'Mar del Plata', 'Bahía Blanca', 10002, 7500, 'Frutas', 3, 3, 420, 28, 'juan'),
-(3, '2025-04-10', 'La Plata', 'Rosario', 10003, 6200, 'Muebles', 3, 4, 390, 26, 'juan'),
-(4, '2025-04-12', 'Córdoba', 'Mendoza', 10004, 8000, 'Maquinaria', 4, 5, 700, 35, 'carlos'),
-(5, '2025-04-15', 'Santa Fe', 'Tucumán', 10005, 5800, 'Alimentos', 5, 6, 780, 38, 'mili'),
-(6, '2025-04-18', 'Salta', 'Jujuy', 10006, 4500, 'Textiles', 6, 10, 150, 18, 'lauti'),
-(7, '2025-04-20', 'Buenos Aires', 'Córdoba', 10007, 9000, 'Electrónicos', 7, 11, 700, 36, 'roman'),
-(8, '2025-04-22', 'Rosario', 'Santa Fe', 10008, 6700, 'Papel', 7, 12, 160, 15, 'Pepito');
+INSERT INTO `viaje` (`idviaje`, `partida`, `origen`, `destino`, `remito`, `kg`, `carga`, `idcliente`, `idcamion`, `km`, `tarifa`, `nombre_chofer`, `comision_chofer`) VALUES
+(1, '2025-04-05', 'Tandil', 'Buenos Aires', 10001, 5000, 'Cereales', 3, 2, 370, 25, 'x', 0.18),
+(2, '2025-04-07', 'Mar del Plata', 'Bahía Blanca', 10002, 7500, 'Frutas', 3, 3, 420, 28, 'juan', 0.10),
+(3, '2025-04-10', 'La Plata', 'Rosario', 10003, 6200, 'Muebles', 3, 4, 390, 26, 'juan', 0.18),
+(4, '2025-04-12', 'Córdoba', 'Mendoza', 10004, 8000, 'Maquinaria', 4, 5, 700, 35, 'carlos', 0.18),
+(5, '2025-04-15', 'Santa Fe', 'Tucumán', 10005, 5800, 'Alimentos', 5, 6, 780, 38, 'mili', 0.18),
+(6, '2025-04-18', 'Salta', 'Jujuy', 10006, 4500, 'Textiles', 6, 10, 150, 18, 'lauti', 0.18),
+(7, '2025-04-20', 'Buenos Aires', 'Córdoba', 10007, 9000, 'Electrónicos', 7, 11, 700, 36, 'roman', 0.18),
+(8, '2025-04-22', 'Rosario', 'Santa Fe', 10008, 6700, 'Papel', 7, 12, 160, 15, 'Pepito', 0.18);
 
 -- --------------------------------------------------------
 
