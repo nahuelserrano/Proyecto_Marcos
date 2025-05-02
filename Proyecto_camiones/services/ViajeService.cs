@@ -41,12 +41,12 @@ namespace Proyecto_camiones.Presentacion.Services
         public async Task<Result<ViajeDTO>> ObtenerPorIdAsync(int id)
         {
             if (id <= 0)
-                return Result<ViajeDTO>.Failure(MensajeError.idInvalido(id));
+                return Result<ViajeDTO>.Failure(MensajeError.IdInvalido(id));
             try
             {
                 var viaje = await _viajeRepository.ObtenerPorIdAsync(id);
                 if (viaje == null)
-                    return Result<ViajeDTO>.Failure(MensajeError.NoExisteId(nameof(Viaje), id));
+                    return Result<ViajeDTO>.Failure(MensajeError.EntidadNoEncontrada(nameof(Viaje), id));
                 return Result<ViajeDTO>.Success(viaje);
             }
             catch (Exception ex)
@@ -171,7 +171,7 @@ namespace Proyecto_camiones.Presentacion.Services
            string chofer = null)
         {
             if (id <= 0)
-                return Result<bool>.Failure(MensajeError.idInvalido(id));
+                return Result<bool>.Failure(MensajeError.IdInvalido(id));
 
             if (fechaInicio == null && lugarPartida == null && destino == null && remito == null &&
                 kg == null && carga == null && cliente == null && camion == null && km == null && tarifa == null)
@@ -184,7 +184,7 @@ namespace Proyecto_camiones.Presentacion.Services
                 var viajeActual = await _viajeRepository.ObtenerPorIdAsync(id);
 
                 if (viajeActual == null)
-                    return Result<bool>.Failure(MensajeError.NoExisteId(nameof(Viaje), id));
+                    return Result<bool>.Failure(MensajeError.EntidadNoEncontrada(nameof(Viaje), id));
 
                 bool resultado = await _viajeRepository.ActualizarAsync(
                     id, fechaInicio, lugarPartida, destino, remito,
@@ -217,7 +217,7 @@ namespace Proyecto_camiones.Presentacion.Services
                 ViajeDTO? viaje = await _viajeRepository.ObtenerPorIdAsync(id);
 
                 if (viaje == null)
-                    return Result<bool>.Failure(MensajeError.NoExisteId(nameof(Viaje), id));
+                    return Result<bool>.Failure(MensajeError.EntidadNoEncontrada(nameof(Viaje), id));
 
                 bool resultado = await _viajeRepository.EliminarAsync(id);
 
@@ -240,7 +240,7 @@ namespace Proyecto_camiones.Presentacion.Services
         public async Task<Result<List<ViajeDTO>>> ObtenerPorCamionAsync(int idCamion)
         {
             if (idCamion <= 0)
-                return Result<List<ViajeDTO>>.Failure(MensajeError.idInvalido(idCamion));
+                return Result<List<ViajeDTO>>.Failure(MensajeError.IdInvalido(idCamion));
 
             try
             {
@@ -264,7 +264,7 @@ namespace Proyecto_camiones.Presentacion.Services
         public async Task<Result<List<ViajeMixtoDTO>>> ObtenerPorClienteAsync(int idCliente)
         {
             if (idCliente < 0)
-                return Result<List<ViajeMixtoDTO>>.Failure(MensajeError.idInvalido(idCliente));
+                return Result<List<ViajeMixtoDTO>>.Failure(MensajeError.IdInvalido(idCliente));
             
             try
             {
@@ -287,7 +287,7 @@ namespace Proyecto_camiones.Presentacion.Services
         {
             if (idChofer <= 0)
             {
-                return Result<List<ViajeDTO>>.Failure(MensajeError.idInvalido(idChofer));
+                return Result<List<ViajeDTO>>.Failure(MensajeError.IdInvalido(idChofer));
             }
             try
             {
@@ -295,7 +295,7 @@ namespace Proyecto_camiones.Presentacion.Services
                 var choferResult = await _choferService.ObtenerPorIdAsync(idChofer);
 
                 if (choferResult.Value == null)
-                    return Result<List<ViajeDTO>>.Failure($"El chofer especificado no existe: {choferResult}");
+                    return Result<List<ViajeDTO>>.Failure(MensajeError.EntidadNoEncontrada(nameof(choferResult.Value), idChofer));
 
                 var viajes = await _viajeRepository.ObtenerPorChoferAsync(choferResult.Value.Nombre);
                 return Result<List<ViajeDTO>>.Success(viajes);

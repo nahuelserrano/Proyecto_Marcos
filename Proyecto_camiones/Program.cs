@@ -237,46 +237,46 @@ namespace Proyecto_camiones.Presentacion
             //    Console.WriteLine(response.Error);
             //}
 
-                //try
-                //{
+            //try
+            //{
 
-                //    // Descomentar la prueba que se desea ejecutar
+            //    // Descomentar la prueba que se desea ejecutar
 
-                //    // PRUEBAS DE CLIENTE
-                //    //await ClienteTests.EjecutarTodasLasPruebas();
+            //    // PRUEBAS DE CLIENTE
+            //    //await ClienteTests.EjecutarTodasLasPruebas();
 
-                //    // PRUEBAS DE CHOFER
-                //    await ChoferTests.EjecutarTodasLasPruebas();
+            //    // PRUEBAS DE CHOFER
+            //    await ChoferTests.EjecutarTodasLasPruebas();
 
-                //    // PRUEBAS DE VIAJE
-                //    //await ViajeTests.EjecutarTodasLasPruebas();
+            //    // PRUEBAS DE VIAJE
+            //await ViajeTests.EjecutarTodasLasPruebas();
 
-                //    // O EJECUTAR PRUEBAS INDIVIDUALES:
+            //    // O EJECUTAR PRUEBAS INDIVIDUALES:
 
-                //    // CLIENTE
-                //    //int idCliente await ClienteTests.ProbarInsertarCliente("TRANSPORTES TEST");
-                //    //await ClienteTests.ProbarObtenerClientePorId(idCliente);
-                //    //await ClienteTests.ProbarEliminarCliente(idCliente);
+            //    // CLIENTE
+            //    //int idCliente await ClienteTests.ProbarInsertarCliente("TRANSPORTES TEST");
+            //    //await ClienteTests.ProbarObtenerClientePorId(idCliente);
+            //    //await ClienteTests.ProbarEliminarCliente(idCliente);
 
-                //    // CHOFER
-                //    //await ChoferTests.ProbarInsertarChofer("Chofer Test");
-                //    //await ChoferTests.ProbarObtenerChoferPorId(1);
-                //    //await ChoferTests.ProbarEliminarChofer(2);
+            //    // CHOFER
+            //    //await ChoferTests.ProbarInsertarChofer("Chofer Test");
+            //    //await ChoferTests.ProbarObtenerChoferPorId(1);
+            //    //await ChoferTests.ProbarEliminarChofer(2);
 
-                //    // VIAJE
-                //    //DateOnly fecha = new DateOnly(2025, 4, 28);
-                //    //int idViaje = await ViajeTests.ProbarInsertarViaje(fecha, "Tandil", "Buenos Aires", 123, 1000.5f, "Trigo", 1, 1, 350.5f, 5000.0f, "Chofer Test");
-                //    //await ViajeTests.ProbarObtenerViajePorId(idViaje);
-                //    //await ViajeTests.ProbarEliminarViaje(idViaje);
-                //}
-                //catch (Exception ex)
-                //{
-                //    Console.WriteLine($"\n¡ERROR CRÍTICO EN EL PROGRAMA DE PRUEBAS!");
-                //    Console.WriteLine($"Mensaje: {ex.Message}");
-                //    Console.WriteLine($"Stack Trace: {ex.StackTrace}");
-                //}
+            //    // VIAJE
+            //    //DateOnly fecha = new DateOnly(2025, 4, 28);
+            //    //int idViaje = await ViajeTests.ProbarInsertarViaje(fecha, "Tandil", "Buenos Aires", 123, 1000.5f, "Trigo", 1, 1, 350.5f, 5000.0f, "Chofer Test");
+            //    //await ViajeTests.ProbarObtenerViajePorId(idViaje);
+            //    //await ViajeTests.ProbarEliminarViaje(idViaje);
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine($"\n¡ERROR CRÍTICO EN EL PROGRAMA DE PRUEBAS!");
+            //    Console.WriteLine($"Mensaje: {ex.Message}");
+            //    Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+            //}
 
-                ClienteViewModel clientevm = new ClienteViewModel();
+            ClienteViewModel clientevm = new ClienteViewModel();
             //OBTENER TODOS LOS CLIENTES
 
             //var response = await clientevm.ObtenerTodosAsync();

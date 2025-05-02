@@ -66,16 +66,14 @@ namespace Proyecto_camiones.Tests
                 porcentajeChofer: porcentajeChofer// Asumiendo que el chofer existe
             );
 
-            Console.WriteLine(3);
-
             if (!resultadoCreacion1.IsSuccess)
             {
                 Console.WriteLine("Error al crear el viaje: " + resultadoCreacion1.Error);
-                return resultadoCreacion1.Value;
+                return -1;
             }
 
             Console.WriteLine("Resultado de la creación del viaje: " + resultadoCreacion1.Value);
-            return -1;
+            return resultadoCreacion1.Value;
         }
 
         public static async Task ProbarObtenerViajePorId(int id)

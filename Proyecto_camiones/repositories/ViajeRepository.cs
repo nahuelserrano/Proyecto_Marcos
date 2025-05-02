@@ -66,9 +66,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     Console.WriteLine("No se puede conectar a la base de datos");
                     return -1;
                 }
-
-                var camionEntity = await _context.Camiones.FindAsync(camion);
-
                 var viaje = new Viaje(fechaInicio, lugarPartida, destino, remito, kg,
                     carga, cliente, camion, km, tarifa, nombreChofer, porcentajeChofer);
 
@@ -82,14 +79,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     Console.WriteLine("No se insertó ningún registro");
                     return -1;
                 }
-                // Si se insertó correctamente, devolver el viaje como DTO
 
-                var clienteEntity = await _context.Clientes.FindAsync(cliente);
-
-                if (clienteEntity != null && camionEntity != null)
-                    return viaje.Id;
-
-                return -1;
+                return viaje.Id;
             }
             catch (Exception ex) 
             {

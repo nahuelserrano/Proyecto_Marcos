@@ -36,7 +36,7 @@ namespace Proyecto_camiones.Presentacion.Services
 
         internal async Task<Result<bool>> EliminarAsync(int pagoId)
         {
-            if (pagoId <= 0) return Result<bool>.Failure(MensajeError.idInvalido(pagoId));
+            if (pagoId <= 0) return Result<bool>.Failure(MensajeError.IdInvalido(pagoId));
            
 
             SueldoDTO pago = await _sueldoRepository.ObtenerPorId(pagoId);
@@ -91,7 +91,7 @@ namespace Proyecto_camiones.Presentacion.Services
         public async Task<Result<SueldoDTO>> ActualizarAsync(int id, float? monto = null, int? Id_Chofer = null, DateOnly? pagadoDesde = null, DateOnly? pagadoHasta = null, DateOnly? FechaPago = null)
         {
             if (id <= 0)
-                return Result<SueldoDTO>.Failure(MensajeError.idInvalido(id));
+                return Result<SueldoDTO>.Failure(MensajeError.IdInvalido(id));
             
 
             var pagoExistente = await _sueldoRepository.ObtenerPorId(id);

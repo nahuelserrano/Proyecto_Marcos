@@ -90,9 +90,9 @@ namespace Proyecto_camiones.Presentacion.Services
         internal async Task<Result<CamionDTO>> ActualizarAsync(int id,  string? patente, string? nombre)
         {
             if (id <= 0)
-                return Result<CamionDTO>.Failure(MensajeError.idInvalido(id));
+                return Result<CamionDTO>.Failure(MensajeError.IdInvalido(id));
             if (patente == null && nombre == null)
-                return Result<CamionDTO>.Failure(MensajeError.errorActualizacion("camión"));
+                return Result<CamionDTO>.Failure(MensajeError.ErrorActualizacion("camión"));
             var camionExistente = await _camionRepository.ObtenerPorIdAsync(id);
 
             if (camionExistente == null) { 

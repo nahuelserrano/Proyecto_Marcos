@@ -26,7 +26,7 @@ namespace Proyecto_camiones.Presentacion.Services
         public async Task<Result<ChoferDTO>> ObtenerPorIdAsync(int id)
         {
             if (id <= 0)
-                return Result<ChoferDTO>.Failure(MensajeError.idInvalido(id));
+                return Result<ChoferDTO>.Failure(MensajeError.IdInvalido(id));
 
             Chofer chofer = await this._choferRepository.ObtenerPorIdAsync(id);
 
@@ -38,7 +38,7 @@ namespace Proyecto_camiones.Presentacion.Services
 
         internal async Task<Result<bool>> EliminarAsync(int id)
         {
-            if (id <= 0) return Result<bool>.Failure(MensajeError.idInvalido(id));
+            if (id <= 0) return Result<bool>.Failure(MensajeError.IdInvalido(id));
 
             Chofer chofer = await this._choferRepository.ObtenerPorIdAsync(id);
 
@@ -79,7 +79,7 @@ namespace Proyecto_camiones.Presentacion.Services
         public async Task<Result<ChoferDTO>> ActualizarAsync(int id, string nombre = null)
         {
             if (id <= 0)
-                return Result<ChoferDTO>.Failure(MensajeError.idInvalido(id));
+                return Result<ChoferDTO>.Failure(MensajeError.IdInvalido(id));
 
             var chofer = await _choferRepository.ObtenerPorIdAsync(id);
 
