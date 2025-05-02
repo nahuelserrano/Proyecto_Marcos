@@ -31,12 +31,34 @@ namespace Proyecto_camiones.Presentacion
         static async Task Main(string[] args)
 
         {
-            //PagoViewModel pw = new PagoViewModel();
+            PagoViewModel pw = new PagoViewModel();
+            //await pw.CrearAsync(1, 1, 1000);
+            //await pw.CrearAsync(1, 1, 1000);
+            //await pw.CrearAsync(1, 1, 1000);
+            //await pw.CrearAsync(1, 1, 1000);
+
+
             //float suel=  await pw.ObtenerSueldoCalculado(1, DateOnly.MinValue, DateOnly.MaxValue);
 
-           SueldoViewModel sueldoViewModel = new SueldoViewModel();
-           await sueldoViewModel.CrearAsync(1, DateOnly.MinValue, DateOnly.MaxValue);
-          //  Console.WriteLine("sueldo calculado : " + suel);
+            SueldoViewModel sueldoViewModel = new SueldoViewModel();
+          await sueldoViewModel.EliminarAsync(15);
+
+
+            //await sueldoViewModel.CrearAsync(1, DateOnly.MinValue, DateOnly.MaxValue);
+
+            //var sueldosResult = await sueldoViewModel.ObtenerTodosAsync();
+            //if (sueldosResult.IsSuccess)
+            //{
+            //    foreach (var sueldo in sueldosResult.Value)
+            //    {
+            //        Console.WriteLine(sueldo.ToString());
+            //    }
+            //}
+            //else
+            //{
+            //    Console.WriteLine(sueldosResult.Error);
+            //}
+            //  Console.WriteLine("sueldo calculado : " + suel);
 
 
             //SueldoViewModel sw = new SueldoViewModel();

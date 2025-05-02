@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Proyecto_camiones.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,6 +22,8 @@ namespace Proyecto_camiones.Presentacion.Utils
 
         public static Result<T> Success(T value) => new Result<T>(true, value, null);
         public static Result<T> Failure(string error) => new Result<T>(false, default, error);
+
+        
 
         //internal static Result<int> Success(Result<int>? result)
         //{

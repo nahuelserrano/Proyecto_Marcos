@@ -72,13 +72,13 @@ namespace Proyecto_camiones.Repositories
             }
         }
 
-        public async Task<bool> ActualizarAsync(int idChofer, DateOnly desde, DateOnly hasta, int id_Sueldo)
+        public async Task<bool> ActualizarAsync(int idChofer, DateOnly desde, DateOnly hasta, int? id_Sueldo,bool pagado)
         {
             try
             {
                 
                 var pagosModificar = await _context.Pagos
-                .Where(pago => pago.Id_Chofer == idChofer && pago.Pagado == false) // Filtrar pagos por el Id_Viaje y ver si esta pago o no
+                .Where(pago => pago.Id_Chofer == idChofer && pago.Pagado  ==  !pagado) // Filtrar pagos por el Id_Viaje y ver si esta pago o no
                 .Join(
                     _context.Viajes,
                     pago => pago.Id_Viaje,
@@ -93,7 +93,8 @@ namespace Proyecto_camiones.Repositories
                 {
                     foreach (var pago in pagosModificar)
                     {
-                        pago.Pagado = true;
+                        pago.Pagado = pagado;
+                        if(id_Sueldo!=null)
                         pago.Id_sueldo = id_Sueldo;
                     }
 

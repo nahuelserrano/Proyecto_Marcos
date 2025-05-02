@@ -49,10 +49,10 @@ namespace Proyecto_camiones.Services
 
         }
 
-        public async Task<Result<bool>> MarcarPagos(int id_chofer, DateOnly desde, DateOnly hasta, int id_Sueldo) {
+        public async Task<Result<bool>> ModificarEstado(int id_chofer, DateOnly desde, DateOnly hasta, int? id_Sueldo,bool pagado = true) {
             try
             {
-                bool actualizado=await _pagoRepository.ActualizarAsync(id_chofer, desde, hasta, id_Sueldo);
+                bool actualizado=await _pagoRepository.ActualizarAsync(id_chofer, desde, hasta, id_Sueldo,pagado);
                 if (actualizado) {
                     return Result<bool>.Success(actualizado);
                 }

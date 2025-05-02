@@ -41,7 +41,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 return false;
             }
         }
-
+       
 
         public async Task<int> InsertarAsync(float monto, int Id_Chofer, DateOnly pagadoDesde, DateOnly pagadoHasta)
         {
@@ -98,7 +98,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
       }
 
        
-        public async Task<List<SueldoDTO>> ObtenerTodos()
+        public async Task<List<SueldoDTO>> ObtenerTodosAsync()
         {
             
                 var sueldo = await _context.Sueldos.Select(p => new SueldoDTO

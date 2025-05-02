@@ -171,11 +171,11 @@ INSERT INTO `fletero` (`idFletero`, `nombre`) VALUES
 
 CREATE TABLE `pago` (
   `idpago` int(11) NOT NULL,
-  `monto` varchar(45) NOT NULL,
+  `monto` float NOT NULL,
   `idChofer` int(11) DEFAULT NULL,
   `pagado` tinyint(4) DEFAULT NULL,
   `idViaje` int(11) NOT NULL,
-  `idSueldo` int(11) NOT NULL
+  `idSueldo` int(11) NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
