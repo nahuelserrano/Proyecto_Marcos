@@ -93,7 +93,7 @@ namespace Proyecto_camiones.Tests
             try
             {
                 var clienteViewModel = new ClienteViewModel();
-                var resultado = await clienteViewModel.InsertarCliente(nombre);
+                var resultado = await clienteViewModel.InsertarAsync(nombre);
 
                 if (resultado.IsSuccess)
                 {
@@ -123,7 +123,7 @@ namespace Proyecto_camiones.Tests
             try
             {
                 var clienteViewModel = new ClienteViewModel();
-                var resultado = await clienteViewModel.ObtenerById(id);
+                var resultado = await clienteViewModel.ObtenerByIdAsync(id);
 
                 if (resultado.IsSuccess)
                 {
@@ -171,7 +171,7 @@ namespace Proyecto_camiones.Tests
             try
             {
                 var clienteViewModel = new ClienteViewModel();
-                var resultado = await clienteViewModel.Eliminar(id);
+                var resultado = await clienteViewModel.EliminarAsync(id);
 
                 if (resultado.IsSuccess)
                 {

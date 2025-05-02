@@ -47,7 +47,7 @@ namespace Proyecto_camiones.Repositories
             }
         }
 
-        public async Task<CuentaCorriente> InsertarCuentaCorriente(int? idCliente, int? idFletero, DateOnly fecha, int nro, float adeuda, float pagado)
+        public async Task<CuentaCorriente> InsertarAsync(int? idCliente, int? idFletero, DateOnly fecha, int nro, float adeuda, float pagado)
         {
             try
             {
@@ -99,7 +99,7 @@ namespace Proyecto_camiones.Repositories
 
         }
 
-        public async Task<CuentaCorriente> ObtenerCuentaMasRecienteByClienteId(int clienteId)
+        public async Task<CuentaCorriente> ObtenerCuentaMasRecientePorClienteIdAsync(int clienteId)
         {
             try
             {
@@ -124,7 +124,7 @@ namespace Proyecto_camiones.Repositories
             }
         }
 
-        public async Task<List<CuentaCorriente>> ObtenerTodas()
+        public async Task<List<CuentaCorriente>> ObtenerTodosAsync()
         {
             try
             {
@@ -144,7 +144,7 @@ namespace Proyecto_camiones.Repositories
             }
         }
 
-        internal async Task<List<CuentaCorrienteDTO>> ObtenerCuentasByIdCliente(int id)
+        internal async Task<List<CuentaCorrienteDTO>> ObtenerCuentasPorIdClienteAsync(int id)
         {
             try
             {
@@ -174,7 +174,7 @@ namespace Proyecto_camiones.Repositories
             }
         }
 
-        internal async Task<List<CuentaCorrienteDTO>> ObtenerCuentasDeUnFletero(int id)
+        internal async Task<List<CuentaCorrienteDTO>> ObtenerCuentasDeUnFleteroAsync(int id)
         {
             try
             {

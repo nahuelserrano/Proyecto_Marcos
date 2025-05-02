@@ -45,7 +45,7 @@ namespace Proyecto_camiones.Repositories
             }
         }
 
-        public async Task<int> InsertarFletero(string nombre)
+        public async Task<int> InsertarAsync(string nombre)
         {
             try
             {
@@ -66,7 +66,7 @@ namespace Proyecto_camiones.Repositories
             }
         }
 
-        internal async Task<Flete> ObtenerPorNombre(string nombre)
+        internal async Task<Flete> ObtenerPorNombreAsync(string nombre)
         {
             try
             {
@@ -107,6 +107,30 @@ namespace Proyecto_camiones.Repositories
                 Console.WriteLine(ex.Message);
                 Console.WriteLine(ex.InnerException);
                 return null;
+            }
+        }
+
+        internal async Task<bool> EliminarAsync(int id)
+        {
+            try
+            {
+                var fletero = await _context.Fletes.FindAsync(id);
+                Console.WriteLine("se encontró el fletero");
+
+                if (fletero == null)
+                    return false;
+
+                _context.Fletes.Remove(fletero);
+
+                await _context.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.InnerException);
+                return false;
             }
         }
     }

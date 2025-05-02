@@ -1,4 +1,5 @@
 ﻿using MySqlX.XDevAPI.Common;
+using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Models;
 using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Utils;
@@ -15,10 +16,12 @@ namespace Proyecto_camiones.Services
     {
 
         public readonly FleteRepository fleteRepository;
+        public readonly ViajeFleteRepository viajeFleteRepository;
 
         public FleteService(FleteRepository fleteRepository)
         {
             this.fleteRepository = fleteRepository ?? throw new ArgumentNullException(nameof(fleteRepository));
+            this.viajeFleteRepository = new ViajeFleteRepository();
         }
 
         public async Task<bool> TestearConexion()
@@ -31,29 +34,29 @@ namespace Proyecto_camiones.Services
             if(nombre!= null)
             {
                 nombre = nombre.ToUpper();
-                int id = await this.fleteRepository.InsertarFletero(nombre);
+                int id = await this.fleteRepository.InsertarAsync(nombre);
                 if (id > -1)
                 {
                     return Result<int>.Success(id);
                 }
-                return Result<int>.Failure("Hubo un problema al intentar insertar el fletero");
+                return Result<int>.Failure(MensajeError.ErrorCreacion("fletero"));
             }
             return Result<int>.Failure("El campo nombre no puede ser nulo");
         }
 
-        internal async Task<Result<Flete>> ObtenerPorNombre(string nombre)
+        internal async Task<Result<Flete>> ObtenerPorNombreAsync(string nombre)
         {
             if(nombre != null)
             {
                 nombre = nombre.ToUpper();
-                Flete fletero = await this.fleteRepository.ObtenerPorNombre(nombre);
+                Flete fletero = await this.fleteRepository.ObtenerPorNombreAsync(nombre);
                 if(fletero != null)
                 {
                     return Result<Flete>.Success(fletero);
                 }
                 return Result<Flete>.Failure("No existe un fletero con ese nombre");
             }
-            return Result<Flete>.Failure("El nombre no puede ser nulo");
+            return Result<Flete>.Failure(MensajeError.atributoRequerido("nombre del fletero"));
         }
 
         internal async Task<Result<List<Flete>>> ObtenerTodosAsync()
@@ -63,14 +66,14 @@ namespace Proyecto_camiones.Services
             {
                 return Result<List<Flete>>.Success(fleteros);
             }
-            return Result<List<Flete>>.Failure("No se pudo realizar la petición a la base de datos");
+            return Result<List<Flete>>.Failure("Hubo un error al conectar con la base de datos");
         }
 
         internal async Task<Result<Flete>> ObtenerPorIdAsync(int id)
         {
             if (id < 0)
             {
-                return Result<Flete>.Failure("No existen ids negativos");
+                return Result<Flete>.Failure(MensajeError.idInvalido(id));
             }
             Flete fletero = await this.fleteRepository.ObtenerPorIdAsync(id);
             if (fletero != null)
@@ -78,6 +81,25 @@ namespace Proyecto_camiones.Services
                 return Result<Flete>.Success(fletero);
             }
             return Result<Flete>.Failure("No existe un fletero con ese id");
+        }
+
+        internal async Task<Result<bool>> EliminarAsync(int id)
+        {
+            if (id < 0)
+            {
+                return Result<bool>.Failure(MensajeError.idInvalido(id));
+            }
+            List<ViajeFleteDTO> viajes = await this.viajeFleteRepository.ObtenerViajesPorIdFleteroAsync(id);
+            if (viajes.Count > 0)
+            {
+                return Result<bool>.Failure("No se puede eliminar el fletero ya que contiene viajes a cargo");
+            }
+            bool response = await this.fleteRepository.EliminarAsync(id);
+            if (response)
+            {
+                return Result<bool>.Success(response);
+            }
+            return Result<bool>.Failure("No se pudo eliminar el fletero, error interno en la base de datos");
         }
     }
 }

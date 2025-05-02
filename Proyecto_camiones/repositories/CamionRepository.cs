@@ -43,7 +43,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
         //agrego el signo de pregunta luego de Camion para decir que el result puede ser null
-        public async Task<Camion?> InsertarCamionAsync( string patente, string nombre)
+        public async Task<Camion?> InsertarAsync( string patente, string nombre)
         {
             try
             {
@@ -80,7 +80,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
         }
 
-        public async Task<List<CamionDTO>?> ObtenerCamionesAsync()
+        public async Task<List<CamionDTO>?> ObtenerTodosAsync()
         {
             try
             {
@@ -101,7 +101,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
         }
 
-        public async Task<bool> Actualizar(int id, string? patente, string? nombre)
+        public async Task<bool> ActualizarAsync(int id, string? patente, string? nombre)
         {
             try
             {
@@ -132,18 +132,27 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
         }
 
-        internal async Task<CamionDTO?> ObtenerPorId(int id)
+        internal async Task<CamionDTO?> ObtenerPorIdAsync(int id)
         {
-            Camion camion = await _context.Camiones.FindAsync(id);
-            if (camion != null)
+            try
             {
-                CamionDTO nuevo = new CamionDTO(camion.Patente, camion.nombre_chofer);
-                return nuevo;
+                Camion camion = await _context.Camiones.FindAsync(id);
+                if (camion != null)
+                {
+                    CamionDTO nuevo = new CamionDTO(camion.Patente, camion.nombre_chofer);
+                    return nuevo;
+                }
+                return null;
+            }catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.InnerException);
+                return null;
             }
-            return null;
+            
         }
 
-        public async Task<bool> EliminarCamionAsync(int id)
+        public async Task<bool> EliminarAsync(int id)
         {
             try
             {
