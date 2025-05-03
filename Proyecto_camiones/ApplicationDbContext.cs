@@ -74,21 +74,16 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.Km).HasColumnName("km");
             entity.Property(e => e.Tarifa).HasColumnName("tarifa");
             entity.Property(e => e.NombreChofer).HasColumnName("nombre_chofer");
-        });
-
-        modelBuilder.Entity<Viaje>(entity =>
-        {
+            entity.Property(e => e.PorcentajeChofer).HasColumnName("comision_chofer");
             entity.HasOne(v => v.ClienteNavigation)
                 .WithMany(c => c.Viajes)
                 .HasForeignKey(v => v.Cliente)
                 .OnDelete(DeleteBehavior.Restrict); // Impide que se elimine un cliente con viajes
-
             entity.HasOne(v => v.CamionNavigation)
                 .WithMany(c => c.Viajes)
                 .HasForeignKey(v => v.Camion)
                 .OnDelete(DeleteBehavior.Restrict); // Impide que se elimine un camión con viajes
         });
-
 
         modelBuilder.Entity<CuentaCorriente>(entity =>
         {
@@ -103,7 +98,7 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.IdFletero).HasColumnName("idfletero");
             entity.Property(e => e.Saldo_Total).HasColumnName("saldo");
         });
-        
+
         modelBuilder.Entity<Pago>(entity =>
         {
             entity.ToTable("pago");
@@ -113,18 +108,18 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.Pagado).HasColumnName("pagado");
             entity.Property(e => e.Id_Chofer).HasColumnName("idChofer");
             entity.Property(e => e.Id_Viaje).HasColumnName("idViaje");
-            entity.Property(e => e.Id_sueldo).HasColumnName("idsueldo");
+            entity.Property(e => e.Id_sueldo).HasColumnName("idSueldo");
         });
         modelBuilder.Entity<Sueldo>(entity =>
         {
             entity.ToTable("sueldo");
             entity.HasKey(e => e.Id);
-            entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
-            entity.Property(e => e.Monto).HasColumnName("Monto_Pago");
-            entity.Property(e => e.Id_Chofer).HasColumnName("id_Chofer");
-            entity.Property(e => e.pagadoDesde).HasColumnName("pagado_Desde");
-            entity.Property(e => e.pagadoHasta).HasColumnName("pagado_Hasta");
-            entity.Property(e => e.FechaPago).HasColumnName("fecha_Pago");
+            entity.Property(e => e.Id).HasColumnName("idsueldo").ValueGeneratedOnAdd();
+            entity.Property(e => e.Monto).HasColumnName("monto_total");
+            entity.Property(e => e.Id_Chofer).HasColumnName("idchofer");
+            entity.Property(e => e.pagadoDesde).HasColumnName("fecha_desde");
+            entity.Property(e => e.pagadoHasta).HasColumnName("fecha_hasta");
+            entity.Property(e => e.FechaPago).HasColumnName("fecha_pago");
         });
 
         modelBuilder.Entity<Cliente>(entity =>
@@ -133,6 +128,11 @@ public class ApplicationDbContext : DbContext
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Id).HasColumnName("idCliente");
             entity.Property(e => e.Nombre).HasColumnName("nombre");
+
+            entity.HasMany(c => c.Viajes)
+                .WithOne(v => v.ClienteNavigation)
+                .HasForeignKey(v => v.Cliente)
+                .OnDelete(DeleteBehavior.Restrict);
         });
 
         modelBuilder.Entity<ViajeFlete>(entity =>
@@ -163,7 +163,6 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.nombre).HasColumnName("nombre");
         });
 
-        base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<Chofer>(entity =>
         {
@@ -172,6 +171,8 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.Id).HasColumnName("idChofer");
             entity.Property(e => e.Nombre).HasColumnName("nombre");
         });
+
+        base.OnModelCreating(modelBuilder);
     }
 }
 

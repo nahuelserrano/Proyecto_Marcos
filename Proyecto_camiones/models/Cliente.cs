@@ -10,18 +10,19 @@ namespace Proyecto_camiones.Presentacion.Models
     {
 
         public int Id { get; set; }
-        public String Nombre { get; set; }
+        public string? Nombre { get; set; }
+        // Navegación inversa (colección)
+        public ICollection<Viaje> Viajes { get; set; } = new List<Viaje>();
 
-        public Cliente(String nombre)
+        public Cliente(){}
+        public Cliente(string nombre)
         {
             this.Nombre = nombre;
         }
 
-        // Navegación inversa (colección)
-        public ICollection<Viaje> Viajes { get; set; }
 
         override
-        public String ToString()
+        public string ToString()
         {
             return "Id: " + this.Id + "Nombre: "+this.Nombre;
         }

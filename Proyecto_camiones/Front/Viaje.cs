@@ -172,7 +172,7 @@ internal class Viaje : Home
     {
         if (filtro == "Camion")
         {
-            var resultado = await cvm.ObtenerTodos();
+            var resultado = await cvm.ObtenerTodosAsync();
             if (resultado.IsSuccess)
             {
                 CardCamionGenerator("Camion", resultado);
@@ -479,7 +479,7 @@ internal class Viaje : Home
             int i = 0;
             if (filtro == "Camion")
             {
-                var idCamion = await cvm.InsertarCamion(info);
+                var idCamion = await cvm.InsertarAsync(info, "nombre");
 
                 if (idCamion.IsSuccess)
                 {
@@ -536,7 +536,7 @@ internal class Viaje : Home
             else if (filtro == "Flete")
             {
                 FleteViewModel fvm = new FleteViewModel();
-                var response = await fvm.InsertarFletero(info);
+                var response = await fvm.InsertarAsync(info);
                 if (response.IsSuccess)
                 {
                     int idfletero = response.Value;

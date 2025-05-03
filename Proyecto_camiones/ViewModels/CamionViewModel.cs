@@ -29,12 +29,13 @@ namespace Proyecto_camiones.ViewModels
             return await this._camionService.ProbarConexionAsync();
         }
 
-        public async Task<Result<int>> InsertarCamion(string patente)
+        public async Task<Result<int>> InsertarAsync( string patente, string nombre)
         {
             bool result = await this.testearConexion();
             if (result)
             {
-                var resultado = await this._camionService.CrearCamionAsync(patente);
+                Console.WriteLine("omg entré!!");
+                var resultado = await this._camionService.CrearAsync( patente, nombre);
 
                 // Ahora puedes acceder al resultado
                 if (resultado.IsSuccess)
@@ -54,23 +55,23 @@ namespace Proyecto_camiones.ViewModels
             return Result<int>.Failure("La conexión no pude establecerse");
         }
 
-        public async Task<Result<List<CamionDTO>>> ObtenerTodos() 
+        public async Task<Result<List<CamionDTO>>> ObtenerTodosAsync() 
         {
             bool result = await this.testearConexion();
             if (result)
             {
-                var camiones = await this._camionService.ObtenerCamionesAsync();
+                var camiones = await this._camionService.ObtenerTodosAsync();
                 Console.WriteLine("no rompió ante la llamada");
                 return Result<List<CamionDTO>>.Success(camiones);
             }
             return Result<List<CamionDTO>>.Failure("La conexión no pudo establecerse");
         }
 
-        public async Task<Result<CamionDTO>> Actualizar(int id,string? patente, string? nombre)
+        public async Task<Result<CamionDTO>> ActualizarAsync(int id, string? patente, string? nombre)
         {
             if (this.testearConexion().Result)
             {
-                Result<CamionDTO> camion = await this._camionService.Actualizar(id, patente, nombre);
+                Result<CamionDTO> camion = await this._camionService.ActualizarAsync(id, patente, nombre);
                 if(camion.IsSuccess)
                 {
                     return camion;
@@ -80,11 +81,11 @@ namespace Proyecto_camiones.ViewModels
             return Result<CamionDTO>.Failure("No pudo establecerse la conexión");
         }
 
-        public async Task<Result<string>> Eliminar(int id)
+        public async Task<Result<string>> EliminarAsync(int id)
         {
             if (this.testearConexion().Result)
             {
-                return await this._camionService.Eliminar(id);
+                return await this._camionService.EliminarAsync(id);
             }
             return Result<string>.Failure("error de conexión");
         }
