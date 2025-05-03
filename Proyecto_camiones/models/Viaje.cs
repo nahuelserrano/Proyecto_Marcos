@@ -19,7 +19,7 @@ namespace Proyecto_camiones.Presentacion.Models
         public float Km { get; set; }
         public float Tarifa { get; set; }
         public string NombreChofer { get; set; }
-        public double PorcentajeChofer { get; set; }
+        public float PorcentajeChofer { get; set; }
         public float Total => Tarifa * Kg * 1000;
 
         // Propiedades de navegación
@@ -27,7 +27,7 @@ namespace Proyecto_camiones.Presentacion.Models
         public Camion CamionNavigation { get; set; } // La entidad Camión relacionada
 
         public Viaje(DateOnly fechaInicio, string lugarPartida, string destino, int remito, float kg,
-            string carga, int cliente, int camion, float km, float tarifa, string nombreChofer, double porcentajeChofer)
+            string carga, int cliente, int camion, float km, float tarifa, string nombreChofer, float porcentajeChofer)
         {
             FechaInicio = fechaInicio;
             LugarPartida = lugarPartida;

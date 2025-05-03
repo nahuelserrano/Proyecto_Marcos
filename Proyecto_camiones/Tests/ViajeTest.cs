@@ -18,7 +18,7 @@ namespace Proyecto_camiones.Tests
             try
             {
                 DateOnly fecha = new DateOnly(2025, 4, 28);
-                int id = await ProbarInsertarViaje(fecha, "Tandil", "Buenos Aires", 123, 1000.5f, "Trigo", 3, 3, 350.5f, 5000.0f, "Chofer Test", 0.18);
+                int id = await ProbarInsertarViaje(fecha, "Tandil", "Buenos Aires", 123, 1000.5f, "Trigo", 3, 3, 350.5f, 5000.0f, "Chofer Test", 0.18f);
                 await ProbarObtenerViajePorId(id);
                 await ProbarObtenerTodosViajes();
                 await ProbarObtenerViajesPorCamion(3);
@@ -47,7 +47,7 @@ namespace Proyecto_camiones.Tests
             float km,
             float tarifa,
             string nombreChofer, 
-            double porcentajeChofer)
+            float porcentajeChofer)
         {
             ViajeViewModel vvm = new ViajeViewModel();
 
@@ -294,7 +294,7 @@ namespace Proyecto_camiones.Tests
             }
         }
 
-        private static async Task ProbarEliminarViaje(int id)
+        public static async Task ProbarEliminarViaje(int id)
         {
             Console.WriteLine($"\n=== ELIMINANDO VIAJE ID: {id} ===");
             ViajeViewModel vvm = new ViajeViewModel();

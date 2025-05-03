@@ -270,10 +270,10 @@ namespace Proyecto_camiones.Presentacion
             //    //await ChoferTests.ProbarEliminarChofer(2);
 
             //    // VIAJE
-            //    //DateOnly fecha = new DateOnly(2025, 4, 28);
-            //    //int idViaje = await ViajeTests.ProbarInsertarViaje(fecha, "Tandil", "Buenos Aires", 123, 1000.5f, "Trigo", 1, 1, 350.5f, 5000.0f, "Chofer Test");
-            //    //await ViajeTests.ProbarObtenerViajePorId(idViaje);
-            //    //await ViajeTests.ProbarEliminarViaje(idViaje);
+            //DateOnly fecha = new DateOnly(2025, 4, 28);
+            //int idViaje = await ViajeTests.ProbarInsertarViaje(fecha, "Tandil", "Buenos Aires", 123, 1000.5f, "Trigo", 3, 3, 350.5f, 5000.0f, "Chofer Test", 018f);
+            //await ViajeTests.ProbarObtenerViajePorId(idViaje);
+            //await ViajeTests.ProbarEliminarViaje(10);
             //}
             //catch (Exception ex)
             //{

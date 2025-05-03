@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Transactions;
 using Proyecto_camiones.DTOs;
+using Proyecto_camiones.Models;
 using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Utils;
@@ -67,7 +68,7 @@ namespace Proyecto_camiones.Presentacion.Services
             float km,
             float tarifa,
             string nombreChofer,
-            double porcentajeChofer)
+            float porcentajeChofer)
         {
             
             try{
@@ -106,7 +107,7 @@ namespace Proyecto_camiones.Presentacion.Services
                         if (crearChoferResult.IsSuccess)
                             idChofer = crearChoferResult.Value;
                         else
-                            return Result<int>.Failure($"Error al crear el chofer: {crearChoferResult.Error}");
+                            return Result<int>.Failure(MensajeError.ErrorCreacion(nameof(Chofer)));
                     }
                     else
                         idChofer = obtenerChoferResult.Value.Id;
@@ -117,17 +118,15 @@ namespace Proyecto_camiones.Presentacion.Services
                         carga, cliente, camion, km, tarifa, nombreChofer, porcentajeChofer);
 
                     if (id == -1)
-                        return Result<int>.Failure("No se pudo crear el viaje en la base de datos");
+                        return Result<int>.Failure(MensajeError.ErrorCreacion(nameof(Viaje)));
 
                     // Crear el pago asociado al viaje
                     float pago_monto = (float)(tarifa * kg * porcentajeChofer);
 
-                    //int idPago = await _pagoService.CrearAsync(idChofer, id, pago_monto);
-                    //int idPago = await _pagoService.CrearAsync(idChofer, id, tarifa * kg, porcentajeChofer);
+                    int idPago = await _pagoService.CrearAsync(idChofer, id, pago_monto);
 
-
-                    //if (idPago <= 0)
-                    //    return Result<int>.Failure("No se pudo crear el pago en la base de datos");
+                    if (idPago <= 0)
+                        return Result<int>.Failure(MensajeError.ErrorCreacion(nameof(Pago)));
 
                     scope.Complete();
                     return Result<int>.Success(id);
@@ -168,13 +167,14 @@ namespace Proyecto_camiones.Presentacion.Services
            int? camion = null,
            float? km = null,
            float? tarifa = null,
-           string chofer = null)
+           string? chofer = null,
+           float? porcentaje = null)
         {
             if (id <= 0)
                 return Result<bool>.Failure(MensajeError.IdInvalido(id));
 
-            if (fechaInicio == null && lugarPartida == null && destino == null && remito == null &&
-                kg == null && carga == null && cliente == null && camion == null && km == null && tarifa == null)
+            if (fechaInicio == null && lugarPartida == null && destino == null && remito == null && kg == null && carga == null
+                 && cliente == null && camion == null && km == null && tarifa == null && chofer == null && porcentaje == null)
             {
                 return Result<bool>.Failure("No se ha proporcionado ningún campo para actualizar");
             }
@@ -188,13 +188,13 @@ namespace Proyecto_camiones.Presentacion.Services
 
                 bool resultado = await _viajeRepository.ActualizarAsync(
                     id, fechaInicio, lugarPartida, destino, remito,
-                    carga, kg, cliente, camion, tarifa, km);
+                    carga, kg, cliente, camion, tarifa, km, chofer, porcentaje);
 
                 if (!resultado)
-                    return Result<bool>.Failure("No se pudo actualizar el viaje en la base de datos");
+                    return Result<bool>.Failure(MensajeError.ErrorActualizacion(nameof(Viaje)));
 
                 // Actualizar el pago asociado al viaje
-                //bool seActualizoPago = await _pagoService.ActualizarAsync(id, kg, tarifa, chofer)
+                //bool seActualizoPago = await _pagoService.ActualizarAsync(id, kg, tarifa, chofer);
 
                 //if (!seActualizoPago)
                 //    return Result<bool>.Failure("No se pudo actualizar el pago asociado al viaje");

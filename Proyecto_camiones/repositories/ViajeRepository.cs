@@ -31,8 +31,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 if (puedeConectar)
                     Console.WriteLine("Conexión exitosa a la base de datos.");
                 else
-                    Console.WriteLine(MensajeError.errorConexion());
-                
+                    Console.WriteLine(MensajeError.ErrorBaseDatos("No se pudo establecer conexión"));
+
 
                 return puedeConectar;
             }
@@ -56,7 +56,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             float km,
             float tarifa,
             string nombreChofer,
-            double porcentajeChofer
+            float porcentajeChofer
             )
         {
             try
@@ -228,7 +228,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
             int? camion = null,
             float? tarifa = null,
             float? km = null,
-            string nombreChofer = null
+            string nombreChofer = null,
+            float? porcentajeChofer = null
             )
         {
             try
@@ -272,6 +273,9 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 if (!string.IsNullOrWhiteSpace(nombreChofer))
                     viaje.NombreChofer = nombreChofer;
 
+                if (porcentajeChofer.HasValue)
+                    viaje.PorcentajeChofer = porcentajeChofer.Value;
+
 
                 int registorsAfectados = await _context.SaveChangesAsync();
 
@@ -307,7 +311,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al eliminar viaje: {ex.Message}");
+                Console.WriteLine($"Error al eliminar viaje: {ex.InnerException}");
                 return false;
             }
         }
