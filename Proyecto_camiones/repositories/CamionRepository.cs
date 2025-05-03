@@ -45,7 +45,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
         //agrego el signo de pregunta luego de Camion para decir que el result puede ser null
-        public async Task<Camion?> InsertarCamionAsync(string patente)
+        public async Task<Camion?> InsertarAsync( string patente, string nombre)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     return null;
                 }
 
-                var camion = new Camion(patente, null);
+                var camion = new Camion(patente, nombre);
 
                 // Agregar el camión a la base de datos (esto solo marca el objeto para insertar)
                 _context.Camiones.Add(camion);
@@ -84,13 +84,14 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
         }
 
-        public async Task<List<CamionDTO>?> ObtenerCamionesAsync()
+        public async Task<List<CamionDTO>?> ObtenerTodosAsync()
         {
             try
             {
                 var camiones = await _context.Camiones.Select(c => new CamionDTO
                 {
-                    Patente = c.Patente
+                    Patente = c.Patente,
+                    Nombre_Chofer = c.nombre_chofer
                 }).ToListAsync();
 
                 return camiones;
@@ -104,7 +105,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
         }
 
-        public async Task<bool> Actualizar(int id, string? patente, string? nombre)
+        public async Task<bool> ActualizarAsync(int id, string? patente, string? nombre)
         {
             try
             {
@@ -135,7 +136,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
         }
 
-        internal async Task<CamionDTO?> ObtenerPorId(int id)
+        internal async Task<CamionDTO?> ObtenerPorIdAsync(int id)
         {
             try
             {
@@ -146,21 +147,21 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     return nuevo;
                 }
                 return null;
-            }
-            catch (Exception e)
+            }catch(Exception e)
             {
-                MessageBox.Show(e.Message);
-                MessageBox.Show(e.InnerException.ToString());
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.InnerException);
                 return null;
             }
-
+            
         }
 
-        public async Task<bool> EliminarCamionAsync(int id)
+        public async Task<bool> EliminarAsync(int id)
         {
             try
             {
                 var camion = await _context.Camiones.FindAsync(id);
+                Console.WriteLine("se encontró el camión");
 
                 if (camion == null)
                     return false;
@@ -171,8 +172,10 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.InnerException);
                 return false;
             }
         }

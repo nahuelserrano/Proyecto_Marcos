@@ -1,467 +1,463 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Threading;
-//using System.Threading.Tasks;
-//using Microsoft.EntityFrameworkCore;
-//using MySql.Data.MySqlClient;
-//using MySqlX.XDevAPI;
-//using Proyecto_camiones.DTOs;
-//using Proyecto_camiones.Presentacion.Models;
-//using Proyecto_camiones.Presentacion.Utils;
-//using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using MySql.Data.MySqlClient;
+using MySqlX.XDevAPI;
+using Proyecto_camiones.DTOs;
+using Proyecto_camiones.Presentacion.Models;
+using Proyecto_camiones.Presentacion.Utils;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
-//namespace Proyecto_camiones.Presentacion.Repositories
-//{
-//    public class ViajeRepository
-//    {
-//        private readonly ApplicationDbContext _context;
+namespace Proyecto_camiones.Presentacion.Repositories
+{
+    public class ViajeRepository
+    {
+        private readonly ApplicationDbContext _context;
 
-//        public ViajeRepository(ApplicationDbContext context)
-//        {
-//            _context = context ?? throw new ArgumentNullException(nameof(context));
-//        }
+        public ViajeRepository(ApplicationDbContext context)
+        {
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
 
-//        public async Task<bool> ProbarConexionAsync()
-//        {
-//            try
-//            {
-//                bool puedeConectar = await _context.Database.CanConnectAsync();
+        public async Task<bool> ProbarConexionAsync()
+        {
+            try
+            {
+                var puedeConectar = await _context.Database.CanConnectAsync();
 
-//                if (puedeConectar)
-//                {
-//                    Console.WriteLine("Conexión exitosa a la base de datos.");
-//                }
-//                else
-//                {
-//                    Console.WriteLine("No se puede conectar a la base de datos.");
-//                }
-
-//                return puedeConectar;
-//            }
-//            catch (Exception ex)
-//            {
-//                Console.WriteLine($"Error al intentar conectar: {ex.Message}");
-//                return false;
-//            }
-//        }
-
-//        // CREATE - Insertar un nuevo viaje
-//        public async Task<ViajeDTO?> InsertarAsync(
-//            DateOnly fechaInicio,
-//            string lugarPartida,
-//            string destino,
-//            int remito,
-//            float kg,
-//            string carga,
-//            int cliente,
-//            int camion,
-//            float km,
-//            float tarifa
-//            )
-//        {
-//            try
-//            {
-//                if (!await _context.Database.CanConnectAsync())
-//                {
-//                    Console.WriteLine("No se puede conectar a la base de datos");
-//                    return null;
-//                }
-//                var camionEntity = await _context.Camiones.FindAsync(camion);
+                if (puedeConectar)
+                    Console.WriteLine("Conexión exitosa a la base de datos.");
+                else
+                    Console.WriteLine(MensajeError.ErrorBaseDatos("No se pudo establecer conexión"));
 
 
-//                var viaje = new Viaje(fechaInicio, lugarPartida, destino, remito, kg,
-//                    carga, cliente, camion, km, tarifa, camionEntity.nombre_chofer);
+                return puedeConectar;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al intentar conectar: {ex.Message}");
+                return false;
+            }
+        }
 
-//                _context.Viajes.Add(viaje);
+        // CREATE - Insertar un nuevo viaje
+        public async Task<int> InsertarAsync(
+            DateOnly fechaInicio,
+            string lugarPartida,
+            string destino,
+            int remito,
+            float kg,
+            string carga,
+            int cliente,
+            int camion,
+            float km,
+            float tarifa,
+            string nombreChofer,
+            float porcentajeChofer
+            )
+        {
+            try
+            {
+                if (!await _context.Database.CanConnectAsync())
+                {
+                    Console.WriteLine("No se puede conectar a la base de datos");
+                    return -1;
+                }
+                var viaje = new Viaje(fechaInicio, lugarPartida, destino, remito, kg,
+                    carga, cliente, camion, km, tarifa, nombreChofer, porcentajeChofer);
 
-//                // Guardar los cambios en la base de datos
-//                int registrosAfectados = await _context.SaveChangesAsync();
+                _context.Viajes.Add(viaje);
 
-//                if (registrosAfectados == 0)
-//                {
-//                    Console.WriteLine("No se insertó ningún registro");
-//                    return null;
-//                }
-//                // Si se insertó correctamente, devolver el viaje como DTO
+                // Guardar los cambios en la base de datos
+                int registrosAfectados = await _context.SaveChangesAsync();
 
-//                var clienteEntity = await _context.Clientes.FindAsync(cliente);
+                if (registrosAfectados == 0)
+                {
+                    Console.WriteLine("No se insertó ningún registro");
+                    return -1;
+                }
 
-//                if (clienteEntity != null && camionEntity != null)
-//                {
-//                    return new ViajeDTO(
-//                        viaje.FechaInicio,
-//                        viaje.LugarPartida,
-//                        viaje.Destino,
-//                        viaje.Remito,
-//                        viaje.Kg,
-//                        viaje.Carga,
-//                        clienteEntity.Nombre,
-//                        camionEntity.nombre_chofer,
-//                        viaje.Km,
-//                        viaje.Tarifa
-//                    );
-//                }
+                return viaje.Id;
+            }
+            catch (Exception ex) 
+            {
+                Console.WriteLine(ex.ToString());
+                Console.WriteLine();
+                Console.WriteLine($"Error al insertar viaje: {ex.Message}");
+                Console.WriteLine();
+                Console.WriteLine($"Stack trace: {ex.StackTrace}");
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"Error interno: {ex.InnerException.Message}");
+                }
+                return -1;
+            }
+        }
 
-//                return null;
-//            }
-//            catch (Exception ex) 
-//            {
-//                Console.WriteLine(ex.ToString());
-//                Console.WriteLine();
-//                Console.WriteLine($"Error al insertar viaje: {ex.Message}");
-//                Console.WriteLine();
-//                Console.WriteLine($"Stack trace: {ex.StackTrace}");
-//                if (ex.InnerException != null)
-//                {
-//                    Console.WriteLine($"Error interno: {ex.InnerException.Message}");
-//                }
-//                return null;
-//            }
-//        }
+        //        // READ - Obtener todos los viajes
+        public async Task<List<ViajeDTO>> ObtenerTodosAsync()
+        {
+            try
+            {
+                var viajes = await _context.Viajes
+                    .AsNoTracking() // Para mejorar performance en queries de solo lectura
+                    .Include(v => v.ClienteNavigation)
+                    .Select(v => new ViajeDTO
+                    {
+                        FechaInicio = v.FechaInicio,
+                        LugarPartida = v.LugarPartida,
+                        Destino = v.Destino,
+                        Remito = v.Remito,
+                        Kg = v.Kg,
+                        Carga = v.Carga,
+                        NombreCliente = v.ClienteNavigation.Nombre,
+                        NombreChofer = v.NombreChofer,
+                        Km = v.Km,
+                        Tarifa = v.Tarifa
+                    }).ToListAsync();
 
-//        // READ - Obtener todos los viajes
-//        public async Task<List<ViajeDTO>> ObtenerTodosAsync()
-//        {
-//            try
-//            {
-//                var viajes = await _context.Viajes
-//                    .AsNoTracking() // Para mejorar performance en queries de solo lectura
-//                    .Include(v => v.ClienteNavigation)
-//                    .Select(v => new ViajeDTO
-//                    {
-//                        FechaInicio = v.FechaInicio,
-//                        LugarPartida = v.LugarPartida,
-//                        Destino = v.Destino,
-//                        Remito = v.Remito,
-//                        Kg = v.Kg,
-//                        Carga = v.Carga,
-//                        NombreCliente = v.ClienteNavigation.Nombre,
-//                        NombreChofer = v.NombreChofer,
-//                        Km = v.Km,
-//                        Tarifa = v.Tarifa
-//                    }).ToListAsync();
-
-//                if (viajes.Count == 0)
-//                {
-//                    Console.WriteLine("No hay viajes");
-//                }
-
-//                return viajes;
-//            }
-//            catch (Exception ex)
-//            {
-//                Console.WriteLine($"Error al obtener viajes: {ex.Message}");
-//                Console.WriteLine($"Stack trace: {ex.StackTrace}");
-//                return new List<ViajeDTO>();
-//            }
-//        }
-
-//        // READ - Obtener un viaje por ID
-//        public async Task<ViajeDTO?> ObtenerPorIdAsync(int id)
-//        {
-//            try
-//            {
-//                var viaje = await _context.Viajes
-//                    .AsNoTracking()
-//                    .Include(v => v.ClienteNavigation)
-//                    .FirstOrDefaultAsync(v => v.Id == id);
-
-//                if (viaje == null)
-//                    return null;
+                if (viajes.Count == 0)
+                    Console.WriteLine("No hay viajes");
                 
 
-//                var viajeDTO = new ViajeDTO
-//                {
-//                    FechaInicio = viaje.FechaInicio,
-//                    LugarPartida = viaje.LugarPartida,
-//                    Destino = viaje.Destino,
-//                    Remito = viaje.Remito,
-//                    Kg = viaje.Kg,
-//                    Carga = viaje.Carga,
-//                    NombreCliente = viaje.ClienteNavigation.Nombre,
-//                    NombreChofer = viaje.NombreChofer,
-//                    Km = viaje.Km,
-//                    Tarifa = viaje.Tarifa,
-//                };
+                return viajes;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al obtener viajes: {ex.Message}");
+                Console.WriteLine($"Stack trace: {ex.StackTrace}");
+                return new List<ViajeDTO>();
+            }
+        }
 
-//                return viajeDTO;
-//            }
-//            catch (Exception ex)
-//            {
-//                Console.WriteLine($"Error al obtener viaje: {ex.Message}");
-//                return null;
-//            }
-//        }
+        // READ - Obtener un viaje por ID
+        public async Task<ViajeDTO?> ObtenerPorIdAsync(int id)
+        {
+            try
+            {
+                var viaje = await _context.Viajes
+                    .AsNoTracking()
+                    .Include(v => v.ClienteNavigation)
+                    .FirstOrDefaultAsync(v => v.Id == id);
 
-//        // READ - Obtener viajes con filtros
-//        public async Task<List<ViajeDTO>> ObtenerPorFechaYCamionAsync(int camionId,
-//                                                            DateOnly? fechaInicio = null,
-//                                                            DateOnly? fechaFin = null
-//                                                            )
-//        {
-//            try
-//            {
-//                // Comenzamos con una consulta que incluye todos los viajes
-//                var query = _context.Viajes.AsNoTracking()
-//                    .Include(v => v.ClienteNavigation)
-//                    .Where(v => v.Camion == camionId);
+                if (viaje == null)
+                    return null;
 
-//                // Aplicamos los filtros según los parámetros proporcionados
-//                if (fechaInicio.HasValue)
-//                    query = query.Where(v => v.FechaInicio >= fechaInicio.Value);
 
-//                if (fechaFin.HasValue)
-//                    query = query.Where(v => v.FechaInicio <= fechaFin.Value);
+                var viajeDTO = new ViajeDTO
+                {
+                    FechaInicio = viaje.FechaInicio,
+                    LugarPartida = viaje.LugarPartida,
+                    Destino = viaje.Destino,
+                    Remito = viaje.Remito,
+                    Kg = viaje.Kg,
+                    Carga = viaje.Carga,
+                    NombreCliente = viaje.ClienteNavigation.Nombre,
+                    NombreChofer = viaje.NombreChofer,
+                    Km = viaje.Km,
+                    Tarifa = viaje.Tarifa,
+                };
 
-//                var viajes = await query.Select(v => new ViajeDTO
-//                {
-//                    FechaInicio = v.FechaInicio,
-//                    LugarPartida = v.LugarPartida,
-//                    Destino = v.Destino,
-//                    Remito = v.Remito,
-//                    Kg = v.Kg,
-//                    Carga = v.Carga,
-//                    NombreCliente =v.ClienteNavigation.Nombre,
-//                    NombreChofer = v.NombreChofer,
-//                    Km = v.Km,
-//                    Tarifa = v.Tarifa,
-//                }).ToListAsync();
+                return viajeDTO;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al obtener viaje: {ex.Message}");
+                return null;
+            }
+        }
 
-//                Console.WriteLine($"Se encontraron {viajes.Count} viajes.");
+        // READ - Obtener viajes con filtros
+        public async Task<List<ViajeDTO>> ObtenerPorFechaYCamionAsync(int camionId,
+                                                            DateOnly? fechaInicio = null,
+                                                            DateOnly? fechaFin = null
+                                                            )
+        {
+            try
+            {
+                // Comenzamos con una consulta que incluye todos los viajes
+                var query = _context.Viajes.AsNoTracking()
+                    .Include(v => v.ClienteNavigation)
+                    .Where(v => v.Camion == camionId);
 
-//                return viajes;
-//            }
-//            catch (Exception ex)
-//            {
-//                Console.WriteLine($"Error al filtrar viajes: {ex.Message}");
-//                return new List<ViajeDTO>();
-//            }
-//        }
+                // Aplicamos los filtros según los parámetros proporcionados
+                if (fechaInicio.HasValue)
+                    query = query.Where(v => v.FechaInicio >= fechaInicio.Value);
 
-//        // UPDATE - Actualizar sólo campos específicos de un viaje
-//        public async Task<bool> ActualizarAsync(
-//            int id,
-//            DateOnly? fechaInicio = null,
-//            string lugarPartida = null,
-//            string destino = null,
-//            int? remito = null,
-//            string carga = null,
-//            float? kg = null,
-//            int? cliente = null,
-//            int? camion = null,
-//            float? tarifa = null,
-//            float? km = null
-//            )
-//        {
-//            try
-//            {
-//                var viaje = await _context.Viajes.FindAsync(id);
+                if (fechaFin.HasValue)
+                    query = query.Where(v => v.FechaInicio <= fechaFin.Value);
 
-//                if (viaje == null)
-//                    return false;
+                var viajes = await query.Select(v => new ViajeDTO
+                {
+                    FechaInicio = v.FechaInicio,
+                    LugarPartida = v.LugarPartida,
+                    Destino = v.Destino,
+                    Remito = v.Remito,
+                    Kg = v.Kg,
+                    Carga = v.Carga,
+                    NombreCliente = v.ClienteNavigation.Nombre,
+                    NombreChofer = v.NombreChofer,
+                    Km = v.Km,
+                    Tarifa = v.Tarifa,
+                }).ToListAsync();
 
-//                // Actualizar sólo los campos proporcionados
-//                if (!string.IsNullOrWhiteSpace(destino))
-//                    viaje.Destino = destino;
+                Console.WriteLine($"Se encontraron {viajes.Count} viajes.");
 
-//                if (!string.IsNullOrWhiteSpace(lugarPartida))
-//                    viaje.LugarPartida = lugarPartida;
+                return viajes;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al filtrar viajes: {ex.Message}");
+                return new List<ViajeDTO>();
+            }
+        }
 
-//                if (kg.HasValue)
-//                    viaje.Kg = kg.Value;
+        // UPDATE - Actualizar sólo campos específicos de un viaje
+        public async Task<bool> ActualizarAsync(
+            int id,
+            DateOnly? fechaInicio = null,
+            string lugarPartida = null,
+            string destino = null,
+            int? remito = null,
+            string carga = null,
+            float? kg = null,
+            int? cliente = null,
+            int? camion = null,
+            float? tarifa = null,
+            float? km = null,
+            string nombreChofer = null,
+            float? porcentajeChofer = null
+            )
+        {
+            try
+            {
+                var viaje = await _context.Viajes.FindAsync(id);
 
-//                if (remito.HasValue)
-//                    viaje.Remito = remito.Value;
+                if (viaje == null)
+                    return false;
 
-//                if (tarifa.HasValue)
-//                    viaje.Tarifa = tarifa.Value;
+                // Actualizar sólo los campos proporcionados
+                if (fechaInicio.HasValue)
+                    viaje.FechaInicio = fechaInicio.Value;
 
-//                if (cliente.HasValue)
-//                    viaje.Cliente = cliente.Value;
+                if (!string.IsNullOrWhiteSpace(lugarPartida))
+                    viaje.LugarPartida = lugarPartida;
 
-//                if (camion.HasValue)
-//                    viaje.Camion = camion.Value;
+                if (!string.IsNullOrWhiteSpace(destino))
+                    viaje.Destino = destino;
 
-//                if (fechaInicio.HasValue)
-//                    viaje.FechaInicio = fechaInicio.Value;
+                if (remito.HasValue)
+                    viaje.Remito = remito.Value;
+                
+                if (!string.IsNullOrWhiteSpace(carga))
+                    viaje.Carga = carga;
 
-//                if (!string.IsNullOrWhiteSpace(carga))
-//                    viaje.Carga = carga;
+                if (kg.HasValue) 
+                    viaje.Kg = kg.Value;
 
-//                if (km.HasValue)
-//                    viaje.Km = km.Value;
+                if (cliente.HasValue)
+                    viaje.Cliente = cliente.Value;
 
-//                await _context.SaveChangesAsync();
+                if (camion.HasValue)
+                    viaje.Camion = camion.Value;
 
-//                return true;
-//            }
-//            catch (Exception ex)
-//            {
-//                Console.WriteLine($"Error al actualizar campos del viaje: {ex.Message}");
-//                return false;
-//            }
-//        }
+                if (km.HasValue)
+                    viaje.Km = km.Value;
 
-//        // DELETE - Eliminar un viaje
-//        public async Task<bool> EliminarAsync(int id)
-//        {
-//            try
-//            {
-//                var viaje = await _context.Viajes.FindAsync(id);
+                if (tarifa.HasValue)
+                    viaje.Tarifa = tarifa.Value;
 
-//                if (viaje == null)
-//                    return false;
+                if (!string.IsNullOrWhiteSpace(nombreChofer))
+                    viaje.NombreChofer = nombreChofer;
 
-//                // Eliminar el viaje
-//                _context.Viajes.Remove(viaje);
-//                await _context.SaveChangesAsync();
-//                return true;
-//            }
-//            catch (Exception ex)
-//            {
-//                Console.WriteLine($"Error al eliminar viaje: {ex.Message}");
-//                return false;
-//            }
-//        }
+                if (porcentajeChofer.HasValue)
+                    viaje.PorcentajeChofer = porcentajeChofer.Value;
 
-//        // MÉTODOS ESPECÍFICOS
 
-//        // Obtener viajes por camión
-//        public async Task<List<ViajeDTO>> ObtenerPorCamionAsync(int camionId)
-//        {
-//            try
-//            {
-//                var viajes = await _context.Viajes
-//                    .AsNoTracking()
-//                    .Include(v => v.ClienteNavigation)
-//                    .Where(v => v.Camion == camionId)
-//                    .Select(v => new ViajeDTO
-//                    {
-//                        FechaInicio = v.FechaInicio,
-//                        LugarPartida = v.LugarPartida,
-//                        Destino = v.Destino,
-//                        Remito = v.Remito,
-//                        Kg = v.Kg,
-//                        Carga = v.Carga,
-//                        NombreCliente = v.ClienteNavigation.Nombre,
-//                        NombreChofer = v.NombreChofer,
-//                        Km = v.Km,
-//                        Tarifa = v.Tarifa,
-//                    }).ToListAsync();
+                int registorsAfectados = await _context.SaveChangesAsync();
 
-//                Console.WriteLine($"Se encontraron {viajes.Count} viajes para el camión con ID {camionId}.");
+                if (registorsAfectados == 0)
+                {
+                    Console.WriteLine("No se actualizó ningún registro");
+                    return false;
+                }
 
-//                return viajes;
-//            }
-//            catch (Exception ex)
-//            {
-//                Console.WriteLine($"Error al obtener viajes con detalles: {ex.Message}");
-//                return new List<ViajeDTO>();
-//            }
-//        }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al actualizar campos del viaje: {ex.Message}");
+                return false;
+            }
+        }
 
-//        // Obtener viajes por cliente
-//        public async Task<List<ViajeMixtoDTO>> ObtenerViajeMixtoPorClienteAsync(int clienteId)
-//        {
-//            try
-//            {
+        // DELETE - Eliminar un viaje
+        public async Task<bool> EliminarAsync(int id)
+        {
+            try
+            {
+                var viaje = await _context.Viajes.FindAsync(id);
 
-//                var viajes = await _context.Viajes
-//                    .AsNoTracking()
-//                    .Include(v => v.ClienteNavigation)
-//                    .Include(v => v.CamionNavigation)
-//                    .Where(v => v.Cliente == clienteId)
-//                    .Select(v => new ViajeMixtoDTO
-//                    {
-//                        Fecha_salida = v.FechaInicio,
-//                        Origen = v.LugarPartida,
-//                        Destino = v.Destino,
-//                        Remito = v.Remito,
-//                        Kg = v.Kg,
-//                        Carga = v.Carga,
-//                        Nombre_chofer = v.NombreChofer,
-//                        Km = v.Km,
-//                        Tarifa = v.Tarifa,
-//                        Camion = v.CamionNavigation.Patente
-//                    }).ToListAsync();
+                if (viaje == null)
+                    return false;
 
-//                return viajes;
-//            }
-//            catch (Exception ex)
-//            {
-//                Console.WriteLine($"Error al obtener viajes por cliente: {ex.Message}");
-//                return new List<ViajeMixtoDTO>();
-//            }
-//        }
+                // Eliminar el viaje
+                _context.Viajes.Remove(viaje);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al eliminar viaje: {ex.InnerException}");
+                return false;
+            }
+        }
 
-//        public async Task<List<ViajeDTO>> ObtenerPorClienteAsync(int clienteId)
-//        {
-//            try
-//            {
+        // MÉTODOS ESPECÍFICOS
 
-//                var viajes = await _context.Viajes
-//                    .AsNoTracking()
-//                    .Include(v => v.ClienteNavigation)
-//                    .Where(v => v.Cliente == clienteId)
-//                    .Select(v => new ViajeDTO
-//                    {
-//                        FechaInicio = v.FechaInicio,
-//                        LugarPartida = v.LugarPartida,
-//                        Destino = v.Destino,
-//                        Remito = v.Remito,
-//                        Kg = v.Kg,
-//                        Carga = v.Carga,
-//                        NombreCliente = v.ClienteNavigation.Nombre,
-//                        NombreChofer = v.NombreChofer,
-//                        Km = v.Km,
-//                        Tarifa = v.Tarifa,
-//                    }).ToListAsync();
+        // Obtener viajes por camión
+        public async Task<List<ViajeDTO>> ObtenerPorCamionAsync(int camionId)
+        {
+            try
+            {
+                var viajes = await _context.Viajes
+                    .AsNoTracking()
+                    .Include(v => v.ClienteNavigation)
+                    .Where(v => v.Camion == camionId)
+                    .Select(v => new ViajeDTO
+                    {
+                        FechaInicio = v.FechaInicio,
+                        LugarPartida = v.LugarPartida,
+                        Destino = v.Destino,
+                        Remito = v.Remito,
+                        Kg = v.Kg,
+                        Carga = v.Carga,
+                        NombreCliente = v.ClienteNavigation.Nombre,
+                        NombreChofer = v.NombreChofer,
+                        Km = v.Km,
+                        Tarifa = v.Tarifa,
+                    }).ToListAsync();
 
-//                return viajes;
-//            }
-//            catch (Exception ex)
-//            {
-//                Console.WriteLine($"Error al obtener viajes por cliente: {ex.Message}");
-//                return new List<ViajeDTO>();
-//            }
-//        }
+                Console.WriteLine($"Se encontraron {viajes.Count} viajes para el camión con ID {camionId}.");
 
-//        public async Task<List<ViajeDTO>> ObtenerPorChoferAsync(string chofer)
-//        {
-//            try
-//            {
-//                var viajes = await _context.Viajes
-//                    .AsNoTracking()
-//                    .Include(v => v.ClienteNavigation)
-//                    .Where(v => v.NombreChofer == chofer)
-//                    .Select(v => new ViajeDTO()
-//                    {
-//                        FechaInicio = v.FechaInicio,
-//                        LugarPartida = v.LugarPartida,
-//                        Destino = v.Destino,
-//                        Remito = v.Remito,
-//                        Kg = v.Kg,
-//                        Carga = v.Carga,
-//                        NombreCliente = v.ClienteNavigation.Nombre,
-//                        NombreChofer = v.NombreChofer,
-//                        Km = v.Km,
-//                        Tarifa = v.Tarifa,
-//                    }).ToListAsync();
+                return viajes;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al obtener viajes con detalles: {ex.Message}");
+                return new List<ViajeDTO>();
+            }
+        }
 
-//                if (viajes.Count == 0)
-//                {
-//                    Console.WriteLine($"No hay viajes con ese chofer");
-//                }
+        // Obtener viajes por cliente
+        public async Task<List<ViajeMixtoDTO>> ObtenerViajeMixtoPorClienteAsync(int clienteId)
+        {
+            try
+            {
 
-//                return viajes;
+                var viajes = await _context.Viajes
+                    .AsNoTracking()
+                    .Include(v => v.ClienteNavigation)
+                    .Include(v => v.CamionNavigation)
+                    .Where(v => v.Cliente == clienteId)
+                    .Select(v => new ViajeMixtoDTO
+                    {
+                        Fecha_salida = v.FechaInicio,
+                        Origen = v.LugarPartida,
+                        Destino = v.Destino,
+                        Remito = v.Remito,
+                        Kg = v.Kg,
+                        Carga = v.Carga,
+                        Nombre_chofer = v.NombreChofer,
+                        Km = v.Km,
+                        Tarifa = v.Tarifa,
+                        Camion = v.CamionNavigation.Patente
+                    }).ToListAsync();
 
-//            }
-//            catch (Exception ex)
-//            {
-//                Console.WriteLine($"Error al obtener viajes por chofer: {ex.Message}");
-//                throw;
-//            }
-//        }
-//    }
-//}
+                return viajes;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al obtener viajes por cliente: {ex.Message}");
+                return new List<ViajeMixtoDTO>();
+            }
+        }
+
+        public async Task<List<ViajeMixtoDTO>> ObtenerPorClienteAsync(int clienteId)
+        {
+            try
+            {
+
+                var viajes = await _context.Viajes
+                    .AsNoTracking()
+                    .Include(v => v.ClienteNavigation)
+                    .Where(v => v.Cliente == clienteId)
+                    .Join(
+                    this._context.Camiones,
+                    v=> v.Camion,
+                    c=> c.Id,
+                    (v,c) => new ViajeMixtoDTO
+                    (
+                       v.LugarPartida,
+                       v.Destino,
+                       v.FechaInicio,
+                       v.Remito,
+                       v.NombreChofer,
+                       v.Carga,
+                       v.Km,
+                       v.Kg,
+                       v.Tarifa,
+                       c.Patente
+                    )).ToListAsync();
+
+                return viajes;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al obtener viajes por cliente: {ex.Message}");
+                Console.WriteLine(ex.InnerException);
+                return null;
+            }
+        }
+
+        public async Task<List<ViajeDTO>> ObtenerPorChoferAsync(string chofer)
+        {
+            try
+            {
+                var viajes = await _context.Viajes
+                    .AsNoTracking()
+                    .Include(v => v.ClienteNavigation)
+                    .Where(v => v.NombreChofer == chofer)
+                    .Select(v => new ViajeDTO()
+                    {
+                        FechaInicio = v.FechaInicio,
+                        LugarPartida = v.LugarPartida,
+                        Destino = v.Destino,
+                        Remito = v.Remito,
+                        Kg = v.Kg,
+                        Carga = v.Carga,
+                        NombreCliente = v.ClienteNavigation.Nombre,
+                        NombreChofer = v.NombreChofer,
+                        Km = v.Km,
+                        Tarifa = v.Tarifa,
+                    }).ToListAsync();
+
+                if (viajes.Count == 0)
+                {
+                    Console.WriteLine($"No hay viajes con ese chofer");
+                }
+
+                return viajes;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al obtener viajes por chofer: {ex.Message}");
+                return new List<ViajeDTO>();
+            }
+        }
+    }
+}

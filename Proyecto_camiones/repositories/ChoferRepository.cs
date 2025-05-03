@@ -43,14 +43,14 @@ namespace Proyecto_camiones.Presentacion.Repositories
         // CRUD OPERATIONS
 
         // CREATE - Insertar un nuevo chofer
-        public async Task<Chofer> InsertarAsync(string nombre)
+        public async Task<int> InsertarAsync(string nombre)
         {
             try
             {
                 if (!await _context.Database.CanConnectAsync())
                 {
                     Console.WriteLine("No se puede conectar a la base de datos");
-                    return null; // Mejor retornar un valor específico de error que null
+                    return -1; // Mejor retornar un valor específico de error que null
                 }
 
                 var chofer = new Chofer(nombre);
@@ -60,16 +60,16 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 int registrosafectados = await _context.SaveChangesAsync();
 
                 if (registrosafectados > 0)
-                    return chofer;
+                    return chofer.Id;
                     
-                return null;
+                return -1;
 
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error al insertar chofer: {ex.Message}");
                 Console.WriteLine($"Stack trace: {ex.StackTrace}");
-                return null; // Mejor retornar un valor específico de error
+                return -1; // Mejor retornar un valor específico de error
             }
         }
 
@@ -91,7 +91,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
         // READ - Obtener un chofer específico por ID
-        public async Task<Chofer> ObtenerPorIdAsync(int id)
+        public async Task<Chofer?> ObtenerPorIdAsync(int id)
         {
             try
             {
@@ -109,6 +109,30 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     return null;
                 }
 
+                return chofer;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al obtener chofer: {ex.Message}");
+                return null;
+            }
+        }
+
+        public async Task<Chofer?> ObtenerPorNombreAsync(string nombre)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(nombre))
+                {
+                    Console.WriteLine("Nombre inválido");
+                    return null;
+                }
+                var chofer = await _context.Choferes.FirstOrDefaultAsync(c => c.Nombre == nombre);
+                if (chofer == null)
+                {
+                    Console.WriteLine($"Chofer con nombre {nombre} no encontrado");
+                    return null;
+                }
                 return chofer;
             }
             catch (Exception ex)

@@ -23,6 +23,7 @@
 
     <!-- Archivos DTOs -->
     <Compile Include="DTOs\CamionDTO.cs" />
+    <Compile Include="DTOs\SueldoDTO.cs" />
     <Compile Include="DTOs\ChequeDTO.cs" />
     <Compile Include="DTOs\ChoferDTO.cs" />
     <Compile Include="DTOs\CuentaCorrienteDTO.cs" />
@@ -75,6 +76,8 @@
     <Compile Include="ViewModels\ClienteViewModel.cs" />
     <Compile Include="ViewModels\CuentaCorrienteViewModel.cs" />
     <Compile Include="ViewModels\FleteViewModel.cs" />
+    <Compile Include="ViewModels\PagoViewModel.cs" />
+    <Compile Include="ViewModels\SueldoViewModel.cs" />
     <Compile Include="ViewModels\ViajeFleteViewModel.cs" />
     <Compile Include="ViewModels\General.cs" />
     <Compile Include="ViewModels\ViajeViewModel.cs" />
@@ -87,21 +90,29 @@
     <Compile Include="Utils\Validadores\ValidadorCliente.cs" />
     <Compile Include="Utils\Validadores\ValidadorSueldo.cs" />
     <Compile Include="Utils\Validadores\ValidadorViaje.cs" />
-<Compile Include="Front\SueldoMensual.cs" />
-<Compile Include="Front\Viaje.cs" />
-<Compile Include="Front\CuentaCorriente.cs" />
-<Compile Include="Front\Cheque.cs" />
-<Compile Include="Front\ViajeFiltro.cs" />
-<Compile Include="Front\FormRegistro.cs" />
-<Compile Include="Front\Home.cs" />
-<Compile Include="Front\NewRoundPanel.cs" />
-<Compile Include="Front\RoundButton.cs" />
+
+    <!-- Front -->
+    <Compile Include="Front\SueldoMensual.cs" />
+	<Compile Include="Front\Viaje.cs" />
+	<Compile Include="Front\CuentaCorriente.cs" />
+	<Compile Include="Front\Cheque.cs" />
+	<Compile Include="Front\ViajeFiltro.cs" />
+	<Compile Include="Front\FormRegistro.cs" />
+	<Compile Include="Front\Home.cs" />
+	<Compile Include="Front\NewRoundPanel.cs" />
+	<Compile Include="Front\RoundButton.cs" />
 
     <!-- Core -->
     <Compile Include="Program.cs" />
     <Compile Include="Datos_pagos.cs" />
     <Compile Include="ApplicationDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+
+    <!-- Tests -->
+    <Compile Include="Tests\ViajeTest.cs" />
+    <Compile Include="Tests\ChoferTest.cs" />
+    <Compile Include="Tests\ClienteTest.cs" />
+
   </ItemGroup>
 
   <ItemGroup>

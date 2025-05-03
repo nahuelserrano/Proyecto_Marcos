@@ -30,14 +30,14 @@ namespace Proyecto_camiones.Presentacion.Utils
             string carga,
             float km)
         {
-            _destino = destino;
+            _fechaInicio = fechaInicio;
             _lugarPartida = lugarPartida;
+            _destino = destino;
             _kg = kg;
             _remito = remito;
             _tarifa = tarifa;
             _cliente = cliente;
             _camion = camion;
-            _fechaInicio = fechaInicio;
             _carga = carga;
             _km = km;
             _errores = new List<string>();
@@ -95,10 +95,10 @@ namespace Proyecto_camiones.Presentacion.Utils
         public ValidadorViaje ValidarIdPositivos()
         {
             if (_camion <= 0)
-                _errores.Add(MensajeError.idInvalido(_camion));
+                _errores.Add(MensajeError.IdInvalido(_camion));
             
             if (_cliente <= 0)
-                _errores.Add(MensajeError.idInvalido(_cliente));
+                _errores.Add(MensajeError.IdInvalido(_cliente));
             
             return this;
         }
