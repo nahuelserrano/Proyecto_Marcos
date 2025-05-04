@@ -92,7 +92,7 @@
     <Compile Include="Utils\Validadores\ValidadorViaje.cs" />
 
     <!-- Front -->
-    <Compile Include="Front\SueldoMensual.cs" />
+	<Compile Include="Front\SueldoMensual.cs" />
 	<Compile Include="Front\Viaje.cs" />
 	<Compile Include="Front\CuentaCorriente.cs" />
 	<Compile Include="Front\Cheque.cs" />

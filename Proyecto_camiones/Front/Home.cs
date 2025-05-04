@@ -3,7 +3,7 @@ using System.IO;
 using System;
 using System.Windows.Forms;
 
-namespace AplicacionCamiones.Front;
+namespace Proyecto_camiones.Front;
 
 public class Home : Form
 {

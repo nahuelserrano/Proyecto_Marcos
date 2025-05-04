@@ -20,7 +20,7 @@ using Proyecto_camiones.DTOs;
 using NPOI.SS.Formula.Functions;
 using Proyecto_camiones.Presentacion.Models;
 
-namespace AplicacionCamiones.Front;
+namespace Proyecto_camiones.Front;
 
 internal class Viaje : Home
 {

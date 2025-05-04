@@ -2,7 +2,7 @@
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
-namespace AplicacionCamiones.Front;
+namespace Proyecto_camiones.Front;
 
 public class NewRoundPanel : Panel
 {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Transactions;
+using System.Windows.Forms;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Models;
 using Proyecto_camiones.Presentacion.Models;
@@ -35,6 +36,7 @@ namespace Proyecto_camiones.Presentacion.Services
 
         public async Task<bool> ProbarConexionAsync()
         {
+            MessageBox.Show("estoy en el método ProbarConexionAsync");
             bool result = await _viajeRepository.ProbarConexionAsync();
             return result;
         }
@@ -70,8 +72,11 @@ namespace Proyecto_camiones.Presentacion.Services
             string nombreChofer,
             float porcentajeChofer)
         {
-            
-            try{
+            MessageBox.Show("estoy en el método CrearAsync");
+
+            try
+            {
+                MessageBox.Show("estoy dentro del try en el método CrearAsync");
                 ValidadorViaje validador = new ValidadorViaje(fechaInicio, lugarPartida, destino, kg, remito,
                     tarifa, cliente, camion, carga, km);
 

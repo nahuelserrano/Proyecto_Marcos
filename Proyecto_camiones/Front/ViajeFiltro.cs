@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
-namespace AplicacionCamiones.Front;
+namespace Proyecto_camiones.Front;
 
 internal class ViajeFiltro : Home
 {

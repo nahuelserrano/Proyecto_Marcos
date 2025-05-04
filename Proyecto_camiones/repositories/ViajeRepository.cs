@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Microsoft.EntityFrameworkCore;
 using MySql.Data.MySqlClient;
 using MySqlX.XDevAPI;
@@ -24,8 +25,10 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
         public async Task<bool> ProbarConexionAsync()
         {
+            MessageBox.Show("estoy en el método ProbarConexionAsync");
             try
             {
+                MessageBox.Show("Conexión");
                 var puedeConectar = await _context.Database.CanConnectAsync();
 
                 if (puedeConectar)

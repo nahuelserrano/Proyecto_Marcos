@@ -17,9 +17,11 @@ using MySql.Data.MySqlClient;
 using Proyecto_camiones.Presentacion.Models;
 using System.Collections.Generic;
 using Proyecto_camiones.Tests;
+using System.Collections.Generic;
+using System.Linq;
+using Proyecto_camiones.Front;
 
-
-namespace Proyecto_camiones.Presentacion
+namespace Proyecto_camiones
 {
     static class Program
     {
@@ -32,6 +34,10 @@ namespace Proyecto_camiones.Presentacion
         static async Task Main(string[] args)
 
         {
+
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
             PagoViewModel pw = new PagoViewModel();
             //await pw.CrearAsync(1, 1, 1000);
             //await pw.CrearAsync(1, 1, 1000);
@@ -270,8 +276,8 @@ namespace Proyecto_camiones.Presentacion
             //    //await ChoferTests.ProbarEliminarChofer(2);
 
             //    // VIAJE
-            DateOnly fecha = new DateOnly(2025, 4, 28);
-            int idViaje = await ViajeTests.ProbarInsertarViaje(fecha, "Tandil", "Buenos Aires", 123, 1000.5f, "Trigo", 3, 3, 350.5f, 5000.0f, "Chofer Test", 018f);
+            //DateOnly fecha = new DateOnly(2025, 4, 28);
+            //int idViaje = await ViajeTests.ProbarInsertarViaje(fecha, "Tandil", "Buenos Aires", 123, 1000.5f, "Trigo", 3, 3, 350.5f, 5000.0f, "Chofer Test", 018f);
             //await ViajeTests.ProbarObtenerViajePorId(idViaje);
             //await ViajeTests.ProbarEliminarViaje(10);
             //}

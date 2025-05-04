@@ -16,7 +16,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using TextBox = System.Windows.Forms.TextBox;
 using Button = System.Windows.Forms.Button;
 
-namespace AplicacionCamiones.Front
+namespace Proyecto_camiones.Front
 {
     public partial class Cheque : Home
     {

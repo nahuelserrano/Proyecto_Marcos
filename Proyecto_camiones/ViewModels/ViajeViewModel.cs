@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Proyecto_camiones.Repositories;
 using Proyecto_camiones.Services;
+using System.Windows.Forms;
 
 namespace Proyecto_camiones.ViewModels
 {
@@ -16,7 +17,7 @@ namespace Proyecto_camiones.ViewModels
         private readonly ViajeService _viajeService;
 
         public ViajeViewModel()
-        {
+        { 
             // Obtenemos la instancia de la base de datos
             // Creamos las dependencias necesarias
             var viajeRepository = new ViajeRepository(General.obtenerInstancia());
@@ -39,6 +40,7 @@ namespace Proyecto_camiones.ViewModels
         // Método para probar la conexión
         public async Task<bool> TestearConexion()
         {
+            MessageBox.Show("estoy en el método TestearConexion");
             return await _viajeService.ProbarConexionAsync();
         }
 
@@ -57,7 +59,7 @@ namespace Proyecto_camiones.ViewModels
             string nombreChofer,
             float porcentajeChofer)
         {
-
+            MessageBox.Show("estoy en el método CrearAsync");
             bool conexionExitosa = await TestearConexion();
 
             Console.WriteLine(await TestearConexion());

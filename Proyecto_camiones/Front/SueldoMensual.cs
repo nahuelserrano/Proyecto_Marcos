@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace AplicacionCamiones.Front;
+namespace Proyecto_camiones.Front;
 
 internal class SueldoMensual : FormRegistro
 {

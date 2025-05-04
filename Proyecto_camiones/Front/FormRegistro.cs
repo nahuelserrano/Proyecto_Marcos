@@ -15,8 +15,9 @@ using Proyecto_camiones.ViewModels;
 using Proyecto_camiones.Presentacion.Utils;
 using Proyecto_camiones.Models;
 using Proyecto_camiones.DTOs;
+using System.Threading.Tasks;
 
-namespace AplicacionCamiones.Front;
+namespace Proyecto_camiones.Front;
 
 public class FormRegistro : Home
 {
@@ -61,7 +62,7 @@ public class FormRegistro : Home
         btnCargar.MouseLeave += (s, e) => HoverEffect(s, e, false);
 
         //Events
-        btnCargar.Click += (s, e) => cargaClickEvent(s, e, filtro);
+        btnCargar.Click += (s, e) => cargaClickEvent(s, e, filtro, dato);
 
         cheq.CellClick += EliminarFila;
         cheq.CellClick += ModificarFila;
@@ -382,7 +383,7 @@ public class FormRegistro : Home
         }
     }
 
-    private void cargaClickEvent(object sender, EventArgs e, string filtro)
+    private async Task cargaClickEvent(object sender, EventArgs e, string filtro, string dato)
     {
         // Obtener los valores de los TextBox
         List<string> datos = new List<string>();
@@ -438,28 +439,36 @@ public class FormRegistro : Home
         }
 
 
+        ViajeViewModel viajeViewModel = new ViajeViewModel();
+        MessageBox.Show("salí de la clase");
+        var resultado = await viajeViewModel.CrearAsync(DateOnly.Parse(datos[0]), datos[1], datos[2], int.Parse(datos[3]), datos[4], float.Parse(datos[6]), 10, 10, float.Parse(datos[5]), float.Parse(datos[7]), datos[9], float.Parse(datos[8]));
 
-        // Verificar que los datos no estén vacíos
-        if (datos.All(dato => !string.IsNullOrWhiteSpace(dato)))
+        MessageBox.Show("hola" + resultado);
+        if (resultado.IsSuccess)
         {
-            cheq.Rows.Add(datos.ToArray());
-
-            foreach (Control control in formFLTextBox.Controls)
-        {
-            if (control is Panel panel)
+            MessageBox.Show("Viaje cargado correctamente" + resultado.Value);
+            // Verificar que los datos no estén vacíos
+            if (datos.All(dato => !string.IsNullOrWhiteSpace(dato)))
             {
-                foreach (Control child in panel.Controls)
+                cheq.Rows.Add(datos.ToArray());
+
+                foreach (Control control in formFLTextBox.Controls)
                 {
-                    if (child is TextBox textBox)
+                    if (control is Panel panel)
                     {
-                        string placeholderText = textBox.Text;
-                        textBox.Clear();
-                        textBox.Text = placeholderText; // Restaurar el placeholder??????????
-                        textBox.ForeColor = Color.Black;
+                        foreach (Control child in panel.Controls)
+                        {
+                            if (child is TextBox textBox)
+                            {
+                                string placeholderText = textBox.Text;
+                                textBox.Clear();
+                                textBox.Text = placeholderText; // Restaurar el placeholder??????????
+                                textBox.ForeColor = Color.Black;
+                            }
+                        }
                     }
                 }
             }
-        }
         }
     }
 
