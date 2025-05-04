@@ -12,8 +12,8 @@ namespace Proyecto_camiones.Presentacion.Utils
         private readonly float _kg;
         private readonly int _remito;
         private readonly float _tarifa;
-        private readonly int _cliente;
-        private readonly int _camion;
+        private readonly string _cliente;
+        private readonly string _camion;
         private readonly string _carga;
         private readonly float _km;
         private List<string> _errores;
@@ -25,8 +25,8 @@ namespace Proyecto_camiones.Presentacion.Utils
             float kg,
             int remito,
             float tarifa,
-            int cliente,
-            int camion,
+            string cliente,
+            string camion,
             string carga,
             float km)
         {
@@ -84,21 +84,21 @@ namespace Proyecto_camiones.Presentacion.Utils
         public ValidadorViaje ValidarExistencia(bool clienteExiste, bool camionExiste)
         {
             if (!camionExiste)
-                _errores.Add($"No existe un camión con el ID {_camion}");
+                _errores.Add($"No existe un camión con la patente {_camion}");
            
             if (!clienteExiste)
-                    _errores.Add($"No existe un cliente con el ID {_cliente}");
+                    _errores.Add($"No existe un cliente con el nombre {_cliente}");
 
             return this;
         }
 
         public ValidadorViaje ValidarIdPositivos()
         {
-            if (_camion <= 0)
-                _errores.Add(MensajeError.IdInvalido(_camion));
+            if (string.IsNullOrWhiteSpace(_camion))
+                _errores.Add("El campo de camion esta vacio");
             
-            if (_cliente <= 0)
-                _errores.Add(MensajeError.IdInvalido(_cliente));
+            if (string.IsNullOrWhiteSpace(_cliente))
+                _errores.Add("El campo de cliente esta vacio");
             
             return this;
         }

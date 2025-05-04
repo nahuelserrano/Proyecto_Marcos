@@ -18,7 +18,7 @@ namespace Proyecto_camiones.Tests
             try
             {
                 DateOnly fecha = new DateOnly(2025, 4, 28);
-                int id = await ProbarInsertarViaje(fecha, "Tandil", "Buenos Aires", 123, 1000.5f, "Trigo", 3, 3, 350.5f, 5000.0f, "Chofer Test", 0.18f);
+                int id = await ProbarInsertarViaje(fecha, "Tandil", "Buenos Aires", 123, 1000.5f, "Trigo", "Cliente1", "HIJ429", 350.5f, 5000.0f, "Chofer Test", 0.18f);
                 await ProbarObtenerViajePorId(id);
                 await ProbarObtenerTodosViajes();
                 await ProbarObtenerViajesPorCamion(3);
@@ -42,8 +42,8 @@ namespace Proyecto_camiones.Tests
             int remito,
             float kg,
             string carga,
-            int cliente,
-            int camion,
+            string cliente,
+            string camion,
             float km,
             float tarifa,
             string nombreChofer, 

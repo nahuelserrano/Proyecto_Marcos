@@ -63,8 +63,8 @@ namespace Proyecto_camiones.Presentacion.Services
             int remito,
             float kg,
             string carga,
-            int cliente,
-            int camion,
+            string cliente,
+            string camion,
             float km,
             float tarifa,
             string nombreChofer,
@@ -84,16 +84,18 @@ namespace Proyecto_camiones.Presentacion.Services
 
                 // Revisar que los metodos puedan retornar null si no esxiste el camion o cliente con ese id
                 
-                var clienteResult = await _clienteService.ObtenerPorIdAsync(cliente);
-                CamionDTO? camionResult = await _camionService.ObtenerPorIdAsync(camion);
+                var clienteResult = await _clienteService.ObtenerPorNombreAsync(cliente);
+                var camionResult = await _camionService.ObtenerPorPatenteAsync(camion);
 
-                validador.ValidarExistencia(clienteResult.IsSuccess, camionResult != null);
+                validador.ValidarExistencia(clienteResult.IsSuccess, camionResult.IsSuccess);
 
-                Result<bool> resultadoValidacion = validador.ValidarCompleto();
+                Result<bool> resultadoValidacion = validador.ObtenerResultado();
 
                 if (!resultadoValidacion.IsSuccess)
                     return Result<int>.Failure(resultadoValidacion.Error);
                 
+                int idCliente = clienteResult.Value.Id;
+                int idCamion = camionResult.Value.Id;
 
                 using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
@@ -115,7 +117,7 @@ namespace Proyecto_camiones.Presentacion.Services
                     // Crear el viaje
                     int id = await _viajeRepository.InsertarAsync(
                         fechaInicio, lugarPartida, destino, remito, kg,
-                        carga, cliente, camion, km, tarifa, nombreChofer, porcentajeChofer);
+                        carga, idCliente, idCamion, km, tarifa, nombreChofer, porcentajeChofer);
 
                     if (id == -1)
                         return Result<int>.Failure(MensajeError.ErrorCreacion(nameof(Viaje)));

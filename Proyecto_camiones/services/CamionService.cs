@@ -88,6 +88,24 @@ namespace Proyecto_camiones.Presentacion.Services
             }
         }
 
+        public async Task<Result<Camion>> ObtenerPorPatenteAsync(string patente)
+        {
+            try
+            {
+                Camion? camion = await _camionRepository.ObtenerPorPatenteAsync(patente);
+
+                if (camion == null)
+                    return Result<Camion>.Failure(MensajeError.EntidadNoEncontrada(nameof(Camion), 0));
+
+                return Result<Camion>.Success(camion);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
         internal async Task<Result<CamionDTO>> ActualizarAsync(int id,  string? patente, string? nombre)
         {
             if (id <= 0)

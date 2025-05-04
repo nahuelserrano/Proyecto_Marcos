@@ -45,7 +45,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
         //agrego el signo de pregunta luego de Camion para decir que el result puede ser null
-        public async Task<Camion?> InsertarAsync( string patente, string nombre)
+        public async Task<Camion?> InsertarAsync(string patente, string nombre)
         {
             try
             {
@@ -147,13 +147,14 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     return nuevo;
                 }
                 return null;
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e.InnerException);
                 return null;
             }
-            
+
         }
 
         public async Task<bool> EliminarAsync(int id)
@@ -177,6 +178,21 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e.InnerException);
                 return false;
+            }
+        }
+
+        public async Task<Camion> ObtenerPorPatenteAsync(string patente)
+        {
+            try
+            {
+                var camion = await _context.Camiones.FirstOrDefaultAsync(c => c.Patente == patente);
+                return camion;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.InnerException);
+                return null;
             }
         }
     }
