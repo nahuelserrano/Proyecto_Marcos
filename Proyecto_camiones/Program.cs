@@ -258,10 +258,10 @@ namespace Proyecto_camiones
             //    //await ClienteTests.EjecutarTodasLasPruebas();
 
             //    // PRUEBAS DE CHOFER
-            await ChoferTests.EjecutarTodasLasPruebas();
+            //await ChoferTests.EjecutarTodasLasPruebas();
 
             //    // PRUEBAS DE VIAJE
-            await ViajeTests.EjecutarTodasLasPruebas();
+            //await ViajeTests.EjecutarTodasLasPruebas();
 
             //    // O EJECUTAR PRUEBAS INDIVIDUALES:
 
@@ -277,7 +277,11 @@ namespace Proyecto_camiones
 
             //    // VIAJE
             //DateOnly fecha = new DateOnly(2025, 4, 28);
+<<<<<<< HEAD
             //int idViaje = await ViajeTests.ProbarInsertarViaje(fecha, "Tandil", "Buenos Aires", 123, 1000.5f, "Trigo", 3, 3, 350.5f, 5000.0f, "Chofer Test", 018f);
+=======
+            //int idViaje = await ViajeTests.ProbarInsertarViaje(fecha, "Tandil", "Buenos Aires", 123, 1000.5f, "Trigo", "Cliente1", "HIJ429", 350.5f, 5000.0f, "Chofer Test", 018f);
+>>>>>>> 3d386c04c03086af64577379c820a06307fda106
             //await ViajeTests.ProbarObtenerViajePorId(idViaje);
             //await ViajeTests.ProbarEliminarViaje(10);
             //}
