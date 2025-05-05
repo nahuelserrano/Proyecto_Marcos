@@ -36,7 +36,6 @@ namespace Proyecto_camiones.Presentacion.Services
 
         public async Task<bool> ProbarConexionAsync()
         {
-            MessageBox.Show("estoy en el método ProbarConexionAsync");
             bool result = await _viajeRepository.ProbarConexionAsync();
             return result;
         }
@@ -71,12 +70,10 @@ namespace Proyecto_camiones.Presentacion.Services
             float tarifa,
             string nombreChofer,
             float porcentajeChofer)
-        {
-            MessageBox.Show("estoy en el método CrearAsync");
+        { 
 
             try
             {
-                MessageBox.Show("estoy dentro del try en el método CrearAsync");
                 ValidadorViaje validador = new ValidadorViaje(fechaInicio, lugarPartida, destino, kg, remito,
                     tarifa, cliente, camion, carga, km);
 
@@ -141,6 +138,7 @@ namespace Proyecto_camiones.Presentacion.Services
             }
             catch (Exception ex)
             {
+                MessageBox.Show("error al crear el viaje");
                 return Result<int>.Failure($"Hubo un error al crear el viaje: {ex.Message}");
             }
         }

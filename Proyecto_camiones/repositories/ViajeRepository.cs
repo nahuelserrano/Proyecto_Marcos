@@ -25,10 +25,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
         public async Task<bool> ProbarConexionAsync()
         {
-            MessageBox.Show("estoy en el método ProbarConexionAsync");
             try
             {
-                MessageBox.Show("Conexión");
                 var puedeConectar = await _context.Database.CanConnectAsync();
 
                 if (puedeConectar)
@@ -119,7 +117,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
                         NombreCliente = v.ClienteNavigation.Nombre,
                         NombreChofer = v.NombreChofer,
                         Km = v.Km,
-                        Tarifa = v.Tarifa
+                        Tarifa = v.Tarifa,
+                        Camion = v.Camion
                     }).ToListAsync();
 
                 if (viajes.Count == 0)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 using Proyecto_camiones.Presentacion.Models;
 
 namespace Proyecto_camiones.Presentacion.Utils
@@ -47,8 +48,9 @@ namespace Proyecto_camiones.Presentacion.Utils
         public ValidadorViaje ValidarCarga()
         {
             if (_kg <= 0)
+            {
                 _errores.Add(MensajeError.numeroNoValido(nameof(_kg)));
-
+            }
             // Nota: Para validar la capacidad del camión necesitaríamos
             // consultar la información del camión o recibir su capacidad
 
@@ -59,13 +61,19 @@ namespace Proyecto_camiones.Presentacion.Utils
         public ValidadorViaje ValidarRuta()
         {
             if (string.IsNullOrWhiteSpace(_lugarPartida))
+            {
                 _errores.Add("El lugar de partida es requerido");
+            }
 
             if (string.IsNullOrWhiteSpace(_destino))
+            {
                 _errores.Add("El destino es requerido");
+            }
 
             if (_lugarPartida == _destino)
+            {
                 _errores.Add("El origen y destino no pueden ser iguales");
+            }
 
             return this;
         }
@@ -73,10 +81,16 @@ namespace Proyecto_camiones.Presentacion.Utils
         public ValidadorViaje ValidarPrecioYRemito()
         {
             if (_tarifa <= 0)
+            {
+                MessageBox.Show("La tarifa debe ser mayor a 0");
                 _errores.Add(MensajeError.numeroNoValido(nameof(_tarifa)));
+            }
 
             if (_remito <= 0)
+            {
+                MessageBox.Show("El remimto debe ser mayor a 0");
                 _errores.Add(nameof(_remito));
+            }
 
             return this;
         }
@@ -84,10 +98,16 @@ namespace Proyecto_camiones.Presentacion.Utils
         public ValidadorViaje ValidarExistencia(bool clienteExiste, bool camionExiste)
         {
             if (!camionExiste)
+            {
+                MessageBox.Show("no existe camión con esa patente");
                 _errores.Add($"No existe un camión con la patente {_camion}");
-           
+            }
+
             if (!clienteExiste)
-                    _errores.Add($"No existe un cliente con el nombre {_cliente}");
+            {
+                MessageBox.Show("no existe cliente con ese nombre");
+                _errores.Add($"No existe un cliente con el nombre {_cliente}");
+            }
 
             return this;
         }
@@ -95,10 +115,14 @@ namespace Proyecto_camiones.Presentacion.Utils
         public ValidadorViaje ValidarIdPositivos()
         {
             if (string.IsNullOrWhiteSpace(_camion))
+            {
                 _errores.Add("El campo de camion esta vacio");
-            
+            }
+
             if (string.IsNullOrWhiteSpace(_cliente))
+            {
                 _errores.Add("El campo de cliente esta vacio");
+            }
             
             return this;
         }

@@ -93,6 +93,39 @@ public class FormRegistro : Home
         ResaltarBoton(viajesMenu);
         GridChequesProperties();
         ButtonProperties(filtro, dato);
+        ShowInfoTable(filtro, dato);
+    }
+
+    private async void ShowInfoTable(string filtro, string dato)
+    {
+        cheq.Rows.Clear();
+        ViajeViewModel viajeViewModel = new ViajeViewModel();
+        var result = await viajeViewModel.ObtenerTodosAsync();
+
+        if (result.IsSuccess)
+        {
+            foreach (var viaje in result.Value)
+            {
+                if (filtro == "Camion")
+                {
+                    cheq.Rows.Add(viaje.FechaInicio, viaje.LugarPartida, viaje.Destino, viaje.Remito, viaje.Carga, viaje.Km, viaje.Kg, viaje.Tarifa, viaje.PorcentajeChofer, viaje.NombreChofer, viaje.NombreCliente);
+
+                }
+                else if (filtro == "sueldo")
+                {
+                    cheq.Rows.Add(viaje.FechaInicio, viaje.NombreChofer);
+                }
+                if (viaje.NombreCliente == dato)
+                {
+                    cheq.Rows.Add(viaje.FechaInicio, viaje.LugarPartida, viaje.Destino, viaje.Remito, viaje.Carga, viaje.Km, viaje.Kg, viaje.Tarifa, viaje.NombreChofer);
+                }
+
+            }
+        }
+        else
+        {
+            MessageBox.Show("Error al cargar el viaje");
+        }
     }
 
     //Adds
@@ -440,35 +473,31 @@ public class FormRegistro : Home
 
 
         ViajeViewModel viajeViewModel = new ViajeViewModel();
-        MessageBox.Show("salí de la clase");
-        var resultado = await viajeViewModel.CrearAsync(DateOnly.Parse(datos[0]), datos[1], datos[2], int.Parse(datos[3]), datos[4], float.Parse(datos[6]), 10, 10, float.Parse(datos[5]), float.Parse(datos[7]), datos[9], float.Parse(datos[8]));
+        var resultado = await viajeViewModel.CrearAsync(DateOnly.Parse(datos[0]), datos[1], datos[2], int.Parse(datos[3]), datos[4], float.Parse(datos[6]), datos[10], dato, float.Parse(datos[5]), float.Parse(datos[7]), datos[9], float.Parse(datos[8]));
 
-        MessageBox.Show("hola" + resultado);
         if (resultado.IsSuccess)
         {
-            MessageBox.Show("Viaje cargado correctamente" + resultado.Value);
-            // Verificar que los datos no estén vacíos
-            if (datos.All(dato => !string.IsNullOrWhiteSpace(dato)))
-            {
-                cheq.Rows.Add(datos.ToArray());
 
-                foreach (Control control in formFLTextBox.Controls)
+            ShowInfoTable(filtro, dato);
+
+
+            foreach (Control control in formFLTextBox.Controls)
+            {
+                if (control is Panel panel)
                 {
-                    if (control is Panel panel)
+                    foreach (Control child in panel.Controls)
                     {
-                        foreach (Control child in panel.Controls)
+                        if (child is TextBox textBox)
                         {
-                            if (child is TextBox textBox)
-                            {
-                                string placeholderText = textBox.Text;
-                                textBox.Clear();
-                                textBox.Text = placeholderText; // Restaurar el placeholder??????????
-                                textBox.ForeColor = Color.Black;
-                            }
+                            string placeholderText = textBox.Text;
+                            textBox.Clear();
+                            textBox.Text = placeholderText; // Restaurar el placeholder??????????
+                            textBox.ForeColor = Color.Black;
                         }
                     }
                 }
             }
+            //}
         }
     }
 

@@ -40,7 +40,6 @@ namespace Proyecto_camiones.ViewModels
         // Método para probar la conexión
         public async Task<bool> TestearConexion()
         {
-            MessageBox.Show("estoy en el método TestearConexion");
             return await _viajeService.ProbarConexionAsync();
         }
 
@@ -59,7 +58,6 @@ namespace Proyecto_camiones.ViewModels
             string nombreChofer,
             float porcentajeChofer)
         {
-            MessageBox.Show("estoy en el método CrearAsync");
             bool conexionExitosa = await TestearConexion();
 
             Console.WriteLine(await TestearConexion());
@@ -72,7 +70,6 @@ namespace Proyecto_camiones.ViewModels
             var resultado = await _viajeService.CrearAsync(
                 fechaInicio, lugarPartida, destino, remito, kg, carga, 
                 cliente, camion, km, tarifa, nombreChofer, porcentajeChofer);
-
             if (resultado.IsSuccess)
             {
                 Console.WriteLine($"Viaje creado con éxito");

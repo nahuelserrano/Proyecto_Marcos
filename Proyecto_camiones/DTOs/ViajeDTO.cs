@@ -19,7 +19,9 @@ namespace Proyecto_camiones.DTOs
         public float Km { get; set; }
         public float Tarifa { get; set; }
         public float PorcentajeChofer { get; set; } // Porcentaje por defecto del chofer
-        public float PrecioViaje => Tarifa * Kg  * 1000; 
+        public float PrecioViaje => Tarifa * Kg  * 1000;
+
+        public int Camion { get; internal set; }
 
         public ViajeDTO(DateOnly fechaInicio, string lugarPartida,
             string destino, int remito, float kg, string carga, string nombreCliente,
