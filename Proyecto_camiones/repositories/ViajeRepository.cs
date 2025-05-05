@@ -119,7 +119,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
                         Km = v.Km,
                         Tarifa = v.Tarifa,
                         Camion = v.Camion,
-                        PrecioViaje = v.Kg * v.Tarifa,
                     }).ToListAsync();
 
                 if (viajes.Count == 0)
@@ -162,7 +161,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     NombreChofer = viaje.NombreChofer,
                     Km = viaje.Km,
                     Tarifa = viaje.Tarifa,
-                    PrecioViaje = viaje.Kg * viaje.Tarifa,
                 };
 
                 return viajeDTO;
@@ -206,7 +204,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     NombreChofer = v.NombreChofer,
                     Km = v.Km,
                     Tarifa = v.Tarifa,
-                    PrecioViaje = v.Kg * v.Tarifa,
                 }).ToListAsync();
 
                 Console.WriteLine($"Se encontraron {viajes.Count} viajes.");
@@ -344,7 +341,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
                         NombreChofer = v.NombreChofer,
                         Km = v.Km,
                         Tarifa = v.Tarifa,
-                        PrecioViaje = v.Kg * v.Tarifa,
                     }).ToListAsync();
 
                 Console.WriteLine($"Se encontraron {viajes.Count} viajes para el camión con ID {camionId}.");
@@ -383,7 +379,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
                         Kg = v.Kg,
                         Carga = v.Carga,
                         Tarifa = v.Tarifa,
-                        Total = v.Kg * v.Tarifa,
                         Camion = c.Patente,
                         Comision = v.PorcentajeChofer,
                     }
@@ -419,7 +414,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
                         NombreChofer = v.NombreChofer,
                         Km = v.Km,
                         Tarifa = v.Tarifa,
-                        PrecioViaje = v.Kg * v.Tarifa,
                     }).ToListAsync();
 
                 if (viajes.Count == 0)
