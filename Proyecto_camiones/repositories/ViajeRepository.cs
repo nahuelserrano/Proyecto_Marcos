@@ -118,7 +118,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
                         NombreChofer = v.NombreChofer,
                         Km = v.Km,
                         Tarifa = v.Tarifa,
-                        Camion = v.Camion
+                        Camion = v.Camion,
+                        PrecioViaje = v.Kg * v.Tarifa,
                     }).ToListAsync();
 
                 if (viajes.Count == 0)
@@ -161,6 +162,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     NombreChofer = viaje.NombreChofer,
                     Km = viaje.Km,
                     Tarifa = viaje.Tarifa,
+                    PrecioViaje = viaje.Kg * viaje.Tarifa,
                 };
 
                 return viajeDTO;
@@ -204,6 +206,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     NombreChofer = v.NombreChofer,
                     Km = v.Km,
                     Tarifa = v.Tarifa,
+                    PrecioViaje = v.Kg * v.Tarifa,
                 }).ToListAsync();
 
                 Console.WriteLine($"Se encontraron {viajes.Count} viajes.");
@@ -341,6 +344,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                         NombreChofer = v.NombreChofer,
                         Km = v.Km,
                         Tarifa = v.Tarifa,
+                        PrecioViaje = v.Kg * v.Tarifa,
                     }).ToListAsync();
 
                 Console.WriteLine($"Se encontraron {viajes.Count} viajes para el camión con ID {camionId}.");
@@ -355,39 +359,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
         // Obtener viajes por cliente
-        public async Task<List<ViajeMixtoDTO>> ObtenerViajeMixtoPorClienteAsync(int clienteId)
-        {
-            try
-            {
-
-                var viajes = await _context.Viajes
-                    .AsNoTracking()
-                    .Include(v => v.ClienteNavigation)
-                    .Include(v => v.CamionNavigation)
-                    .Where(v => v.Cliente == clienteId)
-                    .Select(v => new ViajeMixtoDTO
-                    {
-                        Fecha_salida = v.FechaInicio,
-                        Origen = v.LugarPartida,
-                        Destino = v.Destino,
-                        Remito = v.Remito,
-                        Kg = v.Kg,
-                        Carga = v.Carga,
-                        Nombre_chofer = v.NombreChofer,
-                        Km = v.Km,
-                        Tarifa = v.Tarifa,
-                        Camion = v.CamionNavigation.Patente
-                    }).ToListAsync();
-
-                return viajes;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al obtener viajes por cliente: {ex.Message}");
-                return new List<ViajeMixtoDTO>();
-            }
-        }
-
         public async Task<List<ViajeMixtoDTO>> ObtenerPorClienteAsync(int clienteId)
         {
             try
@@ -402,18 +373,21 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     v=> v.Camion,
                     c=> c.Id,
                     (v,c) => new ViajeMixtoDTO
-                    (
-                       v.LugarPartida,
-                       v.Destino,
-                       v.FechaInicio,
-                       v.Remito,
-                       v.NombreChofer,
-                       v.Carga,
-                       v.Km,
-                       v.Kg,
-                       v.Tarifa,
-                       c.Patente
-                    )).ToListAsync();
+                    {
+                        Origen = v.LugarPartida,
+                        Destino = v.Destino,
+                        Fecha_salida = v.FechaInicio,
+                        Remito = v.Remito,
+                        Nombre_chofer = v.NombreChofer,
+                        Km = v.Km,
+                        Kg = v.Kg,
+                        Carga = v.Carga,
+                        Tarifa = v.Tarifa,
+                        Total = v.Kg * v.Tarifa,
+                        Camion = c.Patente,
+                        Comision = v.PorcentajeChofer,
+                    }
+                    ).ToListAsync();
 
                 return viajes;
             }
@@ -445,6 +419,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                         NombreChofer = v.NombreChofer,
                         Km = v.Km,
                         Tarifa = v.Tarifa,
+                        PrecioViaje = v.Kg * v.Tarifa,
                     }).ToListAsync();
 
                 if (viajes.Count == 0)

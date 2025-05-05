@@ -89,6 +89,7 @@ namespace Proyecto_camiones.Tests
                 if (resultado.IsSuccess)
                 {
                     var viaje = resultado.Value;
+                    Console.WriteLine(viaje.ToString());
                     Console.WriteLine($"[ÉXITO] Viaje encontrado: {viaje.LugarPartida} → {viaje.Destino}");
                     Console.WriteLine($"  Cliente: {viaje.NombreCliente}, Chofer: {viaje.NombreChofer}");
                     Console.WriteLine($"  Precio total: ${viaje.PrecioViaje:F2}");

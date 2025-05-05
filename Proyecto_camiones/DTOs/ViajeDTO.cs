@@ -19,7 +19,7 @@ namespace Proyecto_camiones.DTOs
         public float Km { get; set; }
         public float Tarifa { get; set; }
         public float PorcentajeChofer { get; set; } // Porcentaje por defecto del chofer
-        public float PrecioViaje => Tarifa * Kg  * 1000;
+        public float PrecioViaje { get; set; }
 
         public int Camion { get; internal set; }
 
@@ -38,6 +38,7 @@ namespace Proyecto_camiones.DTOs
             NombreCliente = nombreCliente;
             Tarifa = tarifa;
             PorcentajeChofer = porcentajeChofer;
+            PrecioViaje = Tarifa * Kg * 1000;
         }
 
         //// También arreglamos la propiedad para que sea consistente
@@ -56,12 +57,13 @@ namespace Proyecto_camiones.DTOs
             Km = 0;
             Tarifa = 1200;
             PorcentajeChofer = 0.18f; // Porcentaje por defecto del chofer
+            PrecioViaje = Tarifa * Kg * 1000;
         }
 
         override
             public string ToString()
         {
-            return "${ " + this.LugarPartida + "}";
+            return $"Total: {PrecioViaje}";
         }
     }
 }
