@@ -58,5 +58,14 @@ namespace Proyecto_camiones.ViewModels
             }
             return Result<string>.Failure("No se pudo acceder a la base de datos");
         }
+
+        internal async Task<Result<List<ViajeMixtoDTO>>> ObtenerViajesDeUnClienteAsync(int id)
+        {
+            if (this.testearConexion().Result)
+            {
+                return await this.fleteService.ObtenerViajesDeUnClienteAsync(id);
+            }
+            return Result<List<ViajeMixtoDTO>>.Failure("No se pudo acceder a la base de datos");
+        }
     }
 }

@@ -181,9 +181,24 @@ namespace Proyecto_camiones.Presentacion
             //    Console.WriteLine(response.Error);
             //}
 
-                //ProbarInsertarViaje("Tandil", "Azul");
+            //OBTENER VIAJES POR FLETERO DE UN CLIENTE
 
-                //ProbarInsertarChofer("Juan Alpaca");
+            var viajes = await vfvm.ObtenerViajesDeUnClienteAsync(3);
+            if (viajes.IsSuccess)
+            {
+                foreach (var viaje in viajes.Value)
+                {
+                    Console.WriteLine(viaje.ToString());
+                }
+            }
+            else
+            {
+                Console.WriteLine(viajes.Error);
+            }
+
+            //ProbarInsertarViaje("Tandil", "Azul");
+
+            //ProbarInsertarChofer("Juan Alpaca");
 
             FleteViewModel fvm = new FleteViewModel();
 

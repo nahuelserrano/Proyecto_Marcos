@@ -17,8 +17,8 @@ namespace Proyecto_camiones.DTOs
         public float Km { get; set; }
         public float Kg { get; set; }
         public float Tarifa { get; set; }
-        public float Total { get; set; }
-        public float? Total_comision { get; set; }
+        public float Total => Kg * Tarifa;
+        public float? Total_comision => Comision * Total / 100;
         public float? Comision { get; set; }
         public string? Camion { get; set; }
         public string? Fletero { get; set; }
@@ -35,9 +35,7 @@ namespace Proyecto_camiones.DTOs
             this.Km = km;
             this.Kg = kg;
             this.Tarifa = tarifa;
-            this.Total = this.Kg * this.Tarifa;
             this.Comision = null;
-            this.Total_comision = null;
             this.Camion = camion;
             this.Fletero = null;
         }
@@ -55,9 +53,7 @@ namespace Proyecto_camiones.DTOs
             this.Km = km;
             this.Kg = kg;
             this.Tarifa = tarifa;
-            this.Total = this.Kg * this.Tarifa;
             this.Comision = comision;
-            this.Total_comision = this.Comision * this.Total / 100;
             this.Fletero = fletero;
             this.Camion = null;
         }
@@ -67,7 +63,7 @@ namespace Proyecto_camiones.DTOs
         override
             public String ToString()
         {
-            return "Origen: " + this.Origen + ", DESTINO: " + this.Destino + " , TOTAL: " + this.Total + ", TOTAL COMISION: " + this.Total_comision + " , FLETERO:" + this.Fletero+" , PATENTE CAMIÓN: "+this.Camion;
+            return "Origen: " + this.Origen + ", DESTINO: " + this.Destino + " , TOTAL: " + this.Total + ", TOTAL COMISION: " + this.Total_comision + " , FLETERO:" + this.Fletero;
         }
     }
 }
