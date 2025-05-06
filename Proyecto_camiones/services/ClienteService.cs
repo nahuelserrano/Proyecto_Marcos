@@ -125,5 +125,17 @@ namespace Proyecto_camiones.Presentacion.Services
                 return Result<List<Cliente>>.Failure("No se pudieron obtener los clientes");
             }
         }
+
+        public async Task<Result<Cliente>> ObtenerPorNombreAsync(string nombre)
+        {
+            if (string.IsNullOrWhiteSpace(nombre))
+                return Result<Cliente>.Failure(MensajeError.objetoNulo(nameof(nombre)));
+
+            Cliente? cliente = await this._clienteRepository.ObtenerPorNombreAsync(nombre);
+
+            if (cliente != null) return Result<Cliente>.Success(cliente);
+
+            return Result<Cliente>.Failure("No existe un cliente con ese nombre");
+        }
     }
 }

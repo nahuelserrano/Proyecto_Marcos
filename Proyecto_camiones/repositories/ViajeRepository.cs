@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Microsoft.EntityFrameworkCore;
 using MySql.Data.MySqlClient;
 using MySqlX.XDevAPI;
@@ -82,7 +83,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
                 return viaje.Id;
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
                 Console.WriteLine();
@@ -97,7 +98,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
         }
 
-        // READ - Obtener todos los viajes
+        //        // READ - Obtener todos los viajes
         public async Task<List<ViajeDTO>> ObtenerTodosAsync()
         {
             try
@@ -116,12 +117,13 @@ namespace Proyecto_camiones.Presentacion.Repositories
                         NombreCliente = v.ClienteNavigation.Nombre,
                         NombreChofer = v.NombreChofer,
                         Km = v.Km,
-                        Tarifa = v.Tarifa
+                        Tarifa = v.Tarifa,
+                        Camion = v.Camion,
                     }).ToListAsync();
 
                 if (viajes.Count == 0)
                     Console.WriteLine("No hay viajes");
-                
+
 
                 return viajes;
             }
@@ -145,7 +147,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
                 if (viaje == null)
                     return null;
-                
+
 
                 var viajeDTO = new ViajeDTO
                 {
@@ -251,11 +253,11 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
                 if (remito.HasValue)
                     viaje.Remito = remito.Value;
-                
+
                 if (!string.IsNullOrWhiteSpace(carga))
                     viaje.Carga = carga;
 
-                if (kg.HasValue) 
+                if (kg.HasValue)
                     viaje.Kg = kg.Value;
 
                 if (cliente.HasValue)
@@ -384,43 +386,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
             {
                 Console.WriteLine($"Error al obtener viajes por cliente: {ex.Message}");
                 return new List<ViajeMixtoDTO>();
-            }
-        }
-
-        public async Task<List<ViajeMixtoDTO>> ObtenerPorClienteAsync(int clienteId)
-        {
-            try
-            {
-
-                var viajes = await _context.Viajes
-                    .AsNoTracking()
-                    .Include(v => v.ClienteNavigation)
-                    .Where(v => v.Cliente == clienteId)
-                    .Join(
-                    this._context.Camiones,
-                    v=> v.Camion,
-                    c=> c.Id,
-                    (v,c) => new ViajeMixtoDTO
-                    (
-                       v.LugarPartida,
-                       v.Destino,
-                       v.FechaInicio,
-                       v.Remito,
-                       v.NombreChofer,
-                       v.Carga,
-                       v.Km,
-                       v.Kg,
-                       v.Tarifa,
-                       c.Patente
-                    )).ToListAsync();
-
-                return viajes;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al obtener viajes por cliente: {ex.Message}");
-                Console.WriteLine(ex.InnerException);
-                return null;
             }
         }
 

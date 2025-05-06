@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MySqlX.XDevAPI.Common;
 using NPOI.SS.Formula.Functions;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Models;
@@ -125,6 +126,24 @@ namespace Proyecto_camiones.Presentacion.Services
                 return Result<string>.Success("el camion con el id " + id + " fue eliminado correctamente");
             }
             return Result<string>.Failure("el camion con el id " + id + " no pudo ser eliminado");
+        }
+
+        public async Task<Result<Camion>> ObtenerPorPatenteAsync(string patente)
+        {
+            try
+            {
+                Camion? camion = await _camionRepository.ObtenerPorPatenteAsync(patente);
+
+                if (camion == null)
+                    return Result<Camion>.Failure(MensajeError.EntidadNoEncontrada(nameof(Camion), 0));
+
+                return Result<Camion>.Success(camion);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
     }
 }

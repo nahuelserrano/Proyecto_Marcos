@@ -174,6 +174,21 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 Console.WriteLine(e.InnerException);
                 return false;
             }
-        } 
+        }
+
+        public async Task<Camion> ObtenerPorPatenteAsync(string patente)
+        {
+            try
+            {
+                var camion = await _context.Camiones.FirstOrDefaultAsync(c => c.Patente == patente);
+                return camion;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.InnerException);
+                return null;
+            }
+        }
     }
 }

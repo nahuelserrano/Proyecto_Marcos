@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Transactions;
+using System.Windows.Forms;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Models;
 using Proyecto_camiones.Presentacion.Models;
@@ -63,37 +64,40 @@ namespace Proyecto_camiones.Presentacion.Services
             int remito,
             float kg,
             string carga,
-            int cliente,
-            int camion,
+            string cliente,
+            string camion,
             float km,
             float tarifa,
             string nombreChofer,
             float porcentajeChofer)
         {
-            
-            try{
-                ValidadorViaje validador = new ValidadorViaje(fechaInicio, lugarPartida, destino, kg, remito,
-                    tarifa, cliente, camion, carga, km);
 
-                Result<bool> resultadoValidarCompleto = validador.ValidarCompleto();
+            try
+            {
+                //ValidadorViaje validador = new ValidadorViaje(fechaInicio, lugarPartida, destino, kg, remito,
+                //    tarifa, cliente, camion, carga, km);
+
+                //Result<bool> resultadoValidarCompleto = validador.ValidarCompleto();
 
 
-                if (!resultadoValidarCompleto.IsSuccess)
-                    return Result<int>.Failure(resultadoValidarCompleto.Error);
-                
+                //if (!resultadoValidarCompleto.IsSuccess)
+                //    return Result<int>.Failure(resultadoValidarCompleto.Error);
+
 
                 // Revisar que los metodos puedan retornar null si no esxiste el camion o cliente con ese id
-                
-                var clienteResult = await _clienteService.ObtenerPorIdAsync(cliente);
-                CamionDTO? camionResult = await _camionService.ObtenerPorIdAsync(camion);
 
-                validador.ValidarExistencia(clienteResult.IsSuccess, camionResult != null);
+                var clienteResult = await _clienteService.ObtenerPorNombreAsync(cliente);
+                var camionResult = await _camionService.ObtenerPorPatenteAsync(camion);
 
-                Result<bool> resultadoValidacion = validador.ValidarCompleto();
+                //validador.ValidarExistencia(clienteResult.IsSuccess, camionResult.IsSuccess);
 
-                if (!resultadoValidacion.IsSuccess)
-                    return Result<int>.Failure(resultadoValidacion.Error);
-                
+                //Result<bool> resultadoValidacion = validador.ObtenerResultado();
+
+                //if (!resultadoValidacion.IsSuccess)
+                //    return Result<int>.Failure(resultadoValidacion.Error);
+
+                int idCliente = clienteResult.Value.Id;
+                int idCamion = camionResult.Value.Id;
 
                 using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
@@ -115,7 +119,7 @@ namespace Proyecto_camiones.Presentacion.Services
                     // Crear el viaje
                     int id = await _viajeRepository.InsertarAsync(
                         fechaInicio, lugarPartida, destino, remito, kg,
-                        carga, cliente, camion, km, tarifa, nombreChofer, porcentajeChofer);
+                        carga, idCliente, idCamion, km, tarifa, nombreChofer, porcentajeChofer);
 
                     if (id == -1)
                         return Result<int>.Failure(MensajeError.ErrorCreacion(nameof(Viaje)));
@@ -134,6 +138,7 @@ namespace Proyecto_camiones.Presentacion.Services
             }
             catch (Exception ex)
             {
+                MessageBox.Show("error al crear el viaje");
                 return Result<int>.Failure($"Hubo un error al crear el viaje: {ex.Message}");
             }
         }
@@ -265,16 +270,16 @@ namespace Proyecto_camiones.Presentacion.Services
         {
             if (idCliente < 0)
                 return Result<List<ViajeMixtoDTO>>.Failure(MensajeError.IdInvalido(idCliente));
-            
+
             try
             {
                 // Verificar que el cliente existe usando el servicio
-                
+
                 var clienteResult = await _clienteService.ObtenerPorIdAsync(idCliente);
                 if (clienteResult == null)
                     return Result<List<ViajeMixtoDTO>>.Failure($"El cliente especificado no existe: {clienteResult}");
-                
-                var viajes = await _viajeRepository.ObtenerPorClienteAsync(idCliente);
+
+                var viajes = await _viajeRepository.ObtenerViajeMixtoPorClienteAsync(idCliente);
                 return Result<List<ViajeMixtoDTO>>.Success(viajes);
             }
             catch (Exception ex)

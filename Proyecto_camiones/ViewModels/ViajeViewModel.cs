@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Proyecto_camiones.Repositories;
 using Proyecto_camiones.Services;
+using System.Windows.Forms;
 
 namespace Proyecto_camiones.ViewModels
 {
@@ -50,15 +51,13 @@ namespace Proyecto_camiones.ViewModels
             int remito,
             string carga,
             float kg,
-            int cliente,
-            int camion,
+            string cliente,
+            string camion,
             float km,
             float tarifa,
             string nombreChofer,
             float porcentajeChofer)
         {
-            Console.WriteLine(4);
-
             bool conexionExitosa = await TestearConexion();
 
             Console.WriteLine(await TestearConexion());
@@ -69,9 +68,8 @@ namespace Proyecto_camiones.ViewModels
             }
 
             var resultado = await _viajeService.CrearAsync(
-                fechaInicio, lugarPartida, destino, remito, kg, carga, 
+                fechaInicio, lugarPartida, destino, remito, kg, carga,
                 cliente, camion, km, tarifa, nombreChofer, porcentajeChofer);
-
             if (resultado.IsSuccess)
             {
                 Console.WriteLine($"Viaje creado con éxito");
@@ -119,7 +117,7 @@ namespace Proyecto_camiones.ViewModels
             return Result<List<ViajeDTO>>.Failure("La conexión no pudo establecerse");
         }
 
-        // Método para obtener viajes filtrados
+        //        // Método para obtener viajes filtrados
         public async Task<Result<List<ViajeDTO>>> ObtenerPorFiltradoAsync(
             DateOnly? fechaInicio = null,
             DateOnly? fechaFin = null,
@@ -163,7 +161,7 @@ namespace Proyecto_camiones.ViewModels
             if (await this.TestearConexion())
             {
                 var resultado = await _viajeService.ActualizarAsync(
-                    id, fechaInicio, lugarPartida, destino, remito, kg, carga, 
+                    id, fechaInicio, lugarPartida, destino, remito, kg, carga,
                     cliente, camion, km, tarifa, nombreChofer, porcentaje);
 
                 return resultado;
