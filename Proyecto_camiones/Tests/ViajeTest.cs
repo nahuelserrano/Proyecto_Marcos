@@ -89,9 +89,10 @@ namespace Proyecto_camiones.Tests
                 if (resultado.IsSuccess)
                 {
                     var viaje = resultado.Value;
+                    Console.WriteLine(viaje.ToString());
                     Console.WriteLine($"[ÉXITO] Viaje encontrado: {viaje.LugarPartida} → {viaje.Destino}");
                     Console.WriteLine($"  Cliente: {viaje.NombreCliente}, Chofer: {viaje.NombreChofer}");
-                    Console.WriteLine($"  Precio total: ${viaje.PrecioViaje:F2}");
+                    Console.WriteLine($"  Precio total: ${viaje.Total:F2}");
                 }
                 else
                 {
@@ -117,7 +118,7 @@ namespace Proyecto_camiones.Tests
                     Console.WriteLine($"[ÉXITO] Viajes encontrados: {resultado.Value.Count}");
                     foreach (var viaje in resultado.Value)
                     {
-                        Console.WriteLine($"  - {viaje.FechaInicio}: {viaje.LugarPartida} → {viaje.Destino} (${viaje.PrecioViaje:F2})");
+                        Console.WriteLine($"  - {viaje.FechaInicio}: {viaje.LugarPartida} → {viaje.Destino} (${viaje.Total:F2})");
                     }
                 }
                 else
@@ -144,7 +145,7 @@ namespace Proyecto_camiones.Tests
                     Console.WriteLine($"[ÉXITO] Viajes encontrados para el camión {camionId}: {resultado.Value.Count}");
                     foreach (var viaje in resultado.Value)
                     {
-                        Console.WriteLine($"  - {viaje.FechaInicio}: {viaje.LugarPartida} → {viaje.Destino} (${viaje.PrecioViaje:F2})");
+                        Console.WriteLine($"  - {viaje.FechaInicio}: {viaje.LugarPartida} → {viaje.Destino} (${viaje.Total:F2})");
                     }
                 }
                 else
@@ -173,8 +174,7 @@ namespace Proyecto_camiones.Tests
                     Console.WriteLine($"[ÉXITO] Viajes encontrados: {resultado.Value.Count}");
                     foreach (var viaje in resultado.Value)
                     {
-                        //Console.WriteLine($"  - {viaje.FechaInicio}: {viaje.LugarPartida} → {viaje.Destino} (${viaje.PrecioViaje:F2})");
-                        Console.WriteLine(viaje.ToString());
+                        Console.WriteLine($"  - {viaje.FechaInicio}: {viaje.LugarPartida} → {viaje.Destino} (${viaje.Total:F2})");
                     }
                 }
                 else
@@ -212,8 +212,8 @@ namespace Proyecto_camiones.Tests
                     Console.WriteLine($"[ÉXITO] Viajes encontrados: {resultado.Value.Count}");
                     foreach (var viaje in resultado.Value)
                     {
-                        //Console.WriteLine($"  - {viaje.FechaInicio}: {viaje.LugarPartida} → {viaje.Destino} (${viaje.PrecioViaje:F2})");
-                        Console.WriteLine(viaje.ToString());
+                        Console.WriteLine($"  - {viaje.FechaInicio}: {viaje.LugarPartida} → {viaje.Destino} (${viaje.Total:F2})");
+                        //Console.WriteLine(viaje.ToString());
                     }
                 }
                 else
@@ -235,14 +235,13 @@ namespace Proyecto_camiones.Tests
                 ViajeViewModel vvm = new ViajeViewModel();
 
                 var resultado = await vvm.ObtenerPorClienteAsync(id);
-                Console.WriteLine("Superamos");
 
                 if (resultado.IsSuccess)
                 {
                     Console.WriteLine($"[ÉXITO] Viajes encontrados: {resultado.Value.Count}");
                     foreach (var viaje in resultado.Value)
                     {
-                        Console.WriteLine($"  - {viaje.Fecha_salida}: {viaje.Origen} → {viaje.Destino} (${viaje.Tarifa:F2})");
+                        Console.WriteLine($"  - {viaje.Fecha_salida}: {viaje.Origen} → {viaje.Destino} (${viaje.Total:F2})");
                     }
                 }
                 else

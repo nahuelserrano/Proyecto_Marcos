@@ -34,11 +34,13 @@ namespace Proyecto_camiones
         static async Task Main(string[] args)
 
         {
-
+            
+            // Llamada a Windows Forms para inicializar la aplicación
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
             PagoViewModel pw = new PagoViewModel();
+
             //await pw.CrearAsync(1, 1, 1000);
             //await pw.CrearAsync(1, 1, 1000);
             //await pw.CrearAsync(1, 1, 1000);
@@ -47,7 +49,7 @@ namespace Proyecto_camiones
 
             //float suel=  await pw.ObtenerSueldoCalculado(1, DateOnly.MinValue, DateOnly.MaxValue);
 
-           SueldoViewModel sueldoViewModel = new SueldoViewModel();
+            SueldoViewModel sueldoViewModel = new SueldoViewModel();
            //await sueldoViewModel.CrearAsync(1, DateOnly.MinValue, DateOnly.MaxValue);
           //  Console.WriteLine("sueldo calculado : " + suel);
 
@@ -278,7 +280,10 @@ namespace Proyecto_camiones
             //    // VIAJE
             //DateOnly fecha = new DateOnly(2025, 4, 28);
             //int idViaje = await ViajeTests.ProbarInsertarViaje(fecha, "Tandil", "Buenos Aires", 123, 1000.5f, "Trigo", "Cliente1", "HIJ429", 350.5f, 5000.0f, "Chofer Test", 018f);
-            //await ViajeTests.ProbarObtenerViajePorId(idViaje);
+            //await ViajeTests.ProbarObtenerViajePorId(4);
+            //await ViajeTests.ProbarObtenerViajesPorCliente(3);
+            //await ViajeTests.ProbarObtenerViajesPorChofer(2);
+            //await ViajeTests.ProbarObtenerViajesDeUnFletero("Carlos");
             //await ViajeTests.ProbarEliminarViaje(10);
             //}
             //catch (Exception ex)

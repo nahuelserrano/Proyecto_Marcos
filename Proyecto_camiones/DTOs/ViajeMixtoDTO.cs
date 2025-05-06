@@ -17,7 +17,7 @@ namespace Proyecto_camiones.DTOs
         public float Km { get; set; }
         public float Kg { get; set; }
         public float Tarifa { get; set; }
-        public float Total { get; set; }
+        public float Total => Kg * Tarifa;
         public float? Total_comision { get; set; }
         public float? Comision { get; set; }
         public string? Camion { get; set; }
@@ -35,7 +35,6 @@ namespace Proyecto_camiones.DTOs
             this.Km = km;
             this.Kg = kg;
             this.Tarifa = tarifa;
-            this.Total = this.Kg * this.Tarifa;
             this.Comision = null;
             this.Total_comision = null;
             this.Camion = camion;
@@ -55,7 +54,6 @@ namespace Proyecto_camiones.DTOs
             this.Km = km;
             this.Kg = kg;
             this.Tarifa = tarifa;
-            this.Total = this.Kg * this.Tarifa;
             this.Comision = comision;
             this.Total_comision = this.Comision * this.Total / 100;
             this.Fletero = fletero;

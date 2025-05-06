@@ -49,10 +49,15 @@ internal class ViajeFiltro : Home
         AddInfoToCampos(camposForm);
     }
 
+    private void InitializeComponent()
+    {
+
+    }
+
     private void AddInfoToCampos(List<string> camposForm)
     {
         this.campos.Clear();
-        foreach(string i in camposForm)
+        foreach (string i in camposForm)
         {
             this.campos.Add(i);
         }

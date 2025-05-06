@@ -54,7 +54,7 @@ namespace Proyecto_camiones.Presentacion.Services
             if(cliente != null)
             {
                 List<ViajeMixtoDTO> vfletes = await this._viajeFleteRepository.ObtenerViajesDeUnClienteAsync(clienteId);
-                List<ViajeMixtoDTO> viajes = await this._viajeRepository.ObtenerViajeMixtoPorClienteAsync(clienteId);
+                List<ViajeMixtoDTO> viajes = await this._viajeRepository.ObtenerPorClienteAsync(clienteId);
                 List<CuentaCorrienteDTO> cuentas = await this._cuentaCorrienteRepository.ObtenerCuentasPorIdClienteAsync(clienteId);
                 if (vfletes == null || viajes == null || cuentas == null) return Result<bool>.Failure("Hubo un error al validar la eliminación del cliente");
                 if(vfletes.Count>0 || viajes.Count > 0 || cuentas.Count>0)
@@ -103,12 +103,14 @@ namespace Proyecto_camiones.Presentacion.Services
             if(c != null)
             {
                 List<ViajeMixtoDTO> viajesFlete = await this._viajeFleteRepository.ObtenerViajesDeUnClienteAsync(c.Id);
-                List<ViajeMixtoDTO> viajes = await this._viajeRepository.ObtenerViajeMixtoPorClienteAsync(c.Id);
+                List<ViajeMixtoDTO> viajes = await this._viajeRepository.ObtenerPorClienteAsync(c.Id);
+
                 if(viajesFlete != null && viajes != null)
                 {
                     viajesFlete.AddRange(viajes);
                     return Result<List<ViajeMixtoDTO>>.Success(viajesFlete);
                 }
+
                 return Result<List<ViajeMixtoDTO>>.Failure("No se pudieron obtener los viajes");
             }
             return Result<List<ViajeMixtoDTO>>.Failure("No existe un cliente con ese nombre");
