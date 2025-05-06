@@ -6,7 +6,7 @@ using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Utils;
 using Proyecto_camiones.ViewModels;
 
-namespace Proyecto_camiones.Presentacion
+namespace Proyecto_camiones.Tests
 {
     public static class ClienteTests
     {

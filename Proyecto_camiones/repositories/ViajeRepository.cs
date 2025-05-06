@@ -31,8 +31,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 if (puedeConectar)
                     Console.WriteLine("Conexión exitosa a la base de datos.");
                 else
-                    Console.WriteLine(MensajeError.errorConexion());
-                
+                    Console.WriteLine(MensajeError.ErrorBaseDatos("No se pudo establecer conexión"));
+
 
                 return puedeConectar;
             }
@@ -55,7 +55,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
             int camion,
             float km,
             float tarifa,
-            string nombreChofer
+            string nombreChofer,
+            float porcentajeChofer
             )
         {
             try
@@ -65,11 +66,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     Console.WriteLine("No se puede conectar a la base de datos");
                     return -1;
                 }
-
-                var camionEntity = await _context.Camiones.FindAsync(camion);
-
                 var viaje = new Viaje(fechaInicio, lugarPartida, destino, remito, kg,
-                    carga, cliente, camion, km, tarifa, nombreChofer);
+                    carga, cliente, camion, km, tarifa, nombreChofer, porcentajeChofer);
 
                 _context.Viajes.Add(viaje);
 
@@ -81,14 +79,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     Console.WriteLine("No se insertó ningún registro");
                     return -1;
                 }
-                // Si se insertó correctamente, devolver el viaje como DTO
 
-                var clienteEntity = await _context.Clientes.FindAsync(cliente);
-
-                if (clienteEntity != null && camionEntity != null)
-                    return viaje.Id;
-
-                return -1;
+                return viaje.Id;
             }
             catch (Exception ex) 
             {
@@ -236,7 +228,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
             int? camion = null,
             float? tarifa = null,
             float? km = null,
-            string nombreChofer = null
+            string nombreChofer = null,
+            float? porcentajeChofer = null
             )
         {
             try
@@ -280,6 +273,9 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 if (!string.IsNullOrWhiteSpace(nombreChofer))
                     viaje.NombreChofer = nombreChofer;
 
+                if (porcentajeChofer.HasValue)
+                    viaje.PorcentajeChofer = porcentajeChofer.Value;
+
 
                 int registorsAfectados = await _context.SaveChangesAsync();
 
@@ -315,7 +311,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al eliminar viaje: {ex.Message}");
+                Console.WriteLine($"Error al eliminar viaje: {ex.InnerException}");
                 return false;
             }
         }

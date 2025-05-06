@@ -35,7 +35,7 @@ namespace Proyecto_camiones.Presentacion.Services
         public async Task<Result<Cliente>> ObtenerPorIdAsync(int id)
         {
             if (id <= 0)
-                return Result<Cliente>.Failure(MensajeError.idInvalido(id));
+                return Result<Cliente>.Failure(MensajeError.IdInvalido(id));
 
             Cliente? cliente = await this._clienteRepository.ObtenerPorIdAsync(id);
 
@@ -48,7 +48,7 @@ namespace Proyecto_camiones.Presentacion.Services
 
         public async Task<Result<bool>> EliminarAsync(int clienteId)
         {
-            if (clienteId <= 0) return Result<bool>.Failure(MensajeError.idInvalido(clienteId));
+            if (clienteId <= 0) return Result<bool>.Failure(MensajeError.IdInvalido(clienteId));
             Cliente cliente = await this._clienteRepository.ObtenerPorIdAsync(clienteId);
             if(cliente != null)
             {

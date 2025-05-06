@@ -1,4 +1,5 @@
-﻿using Proyecto_camiones.Presentacion.Repositories;
+﻿using Proyecto_camiones.DTOs;
+using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Services;
 using Proyecto_camiones.Presentacion.Utils;
 using Proyecto_camiones.Repositories;
@@ -58,10 +59,18 @@ namespace Proyecto_camiones.ViewModels
         }
 
 
+        public async Task<Result<List<SueldoDTO>>> ObtenerTodosAsync() {
+            if (await this.testearConexion())
+            {
+                Result<List<SueldoDTO>> sueldos = await this.sueldoService.ObtenerTodosAsync();
+                if(sueldos!=null)
+                return sueldos;
+            }
+            return Result<List<SueldoDTO>>.Failure("No se pudo establecer la conexión");
+        }
 
 
-
-        public async Task<Result<bool>> EliminarAsync(int id)
+        public async Task<Result<bool>> EliminarAsync(int id)   
         {
             if (this.testearConexion().Result)
             {

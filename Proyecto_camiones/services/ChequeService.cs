@@ -22,7 +22,7 @@ namespace Proyecto_camiones.Presentacion.Services
         {
             if (id < 0)
             {
-                return Result<ChequeDTO>.Failure(MensajeError.idInvalido(id));
+                return Result<ChequeDTO>.Failure(MensajeError.IdInvalido(id));
             }
 
             ChequeDTO cheque = await this._chequeRepository.ObtenerPorId(id);
@@ -35,7 +35,7 @@ namespace Proyecto_camiones.Presentacion.Services
 
         internal async Task<Result<bool>> EliminarAsync(int id)
         {
-            if (id <= 0) return Result<bool>.Failure(MensajeError.idInvalido(id));
+            if (id <= 0) return Result<bool>.Failure(MensajeError.IdInvalido(id));
 
             ChequeDTO cheque = await this._chequeRepository.ObtenerPorId(id);
 
@@ -77,7 +77,7 @@ namespace Proyecto_camiones.Presentacion.Services
         public async Task<Result<ChequeDTO>> ActualizarAsync(int id, int? id_cliente = null, DateOnly? FechaIngresoCheque = null, string? NumeroCheque = null, float? Monto = null, string? Banco = null, DateOnly? FechaCobro = null)
         {
             if (id <= 0)
-                return Result<ChequeDTO>.Failure(MensajeError.idInvalido(id));
+                return Result<ChequeDTO>.Failure(MensajeError.IdInvalido(id));
 
             var chequeExistente = await _chequeRepository.ObtenerPorId(id);
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Models;
@@ -26,24 +27,25 @@ namespace Proyecto_camiones.Presentacion.Services
         public async Task<Result<ChoferDTO>> ObtenerPorIdAsync(int id)
         {
             if (id <= 0)
-                return Result<ChoferDTO>.Failure(MensajeError.idInvalido(id));
+                return Result<ChoferDTO>.Failure(MensajeError.IdInvalido(id));
 
-            Chofer chofer = await this._choferRepository.ObtenerPorIdAsync(id);
+            Chofer? chofer = await this._choferRepository.ObtenerPorIdAsync(id);
 
             if (chofer == null)
-                return Result<ChoferDTO>.Failure(MensajeError.objetoNulo(nameof(chofer)));
+                return Result<ChoferDTO>.Failure(MensajeError.EntidadNoEncontrada(nameof(Chofer), id));
+
 
             return Result<ChoferDTO>.Success(chofer.toDTO());
         }
 
         internal async Task<Result<bool>> EliminarAsync(int id)
         {
-            if (id <= 0) return Result<bool>.Failure(MensajeError.idInvalido(id));
+            if (id <= 0) return Result<bool>.Failure(MensajeError.IdInvalido(id));
 
-            Chofer chofer = await this._choferRepository.ObtenerPorIdAsync(id);
+            Chofer? chofer = await this._choferRepository.ObtenerPorIdAsync(id);
 
 
-            if (chofer == null) return Result<bool>.Failure(MensajeError.objetoNulo(nameof(chofer)));
+            if (chofer == null) return Result<bool>.Failure(MensajeError.EntidadNoEncontrada(nameof(Chofer), id));
 
             await this._choferRepository.EliminarAsync(id);
 
@@ -65,8 +67,7 @@ namespace Proyecto_camiones.Presentacion.Services
                 int id = await _choferRepository.InsertarAsync(nombre);
 
                 if (id == -1)
-                    return Result<int>.Failure("Hubo un error al crear el chofer");
-                
+                    return Result<int>.Failure(MensajeError.ErrorCreacion(nameof(Chofer)));
 
                 return Result<int>.Success(id);
             }
@@ -79,12 +80,12 @@ namespace Proyecto_camiones.Presentacion.Services
         public async Task<Result<ChoferDTO>> ActualizarAsync(int id, string nombre = null)
         {
             if (id <= 0)
-                return Result<ChoferDTO>.Failure(MensajeError.idInvalido(id));
+                return Result<ChoferDTO>.Failure(MensajeError.IdInvalido(id));
 
             var chofer = await _choferRepository.ObtenerPorIdAsync(id);
 
             if (chofer == null)
-                return Result<ChoferDTO>.Failure(MensajeError.objetoNulo(nameof(chofer)));
+                return Result<ChoferDTO>.Failure(MensajeError.EntidadNoEncontrada(nameof(Chofer), id));
 
             if (!string.IsNullOrWhiteSpace(nombre))
                 chofer.Nombre = nombre;
@@ -100,8 +101,8 @@ namespace Proyecto_camiones.Presentacion.Services
             {
                 var choferes = await _choferRepository.ObtenerTodosAsync();
 
-                if (choferes == null)
-                    return Result<List<ChoferDTO>>.Failure(MensajeError.objetoNulo(nameof(choferes)));
+                if (!choferes.Any())
+                    return Result<List<ChoferDTO>>.Failure(MensajeError.ErrorBaseDatos("No se pudieron obtener los choferes"));
 
                 List<ChoferDTO> choferesDTO = new List<ChoferDTO>();
 
@@ -133,8 +134,7 @@ namespace Proyecto_camiones.Presentacion.Services
                 var chofer = await _choferRepository.ObtenerPorNombreAsync(nombre);
 
                 if (chofer == null)
-                    return Result<Chofer>.Failure(MensajeError.objetoNulo(nameof(Chofer)));
-
+                    return Result<Chofer>.Failure(MensajeError.EntidadNoEncontrada(nameof(Chofer), 0));
 
                 return Result<Chofer>.Success(chofer);
             }

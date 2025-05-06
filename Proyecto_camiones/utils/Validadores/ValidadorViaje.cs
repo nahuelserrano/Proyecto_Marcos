@@ -95,10 +95,10 @@ namespace Proyecto_camiones.Presentacion.Utils
         public ValidadorViaje ValidarIdPositivos()
         {
             if (_camion <= 0)
-                _errores.Add(MensajeError.idInvalido(_camion));
+                _errores.Add(MensajeError.IdInvalido(_camion));
             
             if (_cliente <= 0)
-                _errores.Add(MensajeError.idInvalido(_cliente));
+                _errores.Add(MensajeError.IdInvalido(_cliente));
             
             return this;
         }

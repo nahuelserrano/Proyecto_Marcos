@@ -7,7 +7,7 @@ using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Utils;
 using Proyecto_camiones.ViewModels;
 
-namespace Proyecto_camiones.Presentacion
+namespace Proyecto_camiones.Tests
 {
     public static class ViajeTests
     {
@@ -18,7 +18,7 @@ namespace Proyecto_camiones.Presentacion
             try
             {
                 DateOnly fecha = new DateOnly(2025, 4, 28);
-                int id = await ProbarInsertarViaje(fecha, "Tandil", "Buenos Aires", 123, 1000.5f, "Trigo", 3, 3, 350.5f, 5000.0f, "Chofer Test");
+                int id = await ProbarInsertarViaje(fecha, "Tandil", "Buenos Aires", 123, 1000.5f, "Trigo", 3, 3, 350.5f, 5000.0f, "Chofer Test", 0.18f);
                 await ProbarObtenerViajePorId(id);
                 await ProbarObtenerTodosViajes();
                 await ProbarObtenerViajesPorCamion(3);
@@ -46,7 +46,8 @@ namespace Proyecto_camiones.Presentacion
             int camion,
             float km,
             float tarifa,
-            string nombreChofer)
+            string nombreChofer, 
+            float porcentajeChofer)
         {
             ViajeViewModel vvm = new ViajeViewModel();
 
@@ -61,19 +62,18 @@ namespace Proyecto_camiones.Presentacion
                 camion: camion, // Asumiendo que el ID 3 existe
                 km: km,
                 tarifa: tarifa,
-                nombreChofer: nombreChofer // Asumiendo que el chofer existe
+                nombreChofer: nombreChofer,
+                porcentajeChofer: porcentajeChofer// Asumiendo que el chofer existe
             );
-
-            Console.WriteLine(3);
 
             if (!resultadoCreacion1.IsSuccess)
             {
                 Console.WriteLine("Error al crear el viaje: " + resultadoCreacion1.Error);
-                return resultadoCreacion1.Value;
+                return -1;
             }
 
             Console.WriteLine("Resultado de la creación del viaje: " + resultadoCreacion1.Value);
-            return -1;
+            return resultadoCreacion1.Value;
         }
 
         public static async Task ProbarObtenerViajePorId(int id)
@@ -196,9 +196,9 @@ namespace Proyecto_camiones.Presentacion
                 ViajeViewModel vvm = new ViajeViewModel();
 
                 var resultado = await vvm.ObtenerPorChoferAsync(nombre);
-                Console.WriteLine("Superamos");
+                //Console.WriteLine("Superamos");
 
-                var viajeRepository = new ViajeRepository(General.obtenerInstancia());
+                //var viajeRepository = new ViajeRepository(General.obtenerInstancia());
 
                 //var prueba = await viajeRepository.ObtenerPorChoferAsync(nombre);
 
@@ -294,7 +294,7 @@ namespace Proyecto_camiones.Presentacion
             }
         }
 
-        private static async Task ProbarEliminarViaje(int id)
+        public static async Task ProbarEliminarViaje(int id)
         {
             Console.WriteLine($"\n=== ELIMINANDO VIAJE ID: {id} ===");
             ViajeViewModel vvm = new ViajeViewModel();

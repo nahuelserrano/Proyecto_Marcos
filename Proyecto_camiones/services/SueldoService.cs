@@ -32,18 +32,30 @@ namespace Proyecto_camiones.Presentacion.Services
             return result;
         }
 
-
-
-        internal async Task<Result<bool>> EliminarAsync(int pagoId)
+        public async Task<Result<List<SueldoDTO>>> ObtenerTodosAsync()
         {
-            if (pagoId <= 0) return Result<bool>.Failure(MensajeError.idInvalido(pagoId));
+            if (await this.ProbarConexionAsync())
+            {
+                List<SueldoDTO> sueldos = await this._sueldoRepository.ObtenerTodosAsync();
+                
+                
+                if (sueldos != null)
+                    return Result<List<SueldoDTO>>.Success(sueldos);
+            }
+            return Result<List<SueldoDTO>>.Failure("No se pudo establecer la conexión");
+        }
+
+        internal async Task<Result<bool>> EliminarAsync(int sueldoId)
+        {
+            if (sueldoId <= 0) return Result<bool>.Failure(MensajeError.IdInvalido(sueldoId));
            
+            SueldoDTO sueldo = await _sueldoRepository.ObtenerPorId(sueldoId);
 
-            SueldoDTO pago = await _sueldoRepository.ObtenerPorId(pagoId);
+            if (sueldo == null) return Result<bool>.Failure(MensajeError.objetoNulo(nameof(sueldoId)));
 
-            if (pago == null) return Result<bool>.Failure(MensajeError.objetoNulo(nameof(pago)));
+            await _pagoService.ModificarEstado(sueldo.Id_Chofer, sueldo.pagadoDesde, sueldo.pagadoHasta,null,false);
 
-            await _sueldoRepository.EliminarAsync(pagoId);
+            await _sueldoRepository.EliminarAsync(sueldoId);
 
             return Result<bool>.Success(true);
         }
@@ -70,7 +82,7 @@ namespace Proyecto_camiones.Presentacion.Services
                 int idSueldo = await _sueldoRepository.InsertarAsync(monto, Id_Chofer, pagoDesde, pagoHasta);
                 if (idSueldo<0)
                     return Result<int>.Failure("No se pudo crear el sueldo en services");
-                 await _pagoService.MarcarPagos(Id_Chofer, pagoDesde, pagoHasta,idSueldo);
+                 await _pagoService.ModificarEstado(Id_Chofer, pagoDesde, pagoHasta,idSueldo);
                 return Result<int>.Success(idSueldo);
             }
             catch (Exception ex)  
@@ -91,7 +103,7 @@ namespace Proyecto_camiones.Presentacion.Services
         public async Task<Result<SueldoDTO>> ActualizarAsync(int id, float? monto = null, int? Id_Chofer = null, DateOnly? pagadoDesde = null, DateOnly? pagadoHasta = null, DateOnly? FechaPago = null)
         {
             if (id <= 0)
-                return Result<SueldoDTO>.Failure(MensajeError.idInvalido(id));
+                return Result<SueldoDTO>.Failure(MensajeError.IdInvalido(id));
             
 
             var pagoExistente = await _sueldoRepository.ObtenerPorId(id);
@@ -123,8 +135,6 @@ namespace Proyecto_camiones.Presentacion.Services
             }
             return Result<SueldoDTO>.Failure("No se pudo realizar la actualización");
         }
-       
-
     }
  }
  

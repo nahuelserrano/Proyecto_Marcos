@@ -73,7 +73,7 @@ namespace Proyecto_camiones.Services
         {
             if (id < 0)
             {
-                return Result<Flete>.Failure(MensajeError.idInvalido(id));
+                return Result<Flete>.Failure(MensajeError.IdInvalido(id));
             }
             Flete fletero = await this.fleteRepository.ObtenerPorIdAsync(id);
             if (fletero != null)
@@ -87,7 +87,7 @@ namespace Proyecto_camiones.Services
         {
             if (id < 0)
             {
-                return Result<bool>.Failure(MensajeError.idInvalido(id));
+                return Result<bool>.Failure(MensajeError.IdInvalido(id));
             }
             List<ViajeFleteDTO> viajes = await this.viajeFleteRepository.ObtenerViajesPorIdFleteroAsync(id);
             if (viajes.Count > 0)
