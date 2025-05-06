@@ -19,13 +19,15 @@ namespace Proyecto_camiones.DTOs
         public float Km { get; set; }
         public float Tarifa { get; set; }
         public float PorcentajeChofer { get; set; } // Porcentaje por defecto del chofer
+
+        public string PatenteCamion { get; set; }
         public float Total => Tarifa * Kg;
 
         public int Camion { get; internal set; }
 
         public ViajeDTO(DateOnly fechaInicio, string lugarPartida,
             string destino, int remito, float kg, string carga, string nombreCliente,
-            string nombreChofer, float km, float tarifa, float porcentajeChofer)
+            string nombreChofer, float km, float tarifa, float porcentajeChofer, string patenteCamion)
         {
             FechaInicio = fechaInicio;
             LugarPartida = lugarPartida;
@@ -38,6 +40,7 @@ namespace Proyecto_camiones.DTOs
             NombreCliente = nombreCliente;
             Tarifa = tarifa;
             PorcentajeChofer = porcentajeChofer;
+            PatenteCamion = patenteCamion;
         }
 
         //// También arreglamos la propiedad para que sea consistente
@@ -56,6 +59,7 @@ namespace Proyecto_camiones.DTOs
             Km = 0;
             Tarifa = 1200;
             PorcentajeChofer = 0.18f; // Porcentaje por defecto del chofer
+            PatenteCamion = "default";
         }
 
         override
