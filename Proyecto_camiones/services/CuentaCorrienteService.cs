@@ -116,5 +116,20 @@ namespace Proyecto_camiones.Services
             }
             return -1;
         }
+
+        internal async Task<Result<bool>> EliminarAsync(int id)
+        {
+            Cliente cliente = await this.clienteRepository.ObtenerPorIdAsync(id);
+            if(cliente!= null)
+            {
+                bool response = await this.ccRepository.EliminarAsync(id);
+                if (response)
+                {
+                    return Result<bool>.Success(response);
+                }
+                return Result<bool>.Failure("No se pudo eliminar");
+            }
+            return Result<bool>.Failure("No existe un cliente con ese id");
+        }
     }
 }
