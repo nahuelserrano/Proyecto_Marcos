@@ -18,7 +18,7 @@ namespace Proyecto_camiones.DTOs
         public float Kg { get; set; }
         public float Tarifa { get; set; }
         public float Total => Kg * Tarifa;
-        public float? Total_comision => Total - Comision * Total / 100;
+        public float? Total_comision => Comision * Total / 100;
         public float? Comision { get; set; }
         public string? Camion { get; set; }
         public string? Fletero { get; set; }
