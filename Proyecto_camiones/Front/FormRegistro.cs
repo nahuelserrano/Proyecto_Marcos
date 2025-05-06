@@ -101,14 +101,17 @@ public class FormRegistro : Home
         cheq.Rows.Clear();
         ViajeViewModel viajeViewModel = new ViajeViewModel();
         var result = await viajeViewModel.ObtenerTodosAsync();
-
+        float total = 0;
+        float montoChofer;
         if (result.IsSuccess)
         {
             foreach (var viaje in result.Value)
             {
                 if (filtro == "Camion")
                 {
-                    cheq.Rows.Add(viaje.FechaInicio, viaje.LugarPartida, viaje.Destino, viaje.Remito, viaje.Carga, viaje.Km, viaje.Kg, viaje.Tarifa, viaje.PorcentajeChofer, viaje.NombreChofer, viaje.NombreCliente);
+                    total = viaje.Tarifa * viaje.Kg;
+                    montoChofer = viaje.PorcentajeChofer * total; 
+                    cheq.Rows.Add(viaje.FechaInicio, viaje.LugarPartida, viaje.Destino, viaje.Remito, viaje.Carga, viaje.Km, viaje.Kg, viaje.Tarifa, viaje.PorcentajeChofer, viaje.NombreChofer, viaje.NombreCliente, total, montoChofer);
 
                 }
                 else if (filtro == "sueldo")
