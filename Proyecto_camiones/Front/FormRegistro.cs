@@ -16,6 +16,7 @@ using Proyecto_camiones.Presentacion.Utils;
 using Proyecto_camiones.Models;
 using Proyecto_camiones.DTOs;
 using System.Threading.Tasks;
+using NPOI.SS.Formula.Functions;
 
 namespace Proyecto_camiones.Front;
 
@@ -66,7 +67,11 @@ public class FormRegistro : Home
 
         cheq.CellClick += EliminarFila;
         cheq.CellClick += ModificarFila;
-        cheq.CellClick += MarcarComoPagado;
+
+        if (filtro == "sueldo")
+        {
+            cheq.CellClick += MarcarComoPagado;
+        }
 
         ConfigurarDataGridView(filtro);
 
@@ -94,14 +99,21 @@ public class FormRegistro : Home
         GridChequesProperties();
         ButtonProperties(filtro, dato);
         ShowInfoTable(filtro, dato);
+        //DatosTable();
     }
+
+    //private void DatosTable()
+    //{
+
+    //    foreach(string )
+    //}
 
     private async void ShowInfoTable(string filtro, string dato)
     {
         cheq.Rows.Clear();
         ViajeViewModel viajeViewModel = new ViajeViewModel();
         var result = await viajeViewModel.ObtenerTodosAsync();
-        float total = 0;
+
         float montoChofer;
         if (result.IsSuccess)
         {
@@ -109,20 +121,18 @@ public class FormRegistro : Home
             {
                 if (filtro == "Camion")
                 {
-                    total = viaje.Tarifa * viaje.Kg;
-                    montoChofer = viaje.PorcentajeChofer * total; 
-                    cheq.Rows.Add(viaje.FechaInicio, viaje.LugarPartida, viaje.Destino, viaje.Remito, viaje.Carga, viaje.Km, viaje.Kg, viaje.Tarifa, viaje.PorcentajeChofer, viaje.NombreChofer, viaje.NombreCliente, total, montoChofer);
+                    //if(viaje.Camion == dato)
+                    //{
+
+                    //}
+                    montoChofer = viaje.PorcentajeChofer * viaje.Total;
+                    cheq.Rows.Add(viaje.FechaInicio, viaje.LugarPartida, viaje.Destino, viaje.Remito, viaje.Carga, viaje.Km, viaje.Kg, viaje.Tarifa, viaje.PorcentajeChofer, viaje.NombreChofer, viaje.NombreCliente, viaje.Total, montoChofer);
 
                 }
-                else if (filtro == "sueldo")
+                if(viaje.NombreCliente == dato)
                 {
-                    cheq.Rows.Add(viaje.FechaInicio, viaje.NombreChofer);
+                    cheq.Rows.Add(viaje.FechaInicio, viaje.LugarPartida, viaje.Destino, viaje.Remito, viaje.Carga, viaje.Km, viaje.Kg, viaje.Tarifa, viaje.PorcentajeChofer, viaje.NombreChofer, viaje.NombreCliente, viaje.Total);
                 }
-                if (viaje.NombreCliente == dato)
-                {
-                    cheq.Rows.Add(viaje.FechaInicio, viaje.LugarPartida, viaje.Destino, viaje.Remito, viaje.Carga, viaje.Km, viaje.Kg, viaje.Tarifa, viaje.NombreChofer);
-                }
-
             }
         }
         else
@@ -149,10 +159,8 @@ public class FormRegistro : Home
                 cheq.Columns.Add(campos, campos);
             }
         }
-
         panelGrid.Controls.Add(cheq);
         this.Controls.Add(panelGrid);
-
     }
 
     public void addColumn(string s)
@@ -406,17 +414,6 @@ public class FormRegistro : Home
 
             cheq.Columns.Add(btnModificar);
         }
-
-        if (cheq.Columns["Pagado"] == null)
-        {
-            DataGridViewButtonColumn btnPagado = new DataGridViewButtonColumn();
-            btnPagado.Name = "Pagado";
-            btnPagado.HeaderText = "Pagado";  // Puedes dejarlo vacío si prefieres
-            btnPagado.Text = "✏️"; // Ícono de modificar
-            btnPagado.UseColumnTextForButtonValue = true; // Hace que todas las celdas muestren "M"
-            btnPagado.Width = 40; // Ajustar tamaño
-            cheq.Columns.Add(btnPagado);
-        }
     }
 
     private async Task cargaClickEvent(object sender, EventArgs e, string filtro, string dato)
@@ -426,7 +423,6 @@ public class FormRegistro : Home
 
         foreach (Control control in formFLTextBox.Controls)
         {
-
             if (control is Panel panel)
             {
                 foreach (Control child in panel.Controls)
@@ -466,41 +462,38 @@ public class FormRegistro : Home
                                 }
                             }
                         }
-
-                        //LLAMAR EL AGREGAR DEL BACKEND
                         datos.Add(textBox.Text); // Agregar el texto de cada TextBox
                     }
                 }
             }
         }
 
-
-        ViajeViewModel viajeViewModel = new ViajeViewModel();
-        var resultado = await viajeViewModel.CrearAsync(DateOnly.Parse(datos[0]), datos[1], datos[2], int.Parse(datos[3]), datos[4], float.Parse(datos[6]), datos[10], dato, float.Parse(datos[5]), float.Parse(datos[7]), datos[9], float.Parse(datos[8]));
-
-        if (resultado.IsSuccess)
+        if (filtro == "Camion")
         {
+            ViajeViewModel viajeViewModel = new ViajeViewModel();
+            var resultado = await viajeViewModel.CrearAsync(DateOnly.Parse(datos[0]), datos[1], datos[2], int.Parse(datos[3]), datos[4], float.Parse(datos[6]), datos[10], dato, float.Parse(datos[5]), float.Parse(datos[7]), datos[9], float.Parse(datos[8]));
 
-            ShowInfoTable(filtro, dato);
-
-
-            foreach (Control control in formFLTextBox.Controls)
+            if (resultado.IsSuccess)
             {
-                if (control is Panel panel)
+                ShowInfoTable(filtro, dato);
+            }
+        }
+
+        foreach (Control control in formFLTextBox.Controls)
+        {
+            if (control is Panel panel)
+            {
+                foreach (Control child in panel.Controls)
                 {
-                    foreach (Control child in panel.Controls)
+                    if (child is TextBox textBox)
                     {
-                        if (child is TextBox textBox)
-                        {
-                            string placeholderText = textBox.Text;
-                            textBox.Clear();
-                            textBox.Text = placeholderText; // Restaurar el placeholder??????????
-                            textBox.ForeColor = Color.Black;
-                        }
+                        string placeholderText = textBox.Text;
+                        textBox.Clear();
+                        textBox.Text = placeholderText; // Restaurar el placeholder??????????
+                        textBox.ForeColor = Color.Black;
                     }
                 }
             }
-            //}
         }
     }
 
@@ -519,6 +512,7 @@ public class FormRegistro : Home
     }
     private void ModificarFila(object sender, DataGridViewCellEventArgs e)
     {
+        ViajeViewModel vvm = new ViajeViewModel();
         // Verificar si la celda clickeada pertenece a la columna "Modificar"
         if (e.ColumnIndex == cheq.Columns["Modificar"].Index && e.RowIndex >= 0)
         {
@@ -526,7 +520,7 @@ public class FormRegistro : Home
             DialogResult resultado = MessageBox.Show("¿Desea modificar esta fila?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (resultado == DialogResult.Yes)
             {
-                //funcionModificar
+                //Modificar
             }
 
         }
