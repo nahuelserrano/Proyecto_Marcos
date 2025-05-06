@@ -147,10 +147,17 @@ namespace Proyecto_camiones.Presentacion
             //}
 
             //ELIMINAR 
-            //var result = await ccvm.EliminarAsync(1);
-            //Console.WriteLine(result.Value);
+            //var result = await ccvm.EliminarAsync(2);
+            //if (result.IsSuccess)
+            //{
+            //    Console.WriteLine(result.Value);
+            //}
+            //else
+            //{
+            //    Console.WriteLine(result.Error);
+            //}
 
-            ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
+                ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
 
             //INSERTAR
 
@@ -190,18 +197,18 @@ namespace Proyecto_camiones.Presentacion
 
             //OBTENER VIAJES POR FLETERO DE UN CLIENTE
 
-            var viajes = await vfvm.ObtenerViajesDeUnClienteAsync(3);
-            if (viajes.IsSuccess)
-            {
-                foreach (var viaje in viajes.Value)
-                {
-                    Console.WriteLine(viaje.ToString());
-                }
-            }
-            else
-            {
-                Console.WriteLine(viajes.Error);
-            }
+            //var viajes = await vfvm.ObtenerViajesDeUnClienteAsync(3);
+            //if (viajes.IsSuccess)
+            //{
+            //    foreach (var viaje in viajes.Value)
+            //    {
+            //        Console.WriteLine(viaje.ToString());
+            //    }
+            //}
+            //else
+            //{
+            //    Console.WriteLine(viajes.Error);
+            //}
 
             //ProbarInsertarViaje("Tandil", "Azul");
 
