@@ -21,7 +21,7 @@ namespace Proyecto_camiones.Tests
                 int id = await ProbarInsertarViaje(fecha, "Tandil", "Buenos Aires", 123, 1000.5f, "Trigo", "Cliente1", "HIJ429", 350.5f, 5000.0f, "Chofer Test", 0.18f);
                 await ProbarObtenerViajePorId(id);
                 await ProbarObtenerTodosViajes();
-                await ProbarObtenerViajesPorCamion(3);
+                await ProbarObtenerViajesPorCamion("HIJ429");
                 await ProbarObtenerViajesPorCliente(3);
                 await ProbarObtenerViajesPorChofer("Pepito");
                 await ProbarActualizarViaje(id, destino: "Las Vegas");
@@ -132,17 +132,17 @@ namespace Proyecto_camiones.Tests
             }
         }
 
-        public static async Task ProbarObtenerViajesPorCamion(int camionId)
+        public static async Task ProbarObtenerViajesPorCamion(string patente)
         {
-            Console.WriteLine($"\n=== OBTENIENDO VIAJES POR CAMIÓN ID: {camionId} ===");
+            Console.WriteLine($"\n=== OBTENIENDO VIAJES POR CAMIÓN ID: {patente} ===");
             ViajeViewModel vvm = new ViajeViewModel();
 
             try
             {
-                var resultado = await vvm.ObtenerPorCamionAsync(camionId);
+                var resultado = await vvm.ObtenerPorCamionAsync(patente);
                 if (resultado.IsSuccess)
                 {
-                    Console.WriteLine($"[ÉXITO] Viajes encontrados para el camión {camionId}: {resultado.Value.Count}");
+                    Console.WriteLine($"[ÉXITO] Viajes encontrados para el camión {patente}: {resultado.Value.Count}");
                     foreach (var viaje in resultado.Value)
                     {
                         Console.WriteLine($"  - {viaje.FechaInicio}: {viaje.LugarPartida} → {viaje.Destino} (${viaje.Total:F2})");

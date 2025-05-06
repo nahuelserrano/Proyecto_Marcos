@@ -43,6 +43,23 @@ namespace Proyecto_camiones.DTOs
             PatenteCamion = patenteCamion;
         }
 
+        public ViajeDTO(DateOnly fechaInicio, string lugarPartida, string destino, int remito, float kg, string carga, string nombreCliente, string nombreChofer, float km, float tarifa, float porcentajeChofer, string patenteCamion, int camion) : this(fechaInicio, lugarPartida, destino, remito, kg, carga, nombreCliente, nombreChofer, km, tarifa, porcentajeChofer)
+        {
+            FechaInicio = fechaInicio;
+            LugarPartida = lugarPartida;
+            Destino = destino;
+            Carga = carga;
+            Kg = kg;
+            Km = km;
+            Remito = remito;
+            NombreChofer = nombreChofer;
+            NombreCliente = nombreCliente;
+            Tarifa = tarifa;
+            PorcentajeChofer = porcentajeChofer;
+        }
+
+
+
         //// También arreglamos la propiedad para que sea consistente
 
         public ViajeDTO()
@@ -60,6 +77,21 @@ namespace Proyecto_camiones.DTOs
             Tarifa = 1200;
             PorcentajeChofer = 0.18f; // Porcentaje por defecto del chofer
             PatenteCamion = "default";
+        }
+
+        public ViajeDTO(DateOnly fechaInicio, string lugarPartida, string destino, int remito, float kg, string carga, string nombreCliente, string nombreChofer, float km, float tarifa, float porcentajeChofer)
+        {
+            FechaInicio = fechaInicio;
+            LugarPartida = lugarPartida;
+            Destino = destino;
+            Remito = remito;
+            Kg = kg;
+            Carga = carga;
+            NombreCliente = nombreCliente;
+            NombreChofer = nombreChofer;
+            Km = km;
+            Tarifa = tarifa;
+            PorcentajeChofer = porcentajeChofer;
         }
 
         override

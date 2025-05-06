@@ -112,7 +112,7 @@ public class FormRegistro : Home
     {
         cheq.Rows.Clear();
         ViajeViewModel viajeViewModel = new ViajeViewModel();
-        var result = await viajeViewModel.ObtenerTodosAsync();
+        var result = await viajeViewModel.ObtenerPorCamionAsync(dato);
 
         float montoChofer;
         if (result.IsSuccess)
@@ -121,10 +121,6 @@ public class FormRegistro : Home
             {
                 if (filtro == "Camion")
                 {
-                    //if(viaje.Camion == dato)
-                    //{
-
-                    //}
                     montoChofer = viaje.PorcentajeChofer * viaje.Total;
                     cheq.Rows.Add(viaje.FechaInicio, viaje.LugarPartida, viaje.Destino, viaje.Remito, viaje.Carga, viaje.Km, viaje.Kg, viaje.Tarifa, viaje.PorcentajeChofer, viaje.NombreChofer, viaje.NombreCliente, viaje.Total, montoChofer);
 
