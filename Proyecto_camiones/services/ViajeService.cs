@@ -237,24 +237,24 @@ namespace Proyecto_camiones.Presentacion.Services
             }
         }
 
-        public async Task<Result<List<ViajeDTO>>> ObtenerPorCamionAsync(int idCamion)
+        public async Task<Result<List<ViajeDTO>>> ObtenerPorCamionAsync(string patente)
         {
-            if (idCamion <= 0)
-                return Result<List<ViajeDTO>>.Failure(MensajeError.IdInvalido(idCamion));
-
             try
             {
                 // Verificar que el camión existe usando el servicio
                 if (_camionService != null)
                 {
-                    var camionResult = await _camionService.ObtenerPorIdAsync(idCamion);
-                    if (camionResult == null)
-                        return Result<List<ViajeDTO>>.Failure($"El camión especificado no existe: {camionResult}");
+                    var camionResult = await _camionService.ObtenerPorPatenteAsync(patente);
+                    if (camionResult.IsSuccess)
+                    {
+                        int idCamion = camionResult.Value.Id;
+                        var viajes = await _viajeRepository.ObtenerPorCamionAsync(idCamion, patente);
+
+                        return Result<List<ViajeDTO>>.Success(viajes);
+                    }
+                    return Result<List<ViajeDTO>>.Failure($"El camión especificado no existe: {camionResult}");
                 }
-
-                var viajes = await _viajeRepository.ObtenerPorCamionAsync(idCamion);
-
-                return Result<List<ViajeDTO>>.Success(viajes);
+                return Result<List<ViajeDTO>>.Failure("Error interno del service de camion");
             }
             catch (Exception ex)
             {

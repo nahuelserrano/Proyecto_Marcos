@@ -319,7 +319,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         // MÉTODOS ESPECÍFICOS
 
         // Obtener viajes por camión
-        public async Task<List<ViajeDTO>> ObtenerPorCamionAsync(int camionId)
+        public async Task<List<ViajeDTO>> ObtenerPorCamionAsync(int camionId, string patente)
         {
             try
             {
@@ -339,6 +339,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                         NombreChofer = v.NombreChofer,
                         Km = v.Km,
                         Tarifa = v.Tarifa,
+                        PatenteCamion = patente
                     }).ToListAsync();
 
                 Console.WriteLine($"Se encontraron {viajes.Count} viajes para el camión con ID {camionId}.");

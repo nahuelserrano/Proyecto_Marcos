@@ -19,11 +19,31 @@ namespace Proyecto_camiones.DTOs
         public float Km { get; set; }
         public float Tarifa { get; set; }
         public float PorcentajeChofer { get; set; } // Porcentaje por defecto del chofer
-        public float PrecioViaje => Tarifa * Kg  * 1000; 
+
+        public string PatenteCamion { get; set; }
+        public float Total => Tarifa * Kg;
+
+        public int Camion { get; internal set; }
 
         public ViajeDTO(DateOnly fechaInicio, string lugarPartida,
             string destino, int remito, float kg, string carga, string nombreCliente,
-            string nombreChofer, float km, float tarifa, float porcentajeChofer)
+            string nombreChofer, float km, float tarifa, float porcentajeChofer, string patenteCamion)
+        {
+            FechaInicio = fechaInicio;
+            LugarPartida = lugarPartida;
+            Destino = destino;
+            Carga = carga;
+            Kg = kg;
+            Km = km;
+            Remito = remito;
+            NombreChofer = nombreChofer;
+            NombreCliente = nombreCliente;
+            Tarifa = tarifa;
+            PorcentajeChofer = porcentajeChofer;
+            PatenteCamion = patenteCamion;
+        }
+
+        public ViajeDTO(DateOnly fechaInicio, string lugarPartida, string destino, int remito, float kg, string carga, string nombreCliente, string nombreChofer, float km, float tarifa, float porcentajeChofer, string patenteCamion, int camion) : this(fechaInicio, lugarPartida, destino, remito, kg, carga, nombreCliente, nombreChofer, km, tarifa, porcentajeChofer)
         {
             FechaInicio = fechaInicio;
             LugarPartida = lugarPartida;
@@ -38,7 +58,9 @@ namespace Proyecto_camiones.DTOs
             PorcentajeChofer = porcentajeChofer;
         }
 
-        // También arreglamos la propiedad para que sea consistente
+
+
+        //// También arreglamos la propiedad para que sea consistente
 
         public ViajeDTO()
         {
@@ -54,12 +76,28 @@ namespace Proyecto_camiones.DTOs
             Km = 0;
             Tarifa = 1200;
             PorcentajeChofer = 0.18f; // Porcentaje por defecto del chofer
+            PatenteCamion = "default";
+        }
+
+        public ViajeDTO(DateOnly fechaInicio, string lugarPartida, string destino, int remito, float kg, string carga, string nombreCliente, string nombreChofer, float km, float tarifa, float porcentajeChofer)
+        {
+            FechaInicio = fechaInicio;
+            LugarPartida = lugarPartida;
+            Destino = destino;
+            Remito = remito;
+            Kg = kg;
+            Carga = carga;
+            NombreCliente = nombreCliente;
+            NombreChofer = nombreChofer;
+            Km = km;
+            Tarifa = tarifa;
+            PorcentajeChofer = porcentajeChofer;
         }
 
         override
             public string ToString()
         {
-            return "${ " + this.LugarPartida + "}";
+            return $"Total: {Total}";
         }
     }
 }
