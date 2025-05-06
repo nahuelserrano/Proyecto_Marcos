@@ -279,7 +279,7 @@ namespace Proyecto_camiones.Presentacion.Services
                 if (clienteResult == null)
                     return Result<List<ViajeMixtoDTO>>.Failure($"El cliente especificado no existe: {clienteResult}");
                 
-                var viajes = await _viajeRepository.ObtenerPorClienteAsync(idCliente);
+                var viajes = await _viajeRepository.ObtenerViajeMixtoPorClienteAsync(idCliente);
                 return Result<List<ViajeMixtoDTO>>.Success(viajes);
             }
             catch (Exception ex)

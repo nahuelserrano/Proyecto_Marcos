@@ -8,6 +8,7 @@ using Proyecto_camiones.Presentacion.Utils;
 using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Repositories;
 using Proyecto_camiones.ViewModels;
+using System.Windows.Forms;
 
 
 namespace Proyecto_camiones.Presentacion.Services
@@ -54,7 +55,7 @@ namespace Proyecto_camiones.Presentacion.Services
             if(cliente != null)
             {
                 List<ViajeMixtoDTO> vfletes = await this._viajeFleteRepository.ObtenerViajesDeUnClienteAsync(clienteId);
-                List<ViajeMixtoDTO> viajes = await this._viajeRepository.ObtenerPorClienteAsync(clienteId);
+                List<ViajeMixtoDTO> viajes = await this._viajeRepository.ObtenerViajeMixtoPorClienteAsync(clienteId);
                 List<CuentaCorrienteDTO> cuentas = await this._cuentaCorrienteRepository.ObtenerCuentasPorIdClienteAsync(clienteId);
                 if (vfletes == null || viajes == null || cuentas == null) return Result<bool>.Failure("Hubo un error al validar la eliminación del cliente");
                 if(vfletes.Count>0 || viajes.Count > 0 || cuentas.Count>0)
@@ -99,18 +100,22 @@ namespace Proyecto_camiones.Presentacion.Services
         
         internal async Task<Result<List<ViajeMixtoDTO>>> ObtenerViajesDeUnClienteAsync(string cliente)
         {
-            Cliente? c = _clienteRepository.ObtenerPorNombreAsync(cliente).Result;
-            if(c != null)
+            MessageBox.Show("ObtenerViajesDeUnClienteAsync");
+            Cliente? c = await _clienteRepository.ObtenerPorNombreAsync(cliente);
+            MessageBox.Show("Cliente: " + c?.Nombre);
+            if (c != null)
             {
                 List<ViajeMixtoDTO> viajesFlete = await this._viajeFleteRepository.ObtenerViajesDeUnClienteAsync(c.Id);
-                List<ViajeMixtoDTO> viajes = await this._viajeRepository.ObtenerPorClienteAsync(c.Id);
+                MessageBox.Show("sobrevivimos al viajeFlete");
+                List<ViajeMixtoDTO> viajes = await this._viajeRepository.ObtenerViajeMixtoPorClienteAsync(c.Id);
+                MessageBox.Show("sobrevivimos al viaje");
 
-                if(viajesFlete != null && viajes != null)
+                if (viajesFlete != null && viajes != null)
                 {
                     viajesFlete.AddRange(viajes);
                     return Result<List<ViajeMixtoDTO>>.Success(viajesFlete);
                 }
-
+                MessageBox.Show("No se pudieron obtener los viajes");
                 return Result<List<ViajeMixtoDTO>>.Failure("No se pudieron obtener los viajes");
             }
             return Result<List<ViajeMixtoDTO>>.Failure("No existe un cliente con ese nombre");
@@ -141,5 +146,4 @@ namespace Proyecto_camiones.Presentacion.Services
             return Result<Cliente>.Failure("No existe un cliente con ese nombre");
         }
     }
-
 }

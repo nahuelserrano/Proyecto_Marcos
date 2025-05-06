@@ -17,6 +17,7 @@ using Proyecto_camiones.Models;
 using Proyecto_camiones.DTOs;
 using System.Threading.Tasks;
 using NPOI.SS.Formula.Functions;
+using Proyecto_camiones.Presentacion.Models;
 
 namespace Proyecto_camiones.Front;
 
@@ -56,7 +57,7 @@ public class FormRegistro : Home
         InitializeUI(camposForm, cant, filtro, camposFaltantesTablas, dato);
 
         //ShowForm
-        CargarFormularioCheque(camposForm, cant, filtro);
+        CargarFormulario(camposForm, cant, filtro);
 
         //Hovers
         btnCargar.MouseEnter += (s, e) => HoverEffect(s, e, true);
@@ -80,8 +81,6 @@ public class FormRegistro : Home
         AddButtonCuentaCorriente(filtro, dato);
         AddButtonSueldoMensual(filtro, dato);
 
-        //PositionGrid();
-
         this.TopLevel = false;
         this.FormBorderStyle = FormBorderStyle.None;
         this.Dock = DockStyle.Fill; // (opcional, para ocupar todo el espacio disponible)
@@ -99,41 +98,48 @@ public class FormRegistro : Home
         GridChequesProperties();
         ButtonProperties(filtro, dato);
         ShowInfoTable(filtro, dato);
-        //DatosTable();
     }
-
-    //private void DatosTable()
-    //{
-
-    //    foreach(string )
-    //}
 
     private async void ShowInfoTable(string filtro, string dato)
     {
         cheq.Rows.Clear();
-        ViajeViewModel viajeViewModel = new ViajeViewModel();
-        var result = await viajeViewModel.ObtenerPorCamionAsync(dato);
 
-        float montoChofer;
-        if (result.IsSuccess)
+        if (filtro == "Camion")
         {
-            foreach (var viaje in result.Value)
+            ViajeViewModel viajeViewModel = new ViajeViewModel();
+            var result = await viajeViewModel.ObtenerPorCamionAsync(dato);
+            float montoChofer;
+            if (result.IsSuccess)
             {
-                if (filtro == "Camion")
+                foreach (var viaje in result.Value)
                 {
+
                     montoChofer = viaje.PorcentajeChofer * viaje.Total;
                     cheq.Rows.Add(viaje.FechaInicio, viaje.LugarPartida, viaje.Destino, viaje.Remito, viaje.Carga, viaje.Km, viaje.Kg, viaje.Tarifa, viaje.PorcentajeChofer, viaje.NombreChofer, viaje.NombreCliente, viaje.Total, montoChofer);
 
                 }
-                if(viaje.NombreCliente == dato)
-                {
-                    cheq.Rows.Add(viaje.FechaInicio, viaje.LugarPartida, viaje.Destino, viaje.Remito, viaje.Carga, viaje.Km, viaje.Kg, viaje.Tarifa, viaje.PorcentajeChofer, viaje.NombreChofer, viaje.NombreCliente, viaje.Total);
-                }
+            }
+            else
+            {
+                MessageBox.Show("Error al cargar el viaje");
             }
         }
-        else
+        else if(filtro == "Cliente")
         {
-            MessageBox.Show("Error al cargar el viaje");
+            ClienteViewModel cvm = new ClienteViewModel();
+            var resultClient = await cvm.ObtenerViajesDeUnCliente(dato);
+            if (resultClient.IsSuccess)
+            {
+                foreach (var cliente in resultClient.Value)
+                {
+                    cheq.Rows.Add(cliente.Fecha_salida, cliente.Origen, cliente.Destino, cliente.Remito, cliente.Carga, cliente.Km, cliente.Kg, cliente.Tarifa, cliente.Nombre_chofer, cliente.Camion, cliente.Fletero, cliente.Total);
+                }
+            }
+            else
+            {
+                MessageBox.Show(resultClient.Error);
+                MessageBox.Show("Error al cargar cliente");
+            }
         }
     }
 
@@ -147,7 +153,6 @@ public class FormRegistro : Home
                 cheq.Columns.Add(campos, campos);
             }
         }
-
         if (camposFaltantesTabla != null)
         {
             foreach (string campos in camposFaltantesTabla)
@@ -158,11 +163,9 @@ public class FormRegistro : Home
         panelGrid.Controls.Add(cheq);
         this.Controls.Add(panelGrid);
     }
-
     public void addColumn(string s)
     {
         cheq.Columns.Add(s, s);
-
     }
 
 
@@ -175,19 +178,15 @@ public class FormRegistro : Home
             button.ForeColor = isHover ? Color.FromArgb(48, 48, 48) : Color.Black;
         }
     }
-
-
-    private void CargarFormularioCheque(List<string> camposForm, int cant, string filtro)
+    private void CargarFormulario(List<string> camposForm, int cant, string filtro)
     {
         this.campos.Clear();
         foreach (string i in camposForm)
         {
             this.campos.Add(i);
         }
-
         InitializeFormProperties(cant, campos, filtro);
     }
-
     private void InitializeFormProperties(int cant, List<string> campos, string filtro)
     {
         FormProperties(cant);
@@ -195,7 +194,6 @@ public class FormRegistro : Home
         TextoBoxAndLabelProperties(cant, campos);
         ButtonsPropertiesForm(filtro);
         AddControls();
-
     }
 
     //FormProperties
@@ -214,16 +212,11 @@ public class FormRegistro : Home
         {
             formPanel.AutoScroll = false;
             formPanel.Size = new Size(110 * cant, 80);
-
         }
-
-
-
         this.Resize += (s, e) =>
         {
             formPanel.Location = new Point((this.Width - formPanel.Width) / 2 + 25, 100);
         };
-
         formPanel.BackColor = System.Drawing.Color.FromArgb(200, Color.Black);
 
     }

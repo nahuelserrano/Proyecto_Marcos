@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Proyecto_camiones.Repositories
 {
@@ -166,6 +167,8 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
+                MessageBox.Show("ObtenerViajeMixtoPorClienteAsync en VIAJE FLETERO  ");
+
                 var viajes = await (from v in this._context.ViajesFlete
                                     join f in this._context.Fletes on v.idFlete equals f.Id
                                     where v.idCliente == id

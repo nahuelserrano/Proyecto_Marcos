@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Proyecto_camiones.ViewModels
 {
@@ -18,6 +19,7 @@ namespace Proyecto_camiones.ViewModels
 
         public ClienteViewModel()
         {
+            MessageBox.Show("ClienteViewModel");
             var dbContext = General.obtenerInstancia();
             var clienteRepo = new ClienteRepository(dbContext);
             this._clienteService = new ClienteService(clienteRepo);
@@ -69,16 +71,16 @@ namespace Proyecto_camiones.ViewModels
             return Result<bool>.Failure("No se pudo establecer la conexión");
         }
 
-        /*
         public async Task<Result<List<ViajeMixtoDTO>>> ObtenerViajesDeUnCliente(string cliente)
         {
+            MessageBox.Show("ObtenerViajesDeUnCliente");
             if (await this.testearConexion())
             {
-                return await this.clienteService.ObtenerViajesDeUnCliente(cliente.ToUpper());
+                MessageBox.Show("Testear conexión");
+                return await this._clienteService.ObtenerViajesDeUnClienteAsync(cliente.ToUpper());
             }
             return Result<List<ViajeMixtoDTO>>.Failure("No se pudo establecer la conexión");
         }
-        */
 
         public async Task<Result<List<Cliente>>> ObtenerTodosAsync()
         {

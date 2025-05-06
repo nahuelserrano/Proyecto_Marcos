@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Microsoft.EntityFrameworkCore;
 using NPOI.POIFS.Properties;
 using Org.BouncyCastle.Bcpg.OpenPgp;
@@ -179,14 +180,19 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
         public async Task<Cliente?> ObtenerPorNombreAsync(string nombre_cliente)
         {
+            MessageBox.Show("ObtenerPorNombreAsync");
             try
             {
-                Cliente cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Nombre == nombre_cliente);
+                MessageBox.Show("Try de ObtenerPorNombreAsync");
+                Cliente? cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Nombre == nombre_cliente);
+                MessageBox.Show("se sobrevivió!!!!");
                 return cliente;
 
             }
             catch (Exception e)
             {
+                MessageBox.Show(e.Message);
+                MessageBox.Show(e.InnerException.ToString());
                 Console.WriteLine(e.Message);
                 return null;
             }
