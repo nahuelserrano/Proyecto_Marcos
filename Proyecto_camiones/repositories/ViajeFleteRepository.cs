@@ -4,6 +4,7 @@ using Proyecto_camiones.Models;
 using Proyecto_camiones.Presentacion;
 using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.ViewModels;
+using SixLabors.ImageSharp.Formats.Jpeg;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,6 +46,75 @@ namespace Proyecto_camiones.Repositories
                 Console.WriteLine($"Error al intentar conectar: {ex.Message}");
                 Console.WriteLine(ex.InnerException);
                 return false;
+            }
+        }
+
+        internal async Task<ViajeFlete> ActualizarAsync(int id, string? origen, string? destino, float? remito, string? carga, float? km, float? kg, float? tarifa, int? factura, int? clienteId, string? nombre_chofer, float? comision, DateOnly? fecha_salida)
+        {
+            try
+            {
+                var viaje = await this._context.ViajesFlete.FindAsync(id);
+                if(viaje == null)
+                {
+                    return null;
+                }
+                if(origen != null)
+                {
+                    viaje.origen = origen;
+                }
+                if(destino != null)
+                {
+                    viaje.destino = destino;
+                }
+                if(remito != null)
+                {
+                    viaje.remito = (float)remito;
+                }
+                if(carga != null)
+                {
+                    viaje.carga = carga;
+                }
+                if(km != null)
+                {
+                    viaje.km = (float)km;
+                }
+                if (kg != null)
+                {
+                    viaje.kg = (float)kg;
+                }
+                if(tarifa != null)
+                {
+                    viaje.tarifa = (float)tarifa;
+                }
+                if(factura != null)
+                {
+                    viaje.factura = (int)factura;
+                }
+                if(clienteId != null)
+                {
+                    viaje.idCliente = (int)clienteId;
+                }
+                if(nombre_chofer != null)
+                {
+                    viaje.nombre_chofer = nombre_chofer;
+                }
+                if(comision != null)
+                {
+                    viaje.comision = (float)comision;
+                }
+                if(fecha_salida != null)
+                {
+                    viaje.fecha_salida = (DateOnly)fecha_salida;
+                }
+
+                await _context.SaveChangesAsync();
+                return viaje;
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.InnerException);
+                return null;
             }
         }
 
