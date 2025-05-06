@@ -50,13 +50,13 @@ namespace Proyecto_camiones.ViewModels
             return Result<List<ViajeFleteDTO>>.Failure("No se pudo acceder a la base de datos");
         }
 
-        public async Task<Result<string>> EliminarAsync(int id)
+        public async Task<Result<bool>> EliminarAsync(int id)
         {
             if (this.testearConexion().Result)
             {
                 return await this.fleteService.EliminarAsync(id);
             }
-            return Result<string>.Failure("No se pudo acceder a la base de datos");
+            return Result<bool>.Failure("No se pudo acceder a la base de datos");
         }
 
         internal async Task<Result<List<ViajeMixtoDTO>>> ObtenerViajesDeUnClienteAsync(int id)

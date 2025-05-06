@@ -31,14 +31,14 @@ namespace Proyecto_camiones.Services
             return result;
         }
 
-        internal async Task<Result<string>> EliminarAsync(int id)
+        internal async Task<Result<bool>> EliminarAsync(int id)
         {
             bool result = await this.ViajeFleteRepository.EliminarAsync(id);
             if (result)
             {
-                return Result<string>.Success("El viaje se ha eliminado correctamente");
+                return Result<bool>.Success(result);
             }
-            return Result<string>.Failure("El viaje no pudo ser eliminado, error interno de la base de datos");
+            return Result<bool>.Failure("El viaje no pudo ser eliminado, error interno de la base de datos");
         }
 
         internal async Task<Result<int>> InsertarAsync(string? origen, string destino, float remito, string carga, float km, float kg, float tarifa, int factura, string nombre_cliente, string nombre_fletero, string nombre_chofer, float comision, DateOnly fecha_salida)
