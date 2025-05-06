@@ -207,5 +207,31 @@ namespace Proyecto_camiones.Repositories
                 return null;
             }
         }
+
+        internal async Task<bool> EliminarAsync(int id)
+        {
+            try
+            {
+                var cuenta = await _context.Cuentas.FindAsync(id);
+                Console.WriteLine("se encontró la cuenta corriente");
+
+                if (cuenta == null)
+                { 
+                    return false;
+                }
+
+                _context.Cuentas.Remove(cuenta);
+
+                await _context.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.InnerException);
+                return false;
+            }
+        }
     }
 }

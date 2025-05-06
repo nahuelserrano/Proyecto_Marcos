@@ -50,13 +50,31 @@ namespace Proyecto_camiones.ViewModels
             return Result<List<ViajeFleteDTO>>.Failure("No se pudo acceder a la base de datos");
         }
 
-        public async Task<Result<string>> EliminarAsync(int id)
+        public async Task<Result<bool>> EliminarAsync(int id)
         {
             if (this.testearConexion().Result)
             {
                 return await this.fleteService.EliminarAsync(id);
             }
-            return Result<string>.Failure("No se pudo acceder a la base de datos");
+            return Result<bool>.Failure("No se pudo acceder a la base de datos");
+        }
+
+        internal async Task<Result<List<ViajeMixtoDTO>>> ObtenerViajesDeUnClienteAsync(int id)
+        {
+            if (this.testearConexion().Result)
+            {
+                return await this.fleteService.ObtenerViajesDeUnClienteAsync(id);
+            }
+            return Result<List<ViajeMixtoDTO>>.Failure("No se pudo acceder a la base de datos");
+        }
+
+        internal async Task<Result<ViajeFlete>> ActualizarAsync(int id, string? origen, string? destino, float? remito, string? carga, float? km, float? kg, float? tarifa, int? factura, string? cliente, string? nombre_chofer, float? comision, DateOnly? fecha_salida)
+        {
+            if (this.testearConexion().Result)
+            {
+                return await this.fleteService.ActualizarAsync(id, origen, destino, remito, carga, km, kg, tarifa, factura, cliente, nombre_chofer, comision, fecha_salida);
+            }
+            return Result<ViajeFlete>.Failure("No se pudo acceder a la base de datos");
         }
     }
 }
