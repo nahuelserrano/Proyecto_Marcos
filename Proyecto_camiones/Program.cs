@@ -34,7 +34,7 @@ namespace Proyecto_camiones
         static async Task Main(string[] args)
 
         {
-            
+
             // Llamada a Windows Forms para inicializar la aplicación
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -196,11 +196,26 @@ namespace Proyecto_camiones
             //    Console.WriteLine(response.Error);
             //}
 
+            //OBTENER VIAJES POR FLETERO DE UN CLIENTE
+
+            var viajes = await vfvm.ObtenerViajesDeUnClienteAsync(3);
+            if (viajes.IsSuccess)
+            {
+                foreach(var viaje in viajes.Value)
+                {
+                    Console.WriteLine(viaje.ToString());
+                }
+            }
+            else
+            {
+                Console.WriteLine(viajes.Error);
+            }
+
                 //ProbarInsertarViaje("Tandil", "Azul");
 
-            //ProbarInsertarChofer("Juan Alpaca");
+                //ProbarInsertarChofer("Juan Alpaca");
 
-            FleteViewModel fvm = new FleteViewModel();
+                FleteViewModel fvm = new FleteViewModel();
 
             //INSERTAR FLETERO
             //var idFletero = await fvm.InsertarAsync("Carlos");

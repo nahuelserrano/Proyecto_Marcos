@@ -57,6 +57,21 @@ namespace Proyecto_camiones.Services
             return Result<int>.Failure("No se puede insertar el viaje, el cliente o el fletero con ese nombre no existe");
         }
 
+        internal async Task<Result<List<ViajeMixtoDTO>>> ObtenerViajesDeUnClienteAsync(int id)
+        {
+            Cliente? cliente = await this.clienteRepository.ObtenerPorIdAsync(id);
+            if(cliente!= null)
+            {
+                List<ViajeMixtoDTO> viajes = await this.ViajeFleteRepository.ObtenerViajesDeUnClienteAsync(id);
+                if(viajes != null)
+                {
+                    return Result<List<ViajeMixtoDTO>>.Success(viajes);
+                }
+                return Result<List<ViajeMixtoDTO>>.Failure("Problema en el repo al obtener los viajes");
+            }
+            return Result<List<ViajeMixtoDTO>>.Failure("No existe el cliente con ese id");
+        }
+
         internal async Task<Result<List<ViajeFleteDTO>>> ObtenerViajesDeUnFleteroAsync(string fletero)
         {
             Flete flete = await this.fleteRepository.ObtenerPorNombreAsync(fletero);
