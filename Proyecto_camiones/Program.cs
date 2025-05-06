@@ -154,11 +154,18 @@ namespace Proyecto_camiones
             //    Console.WriteLine(cuentasFleteCarlos.Error);
             //}
 
-            //ELIMINAR 
-            //var result = await ccvm.EliminarAsync(1);
-            //Console.WriteLine(result.Value);
+            //ELIMINAR CUENTA CORRIENTE
+            var result = await ccvm.EliminarAsync(1);
+            if (result.IsSuccess)
+            {
+                Console.WriteLine(result.Value);
+            }
+            else
+            {
+                Console.WriteLine(result.Error);
+            }
 
-            ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
+                ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
 
             //INSERTAR
 

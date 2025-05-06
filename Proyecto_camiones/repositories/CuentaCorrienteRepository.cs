@@ -216,7 +216,9 @@ namespace Proyecto_camiones.Repositories
                 Console.WriteLine("se encontró la cuenta corriente");
 
                 if (cuenta == null)
+                { 
                     return false;
+                }
 
                 _context.Cuentas.Remove(cuenta);
 
