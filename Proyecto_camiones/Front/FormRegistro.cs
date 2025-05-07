@@ -106,9 +106,10 @@ public class FormRegistro : Home
 
         if (filtro == "Camion")
         {
-            ViajeViewModel viajeViewModel = new ViajeViewModel();
-            var result = await viajeViewModel.ObtenerPorCamionAsync(dato);
+            ViajeViewModel vvm = new ViajeViewModel();
+            var result = await vvm.ObtenerPorCamionAsync(dato);
             float montoChofer;
+
             if (result.IsSuccess)
             {
                 foreach (var viaje in result.Value)
@@ -119,15 +120,17 @@ public class FormRegistro : Home
 
                 }
             }
+
             else
             {
                 MessageBox.Show("Error al cargar el viaje");
             }
         }
-        else if(filtro == "Cliente")
+        else if (filtro == "Cliente")
         {
             ClienteViewModel cvm = new ClienteViewModel();
             var resultClient = await cvm.ObtenerViajesDeUnCliente(dato);
+
             if (resultClient.IsSuccess)
             {
                 foreach (var cliente in resultClient.Value)
@@ -135,10 +138,30 @@ public class FormRegistro : Home
                     cheq.Rows.Add(cliente.Fecha_salida, cliente.Origen, cliente.Destino, cliente.Remito, cliente.Carga, cliente.Km, cliente.Kg, cliente.Tarifa, cliente.Nombre_chofer, cliente.Camion, cliente.Fletero, cliente.Total);
                 }
             }
+
             else
             {
                 MessageBox.Show(resultClient.Error);
                 MessageBox.Show("Error al cargar cliente");
+            }
+        }
+        else if (filtro == "Flete")
+        {
+            ViajeFleteViewModel fvm = new ViajeFleteViewModel();
+            var resultFlete = await fvm.ObtenerViajesDeUnFleteroAsync(dato);
+
+            if (resultFlete.IsSuccess)
+            {
+                foreach (var flete in resultFlete.Value)
+                {
+                    cheq.Rows.Add(flete.fecha_salida, flete.origen, flete.destino, flete.remito, flete.carga, flete.km, flete.kg, flete.tarifa, flete.factura, flete.comision, flete.cliente);
+                }
+            }
+
+            else
+            {
+                MessageBox.Show(resultFlete.Error);
+                MessageBox.Show("Error al cargar el flete");
             }
         }
     }

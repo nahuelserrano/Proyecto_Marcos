@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Proyecto_camiones.ViewModels
 {
@@ -42,7 +43,7 @@ namespace Proyecto_camiones.ViewModels
 
         public async Task<Result<List<ViajeFleteDTO>>> ObtenerViajesDeUnFleteroAsync(string fletero)
         {
-            if (this.testearConexion().Result)
+            if (await this.testearConexion())
             {
                 fletero = fletero.ToUpper();
                 return await this.fleteService.ObtenerViajesDeUnFleteroAsync(fletero);

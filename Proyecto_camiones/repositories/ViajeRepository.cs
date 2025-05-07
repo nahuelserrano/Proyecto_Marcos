@@ -360,7 +360,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                MessageBox.Show("ObtenerViajeMixtoPorClienteAsync en VIAJE  ");
 
                 var viajes = await _context.Viajes
                     .AsNoTracking()

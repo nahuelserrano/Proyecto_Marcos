@@ -19,7 +19,6 @@ namespace Proyecto_camiones.ViewModels
 
         public ClienteViewModel()
         {
-            MessageBox.Show("ClienteViewModel");
             var dbContext = General.obtenerInstancia();
             var clienteRepo = new ClienteRepository(dbContext);
             this._clienteService = new ClienteService(clienteRepo);
@@ -73,10 +72,8 @@ namespace Proyecto_camiones.ViewModels
 
         public async Task<Result<List<ViajeMixtoDTO>>> ObtenerViajesDeUnCliente(string cliente)
         {
-            MessageBox.Show("ObtenerViajesDeUnCliente");
             if (await this.testearConexion())
             {
-                MessageBox.Show("Testear conexión");
                 return await this._clienteService.ObtenerViajesDeUnClienteAsync(cliente.ToUpper());
             }
             return Result<List<ViajeMixtoDTO>>.Failure("No se pudo establecer la conexión");

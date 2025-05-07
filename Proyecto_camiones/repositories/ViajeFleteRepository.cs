@@ -167,7 +167,6 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
-                MessageBox.Show("ObtenerViajeMixtoPorClienteAsync en VIAJE FLETERO  ");
 
                 var viajes = await (from v in this._context.ViajesFlete
                                     join f in this._context.Fletes on v.idFlete equals f.Id

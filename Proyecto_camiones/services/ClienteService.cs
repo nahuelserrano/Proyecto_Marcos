@@ -100,22 +100,17 @@ namespace Proyecto_camiones.Presentacion.Services
         
         internal async Task<Result<List<ViajeMixtoDTO>>> ObtenerViajesDeUnClienteAsync(string cliente)
         {
-            MessageBox.Show("ObtenerViajesDeUnClienteAsync");
             Cliente? c = await _clienteRepository.ObtenerPorNombreAsync(cliente);
-            MessageBox.Show("Cliente: " + c?.Nombre);
             if (c != null)
             {
                 List<ViajeMixtoDTO> viajesFlete = await this._viajeFleteRepository.ObtenerViajesDeUnClienteAsync(c.Id);
-                MessageBox.Show("sobrevivimos al viajeFlete");
                 List<ViajeMixtoDTO> viajes = await this._viajeRepository.ObtenerViajeMixtoPorClienteAsync(c.Id);
-                MessageBox.Show("sobrevivimos al viaje");
 
                 if (viajesFlete != null && viajes != null)
                 {
                     viajesFlete.AddRange(viajes);
                     return Result<List<ViajeMixtoDTO>>.Success(viajesFlete);
                 }
-                MessageBox.Show("No se pudieron obtener los viajes");
                 return Result<List<ViajeMixtoDTO>>.Failure("No se pudieron obtener los viajes");
             }
             return Result<List<ViajeMixtoDTO>>.Failure("No existe un cliente con ese nombre");
