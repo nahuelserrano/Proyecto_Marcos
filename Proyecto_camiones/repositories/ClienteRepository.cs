@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Microsoft.EntityFrameworkCore;
 using NPOI.POIFS.Properties;
 using Org.BouncyCastle.Bcpg.OpenPgp;
@@ -107,7 +108,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-
                 if (!await _context.Database.CanConnectAsync())
                 {
                     Console.WriteLine("No se puede conectar a la base de datos");
@@ -181,7 +181,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                Cliente cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Nombre == nombre_cliente);
+                Cliente? cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Nombre == nombre_cliente);
                 return cliente;
 
             }

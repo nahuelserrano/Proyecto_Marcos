@@ -321,7 +321,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         // MÉTODOS ESPECÍFICOS
 
         // Obtener viajes por camión
-        public async Task<List<ViajeDTO>> ObtenerPorCamionAsync(int camionId)
+        public async Task<List<ViajeDTO>> ObtenerPorCamionAsync(int camionId, string patente)
         {
             try
             {
@@ -341,6 +341,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                         NombreChofer = v.NombreChofer,
                         Km = v.Km,
                         Tarifa = v.Tarifa,
+                        PatenteCamion = patente
                     }).ToListAsync();
 
                 Console.WriteLine($"Se encontraron {viajes.Count} viajes para el camión con ID {camionId}.");
@@ -355,7 +356,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
         // Obtener viajes por cliente
-        public async Task<List<ViajeMixtoDTO>> ObtenerPorClienteAsync(int clienteId)
+        public async Task<List<ViajeMixtoDTO>> ObtenerViajeMixtoPorClienteAsync(int clienteId)
         {
             try
             {
@@ -363,34 +364,30 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 var viajes = await _context.Viajes
                     .AsNoTracking()
                     .Include(v => v.ClienteNavigation)
+                    .Include(v => v.CamionNavigation)
                     .Where(v => v.Cliente == clienteId)
-                    .Join(
-                    this._context.Camiones,
-                    v=> v.Camion,
-                    c=> c.Id,
-                    (v,c) => new ViajeMixtoDTO
+                    .Select(v => new ViajeMixtoDTO
                     {
+                        Fecha_salida = v.FechaInicio,
                         Origen = v.LugarPartida,
                         Destino = v.Destino,
-                        Fecha_salida = v.FechaInicio,
                         Remito = v.Remito,
-                        Nombre_chofer = v.NombreChofer,
-                        Km = v.Km,
                         Kg = v.Kg,
                         Carga = v.Carga,
+                        Nombre_chofer = v.NombreChofer,
+                        Km = v.Km,
                         Tarifa = v.Tarifa,
-                        Camion = c.Patente,
-                        Comision = v.PorcentajeChofer,
-                    }
-                    ).ToListAsync();
+                        Camion = v.CamionNavigation.Patente
+                    }).ToListAsync();
 
                 return viajes;
             }
             catch (Exception ex)
             {
+                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.InnerException?.Message);
                 Console.WriteLine($"Error al obtener viajes por cliente: {ex.Message}");
-                Console.WriteLine(ex.InnerException);
-                return null;
+                return new List<ViajeMixtoDTO>();
             }
         }
 

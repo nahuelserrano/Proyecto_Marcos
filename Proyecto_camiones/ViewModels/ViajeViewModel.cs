@@ -191,11 +191,11 @@ namespace Proyecto_camiones.ViewModels
         }
 
         // Método para obtener viajes por camión
-        public async Task<Result<List<ViajeDTO>>> ObtenerPorCamionAsync(int camionId)
+        public async Task<Result<List<ViajeDTO>>> ObtenerPorCamionAsync(string patenteCamion)
         {
             if (await this.TestearConexion())
             {
-                return await _viajeService.ObtenerPorCamionAsync(camionId);
+                return await _viajeService.ObtenerPorCamionAsync(patenteCamion);
             }
 
             return Result<List<ViajeDTO>>.Failure("La conexión no pudo establecerse");

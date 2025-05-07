@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Proyecto_camiones.Services
 {
@@ -31,14 +32,41 @@ namespace Proyecto_camiones.Services
             return result;
         }
 
-        internal async Task<Result<string>> EliminarAsync(int id)
+        internal async Task<Result<ViajeFlete>> ActualizarAsync(int id, string? origen, string? destino, float? remito, string? carga, float? km, float? kg, float? tarifa, int? factura, string? cliente, string? nombre_chofer, float? comision, DateOnly? fecha_salida)
+        {
+            int idCliente = -1;
+            if (cliente != null)
+            {
+                Cliente? exists = await this.clienteRepository.ObtenerPorNombreAsync(cliente);
+                if (exists == null)
+                {
+                    return Result<ViajeFlete>.Failure("No se puede editar el viaje ya que el cliente ingresado no existe");
+                }
+                idCliente = exists.Id;
+            }
+            if(comision != null)
+            {
+                if (comision > 100)
+                {
+                    return Result<ViajeFlete>.Failure("No se pudo editar el viaje ya que la comisión no puede ser mayor al 100%");
+                }
+            }
+            ViajeFlete actualizado = await this.ViajeFleteRepository.ActualizarAsync(id, origen, destino, remito, carga, km, kg, tarifa, factura, idCliente, nombre_chofer, comision, fecha_salida);
+            if(actualizado != null)
+            {
+                return Result<ViajeFlete>.Success(actualizado);
+            }
+            return Result<ViajeFlete>.Failure("Hubo un problema al actualizar el viaje");
+        }
+
+        internal async Task<Result<bool>> EliminarAsync(int id)
         {
             bool result = await this.ViajeFleteRepository.EliminarAsync(id);
             if (result)
             {
-                return Result<string>.Success("El viaje se ha eliminado correctamente");
+                return Result<bool>.Success(result);
             }
-            return Result<string>.Failure("El viaje no pudo ser eliminado, error interno de la base de datos");
+            return Result<bool>.Failure("El viaje no pudo ser eliminado, error interno de la base de datos");
         }
 
         internal async Task<Result<int>> InsertarAsync(string? origen, string destino, float remito, string carga, float km, float kg, float tarifa, int factura, string nombre_cliente, string nombre_fletero, string nombre_chofer, float comision, DateOnly fecha_salida)
@@ -46,8 +74,12 @@ namespace Proyecto_camiones.Services
             Cliente cliente = await this.clienteRepository.ObtenerPorNombreAsync(nombre_cliente);
             Flete fletero = await this.fleteRepository.ObtenerPorNombreAsync(nombre_fletero);
             if(cliente != null && fletero != null) 
-            {                                                                                                              
-               int idViaje = await this.ViajeFleteRepository.InsertarAsync(origen, destino, remito, carga, km, kg, tarifa, factura, cliente.Id, fletero.Id, nombre_chofer, comision, fecha_salida);
+            {
+                if (comision > 100)
+                {
+                    return Result<int>.Failure("No se pudo cargar el viaje ya que la comisión no puede ser mayor al 100%");
+                }
+                int idViaje = await this.ViajeFleteRepository.InsertarAsync(origen, destino, remito, carga, km, kg, tarifa, factura, cliente.Id, fletero.Id, nombre_chofer, comision, fecha_salida);
                 if (idViaje > 0)
                 {
                     return Result<int>.Success(idViaje);
@@ -55,6 +87,21 @@ namespace Proyecto_camiones.Services
                 return Result<int>.Failure("No se pudo insertar el viaje");
             }
             return Result<int>.Failure("No se puede insertar el viaje, el cliente o el fletero con ese nombre no existe");
+        }
+
+        internal async Task<Result<List<ViajeMixtoDTO>>> ObtenerViajesDeUnClienteAsync(int id)
+        {
+            Cliente? cliente = await this.clienteRepository.ObtenerPorIdAsync(id);
+            if(cliente!= null)
+            {
+                List<ViajeMixtoDTO> viajes = await this.ViajeFleteRepository.ObtenerViajesDeUnClienteAsync(id);
+                if(viajes != null)
+                {
+                    return Result<List<ViajeMixtoDTO>>.Success(viajes);
+                }
+                return Result<List<ViajeMixtoDTO>>.Failure("Problema en el repo al obtener los viajes");
+            }
+            return Result<List<ViajeMixtoDTO>>.Failure("No existe el cliente con ese id");
         }
 
         internal async Task<Result<List<ViajeFleteDTO>>> ObtenerViajesDeUnFleteroAsync(string fletero)

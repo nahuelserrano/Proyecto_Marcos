@@ -16,6 +16,8 @@ using Proyecto_camiones.Presentacion.Utils;
 using Proyecto_camiones.Models;
 using Proyecto_camiones.DTOs;
 using System.Threading.Tasks;
+using NPOI.SS.Formula.Functions;
+using Proyecto_camiones.Presentacion.Models;
 
 namespace Proyecto_camiones.Front;
 
@@ -55,7 +57,7 @@ public class FormRegistro : Home
         InitializeUI(camposForm, cant, filtro, camposFaltantesTablas, dato);
 
         //ShowForm
-        CargarFormularioCheque(camposForm, cant, filtro);
+        CargarFormulario(camposForm, cant, filtro);
 
         //Hovers
         btnCargar.MouseEnter += (s, e) => HoverEffect(s, e, true);
@@ -66,7 +68,11 @@ public class FormRegistro : Home
 
         cheq.CellClick += EliminarFila;
         cheq.CellClick += ModificarFila;
-        cheq.CellClick += MarcarComoPagado;
+
+        if (filtro == "sueldo")
+        {
+            cheq.CellClick += MarcarComoPagado;
+        }
 
         ConfigurarDataGridView(filtro);
 
@@ -74,8 +80,6 @@ public class FormRegistro : Home
 
         AddButtonCuentaCorriente(filtro, dato);
         AddButtonSueldoMensual(filtro, dato);
-
-        //PositionGrid();
 
         this.TopLevel = false;
         this.FormBorderStyle = FormBorderStyle.None;
@@ -99,32 +103,66 @@ public class FormRegistro : Home
     private async void ShowInfoTable(string filtro, string dato)
     {
         cheq.Rows.Clear();
-        ViajeViewModel viajeViewModel = new ViajeViewModel();
-        var result = await viajeViewModel.ObtenerTodosAsync();
 
-        if (result.IsSuccess)
+        if (filtro == "Camion")
         {
-            foreach (var viaje in result.Value)
+            ViajeViewModel vvm = new ViajeViewModel();
+            var result = await vvm.ObtenerPorCamionAsync(dato);
+            float montoChofer;
+
+            if (result.IsSuccess)
             {
-                if (filtro == "Camion")
+                foreach (var viaje in result.Value)
                 {
-                    cheq.Rows.Add(viaje.FechaInicio, viaje.LugarPartida, viaje.Destino, viaje.Remito, viaje.Carga, viaje.Km, viaje.Kg, viaje.Tarifa, viaje.PorcentajeChofer, viaje.NombreChofer, viaje.NombreCliente);
+
+                    montoChofer = viaje.PorcentajeChofer * viaje.Total;
+                    cheq.Rows.Add(viaje.FechaInicio, viaje.LugarPartida, viaje.Destino, viaje.Remito, viaje.Carga, viaje.Km, viaje.Kg, viaje.Tarifa, viaje.PorcentajeChofer, viaje.NombreChofer, viaje.NombreCliente, viaje.Total, montoChofer);
 
                 }
-                else if (filtro == "sueldo")
-                {
-                    cheq.Rows.Add(viaje.FechaInicio, viaje.NombreChofer);
-                }
-                if (viaje.NombreCliente == dato)
-                {
-                    cheq.Rows.Add(viaje.FechaInicio, viaje.LugarPartida, viaje.Destino, viaje.Remito, viaje.Carga, viaje.Km, viaje.Kg, viaje.Tarifa, viaje.NombreChofer);
-                }
+            }
 
+            else
+            {
+                MessageBox.Show("Error al cargar el viaje");
             }
         }
-        else
+        else if (filtro == "Cliente")
         {
-            MessageBox.Show("Error al cargar el viaje");
+            ClienteViewModel cvm = new ClienteViewModel();
+            var resultClient = await cvm.ObtenerViajesDeUnCliente(dato);
+
+            if (resultClient.IsSuccess)
+            {
+                foreach (var cliente in resultClient.Value)
+                {
+                    cheq.Rows.Add(cliente.Fecha_salida, cliente.Origen, cliente.Destino, cliente.Remito, cliente.Carga, cliente.Km, cliente.Kg, cliente.Tarifa, cliente.Nombre_chofer, cliente.Camion, cliente.Fletero, cliente.Total);
+                }
+            }
+
+            else
+            {
+                MessageBox.Show(resultClient.Error);
+                MessageBox.Show("Error al cargar cliente");
+            }
+        }
+        else if (filtro == "Flete")
+        {
+            ViajeFleteViewModel fvm = new ViajeFleteViewModel();
+            var resultFlete = await fvm.ObtenerViajesDeUnFleteroAsync(dato);
+
+            if (resultFlete.IsSuccess)
+            {
+                foreach (var flete in resultFlete.Value)
+                {
+                    cheq.Rows.Add(flete.fecha_salida, flete.origen, flete.destino, flete.remito, flete.carga, flete.km, flete.kg, flete.tarifa, flete.factura, flete.comision, flete.cliente);
+                }
+            }
+
+            else
+            {
+                MessageBox.Show(resultFlete.Error);
+                MessageBox.Show("Error al cargar el flete");
+            }
         }
     }
 
@@ -138,7 +176,6 @@ public class FormRegistro : Home
                 cheq.Columns.Add(campos, campos);
             }
         }
-
         if (camposFaltantesTabla != null)
         {
             foreach (string campos in camposFaltantesTabla)
@@ -146,16 +183,12 @@ public class FormRegistro : Home
                 cheq.Columns.Add(campos, campos);
             }
         }
-
         panelGrid.Controls.Add(cheq);
         this.Controls.Add(panelGrid);
-
     }
-
     public void addColumn(string s)
     {
         cheq.Columns.Add(s, s);
-
     }
 
 
@@ -168,19 +201,15 @@ public class FormRegistro : Home
             button.ForeColor = isHover ? Color.FromArgb(48, 48, 48) : Color.Black;
         }
     }
-
-
-    private void CargarFormularioCheque(List<string> camposForm, int cant, string filtro)
+    private void CargarFormulario(List<string> camposForm, int cant, string filtro)
     {
         this.campos.Clear();
         foreach (string i in camposForm)
         {
             this.campos.Add(i);
         }
-
         InitializeFormProperties(cant, campos, filtro);
     }
-
     private void InitializeFormProperties(int cant, List<string> campos, string filtro)
     {
         FormProperties(cant);
@@ -188,7 +217,6 @@ public class FormRegistro : Home
         TextoBoxAndLabelProperties(cant, campos);
         ButtonsPropertiesForm(filtro);
         AddControls();
-
     }
 
     //FormProperties
@@ -207,16 +235,11 @@ public class FormRegistro : Home
         {
             formPanel.AutoScroll = false;
             formPanel.Size = new Size(110 * cant, 80);
-
         }
-
-
-
         this.Resize += (s, e) =>
         {
             formPanel.Location = new Point((this.Width - formPanel.Width) / 2 + 25, 100);
         };
-
         formPanel.BackColor = System.Drawing.Color.FromArgb(200, Color.Black);
 
     }
@@ -403,17 +426,6 @@ public class FormRegistro : Home
 
             cheq.Columns.Add(btnModificar);
         }
-
-        if (cheq.Columns["Pagado"] == null)
-        {
-            DataGridViewButtonColumn btnPagado = new DataGridViewButtonColumn();
-            btnPagado.Name = "Pagado";
-            btnPagado.HeaderText = "Pagado";  // Puedes dejarlo vacío si prefieres
-            btnPagado.Text = "✏️"; // Ícono de modificar
-            btnPagado.UseColumnTextForButtonValue = true; // Hace que todas las celdas muestren "M"
-            btnPagado.Width = 40; // Ajustar tamaño
-            cheq.Columns.Add(btnPagado);
-        }
     }
 
     private async Task cargaClickEvent(object sender, EventArgs e, string filtro, string dato)
@@ -423,7 +435,6 @@ public class FormRegistro : Home
 
         foreach (Control control in formFLTextBox.Controls)
         {
-
             if (control is Panel panel)
             {
                 foreach (Control child in panel.Controls)
@@ -463,41 +474,38 @@ public class FormRegistro : Home
                                 }
                             }
                         }
-
-                        //LLAMAR EL AGREGAR DEL BACKEND
                         datos.Add(textBox.Text); // Agregar el texto de cada TextBox
                     }
                 }
             }
         }
 
-
-        ViajeViewModel viajeViewModel = new ViajeViewModel();
-        var resultado = await viajeViewModel.CrearAsync(DateOnly.Parse(datos[0]), datos[1], datos[2], int.Parse(datos[3]), datos[4], float.Parse(datos[6]), datos[10], dato, float.Parse(datos[5]), float.Parse(datos[7]), datos[9], float.Parse(datos[8]));
-
-        if (resultado.IsSuccess)
+        if (filtro == "Camion")
         {
+            ViajeViewModel viajeViewModel = new ViajeViewModel();
+            var resultado = await viajeViewModel.CrearAsync(DateOnly.Parse(datos[0]), datos[1], datos[2], int.Parse(datos[3]), datos[4], float.Parse(datos[6]), datos[10], dato, float.Parse(datos[5]), float.Parse(datos[7]), datos[9], float.Parse(datos[8]));
 
-            ShowInfoTable(filtro, dato);
-
-
-            foreach (Control control in formFLTextBox.Controls)
+            if (resultado.IsSuccess)
             {
-                if (control is Panel panel)
+                ShowInfoTable(filtro, dato);
+            }
+        }
+
+        foreach (Control control in formFLTextBox.Controls)
+        {
+            if (control is Panel panel)
+            {
+                foreach (Control child in panel.Controls)
                 {
-                    foreach (Control child in panel.Controls)
+                    if (child is TextBox textBox)
                     {
-                        if (child is TextBox textBox)
-                        {
-                            string placeholderText = textBox.Text;
-                            textBox.Clear();
-                            textBox.Text = placeholderText; // Restaurar el placeholder??????????
-                            textBox.ForeColor = Color.Black;
-                        }
+                        string placeholderText = textBox.Text;
+                        textBox.Clear();
+                        textBox.Text = placeholderText; // Restaurar el placeholder??????????
+                        textBox.ForeColor = Color.Black;
                     }
                 }
             }
-            //}
         }
     }
 
@@ -516,6 +524,7 @@ public class FormRegistro : Home
     }
     private void ModificarFila(object sender, DataGridViewCellEventArgs e)
     {
+        ViajeViewModel vvm = new ViajeViewModel();
         // Verificar si la celda clickeada pertenece a la columna "Modificar"
         if (e.ColumnIndex == cheq.Columns["Modificar"].Index && e.RowIndex >= 0)
         {
@@ -523,7 +532,7 @@ public class FormRegistro : Home
             DialogResult resultado = MessageBox.Show("¿Desea modificar esta fila?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (resultado == DialogResult.Yes)
             {
-                //funcionModificar
+                //Modificar
             }
 
         }
