@@ -17,6 +17,8 @@ namespace Proyecto_camiones.Presentacion.Utils
         private readonly string _camion;
         private readonly string _carga;
         private readonly float _km;
+        private readonly string _nombreChofer;
+        private readonly float _porcentajeChofer;
         private List<string> _errores;
 
         public ValidadorViaje(
@@ -29,7 +31,9 @@ namespace Proyecto_camiones.Presentacion.Utils
             string cliente,
             string camion,
             string carga,
-            float km)
+            float km,
+            string nombreChofer,
+            float porcentajeChofer)
         {
             _fechaInicio = fechaInicio;
             _lugarPartida = lugarPartida;
@@ -41,6 +45,8 @@ namespace Proyecto_camiones.Presentacion.Utils
             _camion = camion;
             _carga = carga;
             _km = km;
+            _nombreChofer = nombreChofer;
+            _porcentajeChofer = porcentajeChofer;
             _errores = new List<string>();
         }
 
@@ -48,12 +54,10 @@ namespace Proyecto_camiones.Presentacion.Utils
         public ValidadorViaje ValidarCarga()
         {
             if (_kg <= 0)
-            {
                 _errores.Add(MensajeError.numeroNoValido(nameof(_kg)));
-            }
-            // Nota: Para validar la capacidad del camión necesitaríamos
-            // consultar la información del camión o recibir su capacidad
 
+            if (string.IsNullOrWhiteSpace(_carga))
+                _errores.Add(MensajeError.atributoRequerido(nameof(_carga)));
 
             return this;
         }
@@ -61,19 +65,13 @@ namespace Proyecto_camiones.Presentacion.Utils
         public ValidadorViaje ValidarRuta()
         {
             if (string.IsNullOrWhiteSpace(_lugarPartida))
-            {
                 _errores.Add("El lugar de partida es requerido");
-            }
 
             if (string.IsNullOrWhiteSpace(_destino))
-            {
                 _errores.Add("El destino es requerido");
-            }
 
             if (_lugarPartida == _destino)
-            {
                 _errores.Add("El origen y destino no pueden ser iguales");
-            }
 
             return this;
         }
@@ -112,18 +110,21 @@ namespace Proyecto_camiones.Presentacion.Utils
             return this;
         }
 
-        public ValidadorViaje ValidarIdPositivos()
+        public ValidadorViaje ValidarDatosEntidadesRelacionadas()
         {
             if (string.IsNullOrWhiteSpace(_camion))
-            {
                 _errores.Add("El campo de camion esta vacio");
-            }
+            
 
             if (string.IsNullOrWhiteSpace(_cliente))
-            {
                 _errores.Add("El campo de cliente esta vacio");
-            }
-            
+
+            if (string.IsNullOrWhiteSpace(_nombreChofer))
+                _errores.Add("El campo de chofer esta vacio");
+
+            if ( 0 > _porcentajeChofer || _porcentajeChofer  > 1)
+                _errores.Add("El porcentaje del chofer no es valido, debe ser entre 0% y 100%");
+
             return this;
         }
 
@@ -139,7 +140,7 @@ namespace Proyecto_camiones.Presentacion.Utils
             return ValidarCarga()
                 .ValidarRuta()
                 .ValidarPrecioYRemito()
-                .ValidarIdPositivos()
+                .ValidarDatosEntidadesRelacionadas()
                 .ObtenerResultado();
         }
 

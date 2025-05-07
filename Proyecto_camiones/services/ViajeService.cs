@@ -75,7 +75,7 @@ namespace Proyecto_camiones.Presentacion.Services
             try
             {
                 ValidadorViaje validador = new ValidadorViaje(fechaInicio, lugarPartida, destino, kg, remito,
-                    tarifa, cliente, camion, carga, km);
+                    tarifa, cliente, camion, carga, km, nombreChofer, porcentajeChofer);
 
                 Result<bool> resultadoValidarCompleto = validador.ValidarCompleto();
 
