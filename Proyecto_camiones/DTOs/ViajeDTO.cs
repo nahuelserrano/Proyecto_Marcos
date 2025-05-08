@@ -22,6 +22,7 @@ namespace Proyecto_camiones.DTOs
 
         public string PatenteCamion { get; set; }
         public float Total => Tarifa * Kg;
+        public float GananciaChofer => Total * PorcentajeChofer;
 
         public int Camion { get; internal set; }
 

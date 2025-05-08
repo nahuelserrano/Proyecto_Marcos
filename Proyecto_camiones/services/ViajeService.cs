@@ -75,7 +75,7 @@ namespace Proyecto_camiones.Presentacion.Services
             try
             {
                 ValidadorViaje validador = new ValidadorViaje(fechaInicio, lugarPartida, destino, kg, remito,
-                    tarifa, cliente, camion, carga, km);
+                    tarifa, cliente, camion, carga, km, nombreChofer, porcentajeChofer);
 
                 Result<bool> resultadoValidarCompleto = validador.ValidarCompleto();
 
@@ -191,20 +191,23 @@ namespace Proyecto_camiones.Presentacion.Services
                 if (viajeActual == null)
                     return Result<bool>.Failure(MensajeError.EntidadNoEncontrada(nameof(Viaje), id));
 
-                bool resultado = await _viajeRepository.ActualizarAsync(
-                    id, fechaInicio, lugarPartida, destino, remito,
-                    carga, kg, cliente, camion, tarifa, km, chofer, porcentaje);
+                using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                {
+                    bool resultado = await _viajeRepository.ActualizarAsync(
+                        id, fechaInicio, lugarPartida, destino, remito,
+                        carga, kg, cliente, camion, tarifa, km, chofer, porcentaje);
 
-                if (!resultado)
-                    return Result<bool>.Failure(MensajeError.ErrorActualizacion(nameof(Viaje)));
+                    if (!resultado)
+                        return Result<bool>.Failure(MensajeError.ErrorActualizacion(nameof(Viaje)));
 
-                // Actualizar el pago asociado al viaje
-                //bool seActualizoPago = await _pagoService.ActualizarAsync(id, kg, tarifa, chofer);
+                    // Actualizar el pago asociado al viaje
+                    //bool seActualizoPago = await _pagoService.ActualizarAsync(id, kg, tarifa, chofer);
 
-                //if (!seActualizoPago)
-                //    return Result<bool>.Failure("No se pudo actualizar el pago asociado al viaje");
+                    //if (!seActualizoPago)
+                    //    return Result<bool>.Failure("No se pudo actualizar el pago asociado al viaje");
 
-                return Result<bool>.Success(true);
+                    return Result<bool>.Success(true);
+                }
             }
             catch (Exception ex)
             {
@@ -224,17 +227,29 @@ namespace Proyecto_camiones.Presentacion.Services
                 if (viaje == null)
                     return Result<bool>.Failure(MensajeError.EntidadNoEncontrada(nameof(Viaje), id));
 
-                bool resultado = await _viajeRepository.EliminarAsync(id);
+                using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                {
+                    //Pago pago = await_pagoService.ObtenerPorIdViaje(id);
 
-                if (!resultado)
-                    return Result<bool>.Failure("No se pudo eliminar el viaje de la base de datos");
+                    //if (pago == null)
+                    //    return Result<bool>.Failure("No se encontró el pago asociado al viaje.");
 
-                //bool seEliminoPago = await _pagoService.EliminarAsync(id);
+                    //if (pago.Pagado)
+                    //    return Result<bool>.Failure("El pago asociado a este viaje ya esta pagado, por tanto no se puede eliiminar.");
 
-                //if (!seEliminoPago)
-                //    return Result<bool>.Failure("No se pudo eliminar el pago asociado al viaje");
+                    bool seEliminoViaje = await _viajeRepository.EliminarAsync(id);
 
-                return Result<bool>.Success(true);
+                    if (!seEliminoViaje)
+                        return Result<bool>.Failure("No se pudo eliminar el viaje de la base de datos");
+
+                    //bool seEliminoPago = await _pagoService.EliminarAsync(idPago);
+
+                    //if (!seEliminoPago)
+                    //    return Result<bool>.Failure("No se pudo eliminar el pago asociado al viaje");
+
+                    scope.Complete();
+                    return Result<bool>.Success(true);
+                }
             }
             catch (Exception ex)
             {
@@ -266,6 +281,7 @@ namespace Proyecto_camiones.Presentacion.Services
                 return Result<List<ViajeDTO>>.Failure($"Error al obtener viajes por camión: {ex.Message}");
             }
         }
+
         public async Task<Result<List<ViajeMixtoDTO>>> ObtenerPorClienteAsync(int idCliente)
         {
             if (idCliente < 0)

@@ -67,7 +67,7 @@ public class FormRegistro : Home
         btnCargar.Click += (s, e) => cargaClickEvent(s, e, filtro, dato);
 
         cheq.CellClick += EliminarFila;
-        cheq.CellClick += ModificarFila;
+        cheq.CellClick += (s, e) => ModificarFilaAsync(s, e, dato, filtro);
 
         if (filtro == "sueldo")
         {
@@ -113,7 +113,7 @@ public class FormRegistro : Home
             {
                 foreach (var viaje in result.Value)
                 {
-                    cheq.Rows.Add(viaje.FechaInicio, viaje.LugarPartida, viaje.Destino, viaje.Remito, viaje.Carga, viaje.Km, viaje.Kg, viaje.Tarifa, viaje.PorcentajeChofer, viaje.NombreChofer, viaje.NombreCliente, viaje.Total);
+                    cheq.Rows.Add(viaje.FechaInicio, viaje.LugarPartida, viaje.Destino, viaje.Remito, viaje.Carga, viaje.Km, viaje.Kg, viaje.Tarifa, viaje.PorcentajeChofer, viaje.NombreChofer, viaje.NombreCliente, viaje.Total, viaje.GananciaChofer, 1);
 
                 }
             }
@@ -151,7 +151,7 @@ public class FormRegistro : Home
             {
                 foreach (var flete in resultFlete.Value)
                 {
-                    cheq.Rows.Add(flete.fecha_salida, flete.origen, flete.destino, flete.remito, flete.carga, flete.km, flete.kg, flete.tarifa, flete.factura, flete.comision, flete.cliente);
+                    cheq.Rows.Add(flete.fecha_salida, flete.origen, flete.destino, flete.remito, flete.carga, flete.km, flete.kg, flete.tarifa, flete.factura, flete.comision, flete.cliente, 1);
                 }
             }
 
@@ -180,6 +180,17 @@ public class FormRegistro : Home
                 cheq.Columns.Add(campos, campos);
             }
         }
+        cheq.Columns.Add("Id", "Id");
+
+        foreach (DataGridViewColumn col in cheq.Columns)
+        {
+            if (col.HeaderText.Equals("Id"))
+            {
+                MessageBox.Show("soy invisible");
+                col.Visible = false;
+            }
+        }
+
         panelGrid.Controls.Add(cheq);
         this.Controls.Add(panelGrid);
     }
@@ -519,7 +530,7 @@ public class FormRegistro : Home
             }
         }
     }
-    private void ModificarFila(object sender, DataGridViewCellEventArgs e)
+    private async Task ModificarFilaAsync(object sender, DataGridViewCellEventArgs e, string dato, string filtro)
     {
         ViajeViewModel vvm = new ViajeViewModel();
         // Verificar si la celda clickeada pertenece a la columna "Modificar"
@@ -529,7 +540,31 @@ public class FormRegistro : Home
             DialogResult resultado = MessageBox.Show("¿Desea modificar esta fila?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (resultado == DialogResult.Yes)
             {
-                //Modificar
+
+                // Obtener los valores de la fila seleccionada
+                string fecha = cheq.Rows[e.RowIndex].Cells["Fecha"].Value.ToString();
+                string origen = cheq.Rows[e.RowIndex].Cells["Origen"].Value.ToString();
+                string destino = cheq.Rows[e.RowIndex].Cells["Destino"].Value.ToString();
+                string remito = cheq.Rows[e.RowIndex].Cells["RTO o CPE"].Value.ToString();
+                string carga = cheq.Rows[e.RowIndex].Cells["Carga"].Value.ToString();
+                string km = cheq.Rows[e.RowIndex].Cells["Km"].Value.ToString();
+                string kg = cheq.Rows[e.RowIndex].Cells["Kg"].Value.ToString();
+                string tarifa = cheq.Rows[e.RowIndex].Cells["Tarifa"].Value.ToString();
+                string chofer = cheq.Rows[e.RowIndex].Cells["Chofer"].Value.ToString();
+                string cliente = cheq.Rows[e.RowIndex].Cells["Cliente"].Value.ToString();
+                string porcentaje = cheq.Rows[e.RowIndex].Cells["Porcentaje"].Value.ToString();
+                string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
+
+                MessageBox.Show(fecha + " " + origen + " " + destino + " " + remito + " " + carga + " " + km + " " + kg + " " + tarifa + " " + chofer + " " + cliente + " " + porcentaje + " " + e.RowIndex + " " + id);
+
+                //var result = await vvm.ActualizarAsync(j, DateOnly.Parse(fecha), origen, destino, int.Parse(remito), carga, int.Parse(kg), null, 2, float.Parse(km), float.Parse(tarifa), chofer, float.Parse(porcentaje));
+
+                //if (result.IsSuccess)
+                //{
+                //    MessageBox.Show("Modificado");
+                //    ShowInfoTable(filtro, dato);
+                //}
+
             }
 
         }
