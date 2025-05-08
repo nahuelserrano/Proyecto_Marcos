@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Proyecto_camiones.Presentacion.Models
 {
@@ -13,23 +9,35 @@ namespace Proyecto_camiones.Presentacion.Models
         public DateOnly FechaIngresoCheque { get; set; }
         public string NumeroCheque { get; set; }
         public float Monto { get; set; }
-        public String Banco { get; set; }
+        public string Banco { get; set; }
         public DateOnly FechaCobro { get; set; }
+        public string Nombre { get; set; }
+        public int? NumeroPersonalizado { get; set; }
+        public DateOnly FechaVencimiento { get; set; }
 
-        public Cheque(int id_Cliente, DateOnly FechaIngresoCheque, string NumeroCheque, float Monto, String Banco, DateOnly FechaCobro)
+        // Constructor completo
+        public Cheque(int id_Cliente, DateOnly fechaIngresoCheque, string numeroCheque,
+            float monto, string banco, DateOnly fechaCobro,
+            string nombre = "", int? numeroPersonalizado = null)
         {
             this.id_Cliente = id_Cliente;
-            this.FechaIngresoCheque = FechaIngresoCheque;
-            this.NumeroCheque = NumeroCheque;
-            this.Monto = Monto;
-            this.Banco = Banco;
-            this.FechaCobro = FechaCobro;
+            this.FechaIngresoCheque = fechaIngresoCheque;
+            this.NumeroCheque = numeroCheque;
+            this.Monto = monto;
+            this.Banco = banco;
+            this.FechaCobro = fechaCobro;
+            this.Nombre = nombre;
+            this.NumeroPersonalizado = numeroPersonalizado;
+            this.FechaVencimiento = fechaCobro; // Por defecto igual a la fecha de cobro
         }
 
+        // Constructor sin parámetros
         public Cheque()
         {
             this.id_Cliente = 1;
             this.Banco = "bna";
+            this.Nombre = "";
+            this.FechaVencimiento = new DateOnly(1, 1, 1);
         }
     }
 }

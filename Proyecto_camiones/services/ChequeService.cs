@@ -18,6 +18,12 @@ namespace Proyecto_camiones.Presentacion.Services
             this._chequeRepository = chequeR ?? throw new ArgumentNullException(nameof(chequeR));
         }
 
+        public async Task<bool> ProbarConexionAsync()
+        {
+            bool result = await this._chequeRepository.ProbarConexionAsync();
+            return result;
+        }
+
         public async Task<Result<ChequeDTO>> ObtenerPorIdAsyncObtenerPorId(int id)
         {
             if (id < 0)

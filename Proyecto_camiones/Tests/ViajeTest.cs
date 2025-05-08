@@ -597,7 +597,7 @@ namespace Proyecto_camiones.Tests
                 porcentajeChofer: 0.18f
             );
 
-            if (!resultadoCamionInexistente.IsSuccess && resultadoCamionInexistente.Error.ToLower().Contains("camion"))
+            if (!resultadoCamionInexistente.IsSuccess && resultadoCamionInexistente.Error.ToLower().Contains("camión"))
                 Console.WriteLine($"[✓] PRUEBA EXITOSA - Rechazó camión inexistente como esperado: {resultadoCamionInexistente.Error}");
             else if (resultadoCamionInexistente.IsSuccess)
             {
