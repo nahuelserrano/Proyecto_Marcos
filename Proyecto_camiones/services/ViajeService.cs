@@ -125,9 +125,9 @@ namespace Proyecto_camiones.Presentacion.Services
                         return Result<int>.Failure(MensajeError.ErrorCreacion(nameof(Viaje)));
 
                     // Crear el pago asociado al viaje
-                    float pago_monto = (float)(tarifa * kg * porcentajeChofer);
+                    float pagoMonto = tarifa * kg * porcentajeChofer;
 
-                    int idPago = await _pagoService.CrearAsync(idChofer, id, pago_monto);
+                    int idPago = await _pagoService.CrearAsync(idChofer, id, pagoMonto);
 
                     if (idPago <= 0)
                         return Result<int>.Failure(MensajeError.ErrorCreacion(nameof(Pago)));
@@ -222,34 +222,26 @@ namespace Proyecto_camiones.Presentacion.Services
 
             try
             {
-                ViajeDTO? viaje = await _viajeRepository.ObtenerPorIdAsync(id);
+                var viaje = await _viajeRepository.ObtenerPorIdAsync(id);
 
                 if (viaje == null)
                     return Result<bool>.Failure(MensajeError.EntidadNoEncontrada(nameof(Viaje), id));
 
-                using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-                {
-                    //Pago pago = await_pagoService.ObtenerPorIdViaje(id);
+                
+                //Pago pago = await_pagoService.ObtenerPorIdViaje(id);
 
-                    //if (pago == null)
-                    //    return Result<bool>.Failure("No se encontró el pago asociado al viaje.");
+                //if (pago == null)
+                //    return Result<bool>.Failure("No se encontró el pago asociado al viaje.");
 
-                    //if (pago.Pagado)
-                    //    return Result<bool>.Failure("El pago asociado a este viaje ya esta pagado, por tanto no se puede eliiminar.");
+                //if (pago.Pagado)
+                //    return Result<bool>.Failure("El pago asociado a este viaje ya esta pagado, por tanto no se puede eliiminar.");
 
-                    bool seEliminoViaje = await _viajeRepository.EliminarAsync(id);
+                bool seEliminoViaje = await _viajeRepository.EliminarAsync(id);
 
-                    if (!seEliminoViaje)
-                        return Result<bool>.Failure("No se pudo eliminar el viaje de la base de datos");
+                if (!seEliminoViaje)
+                    return Result<bool>.Failure(MensajeError.ErrorEliminacion(nameof(Viaje)));
 
-                    //bool seEliminoPago = await _pagoService.EliminarAsync(idPago);
-
-                    //if (!seEliminoPago)
-                    //    return Result<bool>.Failure("No se pudo eliminar el pago asociado al viaje");
-
-                    scope.Complete();
-                    return Result<bool>.Success(true);
-                }
+                return Result<bool>.Success(true);
             }
             catch (Exception ex)
             {
@@ -262,19 +254,17 @@ namespace Proyecto_camiones.Presentacion.Services
             try
             {
                 // Verificar que el camión existe usando el servicio
-                if (_camionService != null)
+                
+                
+                var camionResult = await _camionService.ObtenerPorPatenteAsync(patente);
+                if (camionResult.IsSuccess)
                 {
-                    var camionResult = await _camionService.ObtenerPorPatenteAsync(patente);
-                    if (camionResult.IsSuccess)
-                    {
-                        int idCamion = camionResult.Value.Id;
-                        var viajes = await _viajeRepository.ObtenerPorCamionAsync(idCamion, patente);
+                    int idCamion = camionResult.Value.Id;
+                    var viajes = await _viajeRepository.ObtenerPorCamionAsync(idCamion, patente);
 
-                        return Result<List<ViajeDTO>>.Success(viajes);
-                    }
-                    return Result<List<ViajeDTO>>.Failure($"El camión especificado no existe: {camionResult}");
+                    return Result<List<ViajeDTO>>.Success(viajes);
                 }
-                return Result<List<ViajeDTO>>.Failure("Error interno del service de camion");
+                return Result<List<ViajeDTO>>.Failure($"El camión especificado no existe: {camionResult}");
             }
             catch (Exception ex)
             {
@@ -330,9 +320,8 @@ namespace Proyecto_camiones.Presentacion.Services
         public async Task<Result<List<ViajeDTO>>> ObtenerPorChoferAsync(string nombreChofer)
         {
             if (string.IsNullOrWhiteSpace(nombreChofer))
-            {
                 return Result<List<ViajeDTO>>.Failure("El nombre del chofer no puede estar vacío");
-            }
+            
 
             try
             {

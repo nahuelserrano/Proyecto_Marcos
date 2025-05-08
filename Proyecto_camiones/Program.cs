@@ -36,10 +36,10 @@ namespace Proyecto_camiones
         {
 
             // Llamada a Windows Forms para inicializar la aplicación
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
-            PagoViewModel pw = new PagoViewModel();
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
+            //Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
+            //PagoViewModel pw = new PagoViewModel();
 
             //await pw.CrearAsync(1, 1, 1000);
             //await pw.CrearAsync(1, 1, 1000);
@@ -205,24 +205,24 @@ namespace Proyecto_camiones
 
             //OBTENER VIAJES POR FLETERO DE UN CLIENTE
 
-            var viajes = await vfvm.ObtenerViajesDeUnClienteAsync(3);
-            if (viajes.IsSuccess)
-            {
-                foreach(var viaje in viajes.Value)
-                {
-                    Console.WriteLine(viaje.ToString());
-                }
-            }
-            else
-            {
-                Console.WriteLine(viajes.Error);
-            }
+            //var viajes = await vfvm.ObtenerViajesDeUnClienteAsync(3);
+            //if (viajes.IsSuccess)
+            //{
+            //    foreach(var viaje in viajes.Value)
+            //    {
+            //        Console.WriteLine(viaje.ToString());
+            //    }
+            //}
+            //else
+            //{
+            //    Console.WriteLine(viajes.Error);
+            //}
 
-                //ProbarInsertarViaje("Tandil", "Azul");
+            //ProbarInsertarViaje("Tandil", "Azul");
 
-                //ProbarInsertarChofer("Juan Alpaca");
+            //ProbarInsertarChofer("Juan Alpaca");
 
-                FleteViewModel fvm = new FleteViewModel();
+            FleteViewModel fvm = new FleteViewModel();
 
             //INSERTAR FLETERO
             //var idFletero = await fvm.InsertarAsync("Carlos");
@@ -302,11 +302,11 @@ namespace Proyecto_camiones
             //    // VIAJE
             //DateOnly fecha = new DateOnly(2025, 4, 28);
             //int idViaje = await ViajeTests.ProbarInsertarViaje(fecha, "Tandil", "Buenos Aires", 123, 1000.5f, "Trigo", "Cliente1", "HIJ429", 350.5f, 5000.0f, "Chofer Test", 018f);
-            //await ViajeTests.ProbarObtenerViajePorId(4);
-            //await ViajeTests.ProbarObtenerViajesPorCliente(3);
-            //await ViajeTests.ProbarObtenerViajesPorChofer(2);
-            //await ViajeTests.ProbarObtenerViajesDeUnFletero("Carlos");
-            //await ViajeTests.ProbarEliminarViaje(10);
+            //await ViajeTest.ProbarObtenerViajePorId(4);
+            //await ViajeTest.ProbarObtenerViajesPorCliente(3);
+            //await ViajeTest.ProbarObtenerViajesPorChofer(2);
+            //await ViajeTest.ProbarObtenerViajesDeUnFletero("Carlos");
+            //await ViajeTest.ProbarEliminarViaje(10);
             //}
             //catch (Exception ex)
             //{
@@ -340,6 +340,8 @@ namespace Proyecto_camiones
             //{
             //    Console.WriteLine(viajes.Error);
             //}
+
+            await ChequeTests.EjecutarTodasLasPruebas();
 
             //ELIMINAR CLIENTE
 
