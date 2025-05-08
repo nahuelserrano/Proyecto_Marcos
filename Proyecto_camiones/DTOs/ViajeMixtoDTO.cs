@@ -8,6 +8,7 @@ namespace Proyecto_camiones.DTOs
 {
     public class ViajeMixtoDTO
     {
+        public int Id { get; set; } // ID del viaje
         public string Origen { get; set; }
         public string Destino { get; set; }
         public DateOnly Fecha_salida { get; set; }
@@ -22,6 +23,23 @@ namespace Proyecto_camiones.DTOs
         public float? Comision { get; set; }
         public string? Camion { get; set; }
         public string? Fletero { get; set; }
+
+        public ViajeMixtoDTO(int id, string origen, string destino, DateOnly fecha_salida, float remito, string nombre_chofer, string carga, float km, float kg, float tarifa, string camion)
+        {
+            this.Id = id;
+            this.Origen = origen;
+            this.Destino = destino;
+            this.Fecha_salida = fecha_salida;
+            this.Remito = remito;
+            this.Nombre_chofer = nombre_chofer;
+            this.Carga = carga;
+            this.Km = km;
+            this.Kg = kg;
+            this.Tarifa = tarifa;
+            this.Comision = null;
+            this.Camion = camion;
+            this.Fletero = null;
+        }
 
         //CONSTRUCTOR PARA EL VIAJE PERSONAL
         public ViajeMixtoDTO(string origen, string destino, DateOnly fecha_salida, float remito, string nombre_chofer, string carga, float km, float kg, float tarifa, string camion)

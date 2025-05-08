@@ -108,6 +108,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     .Include(v => v.ClienteNavigation)
                     .Select(v => new ViajeDTO
                     {
+                        Id = v.Id,
                         FechaInicio = v.FechaInicio,
                         LugarPartida = v.LugarPartida,
                         Destino = v.Destino,
@@ -151,6 +152,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
                 var viajeDTO = new ViajeDTO
                 {
+                    Id = viaje.Id,
                     FechaInicio = viaje.FechaInicio,
                     LugarPartida = viaje.LugarPartida,
                     Destino = viaje.Destino,
@@ -194,6 +196,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
                 var viajes = await query.Select(v => new ViajeDTO
                 {
+                    Id = v.Id,
                     FechaInicio = v.FechaInicio,
                     LugarPartida = v.LugarPartida,
                     Destino = v.Destino,
@@ -331,6 +334,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     .Where(v => v.Camion == camionId)
                     .Select(v => new ViajeDTO
                     {
+                        Id = v.Id,
                         FechaInicio = v.FechaInicio,
                         LugarPartida = v.LugarPartida,
                         Destino = v.Destino,
@@ -368,6 +372,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     .Where(v => v.Cliente == clienteId)
                     .Select(v => new ViajeMixtoDTO
                     {
+                        Id = v.Id,
                         Fecha_salida = v.FechaInicio,
                         Origen = v.LugarPartida,
                         Destino = v.Destino,
@@ -401,6 +406,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     .Where(v => v.NombreChofer == chofer)
                     .Select(v => new ViajeDTO()
                     {
+                        Id = v.Id,
                         FechaInicio = v.FechaInicio,
                         LugarPartida = v.LugarPartida,
                         Destino = v.Destino,

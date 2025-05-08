@@ -8,6 +8,7 @@ namespace Proyecto_camiones.DTOs
 {
     public class ViajeDTO
     {
+        public int Id { get; set; } // ID del viaje}
         public DateOnly FechaInicio { get; set; }
         public string LugarPartida { get; set; }
         public string Destino { get; set; }
@@ -26,6 +27,24 @@ namespace Proyecto_camiones.DTOs
 
         public int Camion { get; internal set; }
 
+        public ViajeDTO(int id, DateOnly fechaInicio, string lugarPartida,
+            string destino, int remito, float kg, string carga, string nombreCliente,
+            string nombreChofer, float km, float tarifa, float porcentajeChofer, string patenteCamion)
+        {
+            Id = id;
+            FechaInicio = fechaInicio;
+            LugarPartida = lugarPartida;
+            Destino = destino;
+            Carga = carga;
+            Kg = kg;
+            Km = km;
+            Remito = remito;
+            NombreChofer = nombreChofer;
+            NombreCliente = nombreCliente;
+            Tarifa = tarifa;
+            PorcentajeChofer = porcentajeChofer;
+            PatenteCamion = patenteCamion;
+        }
         public ViajeDTO(DateOnly fechaInicio, string lugarPartida,
             string destino, int remito, float kg, string carga, string nombreCliente,
             string nombreChofer, float km, float tarifa, float porcentajeChofer, string patenteCamion)
