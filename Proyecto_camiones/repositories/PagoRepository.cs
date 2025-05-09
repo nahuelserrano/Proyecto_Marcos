@@ -72,7 +72,7 @@ namespace Proyecto_camiones.Repositories
             }
         }
 
-        public async Task<bool> ActualizarAsync(int idChofer, DateOnly desde, DateOnly hasta, int? id_Sueldo,bool pagado)
+        public async Task<bool> modificarEstado(int idChofer, DateOnly desde, DateOnly hasta, int? id_Sueldo,bool pagado)
         {
             try
             {
@@ -113,6 +113,34 @@ namespace Proyecto_camiones.Repositories
             }
         }
 
+        public async Task<bool> ActualizarAsync(int id_chofer, int id_viaje, float monto_pagado)
+        {
+            try
+            {
+                var pago = await _context.Pagos.FindAsync(id_viaje);
+                if (pago != null)
+                {
+                    if (pago.Pagado == false) { 
+                        if (pago.Id_Chofer != id_chofer)
+                        {
+                         pago.Id_Chofer = id_chofer;
+                        }
+                        if(pago.Monto_Pagado!=monto_pagado)
+                        pago.Monto_Pagado = monto_pagado;
+
+
+                        await _context.SaveChangesAsync();
+                        return true;
+                    }
+                }
+                return false;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error al actualizar el pago: {e.Message}");
+                return false;
+            }
+        }
         public async Task<List<Pago>> ObtenerPagosAsync(int idChofer, DateOnly fechaDesde, DateOnly fechaHasta)
         {
             try
