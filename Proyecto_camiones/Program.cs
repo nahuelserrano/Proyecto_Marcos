@@ -172,7 +172,6 @@ namespace Proyecto_camiones
             //    Console.WriteLine(result.Error);
             //}
 
-<<<<<<< HEAD
             //ACTUALIZAR UNA CUENTA CORRIENTE
             //var cuenta = await ccvm.ActualizarAsync(8, null, null, 100, null, 4, null);
             //if (cuenta.IsSuccess)
@@ -186,9 +185,6 @@ namespace Proyecto_camiones
 
 
             ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
-=======
-            //    ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
->>>>>>> cf903f860ce67ea81f68a005192913f0d2ccf9f5
 
             //INSERTAR
 
