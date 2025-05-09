@@ -129,7 +129,7 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
-                if(!await _context.Database.CanConnectAsync())
+                if (!await _context.Database.CanConnectAsync())
                 {
                     Console.WriteLine("No se puede conectar a la base de datos");
                     return null;
@@ -220,7 +220,7 @@ namespace Proyecto_camiones.Repositories
                 Console.WriteLine("se encontró la cuenta corriente");
 
                 if (cuenta == null)
-                { 
+                {
                     return false;
                 }
 
@@ -247,47 +247,58 @@ namespace Proyecto_camiones.Repositories
                 {
                     return null;
                 }
-                if(fecha!= null)
+                if (fecha != null)
                 {
                     cuenta.Fecha_factura = (DateOnly)fecha;
                 }
-                if(nroFactura!= null)
+                if (nroFactura != null)
                 {
                     cuenta.Nro_factura = (int)nroFactura;
                 }
-                if(adeuda!= null)
-                {
-                    cuenta.Adeuda = (float)adeuda;
-                }
-                if(importe != null)
-                {
-                    cuenta.Pagado = (float)importe;
-                }
-                if(importe!= null || adeuda != null)
+                if (adeuda != null)
                 {
                     if(idCliente != null)
                     {
-                        CuentaCorriente? ultimoRegistro = ultimoRegistro = await this._context.Cuentas.Where(c => c.IdCliente == idCliente).OrderByDescending(c => c.Fecha_factura).FirstOrDefaultAsync();
-                        if (ultimoRegistro != null)
+                        CuentaCorriente? anteUltimoRegistro = await this._context.Cuentas
+                                                                .Where(c=> c.IdCliente == idCliente)
+                                                                .OrderByDescending(c => c.Id)
+                                                                .Skip(1)
+                                                                .FirstOrDefaultAsync();
+                        if (anteUltimoRegistro != null)
                         {
-                            cuenta.Saldo_Total = (float)(cuenta.Adeuda + ultimoRegistro.Saldo_Total - cuenta.Pagado);
+                            Console.WriteLine(anteUltimoRegistro.Saldo_Total);
+                            Console.WriteLine(adeuda);
+                            cuenta.Adeuda = (float)(adeuda + anteUltimoRegistro.Saldo_Total);
                         }
                         else
                         {
-                            cuenta.Saldo_Total = cuenta.Adeuda - cuenta.Pagado;
+                            cuenta.Adeuda = (float)adeuda;
                         }
                     } else if(idFletero != null)
                     {
-                        CuentaCorriente? ultimoRegistro = ultimoRegistro = await this._context.Cuentas.Where(c => c.IdFletero == idFletero).OrderByDescending(c => c.Fecha_factura).FirstOrDefaultAsync();
-                        if (ultimoRegistro != null)
+                        CuentaCorriente? anteUltimoRegistro = await this._context.Cuentas
+                                                                 .Where(c => c.IdFletero == idFletero)
+                                                                 .OrderByDescending(c => c.Id)
+                                                                 .Skip(1)
+                                                                 .FirstOrDefaultAsync();
+                        if (anteUltimoRegistro != null)
                         {
-                            cuenta.Saldo_Total = (float)(cuenta.Adeuda + ultimoRegistro.Saldo_Total - cuenta.Pagado);
+                            cuenta.Adeuda = (float)(adeuda + anteUltimoRegistro.Saldo_Total);
                         }
                         else
                         {
-                            cuenta.Saldo_Total = cuenta.Adeuda - cuenta.Pagado;
+                            cuenta.Adeuda = (float)adeuda;
                         }
                     }
+                        
+                }
+                if (importe != null)
+                {
+                    cuenta.Pagado = (float)importe;
+                }
+                if (importe != null || adeuda != null)
+                {
+                    cuenta.Saldo_Total = (float)(cuenta.Adeuda - cuenta.Pagado);
                 }
                 int registrosAfectados = await _context.SaveChangesAsync();
                 if (registrosAfectados > 0)
@@ -297,12 +308,26 @@ namespace Proyecto_camiones.Repositories
                 return null;
 
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e.InnerException);
                 return null;
             }
         }
+
+        internal async Task<CuentaCorriente> ObtenerPorId(int id)
+        {
+            try
+            {
+                CuentaCorriente cuenta = await this._context.Cuentas.FindAsync(id);
+                return cuenta;
+            } catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.InnerException);
+                return null;
+            }
         }
     }
+}

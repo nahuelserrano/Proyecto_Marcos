@@ -119,7 +119,7 @@ namespace Proyecto_camiones
 
             //INSERCION PARA CUENTA CORRIENTE DE UN CLIENTE FUNCIONANDO CORRECTAMENTE
 
-            //var cuenta = await ccvm.InsertarAsync("machaca", null, new DateOnly(2025, 5, 9), 12, 400, 100);
+            //var cuenta = await ccvm.InsertarAsync("machaca", null, new DateOnly(2025, 5,10), 15, 1000, 500);
             //if (cuenta.IsSuccess)
             //{
             //    Console.WriteLine("Id insertado: " + cuenta.Value);
@@ -170,6 +170,18 @@ namespace Proyecto_camiones
             //{
             //    Console.WriteLine(result.Error);
             //}
+
+            //ACTUALIZAR UNA CUENTA CORRIENTE
+            //var cuenta = await ccvm.ActualizarAsync(8, null, null, 100, null, 4, null);
+            //if (cuenta.IsSuccess)
+            //{
+            //    Console.WriteLine(cuenta.Value.ToString());
+            //}
+            //else
+            //{
+            //    Console.WriteLine(cuenta.Error);
+            //}
+
 
             ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
 
