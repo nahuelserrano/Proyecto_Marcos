@@ -168,8 +168,8 @@ namespace Proyecto_camiones.Presentacion.Services
            int? remito = null,
            float? kg = null,
            string? carga = null,
-           int? cliente = null,
-           int? camion = null,
+           string? nombreCliente = null,
+           string? patenteCamion = null,
            float? km = null,
            float? tarifa = null,
            string? chofer = null,
@@ -179,7 +179,7 @@ namespace Proyecto_camiones.Presentacion.Services
                 return Result<bool>.Failure(MensajeError.IdInvalido(id));
 
             if (fechaInicio == null && lugarPartida == null && destino == null && remito == null && kg == null && carga == null
-                 && cliente == null && camion == null && km == null && tarifa == null && chofer == null && porcentaje == null)
+                 && nombreCliente == null && patenteCamion == null && km == null && tarifa == null && chofer == null && porcentaje == null)
             {
                 return Result<bool>.Failure("No se ha proporcionado ningún campo para actualizar");
             }
@@ -191,11 +191,35 @@ namespace Proyecto_camiones.Presentacion.Services
                 if (viajeActual == null)
                     return Result<bool>.Failure(MensajeError.EntidadNoEncontrada(nameof(Viaje), id));
 
+                int? idCliente = null, idCamion = null;
+
+                // Verificar que el cliente existe usando el servicio
+                if (nombreCliente != null)
+                {
+                    var clienteResult = await _clienteService.ObtenerPorNombreAsync(nombreCliente);
+
+                    if (!clienteResult.IsSuccess)
+                        return Result<bool>.Failure($"El cliente especificado no existe: {clienteResult}");
+
+                    idCliente = clienteResult.Value.Id;
+                }
+
+                // Verificar que el camión existe usando el servicio
+                if (patenteCamion != null)
+                {
+                    var camionResult = await _camionService.ObtenerPorPatenteAsync(patenteCamion);
+
+                    if (!camionResult.IsSuccess)
+                        return Result<bool>.Failure($"El camión especificado no existe: {camionResult}");
+
+                    idCamion = camionResult.Value.Id;
+                }
+
                 using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
                     bool resultado = await _viajeRepository.ActualizarAsync(
                         id, fechaInicio, lugarPartida, destino, remito,
-                        carga, kg, cliente, camion, tarifa, km, chofer, porcentaje);
+                        carga, kg, idCliente, idCamion, tarifa, km, chofer, porcentaje);
 
                     if (!resultado)
                         return Result<bool>.Failure(MensajeError.ErrorActualizacion(nameof(Viaje)));
@@ -206,6 +230,7 @@ namespace Proyecto_camiones.Presentacion.Services
                     //if (!seActualizoPago)
                     //    return Result<bool>.Failure("No se pudo actualizar el pago asociado al viaje");
 
+                    scope.Complete();
                     return Result<bool>.Success(true);
                 }
             }

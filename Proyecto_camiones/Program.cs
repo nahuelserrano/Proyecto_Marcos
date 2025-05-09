@@ -20,6 +20,7 @@ using Proyecto_camiones.Tests;
 using System.Collections.Generic;
 using System.Linq;
 using Proyecto_camiones.Front;
+using Mysqlx.Cursor;
 
 namespace Proyecto_camiones
 {
@@ -36,10 +37,10 @@ namespace Proyecto_camiones
         {
 
             // Llamada a Windows Forms para inicializar la aplicación
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
-            //PagoViewModel pw = new PagoViewModel();
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
+            PagoViewModel pw = new PagoViewModel();
 
             //await pw.CrearAsync(1, 1, 1000);
             //await pw.CrearAsync(1, 1, 1000);
@@ -171,6 +172,7 @@ namespace Proyecto_camiones
             //    Console.WriteLine(result.Error);
             //}
 
+<<<<<<< HEAD
             //ACTUALIZAR UNA CUENTA CORRIENTE
             //var cuenta = await ccvm.ActualizarAsync(8, null, null, 100, null, 4, null);
             //if (cuenta.IsSuccess)
@@ -184,6 +186,9 @@ namespace Proyecto_camiones
 
 
             ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
+=======
+            //    ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
+>>>>>>> cf903f860ce67ea81f68a005192913f0d2ccf9f5
 
             //INSERTAR
 
@@ -303,7 +308,7 @@ namespace Proyecto_camiones
             //await ChoferTests.EjecutarTodasLasPruebas();
 
             //    // PRUEBAS DE VIAJE
-            //await ViajeTests.EjecutarTodasLasPruebas();
+            //await ViajeTest.EjecutarTodasLasPruebas();
 
             //    // O EJECUTAR PRUEBAS INDIVIDUALES:
 
@@ -318,13 +323,30 @@ namespace Proyecto_camiones
             //    //await ChoferTests.ProbarEliminarChofer(2);
 
             //    // VIAJE
-            //DateOnly fecha = new DateOnly(2025, 4, 28);
+            DateOnly fecha = new DateOnly(2025, 4, 28);
             //int idViaje = await ViajeTests.ProbarInsertarViaje(fecha, "Tandil", "Buenos Aires", 123, 1000.5f, "Trigo", "Cliente1", "HIJ429", 350.5f, 5000.0f, "Chofer Test", 018f);
+
+            //await ViajeTest.ProbarActualizarViaje(
+            //    id: 1,
+            //    fechaInicio: new DateOnly(2025, 5, 10),
+            //    lugarPartida: "Rosario",
+            //    destino: "Córdoba",
+            //    remito: 12345,
+            //    carga: "Soja",
+            //    kg: 25000.5f,
+            //    cliente: "COOPERATIVA",
+            //    camion: "HIJ429",
+            //    km: 400.0f,
+            //    tarifa: 75000.0f,
+            //    nombreChofer: "Chofer Test"
+            //);
+
             //await ViajeTest.ProbarObtenerViajePorId(4);
             //await ViajeTest.ProbarObtenerViajesPorCliente(3);
             //await ViajeTest.ProbarObtenerViajesPorChofer(2);
             //await ViajeTest.ProbarObtenerViajesDeUnFletero("Carlos");
             //await ViajeTest.ProbarEliminarViaje(10);
+
             //}
             //catch (Exception ex)
             //{
