@@ -83,7 +83,7 @@ namespace Proyecto_camiones.Services
 
         public async Task<int> Insertar(string? cliente, string? fletero, DateOnly fecha, int nro, float adeuda, float pagado)
         {
-            if (cliente == null && fletero == null) return -1;
+            if (cliente == null && fletero == null || cliente!= null && fletero != null) return -1;
             Cliente c;
             if(cliente != null)
             {

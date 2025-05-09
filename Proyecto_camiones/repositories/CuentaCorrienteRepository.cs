@@ -160,7 +160,7 @@ namespace Proyecto_camiones.Repositories
                 var cuentas = await _context.Cuentas
                             .Where(c => c.IdCliente == id)
                             .Select(c => new CuentaCorrienteDTO(
-
+                                c.Id,
                                 c.Fecha_factura,
                                 c.Nro_factura,
                                 c.Adeuda,
@@ -191,7 +191,7 @@ namespace Proyecto_camiones.Repositories
                 var cuentas = await _context.Cuentas
                             .Where(c => c.IdFletero == id)
                             .Select(c => new CuentaCorrienteDTO(
-
+                                c.Id,
                                 c.Fecha_factura,
                                 c.Nro_factura,
                                 c.Adeuda,
@@ -232,6 +232,75 @@ namespace Proyecto_camiones.Repositories
                 Console.WriteLine(e.InnerException);
                 return false;
             }
+        }
+
+        internal async Task<CuentaCorrienteDTO> ActualizarAsync(int id, DateOnly? fecha, int? nroFactura, float? adeuda, float? importe, int? idCliente, int? idFletero)
+        {
+            try
+            {
+                CuentaCorriente? cuenta = await this._context.Cuentas.FindAsync(id);
+                if (cuenta == null)
+                {
+                    return null;
+                }
+                if(fecha!= null)
+                {
+                    cuenta.Fecha_factura = (DateOnly)fecha;
+                }
+                if(nroFactura!= null)
+                {
+                    cuenta.Nro_factura = (int)nroFactura;
+                }
+                if(adeuda!= null)
+                {
+                    cuenta.Adeuda = (float)adeuda;
+                }
+                if(importe != null)
+                {
+                    cuenta.Pagado = (float)importe;
+                }
+                if(importe!= null || adeuda != null)
+                {
+                    if(idCliente != null)
+                    {
+                        CuentaCorriente? ultimoRegistro = ultimoRegistro = await this._context.Cuentas.Where(c => c.IdCliente == idCliente).OrderByDescending(c => c.Fecha_factura).FirstOrDefaultAsync();
+                        if (ultimoRegistro != null)
+                        {
+                            cuenta.Saldo_Total = (float)(cuenta.Adeuda + ultimoRegistro.Saldo_Total - cuenta.Pagado);
+                        }
+                        else
+                        {
+                            cuenta.Saldo_Total = cuenta.Adeuda - cuenta.Pagado;
+                        }
+                    } else if(idFletero != null)
+                    {
+                        CuentaCorriente? ultimoRegistro = ultimoRegistro = await this._context.Cuentas.Where(c => c.IdFletero == idFletero).OrderByDescending(c => c.Fecha_factura).FirstOrDefaultAsync();
+                        if (ultimoRegistro != null)
+                        {
+                            cuenta.Saldo_Total = (float)(cuenta.Adeuda + ultimoRegistro.Saldo_Total - cuenta.Pagado);
+                        }
+                        else
+                        {
+                            cuenta.Saldo_Total = cuenta.Adeuda - cuenta.Pagado;
+                        }
+                    }
+                }
+                int registrosAfectados = await _context.SaveChangesAsync();
+                if (registrosAfectados > 0)
+                {
+                    return new CuentaCorrienteDTO(cuenta.Id, cuenta.Fecha_factura, cuenta.Nro_factura, cuenta.Adeuda, cuenta.Pagado, cuenta.Saldo_Total, cuenta.IdCliente, cuenta.IdFletero);
+                }
+                return null;
+
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.InnerException);
+            }
+        }
+        {
+
         }
     }
 }
