@@ -556,7 +556,19 @@ public class FormRegistro : Home
 
                 MessageBox.Show(fecha + " " + origen + " " + destino + " " + remito + " " + carga + " " + km + " " + kg + " " + tarifa + " " + chofer + " " + cliente + " " + porcentaje + " " + " " + int.Parse(id));
 
+<<<<<<< HEAD
                 var result = await vvm.ActualizarAsync(int.Parse(id), DateOnly.Parse(fecha), origen, destino, int.Parse(remito), carga, int.Parse(kg), null, null, float.Parse(km), float.Parse(tarifa), chofer, float.Parse(porcentaje));
+=======
+                var result = await vvm.ActualizarAsync(int.Parse(id), DateOnly.Parse(fecha), origen, destino, int.Parse(remito), carga, int.Parse(kg), null, "HIJ429", float.Parse(km), float.Parse(tarifa), chofer, float.Parse(porcentaje));
+
+                //MessageBox.Show(result.Error);
+
+                if (result.IsSuccess)
+                {
+                    MessageBox.Show("Modificado");
+                    ShowInfoTable(filtro, dato);
+                }
+>>>>>>> 99683441e8272c2b1d10ea247d492c99e6ba67c6
 
                 if (result.IsSuccess)
                 {

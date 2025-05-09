@@ -19,9 +19,8 @@ namespace Proyecto_camiones.ViewModels
         public CuentaCorrienteService cs;
         public CuentaCorrienteViewModel()
         {
-            var dbContext = General.obtenerInstancia();
-            var cr = new CuentaCorrienteRepository(dbContext);
-            this.cs = new CuentaCorrienteService(cr, new ClienteRepository(dbContext));
+            var cr = new CuentaCorrienteRepository(General.obtenerInstancia());
+            this.cs = new CuentaCorrienteService(cr, new ClienteRepository(General.obtenerInstancia()));
         }
 
         public async Task<bool> testearConexion()
@@ -93,6 +92,15 @@ namespace Proyecto_camiones.ViewModels
                 return await this.cs.EliminarAsync(id);
             }
             return Result<bool>.Failure("No se pudo establecer la conexion");
+        }
+
+        public async Task<Result<CuentaCorrienteDTO>> ActualizarAsync(int id, DateOnly? fecha, int? nroFactura, float? adeuda, float? importe, int? idCliente, int? idFletero)
+        {
+            if (this.testearConexion().Result)
+            {
+                return await this.cs.ActualizarAsync(id, fecha, nroFactura, adeuda, importe, idCliente, idFletero);
+            }
+            return Result<CuentaCorrienteDTO>.Failure("No se pudo establecer la conexión");
         }
     }
 }

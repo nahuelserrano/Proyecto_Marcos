@@ -20,6 +20,7 @@ using Proyecto_camiones.Tests;
 using System.Collections.Generic;
 using System.Linq;
 using Proyecto_camiones.Front;
+using Mysqlx.Cursor;
 
 namespace Proyecto_camiones
 {
@@ -35,6 +36,7 @@ namespace Proyecto_camiones
 
         {
 
+<<<<<<< HEAD
             //LLAMADA AL FRONT
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -44,6 +46,13 @@ namespace Proyecto_camiones
 
             //BACK
             //PagoViewModel pw = new PagoViewModel();
+=======
+            // Llamada a Windows Forms para inicializar la aplicación
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
+            PagoViewModel pw = new PagoViewModel();
+>>>>>>> 99683441e8272c2b1d10ea247d492c99e6ba67c6
 
             //await pw.CrearAsync(1, 1, 1000);
             //await pw.CrearAsync(1, 1, 1000);
@@ -116,16 +125,22 @@ namespace Proyecto_camiones
             //{
             //    Console.WriteLine("Id insertado: " + cuenta.Value);
             //}
-            //Console.WriteLine(cuenta.Value);
+            //else
+            //{
+            //    Console.WriteLine(cuenta.Error);
+            //}
 
             //INSERCION PARA CUENTA CORRIENTE DE UN CLIENTE FUNCIONANDO CORRECTAMENTE
 
-            //var cuenta = await ccvm.InsertarAsync("machaca", null, new DateOnly(2025, 4, 22), 92, 1000, 600);
+            //var cuenta = await ccvm.InsertarAsync("machaca", null, new DateOnly(2025, 5,10), 15, 1000, 500);
             //if (cuenta.IsSuccess)
             //{
             //    Console.WriteLine("Id insertado: " + cuenta.Value);
             //}
-            //Console.WriteLine(cuenta.Value);
+            //else
+            //{
+            //    Console.WriteLine(cuenta.Error);
+            //}
 
 
             //OBTENER CUENTAS DE UN CLIENTE POR SU NOMBRE
@@ -159,17 +174,29 @@ namespace Proyecto_camiones
             //}
 
             //ELIMINAR CUENTA CORRIENTE
-            var result = await ccvm.EliminarAsync(1);
-            if (result.IsSuccess)
-            {
-                Console.WriteLine(result.Value);
-            }
-            else
-            {
-                Console.WriteLine(result.Error);
-            }
+            //var result = await ccvm.EliminarAsync(1);
+            //if (result.IsSuccess)
+            //{
+            //    Console.WriteLine(result.Value);
+            //}
+            //else
+            //{
+            //    Console.WriteLine(result.Error);
+            //}
 
-                ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
+            //ACTUALIZAR UNA CUENTA CORRIENTE
+            //var cuenta = await ccvm.ActualizarAsync(8, null, null, 100, null, 4, null);
+            //if (cuenta.IsSuccess)
+            //{
+            //    Console.WriteLine(cuenta.Value.ToString());
+            //}
+            //else
+            //{
+            //    Console.WriteLine(cuenta.Error);
+            //}
+
+
+            ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
 
             //INSERTAR
 
@@ -289,7 +316,7 @@ namespace Proyecto_camiones
             //await ChoferTests.EjecutarTodasLasPruebas();
 
             //    // PRUEBAS DE VIAJE
-            //await ViajeTests.EjecutarTodasLasPruebas();
+            //await ViajeTest.EjecutarTodasLasPruebas();
 
             //    // O EJECUTAR PRUEBAS INDIVIDUALES:
 
@@ -304,13 +331,30 @@ namespace Proyecto_camiones
             //    //await ChoferTests.ProbarEliminarChofer(2);
 
             //    // VIAJE
-            //DateOnly fecha = new DateOnly(2025, 4, 28);
+            DateOnly fecha = new DateOnly(2025, 4, 28);
             //int idViaje = await ViajeTests.ProbarInsertarViaje(fecha, "Tandil", "Buenos Aires", 123, 1000.5f, "Trigo", "Cliente1", "HIJ429", 350.5f, 5000.0f, "Chofer Test", 018f);
+
+            //await ViajeTest.ProbarActualizarViaje(
+            //    id: 1,
+            //    fechaInicio: new DateOnly(2025, 5, 10),
+            //    lugarPartida: "Rosario",
+            //    destino: "Córdoba",
+            //    remito: 12345,
+            //    carga: "Soja",
+            //    kg: 25000.5f,
+            //    cliente: "COOPERATIVA",
+            //    camion: "HIJ429",
+            //    km: 400.0f,
+            //    tarifa: 75000.0f,
+            //    nombreChofer: "Chofer Test"
+            //);
+
             //await ViajeTest.ProbarObtenerViajePorId(4);
             //await ViajeTest.ProbarObtenerViajesPorCliente(3);
             //await ViajeTest.ProbarObtenerViajesPorChofer(2);
             //await ViajeTest.ProbarObtenerViajesDeUnFletero("Carlos");
             //await ViajeTest.ProbarEliminarViaje(10);
+
             //}
             //catch (Exception ex)
             //{
@@ -345,7 +389,7 @@ namespace Proyecto_camiones
             //    Console.WriteLine(viajes.Error);
             //}
 
-            await ChequeTests.EjecutarTodasLasPruebas();
+            //await ChequeTests.EjecutarTodasLasPruebas();
 
             //ELIMINAR CLIENTE
 

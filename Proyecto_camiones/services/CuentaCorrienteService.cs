@@ -83,7 +83,7 @@ namespace Proyecto_camiones.Services
 
         public async Task<int> Insertar(string? cliente, string? fletero, DateOnly fecha, int nro, float adeuda, float pagado)
         {
-            if (cliente == null && fletero == null) return -1;
+            if (cliente == null && fletero == null || cliente!= null && fletero != null) return -1;
             Cliente c;
             if(cliente != null)
             {
@@ -130,6 +130,26 @@ namespace Proyecto_camiones.Services
                 return Result<bool>.Failure("No se pudo eliminar");
             }
             return Result<bool>.Failure("No existe un cliente con ese id");
+        }
+
+        internal async Task<Result<CuentaCorrienteDTO>> ActualizarAsync(int id, DateOnly? fecha, int? nroFactura, float? adeuda, float? importe, int? idCliente, int? idFletero)
+        {
+            if(idCliente != null && idFletero != null || idCliente == null && idFletero == null)
+            {
+                return Result<CuentaCorrienteDTO>.Failure("No se puede actualizar la cuenta corriente ya que faltan datos del cliente o el fletero");
+            }
+            CuentaCorriente cuenta = await this.ccRepository.ObtenerPorId(id);
+            if(cuenta == null)
+            {
+                return Result<CuentaCorrienteDTO>.Failure("Error al actualizar, no se encontró una cuenta con ese id");
+            }
+
+            CuentaCorrienteDTO actualizada = await this.ccRepository.ActualizarAsync(id, fecha, nroFactura, adeuda, importe, idCliente, idFletero);
+            if(actualizada != null)
+            {
+                return Result<CuentaCorrienteDTO>.Success(actualizada);
+            }
+            return Result<CuentaCorrienteDTO>.Failure("Error interno al actualizar");
         }
     }
 }

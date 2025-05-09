@@ -151,8 +151,8 @@ namespace Proyecto_camiones.ViewModels
             int? remito = null,
             string carga = null,
             float? kg = null,
-            int? cliente = null,
-            int? camion = null,
+            string? nombreCliente = null,
+            string? patenteCamion = null,
             float? km = null,
             float? tarifa = null,
             string? nombreChofer = null,
@@ -162,7 +162,7 @@ namespace Proyecto_camiones.ViewModels
             {
                 var resultado = await _viajeService.ActualizarAsync(
                     id, fechaInicio, lugarPartida, destino, remito, kg, carga, 
-                    cliente, camion, km, tarifa, nombreChofer, porcentaje);
+                    nombreCliente, patenteCamion, km, tarifa, nombreChofer, porcentaje);
 
                 return resultado;
             }

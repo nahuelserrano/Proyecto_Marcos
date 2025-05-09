@@ -263,8 +263,8 @@ namespace Proyecto_camiones.Tests
             int? remito = null,
             string carga = null,
             float? kg = null,
-            int? cliente = null,
-            int? camion = null,
+            string? cliente = null,
+            string? camion = null,
             float? km = null,
             float? tarifa = null,
             string nombreChofer = null)
