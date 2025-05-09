@@ -165,7 +165,9 @@ namespace Proyecto_camiones.Repositories
                                 c.Nro_factura,
                                 c.Adeuda,
                                 c.Pagado,
-                                c.Saldo_Total
+                                c.Saldo_Total,
+                                c.IdFletero,
+                                c.IdCliente
                             )).ToListAsync();
                 return cuentas;
             }
@@ -196,7 +198,9 @@ namespace Proyecto_camiones.Repositories
                                 c.Nro_factura,
                                 c.Adeuda,
                                 c.Pagado,
-                                c.Saldo_Total
+                                c.Saldo_Total,
+                                c.IdFletero,
+                                c.IdCliente
                             )).ToListAsync();
                 return cuentas;
             }
@@ -297,10 +301,8 @@ namespace Proyecto_camiones.Repositories
             {
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e.InnerException);
+                return null;
             }
         }
-        {
-
         }
     }
-}

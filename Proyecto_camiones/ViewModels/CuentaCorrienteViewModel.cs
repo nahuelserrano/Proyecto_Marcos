@@ -19,9 +19,8 @@ namespace Proyecto_camiones.ViewModels
         public CuentaCorrienteService cs;
         public CuentaCorrienteViewModel()
         {
-            var dbContext = General.obtenerInstancia();
-            var cr = new CuentaCorrienteRepository(dbContext);
-            this.cs = new CuentaCorrienteService(cr, new ClienteRepository(dbContext));
+            var cr = new CuentaCorrienteRepository(General.obtenerInstancia());
+            this.cs = new CuentaCorrienteService(cr, new ClienteRepository(General.obtenerInstancia()));
         }
 
         public async Task<bool> testearConexion()

@@ -112,16 +112,22 @@ namespace Proyecto_camiones
             //{
             //    Console.WriteLine("Id insertado: " + cuenta.Value);
             //}
-            //Console.WriteLine(cuenta.Value);
+            //else
+            //{
+            //    Console.WriteLine(cuenta.Error);
+            //}
 
             //INSERCION PARA CUENTA CORRIENTE DE UN CLIENTE FUNCIONANDO CORRECTAMENTE
 
-            //var cuenta = await ccvm.InsertarAsync("machaca", null, new DateOnly(2025, 4, 22), 92, 1000, 600);
+            //var cuenta = await ccvm.InsertarAsync("machaca", null, new DateOnly(2025, 5, 9), 12, 400, 100);
             //if (cuenta.IsSuccess)
             //{
             //    Console.WriteLine("Id insertado: " + cuenta.Value);
             //}
-            //Console.WriteLine(cuenta.Value);
+            //else
+            //{
+            //    Console.WriteLine(cuenta.Error);
+            //}
 
 
             //OBTENER CUENTAS DE UN CLIENTE POR SU NOMBRE
@@ -155,17 +161,17 @@ namespace Proyecto_camiones
             //}
 
             //ELIMINAR CUENTA CORRIENTE
-            var result = await ccvm.EliminarAsync(1);
-            if (result.IsSuccess)
-            {
-                Console.WriteLine(result.Value);
-            }
-            else
-            {
-                Console.WriteLine(result.Error);
-            }
+            //var result = await ccvm.EliminarAsync(1);
+            //if (result.IsSuccess)
+            //{
+            //    Console.WriteLine(result.Value);
+            //}
+            //else
+            //{
+            //    Console.WriteLine(result.Error);
+            //}
 
-                ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
+            ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
 
             //INSERTAR
 
@@ -341,7 +347,7 @@ namespace Proyecto_camiones
             //    Console.WriteLine(viajes.Error);
             //}
 
-            await ChequeTests.EjecutarTodasLasPruebas();
+            //await ChequeTests.EjecutarTodasLasPruebas();
 
             //ELIMINAR CLIENTE
 
