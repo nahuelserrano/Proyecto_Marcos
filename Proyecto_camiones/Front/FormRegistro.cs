@@ -539,42 +539,28 @@ public class FormRegistro : Home
             DialogResult resultado = MessageBox.Show("¿Desea modificar esta fila?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (resultado == DialogResult.Yes)
             {
-
-                // Obtener los valores de la fila seleccionada
-                string fecha = cheq.Rows[e.RowIndex].Cells["Fecha"].Value.ToString();
-                string origen = cheq.Rows[e.RowIndex].Cells["Origen"].Value.ToString();
-                string destino = cheq.Rows[e.RowIndex].Cells["Destino"].Value.ToString();
-                string remito = cheq.Rows[e.RowIndex].Cells["RTO o CPE"].Value.ToString();
-                string carga = cheq.Rows[e.RowIndex].Cells["Carga"].Value.ToString();
-                string km = cheq.Rows[e.RowIndex].Cells["Km"].Value.ToString();
-                string kg = cheq.Rows[e.RowIndex].Cells["Kg"].Value.ToString();
-                string tarifa = cheq.Rows[e.RowIndex].Cells["Tarifa"].Value.ToString();
-                string chofer = cheq.Rows[e.RowIndex].Cells["Chofer"].Value.ToString();
-                string cliente = cheq.Rows[e.RowIndex].Cells["Cliente"].Value.ToString();
-                string porcentaje = cheq.Rows[e.RowIndex].Cells["Porcentaje"].Value.ToString();
-                string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
-
-                MessageBox.Show(fecha + " " + origen + " " + destino + " " + remito + " " + carga + " " + km + " " + kg + " " + tarifa + " " + chofer + " " + cliente + " " + porcentaje + " " + " " + int.Parse(id));
-
-<<<<<<< HEAD
-                var result = await vvm.ActualizarAsync(int.Parse(id), DateOnly.Parse(fecha), origen, destino, int.Parse(remito), carga, int.Parse(kg), null, null, float.Parse(km), float.Parse(tarifa), chofer, float.Parse(porcentaje));
-=======
-                var result = await vvm.ActualizarAsync(int.Parse(id), DateOnly.Parse(fecha), origen, destino, int.Parse(remito), carga, int.Parse(kg), null, "HIJ429", float.Parse(km), float.Parse(tarifa), chofer, float.Parse(porcentaje));
-
-                //MessageBox.Show(result.Error);
-
-                if (result.IsSuccess)
+                if(filtro == "Camion")
                 {
-                    MessageBox.Show("Modificado");
-                    ShowInfoTable(filtro, dato);
-                }
->>>>>>> 99683441e8272c2b1d10ea247d492c99e6ba67c6
+                    // Obtener los valores de la fila seleccionada
+                    string fecha = cheq.Rows[e.RowIndex].Cells["Fecha"].Value.ToString();
+                    string origen = cheq.Rows[e.RowIndex].Cells["Origen"].Value.ToString();
+                    string destino = cheq.Rows[e.RowIndex].Cells["Destino"].Value.ToString();
+                    string remito = cheq.Rows[e.RowIndex].Cells["RTO o CPE"].Value.ToString();
+                    string carga = cheq.Rows[e.RowIndex].Cells["Carga"].Value.ToString();
+                    string km = cheq.Rows[e.RowIndex].Cells["Km"].Value.ToString();
+                    string kg = cheq.Rows[e.RowIndex].Cells["Kg"].Value.ToString();
+                    string tarifa = cheq.Rows[e.RowIndex].Cells["Tarifa"].Value.ToString();
+                    string chofer = cheq.Rows[e.RowIndex].Cells["Chofer"].Value.ToString();
+                    string cliente = cheq.Rows[e.RowIndex].Cells["Cliente"].Value.ToString();
+                    string porcentaje = cheq.Rows[e.RowIndex].Cells["Porcentaje"].Value.ToString();
+                    string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
 
-                if (result.IsSuccess)
-                {
-                    MessageBox.Show("Modificado");
-                    vvm.ObtenerTodosAsync();
-                    ShowInfoTable(filtro, dato);
+                    var result = await vvm.ActualizarAsync(int.Parse(id), DateOnly.Parse(fecha), origen, destino, int.Parse(remito), carga, int.Parse(kg), null, dato, float.Parse(km), float.Parse(tarifa), chofer, float.Parse(porcentaje));
+
+                    if (result.IsSuccess)
+                    {
+                        ShowInfoTable(filtro, dato);
+                    }
                 }
             }
         }

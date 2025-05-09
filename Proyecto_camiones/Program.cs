@@ -35,24 +35,17 @@ namespace Proyecto_camiones
         static async Task Main(string[] args)
 
         {
-
-<<<<<<< HEAD
             //LLAMADA AL FRONT
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
 
 
-
-            //BACK
-            //PagoViewModel pw = new PagoViewModel();
-=======
             // Llamada a Windows Forms para inicializar la aplicación
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
             PagoViewModel pw = new PagoViewModel();
->>>>>>> 99683441e8272c2b1d10ea247d492c99e6ba67c6
 
             //await pw.CrearAsync(1, 1, 1000);
             //await pw.CrearAsync(1, 1, 1000);
