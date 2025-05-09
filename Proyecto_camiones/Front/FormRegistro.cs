@@ -113,7 +113,7 @@ public class FormRegistro : Home
             {
                 foreach (var viaje in result.Value)
                 {
-                    cheq.Rows.Add(viaje.FechaInicio, viaje.LugarPartida, viaje.Destino, viaje.Remito, viaje.Carga, viaje.Km, viaje.Kg, viaje.Tarifa, viaje.PorcentajeChofer, viaje.NombreChofer, viaje.NombreCliente, viaje.Total, viaje.GananciaChofer, 1);
+                    cheq.Rows.Add(viaje.FechaInicio, viaje.LugarPartida, viaje.Destino, viaje.Remito, viaje.Carga, viaje.Km, viaje.Kg, viaje.Tarifa, viaje.PorcentajeChofer, viaje.NombreChofer, viaje.NombreCliente, viaje.Total, viaje.GananciaChofer, viaje.Id);
 
                 }
             }
@@ -151,7 +151,7 @@ public class FormRegistro : Home
             {
                 foreach (var flete in resultFlete.Value)
                 {
-                    cheq.Rows.Add(flete.fecha_salida, flete.origen, flete.destino, flete.remito, flete.carga, flete.km, flete.kg, flete.tarifa, flete.factura, flete.comision, flete.cliente, 1);
+                    cheq.Rows.Add(flete.fecha_salida, flete.origen, flete.destino, flete.remito, flete.carga, flete.km, flete.kg, flete.tarifa, flete.factura, flete.comision, flete.cliente);
                 }
             }
 
@@ -186,7 +186,6 @@ public class FormRegistro : Home
         {
             if (col.HeaderText.Equals("Id"))
             {
-                MessageBox.Show("soy invisible");
                 col.Visible = false;
             }
         }
@@ -555,18 +554,17 @@ public class FormRegistro : Home
                 string porcentaje = cheq.Rows[e.RowIndex].Cells["Porcentaje"].Value.ToString();
                 string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
 
-                MessageBox.Show(fecha + " " + origen + " " + destino + " " + remito + " " + carga + " " + km + " " + kg + " " + tarifa + " " + chofer + " " + cliente + " " + porcentaje + " " + e.RowIndex + " " + id);
+                MessageBox.Show(fecha + " " + origen + " " + destino + " " + remito + " " + carga + " " + km + " " + kg + " " + tarifa + " " + chofer + " " + cliente + " " + porcentaje + " " + " " + int.Parse(id));
 
-                //var result = await vvm.ActualizarAsync(j, DateOnly.Parse(fecha), origen, destino, int.Parse(remito), carga, int.Parse(kg), null, 2, float.Parse(km), float.Parse(tarifa), chofer, float.Parse(porcentaje));
+                var result = await vvm.ActualizarAsync(int.Parse(id), DateOnly.Parse(fecha), origen, destino, int.Parse(remito), carga, int.Parse(kg), null, null, float.Parse(km), float.Parse(tarifa), chofer, float.Parse(porcentaje));
 
-                //if (result.IsSuccess)
-                //{
-                //    MessageBox.Show("Modificado");
-                //    ShowInfoTable(filtro, dato);
-                //}
-
+                if (result.IsSuccess)
+                {
+                    MessageBox.Show("Modificado");
+                    vvm.ObtenerTodosAsync();
+                    ShowInfoTable(filtro, dato);
+                }
             }
-
         }
     }
 
