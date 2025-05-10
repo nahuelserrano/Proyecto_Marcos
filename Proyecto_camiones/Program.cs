@@ -37,10 +37,10 @@ namespace Proyecto_camiones
         {
 
             // Llamada a Windows Forms para inicializar la aplicación
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
-            PagoViewModel pw = new PagoViewModel();
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
+            //Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
+            //PagoViewModel pw = new PagoViewModel();
 
             //await pw.CrearAsync(1, 1, 1000);
             //await pw.CrearAsync(1, 1, 1000);
@@ -120,7 +120,7 @@ namespace Proyecto_camiones
 
             //INSERCION PARA CUENTA CORRIENTE DE UN CLIENTE FUNCIONANDO CORRECTAMENTE
 
-            //var cuenta = await ccvm.InsertarAsync("machaca", null, new DateOnly(2025, 5,10), 15, 1000, 500);
+            //var cuenta = await ccvm.InsertarAsync("machaca", null, new DateOnly(2025, 5, 13), 15, 5000, 0);
             //if (cuenta.IsSuccess)
             //{
             //    Console.WriteLine("Id insertado: " + cuenta.Value);
@@ -173,15 +173,15 @@ namespace Proyecto_camiones
             //}
 
             //ACTUALIZAR UNA CUENTA CORRIENTE
-            //var cuenta = await ccvm.ActualizarAsync(8, null, null, 100, null, 4, null);
-            //if (cuenta.IsSuccess)
-            //{
-            //    Console.WriteLine(cuenta.Value.ToString());
-            //}
-            //else
-            //{
-            //    Console.WriteLine(cuenta.Error);
-            //}
+            var cuenta = await ccvm.ActualizarAsync(16, null, null, 1000, 500, 4, null);
+            if (cuenta.IsSuccess)
+            {
+                Console.WriteLine(cuenta.Value.ToString());
+            }
+            else
+            {
+                Console.WriteLine(cuenta.Error);
+            }
 
 
             ViajeFleteViewModel vfvm = new ViajeFleteViewModel();

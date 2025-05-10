@@ -78,6 +78,8 @@ namespace Proyecto_camiones.Repositories
                 }
                 else
                 {
+                    Console.WriteLine(ultimoRegistro.Saldo_Total);
+                    Console.WriteLine(adeuda + ultimoRegistro.Saldo_Total - pagado);
                     cuenta = new CuentaCorriente(idCliente, idFletero, fecha, nro, adeuda, pagado, ultimoRegistro.Saldo_Total);
                 }
 
