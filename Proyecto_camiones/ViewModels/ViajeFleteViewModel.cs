@@ -26,6 +26,7 @@ namespace Proyecto_camiones.ViewModels
 
         public async Task<bool> TestearConexion()
         {
+            MessageBox.Show("hola");
             return await this.fleteService.ProbarConexionAsync();
         }
 
@@ -71,8 +72,10 @@ namespace Proyecto_camiones.ViewModels
 
         internal async Task<Result<ViajeFlete>> ActualizarAsync(int id, string? origen, string? destino, float? remito, string? carga, float? km, float? kg, float? tarifa, int? factura, string? cliente, string? nombre_chofer, float? comision, DateOnly? fecha_salida)
         {
+            MessageBox.Show("actualizar");
             if (await this.TestearConexion())
             {
+                MessageBox.Show("conexión testeada");
                 return await this.fleteService.ActualizarAsync(id, origen, destino, remito, carga, km, kg, tarifa, factura, cliente, nombre_chofer, comision, fecha_salida);
             }
             return Result<ViajeFlete>.Failure("No se pudo acceder a la base de datos");
