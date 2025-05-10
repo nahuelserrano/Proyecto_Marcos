@@ -69,7 +69,7 @@ namespace Proyecto_camiones.Services
             return Result<bool>.Failure("El viaje no pudo ser eliminado, error interno de la base de datos");
         }
 
-        internal async Task<Result<int>> InsertarAsync(string? origen, string destino, float remito, string carga, float km, float kg, float tarifa, int factura, string nombre_cliente, string nombre_fletero, string nombre_chofer, float comision, DateOnly fecha_salida)
+        internal async Task<Result<int>> InsertarAsync(string? origen, string destino, float remito, string carga, float km, float kg, float tarifa, int factura, string nombre_cliente, string nombre_fletero, string? nombre_chofer, float comision, DateOnly fecha_salida)
         {
             Cliente cliente = await this.clienteRepository.ObtenerPorNombreAsync(nombre_cliente);
             Flete fletero = await this.fleteRepository.ObtenerPorNombreAsync(nombre_fletero);

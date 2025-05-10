@@ -66,7 +66,7 @@ public class FormRegistro : Home
         //Events
         btnCargar.Click += (s, e) => cargaClickEvent(s, e, filtro, dato);
 
-        cheq.CellClick += EliminarFila;
+        cheq.CellClick += (s, e) => EliminarFila(s, e, filtro, dato);
         cheq.CellClick += (s, e) => ModificarFilaAsync(s, e, dato, filtro);
 
         if (filtro == "sueldo")
@@ -141,6 +141,18 @@ public class FormRegistro : Home
                 MessageBox.Show(resultClient.Error);
                 MessageBox.Show("Error al cargar cliente");
             }
+        } else if( filtro == "cuenta corriente")
+        {
+            CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
+            var resultCuentaCorriente = await ccvm.ObtenerCuentasByClienteAsync(dato);
+
+            if (resultCuentaCorriente.IsSuccess)
+            {
+                foreach (var cuenta in resultCuentaCorriente.Value)
+                {
+                    cheq.Rows.Add(cuenta.Fecha_factura, cuenta.Nro_factura, cuenta.Pagado, cuenta.Adeuda, cuenta.Saldo_Total);
+                }
+            }
         }
         else if (filtro == "Flete")
         {
@@ -151,7 +163,7 @@ public class FormRegistro : Home
             {
                 foreach (var flete in resultFlete.Value)
                 {
-                    cheq.Rows.Add(flete.fecha_salida, flete.origen, flete.destino, flete.remito, flete.carga, flete.km, flete.kg, flete.tarifa, flete.factura, flete.comision, flete.cliente);
+                    cheq.Rows.Add(flete.fecha_salida, flete.origen, flete.destino, flete.remito, flete.carga, flete.km, flete.kg, flete.tarifa, flete.factura, flete.comision, flete.cliente, flete.nombre_chofer, flete.total, flete.total_comision);
                 }
             }
 
@@ -210,12 +222,15 @@ public class FormRegistro : Home
     }
     private void CargarFormulario(List<string> camposForm, int cant, string filtro)
     {
-        this.campos.Clear();
-        foreach (string i in camposForm)
+        if(filtro != "Cliente")
         {
-            this.campos.Add(i);
+            this.campos.Clear();
+            foreach (string i in camposForm)
+            {
+                this.campos.Add(i);
+            }
+            InitializeFormProperties(cant, campos, filtro);
         }
-        InitializeFormProperties(cant, campos, filtro);
     }
     private void InitializeFormProperties(int cant, List<string> campos, string filtro)
     {
@@ -312,7 +327,6 @@ public class FormRegistro : Home
         ll.Font = new Font("Nunito", 12, FontStyle.Regular);
         ll.ForeColor = System.Drawing.Color.FromArgb(224, 224, 224);
         ll.BackColor = Color.Transparent;
-        ll.Margin = new Padding(10, 0, 0, 0);
         ll.TextAlign = ContentAlignment.MiddleLeft;
 
         ll.AutoSize = false; // Muy importante: si no, el Size no se aplica
@@ -496,28 +510,51 @@ public class FormRegistro : Home
             {
                 ShowInfoTable(filtro, dato);
             }
+        } else if(filtro == "cuenta corriente")
+        {
+            CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
+            var resultado = await ccvm.InsertarAsync(dato, null, DateOnly.Parse(datos[0]), int.Parse(datos[1]), float.Parse(datos[3]), float.Parse(datos[2]));
+
+            if (resultado.IsSuccess)
+            {
+                MessageBox.Show("Agregado");
+                ShowInfoTable(filtro, dato);
+            }
+        } else if(filtro == "Flete")
+        {
+            ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
+            var resultado = await vfvm.InsertarAsync(datos[1], datos[2], float.Parse(datos[3]), datos[4], float.Parse(datos[5]), float.Parse(datos[6]), float.Parse(datos[7]), int.Parse(datos[8]), datos[10], dato, datos[11], float.Parse(datos[9]), DateOnly.Parse(datos[0]));
+
+            if (resultado.IsSuccess)
+            {
+                MessageBox.Show("Agregado");
+                ShowInfoTable(filtro, dato);
+            }
         }
 
-        foreach (Control control in formFLTextBox.Controls)
-        {
-            if (control is Panel panel)
+            foreach (Control control in formFLTextBox.Controls)
             {
-                foreach (Control child in panel.Controls)
+                if (control is Panel panel)
                 {
-                    if (child is TextBox textBox)
+                    foreach (Control child in panel.Controls)
                     {
-                        string placeholderText = textBox.Text;
-                        textBox.Clear();
-                        textBox.Text = placeholderText; // Restaurar el placeholder??????????
-                        textBox.ForeColor = Color.Black;
+                        if (child is TextBox textBox)
+                        {
+                            string placeholderText = textBox.Text;
+                            textBox.Clear();
+                            textBox.Text = placeholderText; // Restaurar el placeholder??????????
+                            textBox.ForeColor = Color.Black;
+                        }
                     }
                 }
             }
-        }
     }
 
-    private void EliminarFila(object sender, DataGridViewCellEventArgs e)
+    private async void EliminarFila(object sender, DataGridViewCellEventArgs e, string filtro, string dato)
     {
+        ViajeViewModel vvm = new ViajeViewModel();
+        ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
+
         // Verificar si la celda clickeada pertenece a la columna "Eliminar"
         if (e.ColumnIndex == cheq.Columns["Eliminar"].Index && e.RowIndex >= 0)
         {
@@ -525,7 +562,40 @@ public class FormRegistro : Home
             DialogResult resultado = MessageBox.Show("¿Desea eliminar esta fila?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (resultado == DialogResult.Yes)
             {
-                cheq.Rows.RemoveAt(e.RowIndex);
+                if (filtro == "Camion")
+                {
+                    string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
+                    var result = await vvm.EliminarAsync(int.Parse(id));
+
+                    if (result.IsSuccess)
+                    {
+                        ShowInfoTable(filtro, dato);
+                    }
+
+                } else if(filtro == "Cliente")
+                {
+                    string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
+                    MessageBox.Show(id);
+                    var result = await vvm.EliminarAsync(int.Parse(id));
+
+                    if (result.IsSuccess)
+                    {
+                        MessageBox.Show("eliminado");
+                        ShowInfoTable(filtro, dato);
+                    }
+                } else if(filtro == "Flete")
+                {
+                    MessageBox.Show("hola");
+                    string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
+                    MessageBox.Show(id);
+                    var result = await vfvm.EliminarAsync(int.Parse(id));
+
+                    if (result.IsSuccess)
+                    {
+                        MessageBox.Show("eliminado");
+                        ShowInfoTable(filtro, dato);
+                    }
+                }
             }
         }
     }
@@ -542,6 +612,27 @@ public class FormRegistro : Home
                 if(filtro == "Camion")
                 {
                     // Obtener los valores de la fila seleccionada
+                    string fecha = cheq.Rows[e.RowIndex].Cells["Fecha"].Value.ToString();
+                    string origen = cheq.Rows[e.RowIndex].Cells["Origen"].Value.ToString();
+                    string destino = cheq.Rows[e.RowIndex].Cells["Destino"].Value.ToString();
+                    string remito = cheq.Rows[e.RowIndex].Cells["RTO o CPE"].Value.ToString();
+                    string carga = cheq.Rows[e.RowIndex].Cells["Carga"].Value.ToString();
+                    string km = cheq.Rows[e.RowIndex].Cells["Km"].Value.ToString();
+                    string kg = cheq.Rows[e.RowIndex].Cells["Kg"].Value.ToString();
+                    string tarifa = cheq.Rows[e.RowIndex].Cells["Tarifa"].Value.ToString();
+                    string chofer = cheq.Rows[e.RowIndex].Cells["Chofer"].Value.ToString();
+                    string cliente = cheq.Rows[e.RowIndex].Cells["Cliente"].Value.ToString();
+                    string porcentaje = cheq.Rows[e.RowIndex].Cells["Porcentaje"].Value.ToString();
+                    string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
+
+                    var result = await vvm.ActualizarAsync(int.Parse(id), DateOnly.Parse(fecha), origen, destino, int.Parse(remito), carga, int.Parse(kg), null, dato, float.Parse(km), float.Parse(tarifa), chofer, float.Parse(porcentaje));
+
+                    if (result.IsSuccess)
+                    {
+                        ShowInfoTable(filtro, dato);
+                    }
+                } else if (filtro == "cuenta corriente")
+                {
                     string fecha = cheq.Rows[e.RowIndex].Cells["Fecha"].Value.ToString();
                     string origen = cheq.Rows[e.RowIndex].Cells["Origen"].Value.ToString();
                     string destino = cheq.Rows[e.RowIndex].Cells["Destino"].Value.ToString();

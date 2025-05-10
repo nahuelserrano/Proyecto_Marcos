@@ -30,7 +30,7 @@ namespace Proyecto_camiones.ViewModels
 
         public async Task<Result<int>> InsertarAsync(string? cliente, string? fletero, DateOnly fecha, int nro, float adeuda, float pagado)
         {
-            if (this.testearConexion().Result)
+            if (await this.testearConexion())
             {
                 int id = await cs.Insertar(cliente, fletero, fecha, nro, adeuda, pagado);
                 if (id > -1) return Result<int>.Success(id);
@@ -69,7 +69,7 @@ namespace Proyecto_camiones.ViewModels
 
         public async Task<Result<List<CuentaCorrienteDTO>>> ObtenerCuentasByClienteAsync(string cliente)
         {
-            if (this.testearConexion().Result)
+            if (await this.testearConexion())
             {
                 return await this.cs.ObtenerCuentasByIdClienteAsync(cliente);
             }

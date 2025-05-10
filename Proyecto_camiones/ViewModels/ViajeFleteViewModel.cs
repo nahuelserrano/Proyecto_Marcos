@@ -24,14 +24,14 @@ namespace Proyecto_camiones.ViewModels
         }
 
 
-        public async Task<bool> testearConexion()
+        public async Task<bool> TestearConexion()
         {
             return await this.fleteService.ProbarConexionAsync();
         }
 
-        public async Task<Result<int>> InsertarAsync(string? origen, string destino, float remito, string carga, float km, float kg, float tarifa, int factura, string nombre_cliente, string nombre_fletero, string nombre_chofer, float comision, DateOnly fecha_salida)
+        public async Task<Result<int>> InsertarAsync(string? origen, string destino, float remito, string carga, float km, float kg, float tarifa, int factura, string nombre_cliente, string nombre_fletero, string? nombre_chofer, float comision, DateOnly fecha_salida)
         {
-            if (this.testearConexion().Result)
+            if (await this.TestearConexion())
             {
                 nombre_cliente = nombre_cliente.ToUpper();
                 nombre_fletero = nombre_fletero.ToUpper();
@@ -43,7 +43,7 @@ namespace Proyecto_camiones.ViewModels
 
         public async Task<Result<List<ViajeFleteDTO>>> ObtenerViajesDeUnFleteroAsync(string fletero)
         {
-            if (await this.testearConexion())
+            if (await this.TestearConexion())
             {
                 fletero = fletero.ToUpper();
                 return await this.fleteService.ObtenerViajesDeUnFleteroAsync(fletero);
@@ -53,7 +53,7 @@ namespace Proyecto_camiones.ViewModels
 
         public async Task<Result<bool>> EliminarAsync(int id)
         {
-            if (this.testearConexion().Result)
+            if (await this.TestearConexion())
             {
                 return await this.fleteService.EliminarAsync(id);
             }
@@ -62,7 +62,7 @@ namespace Proyecto_camiones.ViewModels
 
         internal async Task<Result<List<ViajeMixtoDTO>>> ObtenerViajesDeUnClienteAsync(int id)
         {
-            if (this.testearConexion().Result)
+            if (await this.TestearConexion())
             {
                 return await this.fleteService.ObtenerViajesDeUnClienteAsync(id);
             }
@@ -71,7 +71,7 @@ namespace Proyecto_camiones.ViewModels
 
         internal async Task<Result<ViajeFlete>> ActualizarAsync(int id, string? origen, string? destino, float? remito, string? carga, float? km, float? kg, float? tarifa, int? factura, string? cliente, string? nombre_chofer, float? comision, DateOnly? fecha_salida)
         {
-            if (this.testearConexion().Result)
+            if (await this.TestearConexion())
             {
                 return await this.fleteService.ActualizarAsync(id, origen, destino, remito, carga, km, kg, tarifa, factura, cliente, nombre_chofer, comision, fecha_salida);
             }

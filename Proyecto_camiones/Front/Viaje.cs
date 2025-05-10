@@ -78,15 +78,12 @@ internal class Viaje : Home
         //Hovers
         fleteFilter.MouseEnter += (s, e) => HoverEffect(s, e, true);
         fleteFilter.MouseLeave += (s, e) => HoverEffect(s, e, false);
-        //fleteFilter.Click += (s, e) => ClickEffects(s, e);
 
         clienteFilter.MouseEnter += (s, e) => HoverEffect(s, e, true);
         clienteFilter.MouseLeave += (s, e) => HoverEffect(s, e, false);
-        //clienteFilter.Click += (s, e) => ClickEffects(s, e);
 
         camionFilter.MouseEnter += (s, e) => HoverEffect(s, e, true);
         camionFilter.MouseLeave += (s, e) => HoverEffect(s, e, false);
-        //camionFilter.Click += (s, e) => ClickEffects(s, e);
 
         //Events
         fleteFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Flete", " ");
@@ -202,7 +199,7 @@ internal class Viaje : Home
             var resultado = await fvm.ObtenerTodosAsync();
             if (resultado.IsSuccess)
             {
-                CardCamionGenerator("Flete", resultado);
+                CardFleteGenerator("Flete", resultado);
             }
             else
             {
@@ -211,7 +208,7 @@ internal class Viaje : Home
         }
     }
 
-    private void CardCamionGenerator(string filtro, Result<List<Flete>> resultado)
+    private void CardFleteGenerator(string filtro, Result<List<Flete>> resultado)
     {
         cardsContainerFL.Controls.Clear();
         foreach (var item in resultado.Value)
@@ -301,7 +298,7 @@ internal class Viaje : Home
 
         campos.Clear();
         camposFaltantesTabla.Clear();
-        this.campos = new List<string> { "Fecha", "Origen", "Destino", "RTO o CPE", "Carga", "Km", "Kg", "Tarifa", "Factura", "Comisión", "Cliente" };
+        this.campos = new List<string> { "Fecha", "Origen", "Destino", "RTO o CPE", "Carga", "Km", "Kg", "Tarifa", "Factura", "Comisión", "Cliente", "Chofer" };
         cantCamposTabla = campos.Count();
 
         this.camposFaltantesTabla = new List<string> { "Total", "Total comisión" };

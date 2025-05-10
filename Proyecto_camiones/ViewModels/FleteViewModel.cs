@@ -33,7 +33,6 @@ namespace Proyecto_camiones.ViewModels
             bool conexion = await this.TestearConexion();
             if (conexion)
             {
-                MessageBox.Show("conexión exitosa");
                 return await this.fleteService.InsertarFletero(nombre);
             }
             return Result<int>.Failure("No se pudo establecer la conexion con la base de datos");
