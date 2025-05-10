@@ -74,11 +74,11 @@ namespace Proyecto_camiones.Repositories
                 CuentaCorriente cuenta;
                 if (ultimoRegistro == null)
                 {
-                    cuenta = new CuentaCorriente(idCliente, idFletero, fecha, nro, adeuda, pagado);
+                    cuenta = new CuentaCorriente(idCliente, idFletero, fecha, nro, adeuda, pagado, 0);
                 }
                 else
                 {
-                    cuenta = new CuentaCorriente(idCliente, idFletero, fecha, nro, adeuda + ultimoRegistro.Saldo_Total, pagado);
+                    cuenta = new CuentaCorriente(idCliente, idFletero, fecha, nro, adeuda, pagado, ultimoRegistro.Saldo_Total);
                 }
 
                 await _context.Cuentas.AddAsync(cuenta);
@@ -100,7 +100,7 @@ namespace Proyecto_camiones.Repositories
 
         }
 
-        public async Task<CuentaCorriente> ObtenerCuentaMasRecientePorClienteIdAsync(int clienteId)
+        public async Task<CuentaCorrienteDTO> ObtenerCuentaMasRecientePorClienteIdAsync(int clienteId)
         {
             try
             {
@@ -113,7 +113,7 @@ namespace Proyecto_camiones.Repositories
                 var result = await _context.Cuentas.Where(r => r.IdCliente == clienteId).OrderByDescending(r => r.Fecha_factura).FirstOrDefaultAsync();
                 if (result != null)
                 {
-                    CuentaCorriente cuenta = new CuentaCorriente(result.IdCliente, -1, result.Fecha_factura, result.Nro_factura, result.Adeuda, result.Pagado);
+                    CuentaCorrienteDTO cuenta = new CuentaCorrienteDTO((int)result.IdCliente, result.Fecha_factura, result.Nro_factura, result.Adeuda, result.Pagado, result.Saldo_Total, result.IdFletero, result.IdCliente);
                     return cuenta;
                 }
                 return null;
@@ -257,10 +257,18 @@ namespace Proyecto_camiones.Repositories
                 }
                 if (adeuda != null)
                 {
-                    if(idCliente != null)
+                    cuenta.Adeuda = (float)adeuda;
+                }
+                if (importe != null)
+                {
+                    cuenta.Pagado = (float)importe;
+                }
+                if (importe != null || adeuda != null)
+                {
+                    if (idCliente != null)
                     {
                         CuentaCorriente? anteUltimoRegistro = await this._context.Cuentas
-                                                                .Where(c=> c.IdCliente == idCliente)
+                                                                .Where(c => c.IdCliente == idCliente)
                                                                 .OrderByDescending(c => c.Id)
                                                                 .Skip(1)
                                                                 .FirstOrDefaultAsync();
@@ -268,13 +276,14 @@ namespace Proyecto_camiones.Repositories
                         {
                             Console.WriteLine(anteUltimoRegistro.Saldo_Total);
                             Console.WriteLine(adeuda);
-                            cuenta.Adeuda = (float)(adeuda + anteUltimoRegistro.Saldo_Total);
+                            cuenta.Saldo_Total = cuenta.Adeuda +anteUltimoRegistro.Saldo_Total - cuenta.Pagado;
                         }
                         else
                         {
-                            cuenta.Adeuda = (float)adeuda;
+                            cuenta.Saldo_Total = cuenta.Adeuda - cuenta.Pagado;
                         }
-                    } else if(idFletero != null)
+                    }
+                    else if (idFletero != null)
                     {
                         CuentaCorriente? anteUltimoRegistro = await this._context.Cuentas
                                                                  .Where(c => c.IdFletero == idFletero)
@@ -283,22 +292,15 @@ namespace Proyecto_camiones.Repositories
                                                                  .FirstOrDefaultAsync();
                         if (anteUltimoRegistro != null)
                         {
-                            cuenta.Adeuda = (float)(adeuda + anteUltimoRegistro.Saldo_Total);
+                            Console.WriteLine(anteUltimoRegistro.Saldo_Total);
+                            Console.WriteLine(adeuda);
+                            cuenta.Saldo_Total = cuenta.Adeuda + anteUltimoRegistro.Saldo_Total - cuenta.Pagado;
                         }
                         else
                         {
-                            cuenta.Adeuda = (float)adeuda;
+                            cuenta.Saldo_Total = cuenta.Adeuda - cuenta.Pagado;
                         }
                     }
-                        
-                }
-                if (importe != null)
-                {
-                    cuenta.Pagado = (float)importe;
-                }
-                if (importe != null || adeuda != null)
-                {
-                    cuenta.Saldo_Total = (float)(cuenta.Adeuda - cuenta.Pagado);
                 }
                 int registrosAfectados = await _context.SaveChangesAsync();
                 if (registrosAfectados > 0)

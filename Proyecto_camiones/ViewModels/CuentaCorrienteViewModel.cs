@@ -39,18 +39,18 @@ namespace Proyecto_camiones.ViewModels
             return Result<int>.Failure("no se pudo establecer la conexion");
         }
 
-        public async Task<Result<CuentaCorriente>> ObtenerCuentaMasRecienteByClienteAsync(int idCliente)
+        public async Task<Result<CuentaCorrienteDTO>> ObtenerCuentaMasRecienteByClienteAsync(int idCliente)
         {
             if (this.testearConexion().Result)
             {
-                CuentaCorriente c = await this.cs.ObtenerCuentaMasRecienteByClientId(idCliente);
+                CuentaCorrienteDTO c = await this.cs.ObtenerCuentaMasRecienteByClientId(idCliente);
                 if(c != null)
                 {
-                    return Result<CuentaCorriente>.Success(c);
+                    return Result<CuentaCorrienteDTO>.Success(c);
                 }
-                return Result<CuentaCorriente>.Failure("Hubo un problema al obtener la cuenta o no existe un cliente con ese id");
+                return Result<CuentaCorrienteDTO>.Failure("Hubo un problema al obtener la cuenta o no existe un cliente con ese id");
             }
-            return Result<CuentaCorriente>.Failure("No se pudo establecer la conexion");
+            return Result<CuentaCorrienteDTO>.Failure("No se pudo establecer la conexion");
         }
 
         public async Task<Result<List<CuentaCorriente>>> ObtenerTodosAsync()

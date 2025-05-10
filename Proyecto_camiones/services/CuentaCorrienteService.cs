@@ -38,14 +38,14 @@ namespace Proyecto_camiones.Services
             return result;
         }
 
-        public async Task<CuentaCorriente> ObtenerCuentaMasRecienteByClientId(int id)
+        public async Task<CuentaCorrienteDTO> ObtenerCuentaMasRecienteByClientId(int id)
         {
             Cliente c = await clienteRepository.ObtenerPorIdAsync(id);
             if(c == null)
             {
                 return null;
             }
-            CuentaCorriente result = await ccRepository.ObtenerCuentaMasRecientePorClienteIdAsync(id);
+            CuentaCorrienteDTO result = await ccRepository.ObtenerCuentaMasRecientePorClienteIdAsync(id);
             return result;
         }
 
