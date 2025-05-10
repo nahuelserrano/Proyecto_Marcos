@@ -5,6 +5,7 @@ using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Utils;
 using Proyecto_camiones.Repositories;
+using Proyecto_camiones.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +20,10 @@ namespace Proyecto_camiones.Services
         private ClienteRepository clienteRepository;
         private FleteRepository fleteRepository;
 
-        public CuentaCorrienteService(CuentaCorrienteRepository cc, ClienteRepository cr)
+        public CuentaCorrienteService(CuentaCorrienteRepository cc)
         {
             this.ccRepository = cc ?? throw new ArgumentNullException(nameof(cc));
-            this.clienteRepository = cr ?? throw new ArgumentNullException(nameof(cr));
+            this.clienteRepository = new ClienteRepository(General.obtenerInstancia());
             this.fleteRepository = new FleteRepository();
         }
 
@@ -38,14 +39,14 @@ namespace Proyecto_camiones.Services
             return result;
         }
 
-        public async Task<CuentaCorriente> ObtenerCuentaMasRecienteByClientId(int id)
+        public async Task<CuentaCorrienteDTO> ObtenerCuentaMasRecienteByClientId(int id)
         {
             Cliente c = await clienteRepository.ObtenerPorIdAsync(id);
             if(c == null)
             {
                 return null;
             }
-            CuentaCorriente result = await ccRepository.ObtenerCuentaMasRecientePorClienteIdAsync(id);
+            CuentaCorrienteDTO result = await ccRepository.ObtenerCuentaMasRecientePorClienteIdAsync(id);
             return result;
         }
 

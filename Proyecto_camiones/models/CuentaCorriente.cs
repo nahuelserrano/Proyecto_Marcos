@@ -18,7 +18,7 @@ namespace Proyecto_camiones.Models
 
         public float Saldo_Total { get; set; }
 
-        public CuentaCorriente(int? idCliente, int? idFletero, DateOnly fecha, int nro, float adeuda, float pagado)
+        public CuentaCorriente(int? idCliente, int? idFletero, DateOnly fecha, int nro, float adeuda, float pagado, float ultimoSaldo)
         {
             this.IdCliente = idCliente;
             this.IdFletero = idFletero;
@@ -26,7 +26,7 @@ namespace Proyecto_camiones.Models
             this.Nro_factura = nro;
             this.Adeuda = adeuda;
             this.Pagado = pagado;
-            this.Saldo_Total = this.Adeuda - Pagado;
+            this.Saldo_Total = this.Adeuda + ultimoSaldo - Pagado;
         }
 
         public CuentaCorriente()

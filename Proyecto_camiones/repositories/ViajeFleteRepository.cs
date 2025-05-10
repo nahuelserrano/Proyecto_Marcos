@@ -212,6 +212,7 @@ namespace Proyecto_camiones.Repositories
                     flete => flete.Id,  // Asumiendo que el ID del fletero es 'Id'
                     (vc, flete) => new ViajeFleteDTO
                     {
+                        idViajeFlete = vc.Viaje.idViajeFlete,
                         origen = vc.Viaje.origen,
                         destino = vc.Viaje.destino,
                         remito = vc.Viaje.remito,
