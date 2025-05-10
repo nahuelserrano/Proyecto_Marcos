@@ -37,10 +37,10 @@ namespace Proyecto_camiones
         {
 
             // Llamada a Windows Forms para inicializar la aplicación
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
-            //PagoViewModel pw = new PagoViewModel();
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
+            PagoViewModel pw = new PagoViewModel();
 
             //await pw.CrearAsync(1, 1, 1000);
             //await pw.CrearAsync(1, 1, 1000);
@@ -198,19 +198,19 @@ namespace Proyecto_camiones
 
             //OBTENER VIAJES DE UN FLETERO
 
-            var viajes = await vfvm.ObtenerViajesDeUnFleteroAsync("Carlos");
-            if (viajes.IsSuccess)
-            {
-                foreach (var viaje in viajes.Value)
-                {
-                    Console.WriteLine(viaje);
-                    Console.WriteLine("total: " + viaje.total + "comision: " + viaje.total_comision);
-                }
-            }
-            else
-            {
-                Console.WriteLine(viajes.Error);
-            }
+            //var viajes = await vfvm.ObtenerViajesDeUnFleteroAsync("Carlos");
+            //if (viajes.IsSuccess)
+            //{
+            //    foreach (var viaje in viajes.Value)
+            //    {
+            //        Console.WriteLine(viaje);
+            //        Console.WriteLine("total: " + viaje.total + "comision: " + viaje.total_comision);
+            //    }
+            //}
+            //else
+            //{
+            //    Console.WriteLine(viajes.Error);
+            //}
 
             //ELIMINAR VIAJE POR FLETERO
             //var response = await vfvm.EliminarAsync(12);
