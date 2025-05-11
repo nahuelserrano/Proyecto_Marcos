@@ -16,7 +16,7 @@ namespace Proyecto_camiones.ViewModels
         {
             var dbContext = General.obtenerInstancia();
             var chequeRepository = new ChequeRepository(dbContext);
-            _chequeService = new ChequeService(chequeRepository);
+            _chequeService = new ChequeService(chequeRepository, new ClienteService(new ClienteRepository(General.obtenerInstancia())));
         }
 
         public async Task<bool> TestearConexionAsync()
@@ -41,7 +41,7 @@ namespace Proyecto_camiones.ViewModels
             if (!await TestearConexionAsync())
                 return Result<ChequeDTO>.Failure("La conexión no pudo establecerse");
 
-            var resultado = await _chequeService.ObtenerPorIdAsyncObtenerPorId(id);
+            var resultado = await _chequeService.ObtenerPorIdAsync(id);
 
             return resultado;
         }

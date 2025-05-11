@@ -11,11 +11,13 @@ namespace Proyecto_camiones.Presentacion.Services
 {
     class ChequeService
     {
-        private ChequeRepository _chequeRepository;
+        private readonly ChequeRepository _chequeRepository;
+        private readonly ClienteService _clienteService;
 
-        public ChequeService(ChequeRepository chequeR)
+        public ChequeService(ChequeRepository chequeR, ClienteService clienteS)
         {
             this._chequeRepository = chequeR ?? throw new ArgumentNullException(nameof(chequeR));
+            this._clienteService = clienteS ?? throw new ArgumentNullException(nameof(clienteS));
         }
 
         public async Task<bool> ProbarConexionAsync()
@@ -24,14 +26,14 @@ namespace Proyecto_camiones.Presentacion.Services
             return result;
         }
 
-        public async Task<Result<ChequeDTO>> ObtenerPorIdAsyncObtenerPorId(int id)
+        public async Task<Result<ChequeDTO>> ObtenerPorIdAsync(int id)
         {
             if (id < 0)
             {
                 return Result<ChequeDTO>.Failure(MensajeError.IdInvalido(id));
             }
 
-            ChequeDTO cheque = await this._chequeRepository.ObtenerPorId(id);
+            ChequeDTO? cheque = await this._chequeRepository.ObtenerPorIdAsync(id);
 
             if (cheque == null)
                 return Result<ChequeDTO>.Failure(MensajeError.objetoNulo(nameof(cheque)));
@@ -41,35 +43,46 @@ namespace Proyecto_camiones.Presentacion.Services
 
         internal async Task<Result<bool>> EliminarAsync(int id)
         {
-            if (id <= 0) return Result<bool>.Failure(MensajeError.IdInvalido(id));
+            try
+            {
+                if (id <= 0) return Result<bool>.Failure(MensajeError.IdInvalido(id));
 
-            ChequeDTO cheque = await this._chequeRepository.ObtenerPorId(id);
+                ChequeDTO? cheque = await this._chequeRepository.ObtenerPorIdAsync(id);
 
-            if (cheque == null) return Result<bool>.Failure(MensajeError.objetoNulo(nameof(cheque)));
+                if (cheque == null) return Result<bool>.Failure(MensajeError.objetoNulo(nameof(cheque)));
 
-            await _chequeRepository.Eliminar(id);
+                await _chequeRepository.EliminarAsync(id);
 
-            return Result<bool>.Success(true);
+                return Result<bool>.Success(true);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         public async Task<Result<int>> CrearAsync(int id_Cliente, DateOnly FechaIngresoCheque, string NumeroCheque, float Monto, string Banco, DateOnly FechaCobro)
         {
             ValidadorCheque validador = new ValidadorCheque(id_Cliente, FechaIngresoCheque, NumeroCheque, Monto, Banco, FechaCobro);
-            Result<bool> resultadoValidacion = validador.ValidarCompleto();
+            //Result<bool> resultadoValidacion = validador.ValidarCompleto();
 
-            if (!resultadoValidacion.IsSuccess)
-                return Result<int>.Failure(resultadoValidacion.Error);
-
+            //if (!resultadoValidacion.IsSuccess)
+            //    return Result<int>.Failure(resultadoValidacion.Error);
 
             try
             {
+                var clienteResult = await _clienteService.ObtenerPorIdAsync(id_Cliente);
+
+                if (!clienteResult.IsSuccess)
+                    return Result<int>.Failure(clienteResult.Error);
+
                 // Intentar insertar en la base de datos
-                int resultado = await _chequeRepository.Insertar(id_Cliente, FechaIngresoCheque, NumeroCheque, Monto, Banco, FechaCobro);
+                int resultado = await _chequeRepository.InsertarAsync(id_Cliente, FechaIngresoCheque, NumeroCheque, Monto, Banco, FechaCobro);
                 if (resultado < 0)
                     return Result<int>.Failure("El cheque no pudo ser insertado");
 
                 return Result<int>.Success(resultado);
-
 
             }
             catch (Exception)
@@ -85,7 +98,7 @@ namespace Proyecto_camiones.Presentacion.Services
             if (id <= 0)
                 return Result<ChequeDTO>.Failure(MensajeError.IdInvalido(id));
 
-            var chequeExistente = await _chequeRepository.ObtenerPorId(id);
+            var chequeExistente = await _chequeRepository.ObtenerPorIdAsync(id);
 
             if (chequeExistente == null)
                 return Result<ChequeDTO>.Failure(MensajeError.objetoNulo(nameof(chequeExistente)));
@@ -114,10 +127,10 @@ namespace Proyecto_camiones.Presentacion.Services
 
 
 
-            bool success = await _chequeRepository.Actualizar(id, chequeExistente.Id_cliente, chequeExistente.FechaIngresoCheque, chequeExistente.NumeroCheque, chequeExistente.Banco, chequeExistente.Monto, chequeExistente.FechaCobro);
+            bool success = await _chequeRepository.ActualizarAsync(id, chequeExistente.Id_cliente, chequeExistente.FechaIngresoCheque, chequeExistente.NumeroCheque, chequeExistente.Banco, chequeExistente.Monto, chequeExistente.FechaCobro);
             if (success)
             {
-                ChequeDTO result = await _chequeRepository.ObtenerPorId(id);
+                ChequeDTO? result = await _chequeRepository.ObtenerPorIdAsync(id);
                 return Result<ChequeDTO>.Success(result);
             }
             return Result<ChequeDTO>.Failure("No se pudo realizar la actualización");
@@ -125,12 +138,12 @@ namespace Proyecto_camiones.Presentacion.Services
 
         public async Task<List<ChequeDTO>?> ObtenerTodosAsync()
         {
-            List<ChequeDTO> cheque = await _chequeRepository.ObtenerTodos();
-            if (cheque != null)
+            List<ChequeDTO>? cheques = await _chequeRepository.ObtenerTodosAsync();
+            if (cheques != null)
             {
-                return cheque;
+                return cheques;
             }
-            return new List<ChequeDTO>();
+            return null;
         }
     }
 }

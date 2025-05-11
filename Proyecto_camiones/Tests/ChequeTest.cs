@@ -23,7 +23,7 @@ namespace Proyecto_camiones.Tests
                 await ProbarConexionCheque();
 
                 // 2. Creamos un cheque para las pruebas
-                int idCheque = await ProbarInsertarCheque(1, "12345ABC", 5000.0f, "Banco Galicia");
+                int idCheque = await ProbarInsertarCheque(2, "12345ABC", 5000.0f, "Banco Galicia");
 
                 // 3. Obtenemos el cheque por ID
                 await ProbarObtenerChequePorId(idCheque);
@@ -107,11 +107,9 @@ namespace Proyecto_camiones.Tests
                     Console.WriteLine($"[ÉXITO] Cheque insertado con ID: {resultado.Value}");
                     return resultado.Value;
                 }
-                else
-                {
-                    Console.WriteLine($"[ERROR] No se pudo insertar el cheque: {resultado.Error}");
-                    return -1;
-                }
+                
+                Console.WriteLine($"[ERROR] No se pudo insertar el cheque: {resultado.Error}");
+                return -1;
             }
             catch (Exception ex)
             {

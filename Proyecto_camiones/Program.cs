@@ -35,11 +35,6 @@ namespace Proyecto_camiones
         static async Task Main(string[] args)
 
         {
-            //LLAMADA AL FRONT
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
-
 
             // Llamada a Windows Forms para inicializar la aplicación
             Application.EnableVisualStyles();
