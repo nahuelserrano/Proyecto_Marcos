@@ -68,7 +68,7 @@ public class FormRegistro : Home
 
         cheq.CellClick += (s, e) => EliminarFila(s, e, filtro, dato);
         cheq.CellClick += (s, e) => ModificarFilaAsync(s, e, dato, filtro);
-        cheq.CellClick += (s, e) => MarcarComoPagado(s, e, dato, filtro);
+        //cheq.CellClick += (s, e) => MarcarComoPagado(s, e, dato, filtro);
 
 
         if (filtro == "sueldo")
