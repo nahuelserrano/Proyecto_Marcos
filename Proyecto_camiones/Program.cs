@@ -35,6 +35,11 @@ namespace Proyecto_camiones
         static async Task Main(string[] args)
 
         {
+            //LLAMADA AL FRONT
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
+
 
             // Llamada a Windows Forms para inicializar la aplicación
             Application.EnableVisualStyles();
@@ -113,16 +118,22 @@ namespace Proyecto_camiones
             //{
             //    Console.WriteLine("Id insertado: " + cuenta.Value);
             //}
-            //Console.WriteLine(cuenta.Value);
+            //else
+            //{
+            //    Console.WriteLine(cuenta.Error);
+            //}
 
             //INSERCION PARA CUENTA CORRIENTE DE UN CLIENTE FUNCIONANDO CORRECTAMENTE
 
-            //var cuenta = await ccvm.InsertarAsync("machaca", null, new DateOnly(2025, 4, 22), 92, 1000, 600);
+            //var cuenta = await ccvm.InsertarAsync("machaca", null, new DateOnly(2025, 5, 13), 15, 5000, 0);
             //if (cuenta.IsSuccess)
             //{
             //    Console.WriteLine("Id insertado: " + cuenta.Value);
             //}
-            //Console.WriteLine(cuenta.Value);
+            //else
+            //{
+            //    Console.WriteLine(cuenta.Error);
+            //}
 
 
             //OBTENER CUENTAS DE UN CLIENTE POR SU NOMBRE
@@ -166,7 +177,19 @@ namespace Proyecto_camiones
             //    Console.WriteLine(result.Error);
             //}
 
-            //    ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
+            //ACTUALIZAR UNA CUENTA CORRIENTE
+            //var cuenta = await ccvm.ActualizarAsync(16, null, null, 1000, 500, 4, null);
+            //if (cuenta.IsSuccess)
+            //{
+            //    Console.WriteLine(cuenta.Value.ToString());
+            //}
+            //else
+            //{
+            //    Console.WriteLine(cuenta.Error);
+            //}
+
+
+            ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
 
             //INSERTAR
 
@@ -186,6 +209,7 @@ namespace Proyecto_camiones
             //    foreach (var viaje in viajes.Value)
             //    {
             //        Console.WriteLine(viaje);
+            //        Console.WriteLine("total: " + viaje.total + "comision: " + viaje.total_comision);
             //    }
             //}
             //else
@@ -274,34 +298,45 @@ namespace Proyecto_camiones
             //    Console.WriteLine(response.Error);
             //}
 
-            //try
+            //ACTUALIZAR FLETERO
+            //var fletero = await fvm.ActualizarAsync(5, "marcos");
+            //if (fletero.IsSuccess)
             //{
+            //    Console.WriteLine(fletero.Value.ToString());
+            //}
+            //else
+            //{
+            //    Console.WriteLine(fletero.Error);
+            //}
 
-            //    // Descomentar la prueba que se desea ejecutar
+                //try
+                //{
 
-            //    // PRUEBAS DE CLIENTE
-            //    //await ClienteTests.EjecutarTodasLasPruebas();
+                //    // Descomentar la prueba que se desea ejecutar
 
-            //    // PRUEBAS DE CHOFER
-            //await ChoferTests.EjecutarTodasLasPruebas();
+                //    // PRUEBAS DE CLIENTE
+                //    //await ClienteTests.EjecutarTodasLasPruebas();
 
-            //    // PRUEBAS DE VIAJE
-            //await ViajeTest.EjecutarTodasLasPruebas();
+                //    // PRUEBAS DE CHOFER
+                //await ChoferTests.EjecutarTodasLasPruebas();
 
-            //    // O EJECUTAR PRUEBAS INDIVIDUALES:
+                //    // PRUEBAS DE VIAJE
+                //await ViajeTest.EjecutarTodasLasPruebas();
 
-            //    // CLIENTE
-            //    //int idCliente await ClienteTests.ProbarInsertarCliente("TRANSPORTES TEST");
-            //    //await ClienteTests.ProbarObtenerClientePorId(idCliente);
-            //    //await ClienteTests.ProbarEliminarCliente(idCliente);
+                //    // O EJECUTAR PRUEBAS INDIVIDUALES:
 
-            //    // CHOFER
-            //    //await ChoferTests.ProbarInsertarChofer("Chofer Test");
-            //    //await ChoferTests.ProbarObtenerChoferPorId(1);
-            //    //await ChoferTests.ProbarEliminarChofer(2);
+                //    // CLIENTE
+                //    //int idCliente await ClienteTests.ProbarInsertarCliente("TRANSPORTES TEST");
+                //    //await ClienteTests.ProbarObtenerClientePorId(idCliente);
+                //    //await ClienteTests.ProbarEliminarCliente(idCliente);
 
-            //    // VIAJE
-            DateOnly fecha = new DateOnly(2025, 4, 28);
+                //    // CHOFER
+                //    //await ChoferTests.ProbarInsertarChofer("Chofer Test");
+                //    //await ChoferTests.ProbarObtenerChoferPorId(1);
+                //    //await ChoferTests.ProbarEliminarChofer(2);
+
+                //    // VIAJE
+                DateOnly fecha = new DateOnly(2025, 4, 28);
             //int idViaje = await ViajeTests.ProbarInsertarViaje(fecha, "Tandil", "Buenos Aires", 123, 1000.5f, "Trigo", "Cliente1", "HIJ429", 350.5f, 5000.0f, "Chofer Test", 018f);
 
             //await ViajeTest.ProbarActualizarViaje(
@@ -333,7 +368,8 @@ namespace Proyecto_camiones
             //    Console.WriteLine($"Stack Trace: {ex.StackTrace}");
             //}
 
-            //ClienteViewModel clientevm = new ClienteViewModel();
+            ClienteViewModel clientevm = new ClienteViewModel();
+
             //OBTENER TODOS LOS CLIENTES
 
             //var response = await clientevm.ObtenerTodosAsync();
@@ -371,6 +407,17 @@ namespace Proyecto_camiones
             //else
             //{
             //    Console.WriteLine(response.Error);
+            //}
+
+            //ACTUALIZAR CLIENTE
+            //var cliente = await clientevm.ActualizarAsync(2, "Verellen");
+            //if (cliente.IsSuccess)
+            //{
+            //    Console.WriteLine(cliente.Value.ToString());
+            //}
+            //else
+            //{
+            //    Console.WriteLine(cliente.Error);
             //}
         }
     }

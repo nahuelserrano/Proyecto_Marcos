@@ -142,17 +142,29 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
         public async Task<Cliente> ActualizarAsync(int id, string? nombre)
         {
-            var cliente = await this._context.Clientes.FindAsync(id);
-            if (cliente != null)
+            try
             {
-                if (nombre != null)
+                Cliente? cliente = await this._context.Clientes.FindAsync(id);
+                if (cliente != null)
                 {
-                    cliente.Nombre = nombre;
+                    if (nombre != null)
+                    {
+                        cliente.Nombre = nombre;
+                    }
+                    int registros_afectados = await _context.SaveChangesAsync();
+                    if(registros_afectados > 0)
+                    {
+                        return cliente;
+                    }
                 }
-                await _context.SaveChangesAsync();
-                return cliente;
+                return null;
             }
-            return null;
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.InnerException);
+                return null;
+            }
         }
 
 

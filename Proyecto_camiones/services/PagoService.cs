@@ -7,6 +7,7 @@ using Proyecto_camiones.Models;
 using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Utils;
 using Proyecto_camiones.Repositories;
+using Proyecto_camiones.DTOs;
 
 
 namespace Proyecto_camiones.Services
@@ -49,10 +50,29 @@ namespace Proyecto_camiones.Services
 
         }
 
+        public async Task<Result<bool>> ActualizarAsync(int id_chofer, int id_viaje, float monto_pagado) {
+            if (id_chofer <= 0 || id_viaje <= 0) return Result<bool>.Failure(MensajeError.IdInvalido(id_chofer));
+            if (monto_pagado <= 0) return Result<bool>.Failure(MensajeError.valorInvalido(nameof(monto_pagado)));
+            try
+            {
+                bool actualizado = await _pagoRepository.ActualizarAsync(id_chofer, id_viaje, monto_pagado);
+                if (actualizado)
+                {
+                    return Result<bool>.Success(actualizado);
+                }
+                return Result<bool>.Failure("No se pudo actualizar el pago ya que el mismo ya se encuentra pagado");
+            }
+            catch (Exception ex)
+            {
+                return Result<bool>.Failure("Error al actualizar el pago");
+                Console.WriteLine($"Error al actualizar el pago: {ex.Message}");
+            }
+        }
+
         public async Task<Result<bool>> ModificarEstado(int id_chofer, DateOnly desde, DateOnly hasta, int? id_Sueldo,bool pagado = true) {
             try
             {
-                bool actualizado=await _pagoRepository.ActualizarAsync(id_chofer, desde, hasta, id_Sueldo,pagado);
+                bool actualizado=await _pagoRepository.modificarEstado(id_chofer, desde, hasta, id_Sueldo,pagado);
                 if (actualizado) {
                     return Result<bool>.Success(actualizado);
                 }

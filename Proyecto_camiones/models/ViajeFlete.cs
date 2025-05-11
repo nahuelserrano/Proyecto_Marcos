@@ -23,7 +23,7 @@ namespace Proyecto_camiones.Models
         public float comision { get; set; }
         public DateOnly fecha_salida { get; set; }
 
-        public ViajeFlete(string origen, string destino, float remito, string carga, float km, float kg, float tarifa, int factura, int idCliente, int idFlete, string nombre_chofer, float comision, DateOnly fecha)
+        public ViajeFlete(string? origen, string destino, float remito, string carga, float km, float kg, float tarifa, int factura, int idCliente, int idFlete, string? nombre_chofer, float comision, DateOnly fecha)
         {
             this.origen = origen;
             this.destino = destino;

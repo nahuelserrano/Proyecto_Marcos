@@ -33,7 +33,6 @@ namespace Proyecto_camiones.ViewModels
             bool conexion = await this.TestearConexion();
             if (conexion)
             {
-                MessageBox.Show("conexión exitosa");
                 return await this.fleteService.InsertarFletero(nombre);
             }
             return Result<int>.Failure("No se pudo establecer la conexion con la base de datos");
@@ -77,6 +76,16 @@ namespace Proyecto_camiones.ViewModels
                 return await this.fleteService.EliminarAsync(id);
             }
             return Result<bool>.Failure("No se pudo establecer la conexión con la base de datos");
+        }
+
+        public async Task<Result<Flete>> ActualizarAsync(int id, string? nombre)
+        {
+            bool conexion = await this.TestearConexion();
+            if (conexion)
+            {
+                return await this.fleteService.ActualizarAsync(id, nombre);
+            }
+            return Result<Flete>.Failure("No se pudo establecer la conexión con la base de datos");
         }
     }
 }

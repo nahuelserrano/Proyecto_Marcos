@@ -136,5 +136,26 @@ namespace Proyecto_camiones.Repositories
                 return false;
             }
         }
+
+        internal async Task<Flete> ActualizarAsync(int id, string nombre)
+        {
+            try
+            {
+                Flete? fletero = await this._context.Fletes.FindAsync(id);
+                if (fletero == null) return null;
+                fletero.nombre = nombre;
+                int registros_afectados = await this._context.SaveChangesAsync();
+                if(registros_afectados > 0)
+                {
+                    return fletero;
+                }
+                return null;
+            }catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.InnerException);
+                return null;
+            }
+        }
     }
 }

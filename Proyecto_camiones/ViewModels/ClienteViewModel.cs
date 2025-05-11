@@ -89,5 +89,15 @@ namespace Proyecto_camiones.ViewModels
             return Result<List<Cliente>>.Failure("No se pudo establecer la conexión");
         }
 
+        public async Task<Result<Cliente>> ActualizarAsync(int id, string? nombre)
+        {
+            bool conexion = await this.testearConexion();
+            if (conexion)
+            {
+                return await this._clienteService.ActualizarAsync(id, nombre);
+            }
+            return Result<Cliente>.Failure("No se pudo establecer la conexión");
+        }
+
     }
 }

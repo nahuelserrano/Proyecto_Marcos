@@ -146,8 +146,8 @@ namespace Proyecto_camiones.ViewModels
         public async Task<Result<bool>> ActualizarAsync(
             int id,
             DateOnly? fechaInicio = null,
-            string lugarPartida = null,
-            string destino = null,
+            string? lugarPartida = null,
+            string? destino = null,
             int? remito = null,
             string carga = null,
             float? kg = null,

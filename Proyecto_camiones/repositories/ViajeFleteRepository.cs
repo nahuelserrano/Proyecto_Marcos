@@ -143,13 +143,14 @@ namespace Proyecto_camiones.Repositories
             }
         }
 
-        internal async Task<int> InsertarAsync(string? origen, string destino, float remito, string carga, float km, float kg, float tarifa, int factura, int idCliente, int idFlete, string nombre_chofer, float comision, DateOnly fecha_salida)
+        internal async Task<int> InsertarAsync(string? origen, string destino, float remito, string carga, float km, float kg, float tarifa, int factura, int idCliente, int idFlete, string? nombre_chofer, float comision, DateOnly fecha_salida)
         {
             try
             {
                 ViajeFlete viaje = new ViajeFlete(origen, destino, remito, carga, km, kg, tarifa, factura, idCliente, idFlete, nombre_chofer, comision, fecha_salida);
                 this._context.ViajesFlete.Add(viaje);
                 int registros_afectados = await this._context.SaveChangesAsync();
+                MessageBox.Show(registros_afectados + " ");
                 if (registros_afectados > 0)
                 {
                     return viaje.idViajeFlete;
@@ -211,6 +212,7 @@ namespace Proyecto_camiones.Repositories
                     flete => flete.Id,  // Asumiendo que el ID del fletero es 'Id'
                     (vc, flete) => new ViajeFleteDTO
                     {
+                        idViajeFlete = vc.Viaje.idViajeFlete,
                         origen = vc.Viaje.origen,
                         destino = vc.Viaje.destino,
                         remito = vc.Viaje.remito,

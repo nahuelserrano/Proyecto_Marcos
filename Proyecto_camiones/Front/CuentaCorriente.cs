@@ -10,7 +10,7 @@ namespace Proyecto_camiones.Front
         private RoundButton btnVolver = new RoundButton();
 
         public CuentaCorriente(string dato, string filtro)
-            : base(new List<string> { "Fecha", "Nro factura", "Pagó", "Debe" }, 4, dato, "cuenta corriente", new List<string> { "Total" })
+            : base(new List<string> { "Fecha", "Nro factura", "Pagado", "Adeuda" }, 4, dato, "cuenta corriente", new List<string> { "Total adeudado" })
         {
             InitializeUI(dato, filtro);
         }
@@ -50,8 +50,8 @@ namespace Proyecto_camiones.Front
         
         private void infoForTableAndForm(string dato)
         {
-            List<string> datos = new List<string> { "Fecha", "Nro factura", "Pagó", "Debe" };
-            List<string> campoFaltanteTabla = new List<string> { "Total " };
+            List<string> datos = new List<string> { "Fecha", "Nro factura", "pagado", "Adeuda" };
+            List<string> campoFaltanteTabla = new List<string> { "Total adeudado" };
             int cant = datos.Count;
             FormRegistro vv = new FormRegistro(datos, cant, dato, "Cuenta corriente", campoFaltanteTabla);
             vv.TopLevel = true;

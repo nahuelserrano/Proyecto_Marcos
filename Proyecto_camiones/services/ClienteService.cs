@@ -84,17 +84,22 @@ namespace Proyecto_camiones.Presentacion.Services
 
 
 
-        public async Task<Result<Cliente>> ActualizarAsync(int id, String nombre, String apellido)
+        public async Task<Result<Cliente>> ActualizarAsync(int id, string? nombre)
         {
-            //lo dejo en para que lo chequeen, si mandamos el id para corregir a la funcion del
-            //validador tambien nos hace mandarlo en crear. por eso propongo dejar el chequeo aca
             if (id < 0)
+            {
                 return Result<Cliente>.Failure("El id es inválido");
+            }
 
-            Cliente cliente = await _clienteRepository.ActualizarAsync(id, nombre);
+            if(nombre == null)
+            {
+                return Result<Cliente>.Failure("El nombre no puede ser nulo");
+            }
+
+            Cliente cliente = await _clienteRepository.ActualizarAsync(id, nombre.ToUpper());
             if (cliente != null) return Result<Cliente>.Success(cliente);
 
-            return Result<Cliente>.Failure("No existe un cliente con ese id");
+            return Result<Cliente>.Failure("No se pudo actualizar el cliente");
         }
 
         

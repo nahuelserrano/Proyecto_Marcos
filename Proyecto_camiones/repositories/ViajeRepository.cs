@@ -83,7 +83,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
                 return viaje.Id;
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
                 Console.WriteLine();
@@ -124,7 +124,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
                 if (viajes.Count == 0)
                     Console.WriteLine("No hay viajes");
-                
+
 
                 return viajes;
             }
@@ -138,7 +138,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
         // READ - Obtener un viaje por ID
         public async Task<ViajeDTO?> ObtenerPorIdAsync(int id)
-        {
+        { 
             try
             {
                 var viaje = await _context.Viajes
