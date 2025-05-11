@@ -215,6 +215,19 @@ namespace Proyecto_camiones.Presentacion.Services
                     idCamion = camionResult.Value.Id;
                 }
 
+                if (chofer != null)
+                {
+                    var obtenerChoferResult = await _choferService.ObtenerPorNombreAsync(chofer);
+
+                    if (!obtenerChoferResult.IsSuccess)
+                    {
+                        var crearChoferResult = await _choferService.CrearAsync(chofer);
+
+                        if (!crearChoferResult.IsSuccess)
+                            return Result<bool>.Failure(MensajeError.ErrorCreacion(nameof(Chofer)));
+                    }
+                }
+
                 using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
                     bool resultado = await _viajeRepository.ActualizarAsync(
