@@ -133,11 +133,11 @@ namespace Proyecto_camiones.Services
             return Result<bool>.Failure("No existe un cliente con ese id");
         }
 
-        internal async Task<Result<CuentaCorrienteDTO>> ActualizarAsync(int id, DateOnly? fecha, int? nroFactura, float? adeuda, float? importe, int? idCliente, int? idFletero)
+        internal async Task<Result<CuentaCorrienteDTO>> ActualizarAsync(int id, DateOnly? fecha, int? nroFactura, float? adeuda, float? importe, string? cliente, string? fletero)
         {
-            if(idCliente != null && idFletero != null || idCliente == null && idFletero == null)
+            if(cliente != null && fletero != null || cliente == null && fletero == null)
             {
-                return Result<CuentaCorrienteDTO>.Failure("No se puede actualizar la cuenta corriente ya que faltan datos del cliente o el fletero");
+                return Result<CuentaCorrienteDTO>.Failure("No se puede actualizar la cuenta corriente ya que faltan datos del cliente o el fletero, o se quiso poner una cuenta corriente para 2 tipos de entidades no compatibles");
             }
             CuentaCorriente cuenta = await this.ccRepository.ObtenerPorId(id);
             if(cuenta == null)
@@ -145,7 +145,33 @@ namespace Proyecto_camiones.Services
                 return Result<CuentaCorrienteDTO>.Failure("Error al actualizar, no se encontró una cuenta con ese id");
             }
 
-            CuentaCorrienteDTO actualizada = await this.ccRepository.ActualizarAsync(id, fecha, nroFactura, adeuda, importe, idCliente, idFletero);
+            int? idCliente = null;
+            int? idFletero = null;
+            if(cliente != null)
+            {
+                Cliente? c = await this.clienteRepository.ObtenerPorNombreAsync(cliente);
+                if(c!= null)
+                {
+                    idCliente = c.Id;
+                }
+                else
+                {
+                    return Result<CuentaCorrienteDTO>.Failure("No se puede actualizar la cuenta corriente ya que no existe un cliente con el nombre ingresado");
+                }
+            } else if(fletero != null)
+            {
+                Flete? f = await this.fleteRepository.ObtenerPorNombreAsync(fletero);
+                if(f!= null)
+                {
+                    idFletero = f.Id;
+                }
+                else
+                {
+                    return Result<CuentaCorrienteDTO>.Failure("No se puede actualizar la cuenta corriente ya que no existe un fletero con el nombre ingresado");
+                }
+            }
+
+                CuentaCorrienteDTO actualizada = await this.ccRepository.ActualizarAsync(id, fecha, nroFactura, adeuda, importe, idCliente, idFletero);
             if(actualizada != null)
             {
                 return Result<CuentaCorrienteDTO>.Success(actualizada);
