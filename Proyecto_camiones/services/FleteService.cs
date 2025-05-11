@@ -108,7 +108,7 @@ namespace Proyecto_camiones.Services
             {
                 return Result<Flete>.Failure("No se puede tener un nombre nulo");
             }
-            Flete actualizado = await this.fleteRepository.ActualizarAsync(id, nombre);
+            Flete actualizado = await this.fleteRepository.ActualizarAsync(id, nombre.ToUpper());
             if(actualizado == null)
             {
                 return Result<Flete>.Failure("No se pudo actualizar el fletero correctamente");

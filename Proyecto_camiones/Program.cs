@@ -298,34 +298,45 @@ namespace Proyecto_camiones
             //    Console.WriteLine(response.Error);
             //}
 
-            //try
+            //ACTUALIZAR FLETERO
+            //var fletero = await fvm.ActualizarAsync(5, "marcos");
+            //if (fletero.IsSuccess)
             //{
+            //    Console.WriteLine(fletero.Value.ToString());
+            //}
+            //else
+            //{
+            //    Console.WriteLine(fletero.Error);
+            //}
 
-            //    // Descomentar la prueba que se desea ejecutar
+                //try
+                //{
 
-            //    // PRUEBAS DE CLIENTE
-            //    //await ClienteTests.EjecutarTodasLasPruebas();
+                //    // Descomentar la prueba que se desea ejecutar
 
-            //    // PRUEBAS DE CHOFER
-            //await ChoferTests.EjecutarTodasLasPruebas();
+                //    // PRUEBAS DE CLIENTE
+                //    //await ClienteTests.EjecutarTodasLasPruebas();
 
-            //    // PRUEBAS DE VIAJE
-            //await ViajeTest.EjecutarTodasLasPruebas();
+                //    // PRUEBAS DE CHOFER
+                //await ChoferTests.EjecutarTodasLasPruebas();
 
-            //    // O EJECUTAR PRUEBAS INDIVIDUALES:
+                //    // PRUEBAS DE VIAJE
+                //await ViajeTest.EjecutarTodasLasPruebas();
 
-            //    // CLIENTE
-            //    //int idCliente await ClienteTests.ProbarInsertarCliente("TRANSPORTES TEST");
-            //    //await ClienteTests.ProbarObtenerClientePorId(idCliente);
-            //    //await ClienteTests.ProbarEliminarCliente(idCliente);
+                //    // O EJECUTAR PRUEBAS INDIVIDUALES:
 
-            //    // CHOFER
-            //    //await ChoferTests.ProbarInsertarChofer("Chofer Test");
-            //    //await ChoferTests.ProbarObtenerChoferPorId(1);
-            //    //await ChoferTests.ProbarEliminarChofer(2);
+                //    // CLIENTE
+                //    //int idCliente await ClienteTests.ProbarInsertarCliente("TRANSPORTES TEST");
+                //    //await ClienteTests.ProbarObtenerClientePorId(idCliente);
+                //    //await ClienteTests.ProbarEliminarCliente(idCliente);
 
-            //    // VIAJE
-            DateOnly fecha = new DateOnly(2025, 4, 28);
+                //    // CHOFER
+                //    //await ChoferTests.ProbarInsertarChofer("Chofer Test");
+                //    //await ChoferTests.ProbarObtenerChoferPorId(1);
+                //    //await ChoferTests.ProbarEliminarChofer(2);
+
+                //    // VIAJE
+                DateOnly fecha = new DateOnly(2025, 4, 28);
             //int idViaje = await ViajeTests.ProbarInsertarViaje(fecha, "Tandil", "Buenos Aires", 123, 1000.5f, "Trigo", "Cliente1", "HIJ429", 350.5f, 5000.0f, "Chofer Test", 018f);
 
             //await ViajeTest.ProbarActualizarViaje(
@@ -357,7 +368,8 @@ namespace Proyecto_camiones
             //    Console.WriteLine($"Stack Trace: {ex.StackTrace}");
             //}
 
-            //ClienteViewModel clientevm = new ClienteViewModel();
+            ClienteViewModel clientevm = new ClienteViewModel();
+
             //OBTENER TODOS LOS CLIENTES
 
             //var response = await clientevm.ObtenerTodosAsync();
@@ -395,6 +407,17 @@ namespace Proyecto_camiones
             //else
             //{
             //    Console.WriteLine(response.Error);
+            //}
+
+            //ACTUALIZAR CLIENTE
+            //var cliente = await clientevm.ActualizarAsync(2, "Verellen");
+            //if (cliente.IsSuccess)
+            //{
+            //    Console.WriteLine(cliente.Value.ToString());
+            //}
+            //else
+            //{
+            //    Console.WriteLine(cliente.Error);
             //}
         }
     }

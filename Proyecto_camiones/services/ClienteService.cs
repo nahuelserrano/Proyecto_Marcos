@@ -87,9 +87,16 @@ namespace Proyecto_camiones.Presentacion.Services
         public async Task<Result<Cliente>> ActualizarAsync(int id, string? nombre)
         {
             if (id < 0)
+            {
                 return Result<Cliente>.Failure("El id es inválido");
+            }
 
-            Cliente cliente = await _clienteRepository.ActualizarAsync(id, nombre);
+            if(nombre == null)
+            {
+                return Result<Cliente>.Failure("El nombre no puede ser nulo");
+            }
+
+            Cliente cliente = await _clienteRepository.ActualizarAsync(id, nombre.ToUpper());
             if (cliente != null) return Result<Cliente>.Success(cliente);
 
             return Result<Cliente>.Failure("No se pudo actualizar el cliente");
