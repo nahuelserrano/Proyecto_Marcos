@@ -106,6 +106,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 var viajes = await _context.Viajes
                     .AsNoTracking() // Para mejorar performance en queries de solo lectura
                     .Include(v => v.ClienteNavigation)
+                    .OrderByDescending(v => v.Id)
                     .Select(v => new ViajeDTO
                     {
                         Id = v.Id,
@@ -207,7 +208,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     NombreChofer = v.NombreChofer,
                     Km = v.Km,
                     Tarifa = v.Tarifa,
-                }).ToListAsync();
+                }).OrderByDescending(v => v.Id)
+                  .ToListAsync();
 
                 Console.WriteLine($"Se encontraron {viajes.Count} viajes.");
 
@@ -346,7 +348,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
                         Km = v.Km,
                         Tarifa = v.Tarifa,
                         PatenteCamion = patente
-                    }).ToListAsync();
+                    }).OrderByDescending(v => v.Id)
+                    .ToListAsync();
 
                 Console.WriteLine($"Se encontraron {viajes.Count} viajes para el camión con ID {camionId}.");
 
@@ -383,7 +386,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
                         Km = v.Km,
                         Tarifa = v.Tarifa,
                         Camion = v.CamionNavigation.Patente
-                    }).ToListAsync();
+                    }).OrderByDescending(v => v.Id)
+                    .ToListAsync();
 
                 return viajes;
             }
@@ -417,7 +421,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
                         NombreChofer = v.NombreChofer,
                         Km = v.Km,
                         Tarifa = v.Tarifa,
-                    }).ToListAsync();
+                    }).OrderByDescending(v => v.Id)
+                    .ToListAsync();
 
                 if (viajes.Count == 0)
                 {

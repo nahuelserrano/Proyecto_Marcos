@@ -170,7 +170,8 @@ namespace Proyecto_camiones.Repositories
                                 c.Saldo_Total,
                                 c.IdFletero,
                                 c.IdCliente
-                            )).ToListAsync();
+                            )).OrderByDescending(c => c.idCuenta)
+                            .ToListAsync();
                 return cuentas;
             }
             catch (Exception e)
@@ -203,7 +204,8 @@ namespace Proyecto_camiones.Repositories
                                 c.Saldo_Total,
                                 c.IdFletero,
                                 c.IdCliente
-                            )).ToListAsync();
+                            )).OrderByDescending(c => c.idCuenta)
+                            .ToListAsync();
                 return cuentas;
             }
             catch (Exception e)

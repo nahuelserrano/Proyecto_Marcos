@@ -184,7 +184,8 @@ namespace Proyecto_camiones.Repositories
                                          v.tarifa,
                                         v.comision,
                                         f.nombre // Aquí obtenemos el nombre del fletero
-                                    )).ToListAsync();
+                                    )).OrderByDescending(v => v.Id)
+                                    .ToListAsync();
                 return viajes;
             } catch (Exception e)
             {
@@ -228,6 +229,7 @@ namespace Proyecto_camiones.Repositories
                         fecha_salida = vc.Viaje.fecha_salida
                     }
                 )
+                .OrderByDescending(v => v.idViajeFlete)
                 .ToListAsync();
 
                 return viajes;

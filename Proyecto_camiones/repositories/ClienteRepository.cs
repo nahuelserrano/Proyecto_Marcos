@@ -93,7 +93,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                var clientes = await _context.Clientes.ToListAsync();
+                var clientes = await _context.Clientes.OrderByDescending(c => c.Id).ToListAsync();
                 return clientes;
             }
             catch (Exception ex)
