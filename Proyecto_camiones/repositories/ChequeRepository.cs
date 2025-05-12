@@ -28,7 +28,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
             {
                 // Intentar comprobar si la conexión a la base de datos es exitosa
                 bool puedeConectar = await _context.Database.CanConnectAsync();
-                Console.WriteLine("rompió acá no??");
                 if (puedeConectar)
                 {
                     Console.WriteLine("Conexión exitosa a la base de datos.");
@@ -48,7 +47,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
         }
 
-        public async Task<int> Insertar(int id_Cliente, DateOnly FechaIngresoCheque, string NumeroCheque, float Monto, string Banco, DateOnly FechaCobro)
+        public async Task<int> InsertarAsync(int id_Cliente, DateOnly FechaIngresoCheque, string NumeroCheque, float Monto, string Banco, DateOnly FechaCobro)
         {
             try
             {
@@ -65,18 +64,15 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 // Agregar el cheque a la base de datos (esto solo marca el objeto para insertar)
                 _context.Cheques.Add(cheque);
 
-                // Guardar los cambios en la base de datos
-                await _context.SaveChangesAsync();
                 int registrosAfectados = await _context.SaveChangesAsync();
 
                 if (registrosAfectados > 0)
                 {
-                    return 1;
+                    return cheque.Id;
                 }
+
                 Console.WriteLine("No se insertó ningún registro");
                 return -1;
-
-
             }
             catch (Exception ex)
             {
@@ -86,21 +82,29 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 return -1;
             }
         }
-        public async Task<List<ChequeDTO>?> ObtenerTodos()
+        public async Task<List<ChequeDTO>?> ObtenerTodosAsync()
         {
-            var cheques = await _context.Cheques.Select(c => new ChequeDTO
+            try
             {
-                Id_cliente = c.id_Cliente,
-                FechaIngresoCheque = c.FechaIngresoCheque,
-                NumeroCheque = c.NumeroCheque,
-                Monto = c.Monto,
-                Banco = c.Banco,
-                FechaCobro = c.FechaCobro
-            }).ToListAsync();
+                var cheques = await _context.Cheques.Select(c => new ChequeDTO
+                {
+                    Id_cliente = c.Id_Cliente,
+                    FechaIngresoCheque = c.FechaIngresoCheque,
+                    NumeroCheque = c.NumeroCheque,
+                    Monto = c.Monto,
+                    Banco = c.Banco,
+                    FechaCobro = c.FechaCobro
+                }).ToListAsync();
 
-            return cheques;
+                return cheques;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.InnerException);
+                throw;
+            }
         }
-        public async Task<bool> Actualizar(
+        public async Task<bool> ActualizarAsync(
                                             int id,
                                             int? id_Cliente = null,
                                             DateOnly? FechaIngresoCheque = null,
@@ -116,9 +120,15 @@ namespace Proyecto_camiones.Presentacion.Repositories
             {
                 var cheque = await _context.Cheques.FindAsync(id);
 
+                if (cheque == null)
+                {
+                    Console.WriteLine($"Cheque con ID {id} no encontrado.");
+                    return false;
+                }
+
                 // Actualizar solo los campos proporcionados
                 if (id_Cliente.HasValue)
-                    cheque.id_Cliente = id_Cliente.Value;
+                    cheque.Id_Cliente = id_Cliente.Value;
 
                 if (FechaIngresoCheque.HasValue)
                     cheque.FechaIngresoCheque = FechaIngresoCheque.Value;
@@ -146,18 +156,31 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
         }
 
-        public async Task<ChequeDTO?> ObtenerPorId(int id)
+        public async Task<ChequeDTO?> ObtenerPorIdAsync(int id)
         {
-            Cheque cheque = await _context.Cheques.FindAsync(id);
-            if (cheque != null)
+            try
             {
-                ChequeDTO nuevo = new ChequeDTO(cheque.id_Cliente, cheque.FechaIngresoCheque, cheque.NumeroCheque, cheque.Monto, cheque.Banco, cheque.FechaCobro);
-                return nuevo;
+                Cheque? cheque = await _context.Cheques
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(c => c.Id == id);
+                
+                if (cheque != null)
+                {
+                    ChequeDTO nuevo = new ChequeDTO(cheque.Id_Cliente, cheque.FechaIngresoCheque, cheque.NumeroCheque, cheque.Monto, cheque.Banco, cheque.FechaCobro);
+                    return nuevo;
+                }
+
+                return null;    
             }
-            return null;
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al obtener cheque con ID {id}");
+                Console.WriteLine(ex.InnerException);
+                return null;
+            }
         }
 
-        public async Task<bool> Eliminar(int id)
+        public async Task<bool> EliminarAsync(int id)
         {
             try
             {
@@ -168,12 +191,20 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
                 _context.Cheques.Remove(cheque);
 
-                await _context.SaveChangesAsync();
+                int registrosAfectados = await _context.SaveChangesAsync();
+
+                if (registrosAfectados == 0)
+                {
+                    Console.WriteLine($"No hay registros afectados");
+                    return false;
+                }
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Console.WriteLine($"Repository: Error al eliminar cheque con ID {id}");
+                Console.WriteLine(e.InnerException);
                 return false;
             }
         }

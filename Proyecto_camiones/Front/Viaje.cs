@@ -426,13 +426,28 @@ internal class Viaje : Home
 
 
         // Evento para eliminar la card
-        remove.Click += (s, e) =>
+        remove.Click += async (s, e) =>
         {
             DialogResult resultado = MessageBox.Show("Si elimina este camión todo lo relacionado también se eliminará. ¿Desea eliminarlo de todas formas?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (resultado == DialogResult.Yes)
             {
+                //if(filtro == "Camion")
+                //{
+                //    CamionViewModel cvm = new CamionViewModel();
+                //    var response = await cvm.EliminarAsync();
+                //    if (response.IsSuccess)
+                //    {
+                //        MessageBox.Show("Camión eliminado correctamente");
+                //        GeneratorCard(item, filtro);
+                //    }
+                //    else
+                //    {
+                //        MessageBox.Show("No se pudo eliminar el camión");
+                //    }
+                //}
                 RoundButton btn = (RoundButton)s;
                 Panel parentCard = (Panel)btn.Parent;
+                
                 cardsContainerFL.Controls.Remove(parentCard);
                 parentCard.Dispose(); // opcional
             }

@@ -101,5 +101,19 @@ namespace Proyecto_camiones.Services
             }
             return Result<bool>.Failure("No se pudo eliminar el fletero, error interno en la base de datos");
         }
+
+        internal async Task<Result<Flete>> ActualizarAsync(int id, string? nombre)
+        {
+            if(nombre == null)
+            {
+                return Result<Flete>.Failure("No se puede tener un nombre nulo");
+            }
+            Flete actualizado = await this.fleteRepository.ActualizarAsync(id, nombre.ToUpper());
+            if(actualizado == null)
+            {
+                return Result<Flete>.Failure("No se pudo actualizar el fletero correctamente");
+            }
+            return Result<Flete>.Success(actualizado);
+        }
     }
 }

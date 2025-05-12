@@ -5,7 +5,7 @@ namespace Proyecto_camiones.Presentacion.Models
     public class Cheque
     {
         public int Id { get; set; }
-        public int id_Cliente { get; set; }
+        public int Id_Cliente { get; set; }
         public DateOnly FechaIngresoCheque { get; set; }
         public string NumeroCheque { get; set; }
         public float Monto { get; set; }
@@ -20,7 +20,7 @@ namespace Proyecto_camiones.Presentacion.Models
             float monto, string banco, DateOnly fechaCobro,
             string nombre = "", int? numeroPersonalizado = null)
         {
-            this.id_Cliente = id_Cliente;
+            this.Id_Cliente = id_Cliente;
             this.FechaIngresoCheque = fechaIngresoCheque;
             this.NumeroCheque = numeroCheque;
             this.Monto = monto;
@@ -34,7 +34,7 @@ namespace Proyecto_camiones.Presentacion.Models
         // Constructor sin parámetros
         public Cheque()
         {
-            this.id_Cliente = 1;
+            this.Id_Cliente = 1;
             this.Banco = "bna";
             this.Nombre = "";
             this.FechaVencimiento = new DateOnly(1, 1, 1);
