@@ -135,9 +135,9 @@ namespace Proyecto_camiones.Services
 
         internal async Task<Result<CuentaCorrienteDTO>> ActualizarAsync(int id, DateOnly? fecha, int? nroFactura, float? adeuda, float? importe, string? cliente, string? fletero)
         {
-            if(cliente != null && fletero != null || cliente == null && fletero == null)
+            if(cliente != null && fletero != null)
             {
-                return Result<CuentaCorrienteDTO>.Failure("No se puede actualizar la cuenta corriente ya que faltan datos del cliente o el fletero, o se quiso poner una cuenta corriente para 2 tipos de entidades no compatibles");
+                return Result<CuentaCorrienteDTO>.Failure("No se puede actualizar la cuenta corriente ya que se quiso poner una cuenta corriente para 2 tipos de entidades no compatibles");
             }
             CuentaCorriente cuenta = await this.ccRepository.ObtenerPorId(id);
             if(cuenta == null)

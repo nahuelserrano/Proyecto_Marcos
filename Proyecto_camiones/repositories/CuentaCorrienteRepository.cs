@@ -265,17 +265,28 @@ namespace Proyecto_camiones.Repositories
                 {
                     cuenta.Pagado = (float)importe;
                 }
+                if(idCliente != null)
+                {
+                    cuenta.IdCliente = idCliente;
+                }
+                if(idFletero != null)
+                {
+                    cuenta.IdFletero = idFletero;
+                }
                 if (importe != null || adeuda != null)
                 {
-                    if (idCliente != null)
+                    Console.WriteLine("hola if de importe o adeuda???");
+                    if (cuenta.IdCliente != null)
                     {
+                        Console.WriteLine("hola if de idCliente != null");
                         CuentaCorriente? anteUltimoRegistro = await this._context.Cuentas
-                                                                .Where(c => c.IdCliente == idCliente)
+                                                                .Where(c => c.IdCliente == cuenta.IdCliente)
                                                                 .OrderByDescending(c => c.Id)
                                                                 .Skip(1)
                                                                 .FirstOrDefaultAsync();
                         if (anteUltimoRegistro != null)
                         {
+                            Console.WriteLine("anteultimo registro: " + anteUltimoRegistro.ToString());
                             Console.WriteLine(anteUltimoRegistro.Saldo_Total);
                             Console.WriteLine(adeuda);
                             cuenta.Saldo_Total = cuenta.Adeuda +anteUltimoRegistro.Saldo_Total - cuenta.Pagado;
@@ -285,10 +296,10 @@ namespace Proyecto_camiones.Repositories
                             cuenta.Saldo_Total = cuenta.Adeuda - cuenta.Pagado;
                         }
                     }
-                    else if (idFletero != null)
+                    else if (cuenta.IdFletero != null)
                     {
                         CuentaCorriente? anteUltimoRegistro = await this._context.Cuentas
-                                                                 .Where(c => c.IdFletero == idFletero)
+                                                                 .Where(c => c.IdFletero == cuenta.IdFletero)
                                                                  .OrderByDescending(c => c.Id)
                                                                  .Skip(1)
                                                                  .FirstOrDefaultAsync();
@@ -307,8 +318,10 @@ namespace Proyecto_camiones.Repositories
                 int registrosAfectados = await _context.SaveChangesAsync();
                 if (registrosAfectados > 0)
                 {
+                    Console.WriteLine("hola if de registros afectados?");
                     return new CuentaCorrienteDTO(cuenta.Id, cuenta.Fecha_factura, cuenta.Nro_factura, cuenta.Adeuda, cuenta.Pagado, cuenta.Saldo_Total, cuenta.IdCliente, cuenta.IdFletero);
                 }
+                Console.WriteLine("fuck no entré al if de registros afectados");
                 return null;
 
             }
