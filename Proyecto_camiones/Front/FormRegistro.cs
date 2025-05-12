@@ -18,6 +18,7 @@ using Proyecto_camiones.DTOs;
 using System.Threading.Tasks;
 using NPOI.SS.Formula.Functions;
 using Proyecto_camiones.Presentacion.Models;
+using MySqlX.XDevAPI.Common;
 
 namespace Proyecto_camiones.Front;
 
@@ -625,14 +626,16 @@ public class FormRegistro : Home
                     }
                 } else if(filtro == "cuenta corriente")
                 {
-                    string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
-                    var result = await ccvm.EliminarAsync(int.Parse(id));
+                    //MessageBox.Show("soy una cuenta corriente");
+                    //string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
+                    //var result = await ccvm.EliminarAsync(int.Parse(id));
+                    //MessageBox.Show(id + " ");
 
-                    if (result.IsSuccess)
-                    {
-                        MessageBox.Show("eliminado");
-                        ShowInfoTable(filtro, dato);
-                    }
+                    //if (result.IsSuccess)
+                    //{
+                    //    MessageBox.Show("eliminado");
+                    //    ShowInfoTable(filtro, dato);
+                    //}
                 } else if(filtro == "sueldo")
                 {
                     string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
@@ -690,13 +693,17 @@ public class FormRegistro : Home
                     string pagado = cheq.Rows[e.RowIndex].Cells["Pagado"].Value.ToString();
                     string adeuda = cheq.Rows[e.RowIndex].Cells["Adeuda"].Value.ToString();
                     string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
-
-                    //var result = await ccvm.ActualizarAsync(int.Parse(id), DateOnly.Parse(fecha), int.Parse(factura), float.Parse(adeuda), float.Parse(pagado), );
-
-                    //if (result.IsSuccess)
+                  
+                    //if (filtro == "Cliente")
                     //{
-                    //    ShowInfoTable(filtro, dato);
-                    //}
+                        var result = await ccvm.ActualizarAsync(int.Parse(id), DateOnly.Parse(fecha), int.Parse(factura), float.Parse(adeuda), float.Parse(pagado), dato, null);
+                        if (result.IsSuccess)
+                        {
+                            MessageBox.Show("modificado");
+                            ShowInfoTable(filtro, dato);
+                        }
+
+                   
                 } else if(filtro == "Flete")
                 {
                     MessageBox.Show("flete");

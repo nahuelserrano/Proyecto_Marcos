@@ -85,10 +85,11 @@ internal class Viaje : Home
         camionFilter.MouseEnter += (s, e) => HoverEffect(s, e, true);
         camionFilter.MouseLeave += (s, e) => HoverEffect(s, e, false);
 
+        fleteFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Flete");
+        clienteFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Cliente");
+        camionFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Camion");
+
         //Events
-        fleteFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Flete", " ");
-        clienteFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Cliente", " ");
-        camionFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Camion", " ");
 
 
     }
@@ -96,10 +97,11 @@ internal class Viaje : Home
     public Viaje(string filtro)
     {
         InitializeFilterCards();
+        FunctionFilter(filtro);
         ResaltarBoton(viajesMenu);
         if (filtro != null)
         {
-            ObtenerTodosSegunFiltro(filtro, " ");
+            ObtenerTodosSegunFiltro(filtro);
         }
     }
 
@@ -114,6 +116,21 @@ internal class Viaje : Home
         }
     }
 
+    private void FunctionFilter(string filtro)
+    {
+        fleteFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Flete");
+        clienteFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Cliente");
+        camionFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Camion");
+
+        fleteFilter.MouseEnter += (s, e) => HoverEffect(s, e, true);
+        fleteFilter.MouseLeave += (s, e) => HoverEffect(s, e, false);
+
+        clienteFilter.MouseEnter += (s, e) => HoverEffect(s, e, true);
+        clienteFilter.MouseLeave += (s, e) => HoverEffect(s, e, false);
+
+        camionFilter.MouseEnter += (s, e) => HoverEffect(s, e, true);
+        camionFilter.MouseLeave += (s, e) => HoverEffect(s, e, false);
+    }
 
     //Initializations
 
@@ -165,7 +182,7 @@ internal class Viaje : Home
     }
 
     //InfoFunctions
-    public async void ObtenerTodosSegunFiltro(string filtro, string info)
+    public async void ObtenerTodosSegunFiltro(string filtro)
     {
         if (filtro == "Camion")
         {
@@ -284,15 +301,26 @@ internal class Viaje : Home
 
 
         // Evento para eliminar la card
-        remove.Click += (s, e) =>
+        remove.Click += async (s, e) =>
         {
             DialogResult resultado = MessageBox.Show("Si elimina este flete todo lo relacionado también se eliminará. ¿Desea eliminarlo de todas formas?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (resultado == DialogResult.Yes)
             {
-                RoundButton btn = (RoundButton)s;
-                Panel parentCard = (Panel)btn.Parent;
-                cardsContainerFL.Controls.Remove(parentCard);
-                parentCard.Dispose(); // opcional
+                if (resultado == DialogResult.Yes)
+                {
+                    FleteViewModel fvm = new FleteViewModel();
+                    var response = await fvm.EliminarAsync(item.Id);
+                    if (response.IsSuccess)
+                    {
+                        MessageBox.Show("Flete eliminado correctamente");
+                        ObtenerTodosSegunFiltro(filtro);
+                    }
+                    else
+                    {
+                        MessageBox.Show("No se pudo eliminar el flete");
+                    }
+
+                }
             }
         };
 
@@ -354,15 +382,23 @@ internal class Viaje : Home
 
 
         // Evento para eliminar la card
-        remove.Click += (s, e) =>
+        remove.Click += async (s, e) =>
         {
             DialogResult resultado = MessageBox.Show("Si elimina este cliente todo lo relacionado también se eliminará. ¿Desea eliminarlo de todas formas?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (resultado == DialogResult.Yes)
             {
-                RoundButton btn = (RoundButton)s;
-                Panel parentCard = (Panel)btn.Parent;
-                cardsContainerFL.Controls.Remove(parentCard);
-                parentCard.Dispose(); // opcional
+                ClienteViewModel cvm = new ClienteViewModel();
+                var response = await cvm.Eliminar(item.Id);
+                if (response.IsSuccess)
+                {
+                    MessageBox.Show("Cliente eliminado correctamente");
+                    ObtenerTodosSegunFiltro(filtro);
+                }
+                else
+                {
+                    MessageBox.Show("No se pudo eliminar el cliente");
+                }
+
             }
         };
 
@@ -431,25 +467,18 @@ internal class Viaje : Home
             DialogResult resultado = MessageBox.Show("Si elimina este camión todo lo relacionado también se eliminará. ¿Desea eliminarlo de todas formas?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (resultado == DialogResult.Yes)
             {
-                //if(filtro == "Camion")
-                //{
-                //    CamionViewModel cvm = new CamionViewModel();
-                //    var response = await cvm.EliminarAsync();
-                //    if (response.IsSuccess)
-                //    {
-                //        MessageBox.Show("Camión eliminado correctamente");
-                //        GeneratorCard(item, filtro);
-                //    }
-                //    else
-                //    {
-                //        MessageBox.Show("No se pudo eliminar el camión");
-                //    }
-                //}
-                RoundButton btn = (RoundButton)s;
-                Panel parentCard = (Panel)btn.Parent;
-                
-                cardsContainerFL.Controls.Remove(parentCard);
-                parentCard.Dispose(); // opcional
+                CamionViewModel cvm = new CamionViewModel();
+                var response = await cvm.EliminarAsync(item.Id);
+                if (response.IsSuccess)
+                {
+                    MessageBox.Show("Camión eliminado correctamente");
+                    ObtenerTodosSegunFiltro(filtro);
+                }
+                else
+                {
+                    MessageBox.Show("No se pudo eliminar el camión");
+                }
+
             }
         };
 
@@ -501,7 +530,6 @@ internal class Viaje : Home
                     {
                         i = 1;
                         CamionDTO camion = resultado.Value;
-
                     }
                     else
                     {
@@ -569,7 +597,7 @@ internal class Viaje : Home
                 }
             }
         }
-        ObtenerTodosSegunFiltro(filtro, info);
+        ObtenerTodosSegunFiltro(filtro);
         // Retornar la lista correspondiente
     }
 
@@ -620,7 +648,7 @@ internal class Viaje : Home
 
             btn.Click += (s, e) =>
             {
-                ObtenerTodosSegunFiltro(btn.Text, " ");
+                ObtenerTodosSegunFiltro(btn.Text);
             };
 
             filterFL.Controls.Add(btn);

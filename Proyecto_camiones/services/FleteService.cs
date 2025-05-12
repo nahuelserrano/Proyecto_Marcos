@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Proyecto_camiones.Services
 {
@@ -87,18 +88,22 @@ namespace Proyecto_camiones.Services
         {
             if (id < 0)
             {
+                MessageBox.Show("id < 0");
                 return Result<bool>.Failure(MensajeError.IdInvalido(id));
             }
             List<ViajeFleteDTO> viajes = await this.viajeFleteRepository.ObtenerViajesPorIdFleteroAsync(id);
             if (viajes.Count > 0)
             {
+                MessageBox.Show("No se puede eliminar el fletero ya que contiene viajes a cargo");
                 return Result<bool>.Failure("No se puede eliminar el fletero ya que contiene viajes a cargo");
             }
             bool response = await this.fleteRepository.EliminarAsync(id);
             if (response)
             {
+                MessageBox.Show("");
                 return Result<bool>.Success(response);
             }
+            MessageBox.Show("No se pudo eliminar el fletero, error interno en la base de datos");
             return Result<bool>.Failure("No se pudo eliminar el fletero, error interno en la base de datos");
         }
 

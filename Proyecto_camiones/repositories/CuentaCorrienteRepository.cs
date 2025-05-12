@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Proyecto_camiones.Repositories
 {
@@ -54,13 +55,16 @@ namespace Proyecto_camiones.Repositories
 
                 if (!await _context.Database.CanConnectAsync())
                 {
+                    MessageBox.Show("No se puede conectar a la base de datos");
                     Console.WriteLine("No se puede conectar a la base de datos");
                     return null;
                 }
                 CuentaCorriente ultimoRegistro;
                 if (idCliente != null)
                 {
+                    MessageBox.Show("id cliente: " + idCliente);
                     ultimoRegistro = await this._context.Cuentas.Where(c => c.IdCliente == idCliente).OrderByDescending(c => c.Fecha_factura).FirstOrDefaultAsync();
+                    MessageBox.Show("ultimo registro: " + ultimoRegistro);
                 }
                 else if (idFletero != null)
                 {
@@ -74,6 +78,7 @@ namespace Proyecto_camiones.Repositories
                 CuentaCorriente cuenta;
                 if (ultimoRegistro == null)
                 {
+                    MessageBox.Show(ultimoRegistro + "es null");
                     cuenta = new CuentaCorriente(idCliente, idFletero, fecha, nro, adeuda, pagado, 0);
                 }
                 else
@@ -88,8 +93,10 @@ namespace Proyecto_camiones.Repositories
 
                 if (registrosAfectados > 0)
                 {
+                    MessageBox.Show("hay registros afectados: " + registrosAfectados);
                     return cuenta;
                 }
+                MessageBox.Show("no hay registros afectados: " + registrosAfectados);
                 Console.WriteLine("No se insertó ningún registro");
                 return null;
             }

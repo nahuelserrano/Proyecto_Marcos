@@ -83,7 +83,7 @@ namespace Proyecto_camiones.ViewModels
 
         public async Task<Result<string>> EliminarAsync(int id)
         {
-            if (this.testearConexion().Result)
+            if (await this.testearConexion())
             {
                 return await this._camionService.EliminarAsync(id);
             }

@@ -118,7 +118,7 @@ namespace Proyecto_camiones.Repositories
             try
             {
                 var fletero = await _context.Fletes.FindAsync(id);
-                Console.WriteLine("se encontró el fletero");
+                MessageBox.Show("se encontró el fletero");
 
                 if (fletero == null)
                     return false;

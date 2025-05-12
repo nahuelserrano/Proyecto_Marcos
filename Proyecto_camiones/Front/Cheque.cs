@@ -15,12 +15,12 @@ using Font = System.Drawing.Font;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using TextBox = System.Windows.Forms.TextBox;
 using Button = System.Windows.Forms.Button;
+using Proyecto_camiones.ViewModels;
 
 namespace Proyecto_camiones.Front
 {
     public partial class Cheque : Home
     {
-
         //Form
         private Panel formPanel = new Panel();
         private FlowLayoutPanel formFLTextBox = new FlowLayoutPanel();
@@ -505,25 +505,27 @@ namespace Proyecto_camiones.Front
                     }
                 }
             }
+            ChequeViewModel cvm = new ChequeViewModel();
 
+            //var result = cvm.CrearAsync(1, DateOnly.Parse(datos[0]), int.Parse(datos[1]),);
             // Verificar que los datos no estén vacíos
-            if (datos.All(dato => !string.IsNullOrWhiteSpace(dato)))
-            {
+            //if (datos.All(dato => !string.IsNullOrWhiteSpace(dato)))
+            //{
 
-                eliminar.Text = "X";
-                eliminar.UseColumnTextForButtonValue = true;
+            //    eliminar.Text = "X";
+            //    eliminar.UseColumnTextForButtonValue = true;
 
-                datos.Add(eliminar.Text);
+            //    datos.Add(eliminar.Text);
 
-                modificar.Text = "M";
-                modificar.UseColumnTextForButtonValue = true;
+            //    modificar.Text = "M";
+            //    modificar.UseColumnTextForButtonValue = true;
 
-                datos.Add(modificar.Text);
+            //    datos.Add(modificar.Text);
 
-                cheq.Rows.Add(datos.ToArray());
+            //    cheq.Rows.Add(datos.ToArray());
 
 
-                foreach (Control control in formFLTextBox.Controls)
+            foreach (Control control in formFLTextBox.Controls)
                 {
                     if (control is Panel panel)
                     {
@@ -539,7 +541,7 @@ namespace Proyecto_camiones.Front
                         }
                     }
                 }
-            }
+            //}
         }
 
         private void eliminarFila(object sender, DataGridViewCellEventArgs e)

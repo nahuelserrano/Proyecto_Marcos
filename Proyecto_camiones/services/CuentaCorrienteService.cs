@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Proyecto_camiones.Services
 {
@@ -88,6 +89,7 @@ namespace Proyecto_camiones.Services
             Cliente c;
             if(cliente != null)
             {
+                MessageBox.Show("hay cliente");
                 c = await clienteRepository.ObtenerPorNombreAsync(cliente.ToUpper());
                 if (c == null)
                 {
@@ -98,6 +100,7 @@ namespace Proyecto_camiones.Services
                 Console.WriteLine("superado 1");
                 if (result != null)
                 {
+                    MessageBox.Show(result.Id + " ");
                     return result.Id;
                 }
                 return -1;
@@ -121,7 +124,7 @@ namespace Proyecto_camiones.Services
         internal async Task<Result<bool>> EliminarAsync(int id)
         {
             Cliente cliente = await this.clienteRepository.ObtenerPorIdAsync(id);
-            if(cliente!= null)
+            if (cliente != null)
             {
                 bool response = await this.ccRepository.EliminarAsync(id);
                 if (response)
@@ -130,6 +133,7 @@ namespace Proyecto_camiones.Services
                 }
                 return Result<bool>.Failure("No se pudo eliminar");
             }
+            MessageBox.Show("No existe un cliente con ese id");
             return Result<bool>.Failure("No existe un cliente con ese id");
         }
 
