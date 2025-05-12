@@ -87,7 +87,7 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
-                List<Flete> fleteros = await this._context.Fletes.ToListAsync();
+                List<Flete> fleteros = await this._context.Fletes.OrderByDescending(f=> f.Id).ToListAsync();
                 return fleteros;
             }
             catch (Exception ex)

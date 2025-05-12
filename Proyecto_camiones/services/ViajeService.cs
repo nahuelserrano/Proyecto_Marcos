@@ -149,8 +149,8 @@ namespace Proyecto_camiones.Presentacion.Services
             {
                 var viajes = await _viajeRepository.ObtenerTodosAsync();
 
-                if (viajes.Count == 0)
-                    return Result<List<ViajeDTO>>.Success(new List<ViajeDTO>());
+                if (viajes == null)
+                    return Result<List<ViajeDTO>>.Failure("Ocurrió un error al obtener la lista de viajes");
 
                 return Result<List<ViajeDTO>>.Success(viajes);
             }
@@ -192,6 +192,7 @@ namespace Proyecto_camiones.Presentacion.Services
                     return Result<bool>.Failure(MensajeError.EntidadNoEncontrada(nameof(Viaje), id));
 
                 int? idCliente = null, idCamion = null;
+                int idChofer = -1;
 
                 // Verificar que el cliente existe usando el servicio
                 if (nombreCliente != null)
@@ -217,6 +218,7 @@ namespace Proyecto_camiones.Presentacion.Services
 
                 if (chofer != null)
                 {
+
                     var obtenerChoferResult = await _choferService.ObtenerPorNombreAsync(chofer);
 
                     if (!obtenerChoferResult.IsSuccess)
@@ -225,8 +227,29 @@ namespace Proyecto_camiones.Presentacion.Services
 
                         if (!crearChoferResult.IsSuccess)
                             return Result<bool>.Failure(MensajeError.ErrorCreacion(nameof(Chofer)));
+
+                        idChofer = crearChoferResult.Value;
                     }
+                    else
+                    {
+                        idChofer = obtenerChoferResult.Value.Id;
+                    }
+
+                    Console.WriteLine("if " + idChofer);
                 }
+                else
+                {
+
+                    var obtenerChoferResult = await _choferService.ObtenerPorNombreAsync(viajeActual.NombreChofer);
+
+                    if (!obtenerChoferResult.IsSuccess)
+                        return Result<bool>.Failure(MensajeError.EntidadNoEncontrada(nameof(Chofer), idChofer));
+
+                    idChofer = obtenerChoferResult.Value.Id;
+                    Console.WriteLine("Else " + idChofer);
+                }
+
+                Console.WriteLine(idChofer);
 
                 using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
@@ -237,11 +260,22 @@ namespace Proyecto_camiones.Presentacion.Services
                     if (!resultado)
                         return Result<bool>.Failure(MensajeError.ErrorActualizacion(nameof(Viaje)));
 
-                    // Actualizar el pago asociado al viaje
-                    //bool seActualizoPago = await _pagoService.ActualizarAsync(id, kg, tarifa, chofer);
+                    float tarifaActualizada = 0f, kgActualizado = 0f, porcentajeActualizado = 0f;
 
-                    //if (!seActualizoPago)
-                    //    return Result<bool>.Failure("No se pudo actualizar el pago asociado al viaje");
+                    if (tarifa != null && tarifa > 0)
+                        viajeActual.Tarifa = (float) tarifa;
+
+                    if (kg != null && kg > 0)
+                        viajeActual.Kg = (float)kg;
+
+                    if (porcentaje != null && porcentaje > 0 && porcentaje < 1)
+                        viajeActual.PorcentajeChofer = (float)porcentaje;
+
+                    // Actualizar el pago asociado al viaje
+                    var pagoResult = await _pagoService.ActualizarAsync(idChofer, id,  viajeActual.GananciaChofer);
+
+                    if (!pagoResult.IsSuccess)
+                        return Result<bool>.Failure("No se pudo actualizar el pago asociado al viaje");
 
                     scope.Complete();
                     return Result<bool>.Success(true);
@@ -265,8 +299,8 @@ namespace Proyecto_camiones.Presentacion.Services
                 if (viaje == null)
                     return Result<bool>.Failure(MensajeError.EntidadNoEncontrada(nameof(Viaje), id));
 
-                
-                //Pago pago = await_pagoService.ObtenerPorIdViaje(id);
+
+                //Result<Pago> pago = await _pagoService.ObtenerPorIdViaje;
 
                 //if (pago == null)
                 //    return Result<bool>.Failure("No se encontró el pago asociado al viaje.");
@@ -300,6 +334,9 @@ namespace Proyecto_camiones.Presentacion.Services
                     int idCamion = camionResult.Value.Id;
                     var viajes = await _viajeRepository.ObtenerPorCamionAsync(idCamion, patente);
 
+                    if (viajes == null)
+                        return Result<List<ViajeDTO>>.Failure("Ocurrió un error al obtener la lista de viajes");
+
                     return Result<List<ViajeDTO>>.Success(viajes);
                 }
                 return Result<List<ViajeDTO>>.Failure($"El camión especificado no existe: {camionResult}");
@@ -320,10 +357,15 @@ namespace Proyecto_camiones.Presentacion.Services
                 // Verificar que el cliente existe usando el servicio
                 
                 var clienteResult = await _clienteService.ObtenerPorIdAsync(idCliente);
-                if (clienteResult == null)
+
+                if (!clienteResult.IsSuccess)
                     return Result<List<ViajeMixtoDTO>>.Failure($"El cliente especificado no existe: {clienteResult}");
                 
                 var viajes = await _viajeRepository.ObtenerViajeMixtoPorClienteAsync(idCliente);
+
+                if (viajes == null)
+                    return Result<List<ViajeMixtoDTO>>.Failure("Ocurrió un error al obtener la lista de viajes");
+
                 return Result<List<ViajeMixtoDTO>>.Success(viajes);
             }
             catch (Exception ex)
@@ -347,6 +389,10 @@ namespace Proyecto_camiones.Presentacion.Services
                     return Result<List<ViajeDTO>>.Failure(MensajeError.EntidadNoEncontrada(nameof(choferResult.Value), idChofer));
 
                 var viajes = await _viajeRepository.ObtenerPorChoferAsync(choferResult.Value.Nombre);
+
+                if (viajes == null)
+                    return Result<List<ViajeDTO>>.Failure("Ocurrió un error al obtener la lista de viajes");
+
                 return Result<List<ViajeDTO>>.Success(viajes);
             }
             catch (Exception ex)
@@ -357,13 +403,13 @@ namespace Proyecto_camiones.Presentacion.Services
 
         public async Task<Result<List<ViajeDTO>>> ObtenerPorChoferAsync(string nombreChofer)
         {
-            if (string.IsNullOrWhiteSpace(nombreChofer))
-                return Result<List<ViajeDTO>>.Failure("El nombre del chofer no puede estar vacío");
-            
-
             try
             {
                 var viajes = await _viajeRepository.ObtenerPorChoferAsync(nombreChofer);
+
+                if (viajes == null)
+                    return Result<List<ViajeDTO>>.Failure("Ocurrió un error al obtener la lista de viajes");
+
                 return Result<List<ViajeDTO>>.Success(viajes);
             }
             catch (Exception ex)

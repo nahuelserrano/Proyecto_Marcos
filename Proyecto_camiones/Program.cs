@@ -37,10 +37,10 @@ namespace Proyecto_camiones
         {
 
             // Llamada a Windows Forms para inicializar la aplicación
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
-            PagoViewModel pw = new PagoViewModel();
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
+            //Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
+            //PagoViewModel pw = new PagoViewModel();
 
             //await pw.CrearAsync(1, 1, 1000);
             //await pw.CrearAsync(1, 1, 1000);
@@ -173,7 +173,7 @@ namespace Proyecto_camiones
             //}
 
             //ACTUALIZAR UNA CUENTA CORRIENTE
-            //var cuenta = await ccvm.ActualizarAsync(16, null, null, 1000, 500, 4, null);
+            //var cuenta = await ccvm.ActualizarAsync(16, null, 20, 1000, 0, null, null);
             //if (cuenta.IsSuccess)
             //{
             //    Console.WriteLine(cuenta.Value.ToString());
@@ -228,7 +228,7 @@ namespace Proyecto_camiones
             //var viajes = await vfvm.ObtenerViajesDeUnClienteAsync(3);
             //if (viajes.IsSuccess)
             //{
-            //    foreach(var viaje in viajes.Value)
+            //    foreach (var viaje in viajes.Value)
             //    {
             //        Console.WriteLine(viaje.ToString());
             //    }
@@ -352,7 +352,6 @@ namespace Proyecto_camiones
             //await ViajeTest.ProbarObtenerViajePorId(4);
             //await ViajeTest.ProbarObtenerViajesPorCliente(3);
             //await ViajeTest.ProbarObtenerViajesPorChofer(2);
-            //await ViajeTest.ProbarObtenerViajesDeUnFletero("Carlos");
             //await ViajeTest.ProbarEliminarViaje(10);
 
             //}

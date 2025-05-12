@@ -94,11 +94,11 @@ namespace Proyecto_camiones.ViewModels
             return Result<bool>.Failure("No se pudo establecer la conexion");
         }
 
-        public async Task<Result<CuentaCorrienteDTO>> ActualizarAsync(int id, DateOnly? fecha, int? nroFactura, float? adeuda, float? importe, int? idCliente, int? idFletero)
+        public async Task<Result<CuentaCorrienteDTO>> ActualizarAsync(int id, DateOnly? fecha, int? nroFactura, float? adeuda, float? importe, string? cliente, string? fletero)
         {
             if (this.testearConexion().Result)
             {
-                return await this.cs.ActualizarAsync(id, fecha, nroFactura, adeuda, importe, idCliente, idFletero);
+                return await this.cs.ActualizarAsync(id, fecha, nroFactura, adeuda, importe, cliente, fletero);
             }
             return Result<CuentaCorrienteDTO>.Failure("No se pudo establecer la conexión");
         }

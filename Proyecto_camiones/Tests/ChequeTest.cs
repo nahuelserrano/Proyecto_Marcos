@@ -23,7 +23,7 @@ namespace Proyecto_camiones.Tests
                 await ProbarConexionCheque();
 
                 // 2. Creamos un cheque para las pruebas
-                int idCheque = await ProbarInsertarCheque(2, "12345ABC", 5000.0f, "Banco Galicia");
+                int idCheque = await ProbarInsertarCheque(2, 12345, 5000.0f, "Banco Galicia");
 
                 // 3. Obtenemos el cheque por ID
                 await ProbarObtenerChequePorId(idCheque);
@@ -81,7 +81,7 @@ namespace Proyecto_camiones.Tests
         /// </summary>
         public static async Task<int> ProbarInsertarCheque(
             int idCliente,
-            string numeroCheque,
+            int numeroCheque,
             float monto,
             string banco)
         {
@@ -185,7 +185,7 @@ namespace Proyecto_camiones.Tests
         public static async Task ProbarActualizarCheque(
             int id,
             int? idCliente = null,
-            string numeroCheque = null,
+            int? numeroCheque = null,
             float? monto = null,
             string banco = null,
             DateOnly? fechaCobro = null)

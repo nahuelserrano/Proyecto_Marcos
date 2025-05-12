@@ -8,11 +8,11 @@ namespace Proyecto_camiones.DTOs
 {
     public class CamionDTO
     {
-       
+        public int Id { get; set; }
         public string Patente { get; set; }
         public string? Nombre_Chofer { get; set; }
 
-        public CamionDTO( string patente, string? nombre_Chofer)
+        public CamionDTO( int id, string patente, string? nombre_Chofer)
         {
             Patente = patente;
             Nombre_Chofer = nombre_Chofer;

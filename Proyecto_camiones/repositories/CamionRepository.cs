@@ -90,9 +90,11 @@ namespace Proyecto_camiones.Presentacion.Repositories
             {
                 var camiones = await _context.Camiones.Select(c => new CamionDTO
                 {
+                    Id = c.Id,
                     Patente = c.Patente,
                     Nombre_Chofer = c.nombre_chofer
-                }).ToListAsync();
+                }).OrderByDescending(c=> c.Id)
+                    .ToListAsync();
 
                 return camiones;
             }
@@ -143,7 +145,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 Camion camion = await _context.Camiones.FindAsync(id);
                 if (camion != null)
                 {
-                    CamionDTO nuevo = new CamionDTO(camion.Patente, camion.nombre_chofer);
+                    CamionDTO nuevo = new CamionDTO(camion.Id, camion.Patente, camion.nombre_chofer);
                     return nuevo;
                 }
                 return null;
