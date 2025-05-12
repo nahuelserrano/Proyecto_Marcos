@@ -161,6 +161,7 @@ namespace Proyecto_camiones.Repositories
                 List<CuentaCorrienteDTO> result = new List<CuentaCorrienteDTO>();
                 var cuentas = await _context.Cuentas
                             .Where(c => c.IdCliente == id)
+                            .OrderByDescending(c => c.Id)
                             .Select(c => new CuentaCorrienteDTO(
                                 c.Id,
                                 c.Fecha_factura,
@@ -170,7 +171,7 @@ namespace Proyecto_camiones.Repositories
                                 c.Saldo_Total,
                                 c.IdFletero,
                                 c.IdCliente
-                            )).OrderByDescending(c => c.idCuenta)
+                            ))
                             .ToListAsync();
                 return cuentas;
             }
@@ -195,6 +196,7 @@ namespace Proyecto_camiones.Repositories
                 List<CuentaCorrienteDTO> result = new List<CuentaCorrienteDTO>();
                 var cuentas = await _context.Cuentas
                             .Where(c => c.IdFletero == id)
+                            .OrderByDescending(c => c.Id)
                             .Select(c => new CuentaCorrienteDTO(
                                 c.Id,
                                 c.Fecha_factura,
@@ -204,7 +206,7 @@ namespace Proyecto_camiones.Repositories
                                 c.Saldo_Total,
                                 c.IdFletero,
                                 c.IdCliente
-                            )).OrderByDescending(c => c.idCuenta)
+                            ))
                             .ToListAsync();
                 return cuentas;
             }

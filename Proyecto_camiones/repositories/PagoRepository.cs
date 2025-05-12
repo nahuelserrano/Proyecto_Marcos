@@ -155,7 +155,6 @@ namespace Proyecto_camiones.Repositories
                     )
                     .Where(joinResult => joinResult.Viaje.FechaInicio >= fechaDesde && joinResult.Viaje.FechaInicio <= fechaHasta)
                     .Select(joinResult => joinResult.Pago) // Seleccionamos solo los objetos Pago resultantes
-                    .OrderByDescending(pago => pago.Id)
                     .ToListAsync();
 
                 return pagosPorViajeEnRango;

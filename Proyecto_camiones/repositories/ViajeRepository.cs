@@ -195,7 +195,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 if (fechaFin.HasValue)
                     query = query.Where(v => v.FechaInicio <= fechaFin.Value);
 
-                var viajes = await query.Select(v => new ViajeDTO
+                var viajes = await query.OrderByDescending(v => v.Id).Select(v => new ViajeDTO
                 {
                     Id = v.Id,
                     FechaInicio = v.FechaInicio,
@@ -208,7 +208,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     NombreChofer = v.NombreChofer,
                     Km = v.Km,
                     Tarifa = v.Tarifa,
-                }).OrderByDescending(v => v.Id)
+                })
                   .ToListAsync();
 
                 Console.WriteLine($"Se encontraron {viajes.Count} viajes.");
@@ -334,6 +334,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     .AsNoTracking()
                     .Include(v => v.ClienteNavigation)
                     .Where(v => v.Camion == camionId)
+                    .OrderByDescending(v => v.Id)
                     .Select(v => new ViajeDTO
                     {
                         Id = v.Id,
@@ -348,7 +349,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                         Km = v.Km,
                         Tarifa = v.Tarifa,
                         PatenteCamion = patente
-                    }).OrderByDescending(v => v.Id)
+                    })
                     .ToListAsync();
 
                 Console.WriteLine($"Se encontraron {viajes.Count} viajes para el camión con ID {camionId}.");
@@ -373,6 +374,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     .Include(v => v.ClienteNavigation)
                     .Include(v => v.CamionNavigation)
                     .Where(v => v.Cliente == clienteId)
+                    .OrderByDescending(v => v.Id)
                     .Select(v => new ViajeMixtoDTO
                     {
                         Id = v.Id,
@@ -386,7 +388,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                         Km = v.Km,
                         Tarifa = v.Tarifa,
                         Camion = v.CamionNavigation.Patente
-                    }).OrderByDescending(v => v.Id)
+                    })
                     .ToListAsync();
 
                 return viajes;
@@ -408,6 +410,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     .AsNoTracking()
                     .Include(v => v.ClienteNavigation)
                     .Where(v => v.NombreChofer == chofer)
+                    .OrderByDescending(v => v.Id)
                     .Select(v => new ViajeDTO()
                     {
                         Id = v.Id,
@@ -421,7 +424,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                         NombreChofer = v.NombreChofer,
                         Km = v.Km,
                         Tarifa = v.Tarifa,
-                    }).OrderByDescending(v => v.Id)
+                    })
                     .ToListAsync();
 
                 if (viajes.Count == 0)

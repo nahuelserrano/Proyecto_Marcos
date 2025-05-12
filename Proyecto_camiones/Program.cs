@@ -228,7 +228,7 @@ namespace Proyecto_camiones
             //var viajes = await vfvm.ObtenerViajesDeUnClienteAsync(3);
             //if (viajes.IsSuccess)
             //{
-            //    foreach(var viaje in viajes.Value)
+            //    foreach (var viaje in viajes.Value)
             //    {
             //        Console.WriteLine(viaje.ToString());
             //    }
@@ -352,7 +352,6 @@ namespace Proyecto_camiones
             //await ViajeTest.ProbarObtenerViajePorId(4);
             //await ViajeTest.ProbarObtenerViajesPorCliente(3);
             //await ViajeTest.ProbarObtenerViajesPorChofer(2);
-            //await ViajeTest.ProbarObtenerViajesDeUnFletero("Carlos");
             //await ViajeTest.ProbarEliminarViaje(10);
 
             //}

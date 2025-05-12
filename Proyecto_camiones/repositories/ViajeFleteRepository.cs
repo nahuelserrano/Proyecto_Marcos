@@ -172,6 +172,7 @@ namespace Proyecto_camiones.Repositories
                 var viajes = await (from v in this._context.ViajesFlete
                                     join f in this._context.Fletes on v.idFlete equals f.Id
                                     where v.idCliente == id
+                                    orderby v.idViajeFlete descending
                                     select new ViajeMixtoDTO(
                                         v.origen,
                                         v.destino,
@@ -184,7 +185,7 @@ namespace Proyecto_camiones.Repositories
                                          v.tarifa,
                                         v.comision,
                                         f.nombre // Aquí obtenemos el nombre del fletero
-                                    )).OrderByDescending(v => v.Id)
+                                    ))
                                     .ToListAsync();
                 return viajes;
             } catch (Exception e)
@@ -201,6 +202,7 @@ namespace Proyecto_camiones.Repositories
             {
                 var viajes = await _context.ViajesFlete
                 .Where(v => v.idFlete == idFletero)  // Filtrar por el fletero solicitado
+                .OrderByDescending(v => v.idViajeFlete)
                 .Join(
                     _context.Clientes,
                     viaje => viaje.idCliente,
@@ -229,7 +231,6 @@ namespace Proyecto_camiones.Repositories
                         fecha_salida = vc.Viaje.fecha_salida
                     }
                 )
-                .OrderByDescending(v => v.idViajeFlete)
                 .ToListAsync();
 
                 return viajes;
