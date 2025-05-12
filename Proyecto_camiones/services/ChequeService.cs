@@ -28,13 +28,13 @@ namespace Proyecto_camiones.Presentacion.Services
 
         public async Task<Result<ChequeDTO>> ObtenerPorIdAsync(int id)
         {
-            if (id < 0)
-            {
+            if (id <= 0)
                 return Result<ChequeDTO>.Failure(MensajeError.IdInvalido(id));
-            }
-
+            
+            Console.WriteLine("ChequeService: ObtenerPorIdAsync");
             ChequeDTO? cheque = await this._chequeRepository.ObtenerPorIdAsync(id);
 
+            Console.WriteLine("3");
             if (cheque == null)
                 return Result<ChequeDTO>.Failure(MensajeError.objetoNulo(nameof(cheque)));
 
@@ -62,7 +62,7 @@ namespace Proyecto_camiones.Presentacion.Services
             }
         }
 
-        public async Task<Result<int>> CrearAsync(int id_Cliente, DateOnly FechaIngresoCheque, string NumeroCheque, float Monto, string Banco, DateOnly FechaCobro)
+        public async Task<Result<int>> CrearAsync(int id_Cliente, DateOnly FechaIngresoCheque, int NumeroCheque, float Monto, string Banco, DateOnly FechaCobro)
         {
             ValidadorCheque validador = new ValidadorCheque(id_Cliente, FechaIngresoCheque, NumeroCheque, Monto, Banco, FechaCobro);
             //Result<bool> resultadoValidacion = validador.ValidarCompleto();
@@ -93,7 +93,7 @@ namespace Proyecto_camiones.Presentacion.Services
         }
 
 
-        public async Task<Result<ChequeDTO>> ActualizarAsync(int id, int? id_cliente = null, DateOnly? FechaIngresoCheque = null, string? NumeroCheque = null, float? Monto = null, string? Banco = null, DateOnly? FechaCobro = null)
+        public async Task<Result<ChequeDTO>> ActualizarAsync(int id, int? id_cliente = null, DateOnly? FechaIngresoCheque = null, int? NumeroCheque = null, float? Monto = null, string? Banco = null, DateOnly? FechaCobro = null)
         {
             if (id <= 0)
                 return Result<ChequeDTO>.Failure(MensajeError.IdInvalido(id));
@@ -111,7 +111,7 @@ namespace Proyecto_camiones.Presentacion.Services
                 chequeExistente.FechaIngresoCheque = FechaIngresoCheque.Value;
 
             if (NumeroCheque != null)
-                chequeExistente.NumeroCheque = NumeroCheque;
+                chequeExistente.NumeroCheque = (int)NumeroCheque;
 
             if (Monto.HasValue)
                 chequeExistente.Monto = Monto.Value;

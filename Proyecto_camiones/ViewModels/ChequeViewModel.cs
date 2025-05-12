@@ -24,7 +24,7 @@ namespace Proyecto_camiones.ViewModels
             return await _chequeService.ProbarConexionAsync();
         }
 
-        public async Task<Result<int>> CrearAsync(int idCliente, DateOnly fechaIngreso, string numeroCheque,
+        public async Task<Result<int>> CrearAsync(int idCliente, DateOnly fechaIngreso, int numeroCheque,
                                                  float monto, string banco, DateOnly fechaCobro)
         {
             if (!await TestearConexionAsync())
@@ -61,7 +61,7 @@ namespace Proyecto_camiones.ViewModels
 
         public async Task<Result<ChequeDTO>> ActualizarAsync(int id, int? idCliente = null,
                                                             DateOnly? fechaIngreso = null,
-                                                            string numeroCheque = null,
+                                                            int? numeroCheque = null,
                                                             float? monto = null,
                                                             string banco = null,
                                                             DateOnly? fechaCobro = null)

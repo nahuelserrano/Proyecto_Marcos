@@ -99,7 +99,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
         //        // READ - Obtener todos los viajes
-        public async Task<List<ViajeDTO>> ObtenerTodosAsync()
+        public async Task<List<ViajeDTO>?> ObtenerTodosAsync()
         {
             try
             {
@@ -133,7 +133,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             {
                 Console.WriteLine($"Error al obtener viajes: {ex.Message}");
                 Console.WriteLine($"Stack trace: {ex.StackTrace}");
-                return new List<ViajeDTO>();
+                return null;
             }
         }
 
@@ -176,7 +176,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
         // READ - Obtener viajes con filtros
-        public async Task<List<ViajeDTO>> ObtenerPorFechaYCamionAsync(int camionId,
+        public async Task<List<ViajeDTO>?> ObtenerPorFechaYCamionAsync(int camionId,
                                                             DateOnly? fechaInicio = null,
                                                             DateOnly? fechaFin = null
                                                             )
@@ -218,7 +218,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             catch (Exception ex)
             {
                 Console.WriteLine($"Error al filtrar viajes: {ex.Message}");
-                return new List<ViajeDTO>();
+                return null;
             }
         }
 
@@ -326,7 +326,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         // MÉTODOS ESPECÍFICOS
 
         // Obtener viajes por camión
-        public async Task<List<ViajeDTO>> ObtenerPorCamionAsync(int camionId, string patente)
+        public async Task<List<ViajeDTO>?> ObtenerPorCamionAsync(int camionId, string patente)
         {
             try
             {
@@ -359,12 +359,12 @@ namespace Proyecto_camiones.Presentacion.Repositories
             catch (Exception ex)
             {
                 Console.WriteLine($"Error al obtener viajes con detalles: {ex.Message}");
-                return new List<ViajeDTO>();
+                return null;
             }
         }
 
         // Obtener viajes por cliente
-        public async Task<List<ViajeMixtoDTO>> ObtenerViajeMixtoPorClienteAsync(int clienteId)
+        public async Task<List<ViajeMixtoDTO>?> ObtenerViajeMixtoPorClienteAsync(int clienteId)
         {
             try
             {
@@ -398,11 +398,11 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 MessageBox.Show(ex.Message);
                 MessageBox.Show(ex.InnerException?.Message);
                 Console.WriteLine($"Error al obtener viajes por cliente: {ex.Message}");
-                return new List<ViajeMixtoDTO>();
+                return null;
             }
         }
 
-        public async Task<List<ViajeDTO>> ObtenerPorChoferAsync(string chofer)
+        public async Task<List<ViajeDTO>?> ObtenerPorChoferAsync(string chofer)
         {
             try
             {
@@ -438,7 +438,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             catch (Exception ex)
             {
                 Console.WriteLine($"Error al obtener viajes por chofer: {ex.Message}");
-                return new List<ViajeDTO>();
+                return null;
             }
         }
     }

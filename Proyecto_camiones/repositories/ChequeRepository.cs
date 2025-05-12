@@ -47,7 +47,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
         }
 
-        public async Task<int> InsertarAsync(int id_Cliente, DateOnly FechaIngresoCheque, string NumeroCheque, float Monto, string Banco, DateOnly FechaCobro)
+        public async Task<int> InsertarAsync(int id_Cliente, DateOnly FechaIngresoCheque, int NumeroCheque, float Monto, string Banco, DateOnly FechaCobro)
         {
             try
             {
@@ -108,7 +108,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                                             int id,
                                             int? id_Cliente = null,
                                             DateOnly? FechaIngresoCheque = null,
-                                            string? NumeroCheque = null,
+                                            int? NumeroCheque = null,
                                             string? Banco = null,
                                             float? Monto = null,
                                             DateOnly? FechaCobro = null
@@ -133,8 +133,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 if (FechaIngresoCheque.HasValue)
                     cheque.FechaIngresoCheque = FechaIngresoCheque.Value;
 
-                if (!string.IsNullOrEmpty(NumeroCheque))
-                    cheque.NumeroCheque = NumeroCheque;
+                if (NumeroCheque.HasValue)
+                    cheque.NumeroCheque = (int)NumeroCheque;
 
                 if (Monto.HasValue)
                     cheque.Monto = Monto.Value;
@@ -163,9 +163,13 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 Cheque? cheque = await _context.Cheques
                     .AsNoTracking()
                     .FirstOrDefaultAsync(c => c.Id == id);
-                
+
+                Console.WriteLine($"Cheque");
+
+
                 if (cheque != null)
                 {
+                    Console.WriteLine($"Cheque encontrado: ID {cheque.Id}, Monto: {cheque.Monto}");
                     ChequeDTO nuevo = new ChequeDTO(cheque.Id_Cliente, cheque.FechaIngresoCheque, cheque.NumeroCheque, cheque.Monto, cheque.Banco, cheque.FechaCobro);
                     return nuevo;
                 }
@@ -174,8 +178,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al obtener cheque con ID {id}");
-                Console.WriteLine(ex.InnerException);
+                Console.WriteLine($"Error al obtener cheque con ID {id}, exception: {ex}");
                 return null;
             }
         }
