@@ -37,9 +37,9 @@ namespace Proyecto_camiones
         {
 
             // Llamada a Windows Forms para inicializar la aplicación
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
+            //Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
 
             //PagoViewModel pw = new PagoViewModel();
 
@@ -174,7 +174,7 @@ namespace Proyecto_camiones
             //}
 
             //ACTUALIZAR UNA CUENTA CORRIENTE
-            //var cuenta = await ccvm.ActualizarAsync(17, null, null, 1000, 0, null, null);
+            //var cuenta = await ccvm.ActualizarAsync(14, null, null, null, 0, null, null);
             //if (cuenta.IsSuccess)
             //{
             //    Console.WriteLine(cuenta.Value.ToString());
