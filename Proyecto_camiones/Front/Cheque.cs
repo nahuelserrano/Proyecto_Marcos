@@ -506,6 +506,7 @@ namespace Proyecto_camiones.Front
                 }
             }
             ChequeViewModel cvm = new ChequeViewModel();
+            //cvm.CrearAsync(1, DateOnly.Parse(datos[0]), int.Parse(datos[1]), float.Parse(datos[2]), datos[3], DateOnly.Parse(datos[4]), DateOnly.Parse(datos[5]), datos[6], DateOnly.Parse(datos[7]));
 
             //var result = cvm.CrearAsync(1, DateOnly.Parse(datos[0]), int.Parse(datos[1]),);
             // Verificar que los datos no estén vacíos

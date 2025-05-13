@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using NPOI.SS.Formula.Functions;
 using Proyecto_camiones.Presentacion.Models;
 using MySqlX.XDevAPI.Common;
+using Mysqlx.Session;
 
 namespace Proyecto_camiones.Front;
 
@@ -123,7 +124,7 @@ public class FormRegistro : Home
 
             else
             {
-                MessageBox.Show("Error al cargar el viaje");
+                MessageBox.Show(result.Error);
             }
         }
         else if (filtro == "Cliente")
@@ -142,7 +143,6 @@ public class FormRegistro : Home
             else
             {
                 MessageBox.Show(resultClient.Error);
-                MessageBox.Show("Error al cargar cliente");
             }
         }
         else if (filtro == "Flete")
@@ -161,7 +161,6 @@ public class FormRegistro : Home
             else
             {
                 MessageBox.Show(resultFlete.Error);
-                MessageBox.Show("Error al cargar el flete");
             }
         }
         else if( filtro == "cuenta corriente")
@@ -175,12 +174,15 @@ public class FormRegistro : Home
                 {
                     cheq.Rows.Add(cuenta.Fecha_factura, cuenta.Nro_factura, cuenta.Pagado, cuenta.Adeuda, cuenta.Saldo_Total, cuenta.idCuenta);
                 }
+            } else
+            {
+                MessageBox.Show(resultCuentaCorriente.Error);
             }
         }
         else if (filtro == "sueldo")
         {
-            SueldoViewModel svm = new SueldoViewModel();
-            //var resultSueldo = await svm.
+            //SueldoViewModel svm = new SueldoViewModel();
+            //var resultSueldo = await svm.ObtenerTodosAsync();
 
             //if (resultSueldo.IsSuccess)
             //{
@@ -448,27 +450,30 @@ public class FormRegistro : Home
                 cheq.Columns.Add(btnPagado);
             }
         }
-        if (cheq.Columns["Eliminar"] == null)
+        if (filtro != "Cliente")
         {
-            DataGridViewButtonColumn btnEliminar = new DataGridViewButtonColumn();
-            btnEliminar.Name = "Eliminar";
-            btnEliminar.HeaderText = "Eliminar";  // Puedes dejarlo vacío si prefieres
-            btnEliminar.Text = "🗑️"; // Ícono de eliminar
-            btnEliminar.UseColumnTextForButtonValue = true; // Hace que todas las celdas muestren "❌"
-            btnEliminar.Width = 20; // Ajustar tamaño
+            if (cheq.Columns["Eliminar"] == null)
+            {
+                DataGridViewButtonColumn btnEliminar = new DataGridViewButtonColumn();
+                btnEliminar.Name = "Eliminar";
+                btnEliminar.HeaderText = "Eliminar";  // Puedes dejarlo vacío si prefieres
+                btnEliminar.Text = "🗑️"; // Ícono de eliminar
+                btnEliminar.UseColumnTextForButtonValue = true; // Hace que todas las celdas muestren "❌"
+                btnEliminar.Width = 20; // Ajustar tamaño
 
-            cheq.Columns.Add(btnEliminar);
-        }
+                cheq.Columns.Add(btnEliminar);
+            }
 
-        if (cheq.Columns["Modificar"] == null)
-        {
-            DataGridViewButtonColumn btnModificar = new DataGridViewButtonColumn();
-            btnModificar.Name = "Modificar";
-            btnModificar.HeaderText = "Modificar";  // Puedes dejarlo vacío si prefieres
-            btnModificar.Text = "✏️"; // Ícono de modificar
-            btnModificar.UseColumnTextForButtonValue = true; // Hace que todas las celdas muestren "✏️"
+            if (cheq.Columns["Modificar"] == null)
+            {
+                DataGridViewButtonColumn btnModificar = new DataGridViewButtonColumn();
+                btnModificar.Name = "Modificar";
+                btnModificar.HeaderText = "Modificar";  // Puedes dejarlo vacío si prefieres
+                btnModificar.Text = "✏️"; // Ícono de modificar
+                btnModificar.UseColumnTextForButtonValue = true; // Hace que todas las celdas muestren "✏️"
 
-            cheq.Columns.Add(btnModificar);
+                cheq.Columns.Add(btnModificar);
+            }
         }
     }
 
@@ -533,6 +538,10 @@ public class FormRegistro : Home
             {
                 ShowInfoTable(filtro, dato);
             }
+            else
+            {
+                MessageBox.Show(resultado.Error);
+            }
         } else if(filtro == "cuenta corriente")
         {
             CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
@@ -540,8 +549,11 @@ public class FormRegistro : Home
 
             if (resultado.IsSuccess)
             {
-                MessageBox.Show("Agregado");
                 ShowInfoTable(filtro, dato);
+            }
+            else
+            {
+                MessageBox.Show(resultado.Error);
             }
         } else if(filtro == "Flete")
         {
@@ -553,6 +565,10 @@ public class FormRegistro : Home
                 MessageBox.Show("Agregado");
                 ShowInfoTable(filtro, dato);
             }
+            else
+            {
+                MessageBox.Show(resultado.Error);
+            }
         } else if(filtro == "sueldo")
         {
             SueldoViewModel svm = new SueldoViewModel();
@@ -561,6 +577,10 @@ public class FormRegistro : Home
             {
                 MessageBox.Show("Agregado");
                 ShowInfoTable(filtro, dato);
+            }
+            else
+            {
+                MessageBox.Show(resultado.Error);
             }
         }
 
@@ -604,6 +624,9 @@ public class FormRegistro : Home
                     if (result.IsSuccess)
                     {
                         ShowInfoTable(filtro, dato);
+                    } else
+                    {
+                        MessageBox.Show(result.Error);
                     }
 
                 } else if(filtro == "Cliente")
@@ -615,6 +638,10 @@ public class FormRegistro : Home
                     {
                         ShowInfoTable(filtro, dato);
                     }
+                    else
+                    {
+                        MessageBox.Show(result.Error);
+                    }
                 } else if(filtro == "Flete")
                 {
                     string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
@@ -624,9 +651,13 @@ public class FormRegistro : Home
                     {
                         ShowInfoTable(filtro, dato);
                     }
+                    else
+                    {
+                        MessageBox.Show(result.Error);
+                    }
                 } else if(filtro == "cuenta corriente")
                 {
-                    //MessageBox.Show("soy una cuenta corriente");
+                    //COMPARA CON UN CLIENTE
                     //string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
                     //var result = await ccvm.EliminarAsync(int.Parse(id));
                     //MessageBox.Show(id + " ");
@@ -635,6 +666,9 @@ public class FormRegistro : Home
                     //{
                     //    MessageBox.Show("eliminado");
                     //    ShowInfoTable(filtro, dato);
+                    //} else
+                    //{
+                    //    MessageBox.Show(result.Error);
                     //}
                 } else if(filtro == "sueldo")
                 {
@@ -645,6 +679,10 @@ public class FormRegistro : Home
                     {
                         MessageBox.Show("eliminado");
                         ShowInfoTable(filtro, dato);
+                    }
+                    else
+                    {
+                        MessageBox.Show(result.Error);
                     }
                 }
             }
@@ -685,6 +723,9 @@ public class FormRegistro : Home
                     if (result.IsSuccess)
                     {
                         ShowInfoTable(filtro, dato);
+                    } else
+                    {
+                        MessageBox.Show(result.Error);
                     }
                 } else if (filtro == "cuenta corriente")
                 {
@@ -702,8 +743,10 @@ public class FormRegistro : Home
                             MessageBox.Show("modificado");
                             ShowInfoTable(filtro, dato);
                         }
-
-                   
+                        else
+                        {
+                            MessageBox.Show(result.Error);
+                        }    
                 } else if(filtro == "Flete")
                 {
                     MessageBox.Show("flete");
@@ -728,6 +771,9 @@ public class FormRegistro : Home
                     if (result.IsSuccess)
                     {
                         ShowInfoTable(filtro, dato);
+                    } else
+                    {
+                        MessageBox.Show(result.Error);
                     }
                 } else if(filtro == "sueldo")
                 {
