@@ -194,7 +194,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
             try
             {
                 Cliente? cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Nombre == nombre_cliente);
-                MessageBox.Show(cliente + " ");
                 return cliente;
 
             }

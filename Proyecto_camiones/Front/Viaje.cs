@@ -193,7 +193,7 @@ internal class Viaje : Home
             }
             else
             {
-                MessageBox.Show("No se pudo obtener la lista de camiones");
+                MessageBox.Show(resultado.Error);
             }
         }
         else if (filtro == "Cliente")
@@ -207,7 +207,7 @@ internal class Viaje : Home
             }
             else
             {
-                MessageBox.Show("No se pudo obtener la lista de camiones");
+                MessageBox.Show(resultado.Error);
             }
         }
         else if (filtro == "Flete")
@@ -220,7 +220,7 @@ internal class Viaje : Home
             }
             else
             {
-                MessageBox.Show("No se pudo obtener la lista de fletero");
+                MessageBox.Show(resultado.Error);
             }
         }
     }
@@ -317,7 +317,7 @@ internal class Viaje : Home
                     }
                     else
                     {
-                        MessageBox.Show("No se pudo eliminar el flete");
+                        MessageBox.Show(response.Error);
                     }
 
                 }
@@ -396,7 +396,7 @@ internal class Viaje : Home
                 }
                 else
                 {
-                    MessageBox.Show("No se pudo eliminar el cliente");
+                    MessageBox.Show(response.Error);
                 }
 
             }
@@ -476,7 +476,7 @@ internal class Viaje : Home
                 }
                 else
                 {
-                    MessageBox.Show("No se pudo eliminar el camión");
+                    MessageBox.Show(response.Error);
                 }
 
             }
@@ -533,7 +533,7 @@ internal class Viaje : Home
                     }
                     else
                     {
-                        MessageBox.Show("No se pudo obtener el camión");
+                        MessageBox.Show(resultado.Error);
                     }
 
                 }
@@ -559,11 +559,9 @@ internal class Viaje : Home
                     {
                         i = 1;
                         Cliente cliente = resultado.Value;
-                        MessageBox.Show(cliente.ToString());
                     }
                     else
                     {
-                        MessageBox.Show("No se pudo obtener el cliente");
                         MessageBox.Show(resultado.Error);
                     }
                 }
