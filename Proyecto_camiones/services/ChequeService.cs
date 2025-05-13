@@ -28,8 +28,8 @@ namespace Proyecto_camiones.Presentacion.Services
 
         public async Task<Result<ChequeDTO>> ObtenerPorIdAsync(String nroCheque)
         {
-            if ()
-                return Result<ChequeDTO>.Failure(MensajeError.IdInvalido(id));
+            if (String.IsNullOrEmpty(nroCheque))
+                return Result<ChequeDTO>.Failure(MensajeError.objetoNulo(nroCheque));
             
             Console.WriteLine("ChequeService: ObtenerPorIdAsync");
             ChequeDTO? cheque = await this._chequeRepository.ObtenerPorNumeroChequeAsync(nroCheque);
@@ -45,13 +45,13 @@ namespace Proyecto_camiones.Presentacion.Services
         {
             try
             {
-                if (nroCheque==null) return Result<bool>.Failure(MensajeError.IdInvalido(id));
+                if (nroCheque==null) return Result<bool>.Failure(MensajeError.objetoNulo(nroCheque));
 
-                ChequeDTO? cheque = await this._chequeRepository.ObtenerPorIdAsync(id);
+                ChequeDTO? cheque = await this._chequeRepository.ObtenerPorNumeroChequeAsync(nroCheque);
 
                 if (cheque == null) return Result<bool>.Failure(MensajeError.objetoNulo(nameof(cheque)));
 
-                await _chequeRepository.EliminarAsync(id);
+                await _chequeRepository.EliminarAsync(nroCheque);
 
                 return Result<bool>.Success(true);
             }
@@ -62,7 +62,7 @@ namespace Proyecto_camiones.Presentacion.Services
             }
         }
 
-        public async Task<Result<int>> CrearAsync(int id_Cliente, DateOnly FechaIngresoCheque, int NumeroCheque, float Monto, string Banco, DateOnly FechaCobro)
+        public async Task<Result<int>> CrearAsync(int id_Cliente, DateOnly FechaIngresoCheque, String NumeroCheque, float Monto, string Banco, DateOnly FechaCobro)
         {
             ValidadorCheque validador = new ValidadorCheque(id_Cliente, FechaIngresoCheque, NumeroCheque, Monto, Banco, FechaCobro);
             //Result<bool> resultadoValidacion = validador.ValidarCompleto();
