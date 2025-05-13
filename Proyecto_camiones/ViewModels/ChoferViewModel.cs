@@ -18,7 +18,7 @@ namespace Proyecto_camiones.ViewModels
 
         public ChoferViewModel()
         {
-            this._choferRepository = new ChoferRepository(General.obtenerInstancia());
+            this._choferRepository = new ChoferRepository();
             this._choferService = new ChoferService(_choferRepository);
         }
 

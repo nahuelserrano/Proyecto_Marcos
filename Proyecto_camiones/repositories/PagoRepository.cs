@@ -10,6 +10,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using Proyecto_camiones.DTOs;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_camiones.Presentacion.Models;
+using Proyecto_camiones.ViewModels;
 
 namespace Proyecto_camiones.Repositories
 {
@@ -17,9 +18,9 @@ namespace Proyecto_camiones.Repositories
     {
         private readonly ApplicationDbContext _context;
 
-        public PagoRepository(ApplicationDbContext context)
+        public PagoRepository()
         {
-            this._context = context;
+            this._context = General.obtenerInstancia();
         }
         public async Task<bool> ProbarConexionAsync()
         {

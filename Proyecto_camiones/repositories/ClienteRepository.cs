@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using NPOI.POIFS.Properties;
 using Org.BouncyCastle.Bcpg.OpenPgp;
 using Proyecto_camiones.Presentacion.Models;
+using Proyecto_camiones.ViewModels;
 
 namespace Proyecto_camiones.Presentacion.Repositories
 {
@@ -14,9 +15,9 @@ namespace Proyecto_camiones.Presentacion.Repositories
     {
         private readonly ApplicationDbContext _context;
 
-        public ClienteRepository(ApplicationDbContext context)
+        public ClienteRepository()
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            this._context = General.obtenerInstancia();
         }
 
         public async Task<bool> ProbarConexionAsync()

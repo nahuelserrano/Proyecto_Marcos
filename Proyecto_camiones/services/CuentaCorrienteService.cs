@@ -24,7 +24,7 @@ namespace Proyecto_camiones.Services
         public CuentaCorrienteService(CuentaCorrienteRepository cc)
         {
             this.ccRepository = cc ?? throw new ArgumentNullException(nameof(cc));
-            this.clienteRepository = new ClienteRepository(General.obtenerInstancia());
+            this.clienteRepository = new ClienteRepository();
             this.fleteRepository = new FleteRepository();
         }
 

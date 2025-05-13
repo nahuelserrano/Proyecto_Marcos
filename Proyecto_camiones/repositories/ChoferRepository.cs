@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Proyecto_camiones.Presentacion.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Proyecto_camiones.ViewModels;
 
 namespace Proyecto_camiones.Presentacion.Repositories
 {
@@ -11,9 +12,9 @@ namespace Proyecto_camiones.Presentacion.Repositories
     {
         private readonly ApplicationDbContext _context;
 
-        public ChoferRepository(ApplicationDbContext context)
+        public ChoferRepository()
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            this._context = General.obtenerInstancia();
         }
 
         public async Task<bool> ProbarConexionAsync()
