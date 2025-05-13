@@ -40,7 +40,7 @@ namespace Proyecto_camiones
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
-            
+
             //PagoViewModel pw = new PagoViewModel();
 
             //await pw.CrearAsync(1, 1, 1000);
@@ -109,7 +109,7 @@ namespace Proyecto_camiones
 
             //INSERCION PARA CUENTA CORRIENTE DE UN FLETERO FUNCIONANDO CORRECTAMENTE
 
-            //var cuenta = await ccvm.InsertarAsync(null, "carlos", new DateOnly(2025, 4, 21), 90, 1000, 600);
+            //var cuenta = await ccvm.InsertarAsync(null, "carlos", new DateOnly(2025, 5, 11), 92, 1000, 500);
             //if (cuenta.IsSuccess)
             //{
             //    Console.WriteLine("Id insertado: " + cuenta.Value);
@@ -174,7 +174,7 @@ namespace Proyecto_camiones
             //}
 
             //ACTUALIZAR UNA CUENTA CORRIENTE
-            //var cuenta = await ccvm.ActualizarAsync(16, null, 20, 1000, 0, null, null);
+            //var cuenta = await ccvm.ActualizarAsync(17, null, null, 1000, 0, null, null);
             //if (cuenta.IsSuccess)
             //{
             //    Console.WriteLine(cuenta.Value.ToString());
