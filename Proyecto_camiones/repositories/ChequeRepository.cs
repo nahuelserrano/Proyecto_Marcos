@@ -47,7 +47,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
         }
 
-        public async Task<int> InsertarAsync(int id_Cliente, DateOnly FechaIngresoCheque, int NumeroCheque, float Monto, string Banco, DateOnly FechaCobro)
+        public async Task<int> InsertarAsync(int id_Cliente, DateOnly FechaIngresoCheque, String NumeroCheque, float Monto, string Banco, DateOnly FechaCobro)
         {
             try
             {
@@ -108,7 +108,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                                             int id,
                                             int? id_Cliente = null,
                                             DateOnly? FechaIngresoCheque = null,
-                                            int? NumeroCheque = null,
+                                            String? NumeroCheque = null,
                                             string? Banco = null,
                                             float? Monto = null,
                                             DateOnly? FechaCobro = null
@@ -133,8 +133,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 if (FechaIngresoCheque.HasValue)
                     cheque.FechaIngresoCheque = FechaIngresoCheque.Value;
 
-                if (NumeroCheque.HasValue)
-                    cheque.NumeroCheque = (int)NumeroCheque;
+                if (!string.IsNullOrEmpty(NumeroCheque))
+                    cheque.NumeroCheque = NumeroCheque;
 
                 if (Monto.HasValue)
                     cheque.Monto = Monto.Value;
@@ -156,20 +156,20 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
         }
 
-        public async Task<ChequeDTO?> ObtenerPorIdAsync(int id)
+        public async Task<ChequeDTO?> ObtenerPorNumeroChequeAsync(string nroCheque)
         {
             try
             {
                 Cheque? cheque = await _context.Cheques
                     .AsNoTracking()
-                    .FirstOrDefaultAsync(c => c.Id == id);
+                    .FirstOrDefaultAsync(c => c.NumeroCheque.Equals(nroCheque));
 
                 Console.WriteLine($"Cheque");
 
 
                 if (cheque != null)
                 {
-                    Console.WriteLine($"Cheque encontrado: ID {cheque.Id}, Monto: {cheque.Monto}");
+                    Console.WriteLine($"Cheque encontrado: nuemro cheque {cheque.NumeroCheque}, Monto: {cheque.Monto}");
                     ChequeDTO nuevo = new ChequeDTO(cheque.Id_Cliente, cheque.FechaIngresoCheque, cheque.NumeroCheque, cheque.Monto, cheque.Banco, cheque.FechaCobro);
                     return nuevo;
                 }
@@ -178,16 +178,18 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al obtener cheque con ID {id}, exception: {ex}");
+                Console.WriteLine($"Error al obtener cheque con numero de cheque:  {nroCheque}, exception: {ex}");
                 return null;
             }
         }
 
-        public async Task<bool> EliminarAsync(int id)
+        public async Task<bool> EliminarAsync(string nroCheque)
         {
             try
             {
-                var cheque = await _context.Cheques.FindAsync(id);
+                Cheque? cheque = await _context.Cheques
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(c => c.NumeroCheque.Equals(nroCheque));
 
                 if (cheque == null)
                     return false;
@@ -206,7 +208,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Repository: Error al eliminar cheque con ID {id}");
+                Console.WriteLine($"Repository: Error al eliminar cheque con el numero de cheque: {nroCheque}");
                 Console.WriteLine(e.InnerException);
                 return false;
             }

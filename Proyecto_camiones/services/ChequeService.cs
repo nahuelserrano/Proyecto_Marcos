@@ -26,13 +26,13 @@ namespace Proyecto_camiones.Presentacion.Services
             return result;
         }
 
-        public async Task<Result<ChequeDTO>> ObtenerPorIdAsync(int id)
+        public async Task<Result<ChequeDTO>> ObtenerPorIdAsync(String nroCheque)
         {
-            if (id <= 0)
+            if ()
                 return Result<ChequeDTO>.Failure(MensajeError.IdInvalido(id));
             
             Console.WriteLine("ChequeService: ObtenerPorIdAsync");
-            ChequeDTO? cheque = await this._chequeRepository.ObtenerPorIdAsync(id);
+            ChequeDTO? cheque = await this._chequeRepository.ObtenerPorNumeroChequeAsync(nroCheque);
 
             Console.WriteLine("3");
             if (cheque == null)
@@ -41,11 +41,11 @@ namespace Proyecto_camiones.Presentacion.Services
             return Result<ChequeDTO>.Success(cheque);
         }
 
-        internal async Task<Result<bool>> EliminarAsync(int id)
+        internal async Task<Result<bool>> EliminarAsync(String nroCheque)
         {
             try
             {
-                if (id <= 0) return Result<bool>.Failure(MensajeError.IdInvalido(id));
+                if (nroCheque==null) return Result<bool>.Failure(MensajeError.IdInvalido(id));
 
                 ChequeDTO? cheque = await this._chequeRepository.ObtenerPorIdAsync(id);
 

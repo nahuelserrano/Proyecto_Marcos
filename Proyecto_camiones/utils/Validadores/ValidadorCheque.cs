@@ -15,14 +15,14 @@ namespace Proyecto_camiones.Presentacion.Utils
         private List<string> _errores;
         private readonly int Id_cliente;
         private readonly DateOnly FechaIngresoCheque;
-        private readonly int NumeroCheque;
+        private readonly String NumeroCheque;
         private readonly float Monto;
         private readonly string Banco;
         private readonly DateOnly FechaCobro;
 
 
 
-        public ValidadorCheque(int id_Cliente, DateOnly FechaIngresoCheque, int NumeroCheque, float Monto, string Banco, DateOnly FechaCobro)
+        public ValidadorCheque(int id_Cliente, DateOnly FechaIngresoCheque, String NumeroCheque, float Monto, string Banco, DateOnly FechaCobro)
         {
             this.Banco = Banco;
             this.Id_cliente = id_Cliente;
@@ -42,8 +42,8 @@ namespace Proyecto_camiones.Presentacion.Utils
                 if (this.Banco == null)
                 _errores.Add(MensajeError.ausenciaDeDatos(nameof(this.Banco)));
 
-                if (this.NumeroCheque <= 0)
-                    _errores.Add(MensajeError.ausenciaDeDatos(nameof(this.Banco)));
+                if ( String.IsNullOrEmpty(this.NumeroCheque))
+                    _errores.Add(MensajeError.ausenciaDeDatos(nameof(this.NumeroCheque)));
 
             return this;
         }
