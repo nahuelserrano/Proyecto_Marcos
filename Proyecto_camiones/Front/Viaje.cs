@@ -312,7 +312,6 @@ internal class Viaje : Home
                     var response = await fvm.EliminarAsync(item.Id);
                     if (response.IsSuccess)
                     {
-                        MessageBox.Show("Flete eliminado correctamente");
                         ObtenerTodosSegunFiltro(filtro);
                     }
                     else
@@ -359,7 +358,7 @@ internal class Viaje : Home
             AutoSize = true,
             TextAlign = ContentAlignment.TopCenter,
             Location = new Point(10, 10),
-            BackColor = Color.Transparent
+            BackColor = Color.Transparent,
         };
 
         RoundButton remove = new RoundButton
@@ -391,7 +390,6 @@ internal class Viaje : Home
                 var response = await cvm.Eliminar(item.Id);
                 if (response.IsSuccess)
                 {
-                    MessageBox.Show("Cliente eliminado correctamente");
                     ObtenerTodosSegunFiltro(filtro);
                 }
                 else
@@ -514,15 +512,16 @@ internal class Viaje : Home
     //AGREGAR CARD
     public async void GetFilterInfoAsync(string filtro, string info)
     {
+        int i = 0;
 
         if (!string.IsNullOrWhiteSpace(info))
         {
-            int i = 0;
+            
             if (filtro == "Camion")
             {
                 var idCamion = await cvm.InsertarAsync(info, "nombre");
 
-                if (idCamion.IsSuccess)
+                if (idCamion.IsSuccess && i == 0)
                 {
                     var resultado = await cvm.ObtenerPorId(idCamion.Value);
 
@@ -550,7 +549,7 @@ internal class Viaje : Home
                 ClienteViewModel cmv = new ClienteViewModel();
                 var idCliente = await cmv.InsertarCliente(info);
 
-                if (idCliente.IsSuccess)
+                if (idCliente.IsSuccess && i == 0)
                 {
 
                     var resultado = await cmv.ObtenerById(idCliente.Value);
@@ -575,11 +574,11 @@ internal class Viaje : Home
             {
                 FleteViewModel fvm = new FleteViewModel();
                 var response = await fvm.InsertarAsync(info);
-                if (response.IsSuccess)
+                if (response.IsSuccess && i == 0)
                 {
                     int idfletero = response.Value;
                     var fletero = await fvm.ObtenerPorIdAsync(idfletero);
-                    if (fletero.IsSuccess)
+                    if (fletero.IsSuccess && i == 0)
                     {
                         i = 1;
                         MessageBox.Show("Fletero con el nombre: " + fletero.Value.nombre + " y id: " + fletero.Value.Id + " insertado correctamente");
