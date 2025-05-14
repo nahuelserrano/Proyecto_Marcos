@@ -6,6 +6,7 @@ using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Windows.Forms;
+using Proyecto_camiones.ViewModels;
 
 namespace Proyecto_camiones.Presentacion.Repositories
 {
@@ -13,9 +14,9 @@ namespace Proyecto_camiones.Presentacion.Repositories
     {
         private readonly ApplicationDbContext _context;
 
-        public CamionRepository(ApplicationDbContext context)
+        public CamionRepository()
         {
-            _context = context;
+            _context = General.obtenerInstancia();
         }
 
         public async Task<bool> ProbarConexionAsync()

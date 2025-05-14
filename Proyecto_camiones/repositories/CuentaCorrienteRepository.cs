@@ -63,12 +63,12 @@ namespace Proyecto_camiones.Repositories
                 if (idCliente != null)
                 {
                     MessageBox.Show("id cliente: " + idCliente);
-                    ultimoRegistro = await this._context.Cuentas.Where(c => c.IdCliente == idCliente).OrderByDescending(c => c.Fecha_factura).FirstOrDefaultAsync();
+                    ultimoRegistro = await this._context.Cuentas.Where(c => c.IdCliente == idCliente).OrderByDescending(c => c.Id).FirstOrDefaultAsync();
                     MessageBox.Show("ultimo registro: " + ultimoRegistro);
                 }
                 else if (idFletero != null)
                 {
-                    ultimoRegistro = await this._context.Cuentas.Where(c => c.IdFletero == idFletero).OrderByDescending(c => c.Fecha_factura).FirstOrDefaultAsync();
+                    ultimoRegistro = await this._context.Cuentas.Where(c => c.IdFletero == idFletero).OrderByDescending(c => c.Id).FirstOrDefaultAsync();
                 }
                 else
                 {
@@ -291,10 +291,9 @@ namespace Proyecto_camiones.Repositories
                     {
                         Console.WriteLine("hola if de idCliente != null");
                         CuentaCorriente? anteUltimoRegistro = await this._context.Cuentas
-                                                                .Where(c => c.IdCliente == cuenta.IdCliente)
-                                                                .OrderByDescending(c => c.Id)
-                                                                .Skip(1)
-                                                                .FirstOrDefaultAsync();
+                                      .Where(c => c.IdCliente == cuenta.IdCliente && c.Id < cuenta.Id)
+                                      .OrderByDescending(c => c.Id)
+                                      .FirstOrDefaultAsync();
                         if (anteUltimoRegistro != null)
                         {
                             Console.WriteLine("anteultimo registro: " + anteUltimoRegistro.ToString());
@@ -310,10 +309,9 @@ namespace Proyecto_camiones.Repositories
                     else if (cuenta.IdFletero != null)
                     {
                         CuentaCorriente? anteUltimoRegistro = await this._context.Cuentas
-                                                                 .Where(c => c.IdFletero == cuenta.IdFletero)
-                                                                 .OrderByDescending(c => c.Id)
-                                                                 .Skip(1)
-                                                                 .FirstOrDefaultAsync();
+                                      .Where(c => c.IdFletero == cuenta.IdFletero && c.Id < cuenta.Id)
+                                      .OrderByDescending(c => c.Id)
+                                      .FirstOrDefaultAsync();
                         if (anteUltimoRegistro != null)
                         {
                             Console.WriteLine(anteUltimoRegistro.Saldo_Total);

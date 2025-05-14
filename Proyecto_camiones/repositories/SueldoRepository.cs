@@ -7,15 +7,16 @@ using System.Windows.Forms;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Models;
 using Microsoft.EntityFrameworkCore;
+using Proyecto_camiones.ViewModels;
 
 
 namespace Proyecto_camiones.Presentacion.Repositories
 {
-    public class SueldoRepository(ApplicationDbContext context)
+    public class SueldoRepository()
     {
 
 
-        private readonly ApplicationDbContext _context = context;
+        private readonly ApplicationDbContext _context = General.obtenerInstancia();
 
         public async Task<bool> ProbarConexionAsync()
         {

@@ -10,6 +10,7 @@ using MySqlX.XDevAPI;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Utils;
+using Proyecto_camiones.ViewModels;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace Proyecto_camiones.Presentacion.Repositories
@@ -18,9 +19,9 @@ namespace Proyecto_camiones.Presentacion.Repositories
     {
         private readonly ApplicationDbContext _context;
 
-        public ViajeRepository(ApplicationDbContext context)
+        public ViajeRepository()
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _context = General.obtenerInstancia();
         }
 
         public async Task<bool> ProbarConexionAsync()
