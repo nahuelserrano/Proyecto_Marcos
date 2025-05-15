@@ -13,41 +13,41 @@ namespace Proyecto_camiones.Tests
         /// <summary>
         /// Ejecuta todas las pruebas de Cheque en secuencia
         /// </summary>
-        //public static async Task EjecutarTodasLasPruebas()
-        //{
-        //    Console.WriteLine("\n======= INICIANDO PRUEBAS COMPLETAS DE CHEQUE =======\n");
+        public static async Task EjecutarTodasLasPruebas()
+        {
+            Console.WriteLine("\n======= INICIANDO PRUEBAS COMPLETAS DE CHEQUE =======\n");
 
-        //    try
-        //    {
-        //        // 1. Probamos la conexión primero
-        //        await ProbarConexionCheque();
+            try
+            {
+                // 1. Probamos la conexión primero
+                await ProbarConexionCheque();
 
-        //        // 2. Creamos un cheque para las pruebas
-        //        int idCheque = await ProbarInsertarCheque(2, 12345, 5000.0f, "Banco Galicia");
+                // 2. Creamos un cheque para las pruebas
+                int idCheque = await ProbarInsertarCheque(2, 12345, 5000.0f, "Banco Galicia");
 
-        //        // 3. Obtenemos el cheque por ID
-        //        await ProbarObtenerChequePorId(idCheque);
+                // 3. Obtenemos el cheque por ID
+                await ProbarObtenerChequePorId(idCheque);
 
-        //        // 4. Probamos obtener todos los cheques
-        //        await ProbarObtenerTodosCheques();
+                // 4. Probamos obtener todos los cheques
+                await ProbarObtenerTodosCheques();
 
-        //        // 5. Probamos actualizar un cheque
-        //        await ProbarActualizarCheque(idCheque, banco: "Banco Nación", monto: 6000.0f);
+                // 5. Probamos actualizar un cheque
+                await ProbarActualizarCheque(idCheque, banco: "Banco Nación", monto: 6000.0f);
 
-        //        // 6. Eliminamos el cheque de prueba
-        //        await ProbarEliminarCheque(idCheque);
+                // 6. Eliminamos el cheque de prueba
+                await ProbarEliminarCheque(idCheque);
 
-        //        // 7. Verificamos si realmente se eliminó
-        //        await ProbarObtenerChequePorId(idCheque);
+                // 7. Verificamos si realmente se eliminó
+                await ProbarObtenerChequePorId(idCheque);
 
-        //        Console.WriteLine("\n======= FINALIZADAS TODAS LAS PRUEBAS DE CHEQUE =======\n");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"\n[ERROR FATAL] Error en las pruebas de cheque: {ex.Message}");
-        //        Console.WriteLine($"Stack Trace: {ex.StackTrace}");
-        //    }
-        //}
+                Console.WriteLine("\n======= FINALIZADAS TODAS LAS PRUEBAS DE CHEQUE =======\n");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"\n[ERROR FATAL] Error en las pruebas de cheque: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+            }
+        }
 
         /// <summary>
         /// Prueba si se puede establecer la conexión con la base de datos desde ChequeViewModel
@@ -79,74 +79,74 @@ namespace Proyecto_camiones.Tests
         /// <summary>
         /// Prueba la inserción de un nuevo cheque
         /// </summary>
-        //public static async Task<int> ProbarInsertarCheque(
-        //    int idCliente,
-        //    int numeroCheque,
-        //    float monto,
-        //    string banco)
-        //{
-        //    DateOnly fechaHoy = DateOnly.FromDateTime(DateTime.Today);
-        //    DateOnly fechaCobro = fechaHoy.AddDays(30); // Suponiendo un cheque a 30 días
+        public static async Task<int> ProbarInsertarCheque(
+            int idCliente,
+            int numeroCheque,
+            float monto,
+            string banco)
+        {
+            DateOnly fechaHoy = DateOnly.FromDateTime(DateTime.Today);
+            DateOnly fechaCobro = fechaHoy.AddDays(30); // Suponiendo un cheque a 30 días
 
-        //    Console.WriteLine($"\n=== INSERTANDO CHEQUE: {numeroCheque} de ${monto} ===");
+            Console.WriteLine($"\n=== INSERTANDO CHEQUE: {numeroCheque} de ${monto} ===");
 
-        //    try
-        //    {
-        //        //var chequeViewModel = new ChequeViewModel();
-        //        //var resultado = await chequeViewModel.CrearAsync(
-        //        //    idCliente: idCliente,
-        //        //    fechaIngreso: fechaHoy,
-        //        //    numeroCheque: numeroCheque,
-        //        //    monto: monto,
-        //        //    banco: banco,
-        //        //    fechaCobro: fechaCobro
-        //        //);
+            try
+            {
+                var chequeViewModel = new ChequeViewModel();
+                var resultado = await chequeViewModel.CrearAsync(
+                    idCliente: idCliente,
+                    fechaIngreso: fechaHoy,
+                    numeroCheque: numeroCheque,
+                    monto: monto,
+                    banco: banco,
+                    fechaCobro: fechaCobro
+                );
 
-        //        //if (resultado.IsSuccess)
-        //        //{
-        //        //    Console.WriteLine($"[ÉXITO] Cheque insertado con ID: {resultado.Value}");
-        //        //    return resultado.Value;
-        //        //}
-                
-        //        //Console.WriteLine($"[ERROR] No se pudo insertar el cheque: {resultado.Error}");
-        //        //return -1;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"[EXCEPCIÓN] Al insertar cheque: {ex.Message}");
-        //        return -1;
-        //    }
-       // }
+                if (resultado.IsSuccess)
+                {
+                    Console.WriteLine($"[ÉXITO] Cheque insertado con ID: {resultado.Value}");
+                    return resultado.Value;
+                }
+
+                Console.WriteLine($"[ERROR] No se pudo insertar el cheque: {resultado.Error}");
+                return -1;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[EXCEPCIÓN] Al insertar cheque: {ex.Message}");
+                return -1;
+            }
+        }
 
         /// <summary>
         /// Prueba la obtención de un cheque por su ID
         /// </summary>
-        //public static async Task ProbarObtenerChequePorId(int id)
-        //{
-        //    Console.WriteLine($"\n=== OBTENIENDO CHEQUE POR ID: {id} ===");
+        public static async Task ProbarObtenerChequePorId(int id)
+        {
+            Console.WriteLine($"\n=== OBTENIENDO CHEQUE POR ID: {id} ===");
 
-        //    try
-        //    {
-        //        var chequeViewModel = new ChequeViewModel();
-        //        var resultado = await chequeViewModel.ObtenerPorIdAsync(id);
+            try
+            {
+                var chequeViewModel = new ChequeViewModel();
+                var resultado = await chequeViewModel.ObtenerPorIdAsync(id);
 
-        //        if (resultado.IsSuccess)
-        //        {
-        //            var cheque = resultado.Value;
-        //            //Console.WriteLine($"[ÉXITO] Cheque encontrado: ID {cheque.Id}");
-        //            Console.WriteLine($"  Número: {cheque.NumeroCheque}, Monto: ${cheque.Monto}");
-        //            Console.WriteLine($"  Banco: {cheque.Banco}, Fecha Cobro: {cheque.FechaCobro}");
-        //        }
-        //        else
-        //        {
-        //            Console.WriteLine($"[ERROR] No se encontró el cheque: {resultado.Error}");
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"[EXCEPCIÓN] Al obtener cheque por ID: {ex.Message}");
-        //    }
-        //}
+                if (resultado.IsSuccess)
+                {
+                    var cheque = resultado.Value;
+                    //Console.WriteLine($"[ÉXITO] Cheque encontrado: ID {cheque.Id}");
+                    Console.WriteLine($"  Número: {cheque.NumeroCheque}, Monto: ${cheque.Monto}");
+                    Console.WriteLine($"  Banco: {cheque.Banco}, Fecha Cobro: {cheque.FechaCobro}");
+                }
+                else
+                {
+                    Console.WriteLine($"[ERROR] No se encontró el cheque: {resultado.Error}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[EXCEPCIÓN] Al obtener cheque por ID: {ex.Message}");
+            }
+        }
 
         /// <summary>
         /// Prueba la obtención de todos los cheques
@@ -194,27 +194,27 @@ namespace Proyecto_camiones.Tests
 
             try
             {
-                //var chequeViewModel = new ChequeViewModel();
-                //var resultado = await chequeViewModel.ActualizarAsync(
-                //    id: id,
-                //    idCliente: idCliente,
-                //    numeroCheque: numeroCheque,
-                //    monto: monto,
-                //    banco: banco,
-                //    fechaCobro: fechaCobro
-                //);
+                var chequeViewModel = new ChequeViewModel();
+                var resultado = await chequeViewModel.ActualizarAsync(
+                    id: id,
+                    idCliente: idCliente,
+                    numeroCheque: numeroCheque,
+                    monto: monto,
+                    banco: banco,
+                    fechaCobro: fechaCobro
+                );
 
-                //if (resultado.IsSuccess)
-                //{
-                //    var cheque = resultado.Value;
-                //    Console.WriteLine($"[ÉXITO] Cheque actualizado correctamente");
-                //    Console.WriteLine($"  Nuevos valores: Número: {cheque.NumeroCheque}, Monto: ${cheque.Monto}");
-                //    Console.WriteLine($"  Banco: {cheque.Banco}, Fecha Cobro: {cheque.FechaCobro}");
-                //}
-                //else
-                //{
-                //    Console.WriteLine($"[ERROR] No se pudo actualizar el cheque: {resultado.Error}");
-                //}
+                if (resultado.IsSuccess)
+                {
+                    var cheque = resultado.Value;
+                    Console.WriteLine($"[ÉXITO] Cheque actualizado correctamente");
+                    Console.WriteLine($"  Nuevos valores: Número: {cheque.NumeroCheque}, Monto: ${cheque.Monto}");
+                    Console.WriteLine($"  Banco: {cheque.Banco}, Fecha Cobro: {cheque.FechaCobro}");
+                }
+                else
+                {
+                    Console.WriteLine($"[ERROR] No se pudo actualizar el cheque: {resultado.Error}");
+                }
             }
             catch (Exception ex)
             {
@@ -225,28 +225,28 @@ namespace Proyecto_camiones.Tests
         /// <summary>
         /// Prueba la eliminación de un cheque
         /// </summary>
-        //public static async Task ProbarEliminarCheque(int id)
-        //{
-        //    Console.WriteLine($"\n=== ELIMINANDO CHEQUE ID: {id} ===");
+        public static async Task ProbarEliminarCheque(int id)
+        {
+            Console.WriteLine($"\n=== ELIMINANDO CHEQUE ID: {id} ===");
 
-        //    try
-        //    {
-        //        var chequeViewModel = new ChequeViewModel();
-        //        var resultado = await chequeViewModel.EliminarAsync(id);
+            try
+            {
+                var chequeViewModel = new ChequeViewModel();
+                var resultado = await chequeViewModel.EliminarAsync(id);
 
-        //        if (resultado.IsSuccess)
-        //        {
-        //            Console.WriteLine($"[ÉXITO] Cheque eliminado correctamente: {resultado.Value}");
-        //        }
-        //        else
-        //        {
-        //            Console.WriteLine($"[ERROR] No se pudo eliminar el cheque: {resultado.Error}");
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"[EXCEPCIÓN] Al eliminar cheque: {ex.Message}");
-        //    }
-        //}
+                if (resultado.IsSuccess)
+                {
+                    Console.WriteLine($"[ÉXITO] Cheque eliminado correctamente: {resultado.Value}");
+                }
+                else
+                {
+                    Console.WriteLine($"[ERROR] No se pudo eliminar el cheque: {resultado.Error}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[EXCEPCIÓN] Al eliminar cheque: {ex.Message}");
+            }
+        }
     }
 }

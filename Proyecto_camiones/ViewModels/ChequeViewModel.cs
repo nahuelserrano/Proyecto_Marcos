@@ -24,27 +24,35 @@ namespace Proyecto_camiones.ViewModels
             return await _chequeService.ProbarConexionAsync();
         }
 
-        //public async Task<Result<int>> CrearAsync(int idCliente, DateOnly fechaIngreso, int numeroCheque,
-        //                                         float monto, string banco, DateOnly fechaCobro)
-        //{
-        //    if (!await TestearConexionAsync())
-        //        return Result<int>.Failure("La conexión no pudo establecerse");
+        public async Task<Result<int>> CrearAsync(DateOnly fechaIngreso, string banco, int numeroCheque,
+                                                 float pesos, string nombre, int numeroPersonal, string entregadoA, DateOnly fechaCobro)
+        {
+            if (!await TestearConexionAsync())
+                return Result<int>.Failure("La conexión no pudo establecerse");
 
-        //    var resultado = await _chequeService.CrearAsync(idCliente, fechaIngreso, numeroCheque,
-        //                                                  monto, banco, fechaCobro);
+            var resultado = await _chequeService.CrearAsync(fechaIngreso, banco, numeroCheque, pesos, nombre, numeroPersonal, entregadoA, fechaCobro);
 
-        //    return resultado;
-        //}
+            return resultado;
+            return Result<int>.Failure("");
+        }
 
-        //public async Task<Result<ChequeDTO>> ObtenerPorIdAsync(int id)
-        //{
-        //    if (!await TestearConexionAsync())
-        //        return Result<ChequeDTO>.Failure("La conexión no pudo establecerse");
+        public async Task<Result<ChequeDTO>> ObtenerPorNumeroAsync(string num)
+        {
+            if (!await TestearConexionAsync())
+                return Result<ChequeDTO>.Failure("La conexión no pudo establecerse");
 
-        //    var resultado = await _chequeService.ObtenerPorIdAsync(id);
+            var resultado = await _chequeService.ObtenerPorNumeroAsync(num);
 
-        //    return resultado;
-        //}
+            return resultado;
+        }
+
+        public async Task<Result<ChequeDTO>> ObtenerPorIdAsync(int id)
+        {
+            if (!await TestearConexionAsync())
+                return Result<ChequeDTO>.Failure("La conexión no pudo establecerse");
+            var resultado = await _chequeService.ObtenerPorIdAsync(id);
+            return resultado;
+        }
 
         public async Task<Result<List<ChequeDTO>>> ObtenerTodosAsync()
         {
@@ -59,30 +67,32 @@ namespace Proyecto_camiones.ViewModels
             return Result<List<ChequeDTO>>.Success(cheques);
         }
 
-        //public async Task<Result<ChequeDTO>> ActualizarAsync(int id, int? idCliente = null,
-        //                                                    DateOnly? fechaIngreso = null,
-        //                                                    int? numeroCheque = null,
-        //                                                    float? monto = null,
-        //                                                    string banco = null,
-        //                                                    DateOnly? fechaCobro = null)
-        //{
-        //    if (!await TestearConexionAsync())
-        //        return Result<ChequeDTO>.Failure("La conexión no pudo establecerse");
+        public async Task<Result<ChequeDTO>> ActualizarAsync(int id, int? idCliente = null,
+                                                            DateOnly? fechaIngreso = null,
+                                                            int? numeroCheque = null,
+                                                            float? monto = null,
+                                                            string banco = null,
+                                                            DateOnly? fechaCobro = null)
+        {
+            if (!await TestearConexionAsync())
+                return Result<ChequeDTO>.Failure("La conexión no pudo establecerse");
 
-        //    var resultado = await _chequeService.ActualizarAsync(id, idCliente, fechaIngreso,
-        //                                                       numeroCheque, monto, banco, fechaCobro);
+            var resultado = await _chequeService.ActualizarAsync(id, idCliente, fechaIngreso,
+                                                               numeroCheque, monto, banco, fechaCobro);
 
-        //    return resultado;
-        //}
+            return resultado;
+        }
 
-        //public async Task<Result<bool>> EliminarAsync(int id)
-        //{
-        //    if (!await TestearConexionAsync())
-        //        return Result<bool>.Failure("La conexión no pudo establecerse");
+        public async Task<Result<bool>> EliminarAsync(int id)
+        {
+            if (!await TestearConexionAsync())
+                return Result<bool>.Failure("La conexión no pudo establecerse");
 
-        //    var resultado = await _chequeService.EliminarAsync(id);
+            //var resultado = await _chequeService.EliminarAsync(id);
 
-        //    return resultado;
-        //}
+            //return resultado;
+            return Result<bool>.Failure("");
+
+        }
     }
 }

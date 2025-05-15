@@ -82,6 +82,27 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 return -1;
             }
         }
+
+        public async Task<ChequeDTO?> ObtenerPorIdAsync(int id)
+        {
+            try
+            {
+                Cheque? cheque = await _context.Cheques
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(c => c.Id == id);
+                if (cheque != null)
+                {
+                    ChequeDTO nuevo = new ChequeDTO(cheque.Id_Cliente, cheque.FechaIngresoCheque, cheque.NumeroCheque, cheque.Monto, cheque.Banco, cheque.FechaCobro);
+                    return nuevo;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al obtener cheque con ID: {id}, exception: {ex}");
+                return null;
+            }
+        }
         public async Task<List<ChequeDTO>?> ObtenerTodosAsync()
         {
             try
@@ -108,7 +129,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                                             int id,
                                             int? id_Cliente = null,
                                             DateOnly? FechaIngresoCheque = null,
-                                            String? NumeroCheque = null,
+                                            string? NumeroCheque = null,
                                             string? Banco = null,
                                             float? Monto = null,
                                             DateOnly? FechaCobro = null

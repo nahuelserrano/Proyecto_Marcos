@@ -18,7 +18,7 @@ namespace Proyecto_camiones.Repositories
     {
         private readonly ApplicationDbContext _context;
 
-        public PagoRepository()
+        public PagoRepository(ApplicationDbContext context)
         {
             this._context = General.obtenerInstancia();
         }
