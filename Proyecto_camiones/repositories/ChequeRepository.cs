@@ -80,6 +80,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 _context.Cheques.Add(cheque);
                 int registrosAfectados = await _context.SaveChangesAsync();
 
+                Console.WriteLine($"Registros afectados: {registrosAfectados}");
+
                 if (registrosAfectados > 0)
                     return cheque.Id;
 

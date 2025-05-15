@@ -302,7 +302,7 @@ ALTER TABLE `camion`
 -- Indices de la tabla `cheque`
 --
 ALTER TABLE `cheque`
-  ADD PRIMARY KEY (`idcheque`),
+  ADD PRIMARY KEY (`idcheque`);
 
 --
 -- Indices de la tabla `chofer`
