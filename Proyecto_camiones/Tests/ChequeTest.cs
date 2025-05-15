@@ -94,7 +94,6 @@ namespace Proyecto_camiones.Tests
             {
                 var chequeViewModel = new ChequeViewModel();
                 var resultado = await chequeViewModel.CrearAsync(
-                    idCliente: idCliente,
                     fechaIngreso: fechaHoy,
                     numeroCheque: numeroCheque,
                     monto: monto,
@@ -197,7 +196,6 @@ namespace Proyecto_camiones.Tests
                 var chequeViewModel = new ChequeViewModel();
                 var resultado = await chequeViewModel.ActualizarAsync(
                     id: id,
-                    idCliente: idCliente,
                     numeroCheque: numeroCheque,
                     monto: monto,
                     banco: banco,
