@@ -12,9 +12,9 @@ namespace Proyecto_camiones.Presentacion.Repositories
     {
         private readonly ApplicationDbContext _context;
 
-        public ChoferRepository()
+        public ChoferRepository(ApplicationDbContext _context)
         {
-            this._context = General.obtenerInstancia();
+            this._context = _context;
         }
 
         public async Task<bool> ProbarConexionAsync()

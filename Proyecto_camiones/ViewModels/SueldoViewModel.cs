@@ -22,7 +22,7 @@ namespace Proyecto_camiones.ViewModels
         {
             var dbContext = General.obtenerInstancia();
             var sueldoRepo = new SueldoRepository();
-            var pagoRepo = new PagoRepository();
+            var pagoRepo = new PagoRepository(General.obtenerInstancia());
             this.pagoService = new PagoService(pagoRepo);
             this.sueldoService = new SueldoService(sueldoRepo,pagoService);
         }
