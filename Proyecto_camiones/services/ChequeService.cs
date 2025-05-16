@@ -36,15 +36,20 @@ namespace Proyecto_camiones.Presentacion.Services
             int? numeroPersonalizado = null,
             DateOnly? fechaVencimiento = null)
         {
-            // Validación básica
-            if (numeroCheque <= 0)
-                return Result<int>.Failure("El número de cheque debe ser mayor a cero");
+            ValidadorCheque validador = new ValidadorCheque(
+                fechaIngreso,
+                numeroCheque,
+                monto,
+                banco,
+                fechaCobro,
+                nombre,
+                numeroPersonalizado,
+                fechaVencimiento);
 
-            if (monto <= 0)
-                return Result<int>.Failure("El monto debe ser mayor a cero");
+            Result<bool> validacion = validador.ValidarCompleto();
 
-            if (string.IsNullOrWhiteSpace(banco))
-                return Result<int>.Failure(MensajeError.atributoRequerido("Banco"));
+            if (!validacion.IsSuccess)
+                return Result<int>.Failure(validacion.Error);
 
             try
             {
@@ -60,7 +65,7 @@ namespace Proyecto_camiones.Presentacion.Services
                     fechaVencimiento);
 
                 if (resultado < 0)
-                    return Result<int>.Failure("El cheque no pudo ser insertado");
+                    return Result<int>.Failure(MensajeError.ErrorCreacion(nameof(Cheque)));
 
                 return Result<int>.Success(resultado);
             }
@@ -159,7 +164,7 @@ namespace Proyecto_camiones.Presentacion.Services
                         return Result<ChequeDTO>.Success(result);
                 }
 
-                return Result<ChequeDTO>.Failure("No se pudo realizar la actualización");
+                return Result<ChequeDTO>.Failure(MensajeError.ErrorActualizacion(nameof(Cheque)));
             }
             catch (Exception ex)
             {
@@ -181,7 +186,7 @@ namespace Proyecto_camiones.Presentacion.Services
                 bool resultado = await _chequeRepository.EliminarAsync(id);
 
                 if (!resultado)
-                    return Result<bool>.Failure("No se pudo eliminar el cheque");
+                    return Result<bool>.Failure(MensajeError.ErrorEliminacion(nameof(Cheque)));
 
                 return Result<bool>.Success(true);
             }

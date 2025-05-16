@@ -11,54 +11,71 @@ namespace Proyecto_camiones.Presentacion.Utils
 
     public class ValidadorCheque
     {
-       
+
+        private readonly DateOnly _fechaIngresoCheque;
+        private readonly int _numeroCheque;
+        private readonly float _monto;
+        private readonly string _banco;
+        private readonly DateOnly _fechaCobro;
+        private readonly string _nombre;
+        private readonly int? _numeroPersonalizado;
+        private readonly DateOnly _fechaVencimiento;
         private List<string> _errores;
-        private readonly int Id_cliente;
-        private readonly DateOnly FechaIngresoCheque;
-        private readonly String NumeroCheque;
-        private readonly float Monto;
-        private readonly string Banco;
-        private readonly DateOnly FechaCobro;
 
-
-
-        public ValidadorCheque(int id_Cliente, DateOnly FechaIngresoCheque, String NumeroCheque, float Monto, string Banco, DateOnly FechaCobro)
+        public ValidadorCheque(
+            DateOnly fechaIngresoCheque,
+            int numeroCheque,
+            float monto,
+            string banco,
+            DateOnly fechaCobro,
+            string nombre = "",
+            int? numeroPersonalizado = null,
+            DateOnly? fechaVencimiento = null)
         {
-            this.Banco = Banco;
-            this.Id_cliente = id_Cliente;
-            this.FechaIngresoCheque = FechaIngresoCheque;
-            this.NumeroCheque = NumeroCheque;
-            this.Monto = Monto;
-            this.FechaCobro = FechaCobro;
-            _errores = new List<string>();  
-
+            _fechaIngresoCheque = fechaIngresoCheque;
+            _numeroCheque = numeroCheque;
+            _monto = monto;
+            _banco = banco;
+            _fechaCobro = fechaCobro;
+            _nombre = nombre ?? string.Empty;
+            _numeroPersonalizado = numeroPersonalizado;
+            _fechaVencimiento = fechaVencimiento ?? fechaCobro;
+            _errores = new List<string>();
         }
 
-           
         public ValidadorCheque ValidarDatos()
         {
-                if (this.Monto < 0)
-                     _errores.Add(MensajeError.valorInvalido(nameof(this.Monto)));
-                if (this.Banco == null)
-                _errores.Add(MensajeError.ausenciaDeDatos(nameof(this.Banco)));
+            if (_numeroCheque <= 0)
+                _errores.Add($"El número de cheque debe ser mayor a 0. Valor recibido: {_numeroCheque}");
 
-                if ( String.IsNullOrEmpty(this.NumeroCheque))
-                    _errores.Add(MensajeError.ausenciaDeDatos(nameof(this.NumeroCheque)));
+            if (_monto <= 0)
+                _errores.Add($"El monto debe ser mayor a 0. Valor recibido: {_monto}");
+
+            if (string.IsNullOrWhiteSpace(_banco))
+                _errores.Add(MensajeError.atributoRequerido(nameof(_banco)));
+
+            // Validar longitud (según tu schema)
+            if (!string.IsNullOrEmpty(_banco) && _banco.Length > 45)
+                _errores.Add($"El banco no puede tener más de 45 caracteres");
+
+            if (!string.IsNullOrEmpty(_nombre) && _nombre.Length > 45)
+                _errores.Add($"El nombre no puede tener más de 45 caracteres");
 
             return this;
         }
+
         public ValidadorCheque ValidarFechas()
         {
+            // La fecha de ingreso no puede ser mayor a la fecha de cobro
+            if (_fechaIngresoCheque > _fechaCobro)
+                _errores.Add("La fecha de ingreso no puede ser posterior a la fecha de cobro");
 
-            if (this.FechaIngresoCheque > this.FechaCobro) return this; // Evitamos NullException
-            _errores.Add(MensajeError.fechaInvalida(nameof(Cheque)));
-
-
+            // La fecha de vencimiento no puede ser anterior a la fecha de cobro
+            if (_fechaVencimiento < _fechaCobro)
+                _errores.Add("La fecha de vencimiento no puede ser anterior a la fecha de cobro");
 
             return this;
         }
-        
-
 
         public Result<bool> ObtenerResultado()
         {
@@ -67,16 +84,13 @@ namespace Proyecto_camiones.Presentacion.Utils
                 : Result<bool>.Failure(ObtenerMensajeError());
         }
 
-        // Esta función ayuda a mantener todas las validaciones en un solo llamado
         public Result<bool> ValidarCompleto()
         {
-            return
-                 ValidarDatos()
+            return ValidarDatos()
                 .ValidarFechas()
                 .ObtenerResultado();
         }
 
-        // Método auxiliar para formatear los errores
         private string ObtenerMensajeError()
         {
             return string.Join(Environment.NewLine, _errores);
