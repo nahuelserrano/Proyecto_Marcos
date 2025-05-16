@@ -22,6 +22,9 @@ namespace Proyecto_camiones.Tests
                 // 1. Probamos la conexión primero
                 await ProbarConexionCheque();
 
+                // 1.5 NUEVO: Probamos las validaciones
+                await ProbarValidacionesCheque();
+
                 // 2. Creamos un cheque para las pruebas
                 int idCheque = await ProbarInsertarCheque(2, 12345, 5000.0f, "Banco Galicia");
 
@@ -244,6 +247,140 @@ namespace Proyecto_camiones.Tests
             catch (Exception ex)
             {
                 Console.WriteLine($"[EXCEPCIÓN] Al eliminar cheque: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Prueba las validaciones del cheque con varios casos erróneos
+        /// </summary>
+        public static async Task ProbarValidacionesCheque()
+        {
+            Console.WriteLine("\n=== PROBANDO VALIDACIONES DE CHEQUE ===");
+
+            DateOnly fechaHoy = DateOnly.FromDateTime(DateTime.Today);
+            DateOnly fechaFutura = fechaHoy.AddDays(30);
+            DateOnly fechaPasada = fechaHoy.AddDays(-30);
+
+            try
+            {
+                var chequeViewModel = new ChequeViewModel();
+
+                // Caso 1: Número de cheque inválido (menor o igual a cero)
+                Console.WriteLine("\n--- Caso 1: Número de cheque inválido (0) ---");
+                var resultado1 = await chequeViewModel.CrearAsync(
+                    fechaIngreso: fechaHoy,
+                    numeroCheque: 0, // Número inválido
+                    monto: 1000,
+                    banco: "Banco Test",
+                    fechaCobro: fechaFutura
+                );
+
+                if (!resultado1.IsSuccess)
+                    Console.WriteLine($"[ÉXITO] Validación correcta: {resultado1.Error}");
+                else
+                    Console.WriteLine($"[ERROR] La validación falló: Permitió número de cheque invalido");
+
+                // Caso 2: Monto inválido (menor o igual a cero)
+                Console.WriteLine("\n--- Caso 2: Monto inválido (0) ---");
+                var resultado2 = await chequeViewModel.CrearAsync(
+                    fechaIngreso: fechaHoy,
+                    numeroCheque: 12345,
+                    monto: 0, // Monto inválido
+                    banco: "Banco Test",
+                    fechaCobro: fechaFutura
+                );
+
+                if (!resultado2.IsSuccess)
+                    Console.WriteLine($"[ÉXITO] Validación correcta: {resultado2.Error}");
+                else
+                    Console.WriteLine($"[ERROR] La validación falló: Permitió monto inválido");
+
+                // Caso 3: Banco vacío
+                Console.WriteLine("\n--- Caso 3: Banco vacío ---");
+                var resultado3 = await chequeViewModel.CrearAsync(
+                    fechaIngreso: fechaHoy,
+                    numeroCheque: 12345,
+                    monto: 1000,
+                    banco: "", // Banco vacío
+                    fechaCobro: fechaFutura
+                );
+
+                if (!resultado3.IsSuccess)
+                    Console.WriteLine($"[ÉXITO] Validación correcta: {resultado3.Error}");
+                else
+                    Console.WriteLine($"[ERROR] La validación falló: Permitió banco vacío");
+
+                // Caso 4: Fecha de ingreso posterior a fecha de cobro
+                Console.WriteLine("\n--- Caso 4: Fecha de ingreso posterior a fecha de cobro ---");
+                var resultado4 = await chequeViewModel.CrearAsync(
+                    fechaIngreso: fechaFutura, // Fecha de ingreso posterior
+                    numeroCheque: 12345,
+                    monto: 1000,
+                    banco: "Banco Test",
+                    fechaCobro: fechaHoy
+                );
+
+                if (!resultado4.IsSuccess)
+                    Console.WriteLine($"[ÉXITO] Validación correcta: {resultado4.Error}");
+                else
+                    Console.WriteLine($"[ERROR] La validación falló: Permitió fecha de ingreso posterior a fecha de cobro");
+
+                // Caso 5: Banco demasiado largo (más de 45 caracteres)
+                Console.WriteLine("\n--- Caso 5: Nombre de banco demasiado largo ---");
+                var bancoLargo = new string('X', 50); // Crea un string de 50 'X'
+                var resultado5 = await chequeViewModel.CrearAsync(
+                    fechaIngreso: fechaHoy,
+                    numeroCheque: 12345,
+                    monto: 1000,
+                    banco: bancoLargo, // Banco muy largo
+                    fechaCobro: fechaFutura
+                );
+
+                if (!resultado5.IsSuccess)
+                    Console.WriteLine($"[ÉXITO] Validación correcta: {resultado5.Error}");
+                else
+                    Console.WriteLine($"[ERROR] La validación falló: Permitió nombre de banco demasiado largo");
+
+                // Caso 6: Nombre demasiado largo (más de 45 caracteres)
+                Console.WriteLine("\n--- Caso 6: Nombre de beneficiario demasiado largo ---");
+                var nombreLargo = new string('X', 50); // Crea un string de 50 'X'
+                var resultado6 = await chequeViewModel.CrearAsync(
+                    fechaIngreso: fechaHoy,
+                    numeroCheque: 12345,
+                    monto: 1000,
+                    banco: "Banco Test",
+                    fechaCobro: fechaFutura,
+                    nombre: nombreLargo // Nombre muy largo
+                );
+
+                if (!resultado6.IsSuccess)
+                    Console.WriteLine($"[ÉXITO] Validación correcta: {resultado6.Error}");
+                else
+                    Console.WriteLine($"[ERROR] La validación falló: Permitió nombre de beneficiario demasiado largo");
+
+                // Caso 7: Caso válido (control positivo)
+                Console.WriteLine("\n--- Caso 7: Cheque válido (control positivo) ---");
+                var resultado7 = await chequeViewModel.CrearAsync(
+                    fechaIngreso: fechaHoy,
+                    numeroCheque: 54321,
+                    monto: 2000,
+                    banco: "Banco Control",
+                    fechaCobro: fechaFutura
+                );
+
+                if (resultado7.IsSuccess)
+                {
+                    Console.WriteLine($"[ÉXITO] Caso válido creado correctamente con ID: {resultado7.Value}");
+                    // Limpiamos el cheque de prueba
+                    await ProbarEliminarCheque(resultado7.Value);
+                }
+                else
+                    Console.WriteLine($"[ERROR] El caso válido falló: {resultado7.Error}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[EXCEPCIÓN] Error al probar validaciones: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
             }
         }
     }
