@@ -178,7 +178,6 @@ public class ApplicationDbContext : DbContext
             entity.ToTable("cheque");
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Id).HasColumnName("idcheque").ValueGeneratedOnAdd();
-            entity.Property(e => e.Id_Cliente).HasColumnName("idCliente");
             entity.Property(e => e.FechaIngresoCheque).HasColumnName("fecha_ingreso");
             entity.Property(e => e.NumeroCheque).HasColumnName("nro_cheque");
             entity.Property(e => e.Monto).HasColumnName("monto");
@@ -187,11 +186,6 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.Nombre).HasColumnName("nombre");
             entity.Property(e => e.NumeroPersonalizado).HasColumnName("numero_personalizado");
             entity.Property(e => e.FechaVencimiento).HasColumnName("fecha_vencimieto");
-
-            entity.HasOne<Cliente>()
-                .WithMany()
-                .HasForeignKey(c => c.Id_Cliente)
-                .OnDelete(DeleteBehavior.Restrict);
         });
 
         base.OnModelCreating(modelBuilder);

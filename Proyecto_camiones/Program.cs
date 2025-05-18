@@ -390,7 +390,7 @@ namespace Proyecto_camiones
             //    Console.WriteLine(viajes.Error);
             //}
 
-            //await ChequeTests.EjecutarTodasLasPruebas();
+            await ChequeTests.EjecutarTodasLasPruebas();
 
             //ELIMINAR CLIENTE
 

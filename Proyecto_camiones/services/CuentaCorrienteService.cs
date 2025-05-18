@@ -25,7 +25,7 @@ namespace Proyecto_camiones.Services
         {
             this.ccRepository = cc ?? throw new ArgumentNullException(nameof(cc));
             this.clienteRepository = new ClienteRepository(General.obtenerInstancia());
-            this.fleteRepository = new FleteRepository();
+            this.fleteRepository = new FleteRepository(General.obtenerInstancia());
         }
 
         public async Task<bool> ProbarConexionAsync()

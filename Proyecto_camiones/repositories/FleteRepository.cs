@@ -15,9 +15,9 @@ namespace Proyecto_camiones.Repositories
     {
         private readonly ApplicationDbContext _context;
 
-        public FleteRepository()
+        public FleteRepository(ApplicationDbContext context)
         {
-            _context = General.obtenerInstancia();
+            this._context = General.obtenerInstancia();
         }
 
         public async Task<bool> ProbarConexionAsync()
