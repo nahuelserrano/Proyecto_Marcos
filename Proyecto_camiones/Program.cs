@@ -121,7 +121,7 @@ namespace Proyecto_camiones
 
             //INSERCION PARA CUENTA CORRIENTE DE UN CLIENTE FUNCIONANDO CORRECTAMENTE
 
-            //var cuenta = await ccvm.InsertarAsync("machaca", null, new DateOnly(2025, 5, 13), 15, 10000, 5000);
+            //var cuenta = await ccvm.InsertarAsync("cliente1", null, new DateOnly(2025, 5, 13), 10000, 5000, 1000);
             //if (cuenta.IsSuccess)
             //{
             //    Console.WriteLine("Id insertado: " + cuenta.Value);
@@ -163,26 +163,26 @@ namespace Proyecto_camiones
             //}
 
             //ELIMINAR CUENTA CORRIENTE
-            var result = await ccvm.EliminarAsync(2);
-            if (result.IsSuccess)
-            {
-                Console.WriteLine(result.Value);
-            }
-            else
-            {
-                Console.WriteLine(result.Error);
-            }
-
-            //ACTUALIZAR UNA CUENTA CORRIENTE
-            //var cuenta = await ccvm.ActualizarAsync(14, null, null, null, 0, null, null);
-            //if (cuenta.IsSuccess)
+            //var result = await ccvm.EliminarAsync(2);
+            //if (result.IsSuccess)
             //{
-            //    Console.WriteLine(cuenta.Value.ToString());
+            //    Console.WriteLine(result.Value);
             //}
             //else
             //{
-            //    Console.WriteLine(cuenta.Error);
+            //    Console.WriteLine(result.Error);
             //}
+
+            //ACTUALIZAR UNA CUENTA CORRIENTE
+            var cuenta = await ccvm.ActualizarAsync(4, null, null, 10000, 0, null, null);
+            if (cuenta.IsSuccess)
+            {
+                Console.WriteLine(cuenta.Value.ToString());
+            }
+            else
+            {
+                Console.WriteLine(cuenta.Error);
+            }
 
 
             ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
@@ -390,7 +390,7 @@ namespace Proyecto_camiones
             //    Console.WriteLine(viajes.Error);
             //}
 
-            await ChequeTests.EjecutarTodasLasPruebas();
+            //await ChequeTests.EjecutarTodasLasPruebas();
 
             //ELIMINAR CLIENTE
 
