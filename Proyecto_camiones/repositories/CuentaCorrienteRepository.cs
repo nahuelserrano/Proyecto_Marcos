@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NPOI.XSSF.UserModel;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Models;
 using Proyecto_camiones.Presentacion;
@@ -235,6 +236,19 @@ namespace Proyecto_camiones.Repositories
                 if (cuenta == null)
                 {
                     return false;
+                }
+
+                var cuentasHijas = await _context.Cuentas.Where(c => c.Id > id && c.IdCliente == cuenta.IdCliente && c.IdFletero == cuenta.IdFletero).ToListAsync();
+                Console.WriteLine("sobrevivimos al método de obtener cuentas hijas");
+                if(cuentasHijas != null)
+                {
+                    foreach(CuentaCorriente c in cuentasHijas)
+                    {
+                        Console.WriteLine("hola entré al foreach");
+                        _context.Cuentas.Remove(c);
+
+                        await _context.SaveChangesAsync();
+                    }
                 }
 
                 _context.Cuentas.Remove(cuenta);
