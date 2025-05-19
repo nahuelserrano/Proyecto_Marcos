@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NPOI.XSSF.UserModel;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Models;
 using Proyecto_camiones.Presentacion;
 using Proyecto_camiones.Presentacion.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -237,6 +239,19 @@ namespace Proyecto_camiones.Repositories
                     return false;
                 }
 
+                var cuentasHijas = await _context.Cuentas.Where(c => c.Id > id && c.IdCliente == cuenta.IdCliente && c.IdFletero == cuenta.IdFletero).ToListAsync();
+                Console.WriteLine("sobrevivimos al método de obtener cuentas hijas");
+                if(cuentasHijas != null)
+                {
+                    foreach(CuentaCorriente c in cuentasHijas)
+                    {
+                        Console.WriteLine("hola entré al foreach");
+                        _context.Cuentas.Remove(c);
+
+                        await _context.SaveChangesAsync();
+                    }
+                }
+
                 _context.Cuentas.Remove(cuenta);
 
                 await _context.SaveChangesAsync();
@@ -251,7 +266,7 @@ namespace Proyecto_camiones.Repositories
             }
         }
 
-        internal async Task<CuentaCorrienteDTO> ActualizarAsync(int id, DateOnly? fecha, int? nroFactura, float? adeuda, float? importe, int? idCliente, int? idFletero)
+        internal async Task<CuentaCorrienteDTO?> ActualizarAsync(int id, DateOnly? fecha, int? nroFactura, float? adeuda, float? importe, int? idCliente, int? idFletero)
         {
             try
             {
@@ -328,6 +343,33 @@ namespace Proyecto_camiones.Repositories
                 if (registrosAfectados > 0)
                 {
                     Console.WriteLine("hola if de registros afectados?");
+
+
+                    if(adeuda != null || importe != null)
+                    {
+                        //apartado para ver si la cuenta modificada tiene cuentas hijas
+                        var cuentasHijas = await _context.Cuentas
+                                               .Where(c => c.Id > id && c.IdCliente == cuenta.IdCliente && c.IdFletero == cuenta.IdFletero)
+                                               .OrderBy(c => c.Id)
+                                               .ToListAsync();
+                        if (cuentasHijas != null)
+                        {
+                            CuentaCorriente padre = cuenta;
+                            Console.WriteLine(padre.Saldo_Total);
+                            foreach (CuentaCorriente c in cuentasHijas)
+                            {
+                                bool success = await this.ModificarHijo(c, padre.Saldo_Total);
+                                if (!success)
+                                {
+                                    Console.WriteLine("fuck no fue success");
+                                    return null;
+                                }
+                                padre = c;
+                            }
+                        }
+                    }
+
+
                     return new CuentaCorrienteDTO(cuenta.Id, cuenta.Fecha_factura, cuenta.Nro_factura, cuenta.Adeuda, cuenta.Pagado, cuenta.Saldo_Total, cuenta.IdCliente, cuenta.IdFletero);
                 }
                 Console.WriteLine("fuck no entré al if de registros afectados");
@@ -339,6 +381,21 @@ namespace Proyecto_camiones.Repositories
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e.InnerException);
                 return null;
+            }
+        }
+
+        private async Task<bool> ModificarHijo(CuentaCorriente c, float saldo_Total)
+        {
+            try
+            {
+                c.Saldo_Total = c.Adeuda + saldo_Total - c.Pagado;
+                int success = await _context.SaveChangesAsync();
+                return success > 0;
+            }catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.InnerException);
+                return false;
             }
         }
 

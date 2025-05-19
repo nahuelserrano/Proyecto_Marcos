@@ -121,7 +121,7 @@ namespace Proyecto_camiones
 
             //INSERCION PARA CUENTA CORRIENTE DE UN CLIENTE FUNCIONANDO CORRECTAMENTE
 
-            //var cuenta = await ccvm.InsertarAsync("machaca", null, new DateOnly(2025, 5, 13), 15, 10000, 5000);
+            //var cuenta = await ccvm.InsertarAsync("machaca", null, new DateOnly(2025, 5, 18), 12345, 10000, 0);
             //if (cuenta.IsSuccess)
             //{
             //    Console.WriteLine("Id insertado: " + cuenta.Value);
@@ -163,7 +163,7 @@ namespace Proyecto_camiones
             //}
 
             //ELIMINAR CUENTA CORRIENTE
-            //var result = await ccvm.EliminarAsync(1);
+            //var result = await ccvm.EliminarAsync(7);
             //if (result.IsSuccess)
             //{
             //    Console.WriteLine(result.Value);
@@ -174,7 +174,7 @@ namespace Proyecto_camiones
             //}
 
             //ACTUALIZAR UNA CUENTA CORRIENTE
-            //var cuenta = await ccvm.ActualizarAsync(14, null, null, null, 0, null, null);
+            //var cuenta = await ccvm.ActualizarAsync(7, null, null, null, 0, null, null);
             //if (cuenta.IsSuccess)
             //{
             //    Console.WriteLine(cuenta.Value.ToString());
@@ -390,7 +390,7 @@ namespace Proyecto_camiones
             //    Console.WriteLine(viajes.Error);
             //}
 
-            await ChequeTests.EjecutarTodasLasPruebas();
+            //await ChequeTests.EjecutarTodasLasPruebas();
 
             //ELIMINAR CLIENTE
 
