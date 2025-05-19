@@ -163,7 +163,7 @@ namespace Proyecto_camiones
             //}
 
             //ELIMINAR CUENTA CORRIENTE
-            var result = await ccvm.EliminarAsync(15);
+            var result = await ccvm.EliminarAsync(2);
             if (result.IsSuccess)
             {
                 Console.WriteLine(result.Value);
