@@ -37,9 +37,9 @@ namespace Proyecto_camiones
         {
 
             // Llamada a Windows Forms para inicializar la aplicación
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
 
             //PagoViewModel pw = new PagoViewModel();
 
@@ -121,7 +121,7 @@ namespace Proyecto_camiones
 
             //INSERCION PARA CUENTA CORRIENTE DE UN CLIENTE FUNCIONANDO CORRECTAMENTE
 
-            //var cuenta = await ccvm.InsertarAsync("cliente1", null, new DateOnly(2025, 5, 13), 10000, 5000, 1000);
+            //var cuenta = await ccvm.InsertarAsync("machaca", null, new DateOnly(2025, 5, 18), 12345, 10000, 0);
             //if (cuenta.IsSuccess)
             //{
             //    Console.WriteLine("Id insertado: " + cuenta.Value);
@@ -163,7 +163,7 @@ namespace Proyecto_camiones
             //}
 
             //ELIMINAR CUENTA CORRIENTE
-            //var result = await ccvm.EliminarAsync(2);
+            //var result = await ccvm.EliminarAsync(7);
             //if (result.IsSuccess)
             //{
             //    Console.WriteLine(result.Value);
@@ -174,15 +174,15 @@ namespace Proyecto_camiones
             //}
 
             //ACTUALIZAR UNA CUENTA CORRIENTE
-            var cuenta = await ccvm.ActualizarAsync(4, null, null, 10000, 0, null, null);
-            if (cuenta.IsSuccess)
-            {
-                Console.WriteLine(cuenta.Value.ToString());
-            }
-            else
-            {
-                Console.WriteLine(cuenta.Error);
-            }
+            //var cuenta = await ccvm.ActualizarAsync(7, null, null, null, 0, null, null);
+            //if (cuenta.IsSuccess)
+            //{
+            //    Console.WriteLine(cuenta.Value.ToString());
+            //}
+            //else
+            //{
+            //    Console.WriteLine(cuenta.Error);
+            //}
 
 
             ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
