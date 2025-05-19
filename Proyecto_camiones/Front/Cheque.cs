@@ -60,7 +60,7 @@ namespace Proyecto_camiones.Front
             InitializeUI();
 
             //ShowForm
-            CargarFormularioCheque(9);
+            CargarFormularioCheque(10);
 
             //Hovers
             btnCargar.MouseEnter += (s, e) => HoverEffect(s, e, true);
@@ -87,7 +87,7 @@ namespace Proyecto_camiones.Front
             {
                 foreach (var cheque in result.Value)
                 {
-                    cheq.Rows.Add(cheque.FechaIngresoCheque, cheque.Banco, cheque.NumeroCheque, cheque.Monto, cheque.Nombre, cheque.NumeroPersonalizado, null, cheque.FechaCobro, cheque.Id);
+                    cheq.Rows.Add(cheque.FechaIngresoCheque, cheque.Banco, cheque.NumeroCheque, cheque.Monto, cheque.Nombre, cheque.NumeroPersonalizado, null, cheque.FechaCobro,  "x",cheque.Id);
                 }
             }
             
@@ -181,6 +181,7 @@ namespace Proyecto_camiones.Front
             cheq.Columns.Add("nroPersonal", "Número personal de cheque");
             cheq.Columns.Add("entregadoA", "Entregado a");
             cheq.Columns.Add("fechaRetiro", "Fecha de retiro");
+            cheq.Columns.Add("fechaVencimiento", "F. vencimiento");
             cheq.Columns.Add("id", "id");
 
             foreach (DataGridViewColumn col in cheq.Columns)
@@ -227,7 +228,7 @@ namespace Proyecto_camiones.Front
         private void CargarFormularioCheque(int cant)
         {
             this.campos.Clear();
-            this.campos = new List<string> { "F. Recibido", "Banco", "Nro. Cheque", "Pesos", "Nombre", "Nro. Personal", "Entregado a", "Fecha de retiro" };
+            this.campos = new List<string> { "F. Recibido", "Banco", "Nro. Cheque", "Pesos", "Nombre", "Nro. Personal", "Entregado a", "Fecha de retiro", "F. vencimiento" };
 
             InitializeFormProperties(cant, campos);
         }
