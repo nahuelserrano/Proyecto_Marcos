@@ -37,9 +37,9 @@ namespace Proyecto_camiones
         {
 
             // Llamada a Windows Forms para inicializar la aplicación
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
+            //Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
 
             //PagoViewModel pw = new PagoViewModel();
 
@@ -333,7 +333,10 @@ namespace Proyecto_camiones
 
                 //    // VIAJE
                 DateOnly fecha = new DateOnly(2025, 4, 28);
-            //int idViaje = await ViajeTests.ProbarInsertarViaje(fecha, "Tandil", "Buenos Aires", 123, 1000.5f, "Trigo", "Cliente1", "HIJ429", 350.5f, 5000.0f, "Chofer Test", 018f);
+            //int idViaje = await ViajeTest.ProbarInsertarViaje(fecha, "Tandil", "Buenos Aires", 123, 1000.5f, "Trigo", "Cliente1", "PUC111", 350.5f, 5000.0f,null, 15F);
+            ViajeViewModel vvm = new ViajeViewModel();
+            float f = 0.0F;
+            Result<int> viaje = await vvm.CrearAsync(fecha, "Tandil", "Azul", 123, "trigo", 30.0F, "Cliente1", "PUC111", 350.5F, 5000.0F, "nuevo chofer", f);
 
             //await ViajeTest.ProbarActualizarViaje(
             //    id: 1,

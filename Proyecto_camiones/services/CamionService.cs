@@ -145,5 +145,18 @@ namespace Proyecto_camiones.Presentacion.Services
             }
             return Result<string>.Failure("el camion con el id " + id + " no pudo ser eliminado");
         }
+
+        internal async Task<Result<String>> ObtenerChofer(string patente)
+        {
+            Camion camion = await this._camionRepository.ObtenerPorPatenteAsync(patente);
+            if(camion != null)
+            {
+                return Result<String>.Success(camion.nombre_chofer);
+            }
+            else
+            {
+                return Result<String>.Failure("No existe camión con esa patente");
+            }
+        }
     }
 }
