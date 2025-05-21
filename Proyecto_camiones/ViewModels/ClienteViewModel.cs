@@ -19,8 +19,7 @@ namespace Proyecto_camiones.ViewModels
 
         public ClienteViewModel()
         {
-            var dbContext = General.obtenerInstancia();
-            var clienteRepo = new ClienteRepository(dbContext);
+            var clienteRepo = new ClienteRepository(General.obtenerInstancia());
             this._clienteService = new ClienteService(clienteRepo);
         }
 

@@ -26,124 +26,172 @@ namespace Proyecto_camiones.Presentacion.Services
             return result;
         }
 
-        public async Task<Result<ChequeDTO>> ObtenerPorNumeroChequeAsync(String nroCheque)
+        public async Task<Result<int>> CrearAsync(
+            DateOnly fechaIngreso,
+            int numeroCheque,
+            float monto,
+            string banco,
+            DateOnly fechaCobro,
+            string nombre = "",
+            int? numeroPersonalizado = null,
+            DateOnly? fechaVencimiento = null)
         {
-            if (String.IsNullOrEmpty(nroCheque))
-                return Result<ChequeDTO>.Failure(MensajeError.objetoNulo(nroCheque));
-            
-            Console.WriteLine("ChequeService: ObtenerPorIdAsync");
-            ChequeDTO? cheque = await this._chequeRepository.ObtenerPorNumeroChequeAsync(nroCheque);
+            ValidadorCheque validador = new ValidadorCheque(
+                fechaIngreso,
+                numeroCheque,
+                monto,
+                banco,
+                fechaCobro,
+                nombre,
+                numeroPersonalizado,
+                fechaVencimiento);
 
-            Console.WriteLine("3");
+            Result<bool> validacion = validador.ValidarCompleto();
+
+            if (!validacion.IsSuccess)
+                return Result<int>.Failure(validacion.Error);
+
+            try
+            {
+                // Intentar insertar en la base de datos
+                int resultado = await _chequeRepository.InsertarAsync(
+                    fechaIngreso,
+                    numeroCheque,
+                    monto,
+                    banco,
+                    fechaCobro,
+                    nombre,
+                    numeroPersonalizado,
+                    fechaVencimiento);
+
+                if (resultado < 0)
+                    return Result<int>.Failure(MensajeError.ErrorCreacion(nameof(Cheque)));
+
+                return Result<int>.Success(resultado);
+            }
+            catch (Exception ex)
+            {
+                return Result<int>.Failure($"Hubo un error al crear el cheque: {ex.Message}");
+            }
+        }
+        public async Task<Result<ChequeDTO>> ObtenerPorIdAsync(int id)
+        {
+            if (id <= 0)
+                return Result<ChequeDTO>.Failure(MensajeError.IdInvalido(id));
+
+            ChequeDTO? cheque = await this._chequeRepository.ObtenerPorIdAsync(id);
+
             if (cheque == null)
                 return Result<ChequeDTO>.Failure(MensajeError.objetoNulo(nameof(cheque)));
 
             return Result<ChequeDTO>.Success(cheque);
         }
 
-        internal async Task<Result<bool>> EliminarAsync(String nroCheque)
+        public async Task<Result<ChequeDTO>> ObtenerPorNumeroAsync(int nroCheque)
         {
+            if (nroCheque <= 0)
+                return Result<ChequeDTO>.Failure("El número de cheque debe ser mayor a cero");
+
             try
             {
-                if (nroCheque==null) return Result<bool>.Failure(MensajeError.objetoNulo(nroCheque));
+                ChequeDTO? cheque = await _chequeRepository.ObtenerPorNumeroChequeAsync(nroCheque);
 
-                ChequeDTO? cheque = await this._chequeRepository.ObtenerPorNumeroChequeAsync(nroCheque);
+                if (cheque == null)
+                    return Result<ChequeDTO>.Failure(MensajeError.objetoNulo(nameof(cheque)));
 
-                if (cheque == null) return Result<bool>.Failure(MensajeError.objetoNulo(nameof(cheque)));
+                return Result<ChequeDTO>.Success(cheque);
+            }
+            catch (Exception ex)
+            {
+                return Result<ChequeDTO>.Failure($"Error al obtener cheque: {ex.Message}");
+            }
+        }
 
-                await _chequeRepository.EliminarAsync(nroCheque);
+        public async Task<Result<List<ChequeDTO>?>> ObtenerTodosAsync()
+        {
+            List<ChequeDTO>? cheques = await _chequeRepository.ObtenerTodosAsync();
+            if (cheques != null)
+            {
+                return Result<List<ChequeDTO>?>.Success(cheques);
+            }
+            return Result<List<ChequeDTO>?>.Failure(MensajeError.EntidadNoEncontrada(nameof(Cheque), 0));
+        }
+
+
+        public async Task<Result<ChequeDTO>> ActualizarAsync(int id, int? id_cliente = null, DateOnly? FechaIngresoCheque = null, int? NumeroCheque = null, float? Monto = null, string? Banco = null, DateOnly? FechaCobro = null)
+        {
+            if (id <= 0)
+                return Result<ChequeDTO>.Failure(MensajeError.IdInvalido(id));
+
+            var chequeExistente = await _chequeRepository.ObtenerPorIdAsync(id);
+
+            if (chequeExistente == null)
+                return Result<ChequeDTO>.Failure(MensajeError.objetoNulo(nameof(chequeExistente)));
+
+
+            if (id_cliente.HasValue)
+                chequeExistente.Id_cliente = id_cliente.Value;
+
+            if (FechaIngresoCheque.HasValue)
+                chequeExistente.FechaIngresoCheque = FechaIngresoCheque.Value;
+
+            if (NumeroCheque != null)
+                chequeExistente.NumeroCheque = (int)NumeroCheque;
+
+            if (Monto.HasValue)
+                chequeExistente.Monto = Monto.Value;
+
+            if (!string.IsNullOrWhiteSpace(Banco))
+                chequeExistente.Banco = Banco;
+
+            if (FechaCobro.HasValue)
+                chequeExistente.FechaCobro = FechaCobro.Value;
+
+            if (chequeExistente.FechaIngresoCheque > chequeExistente.FechaCobro)
+                return Result<ChequeDTO>.Failure(MensajeError.fechaInvalida(nameof(Cliente)));
+
+                if (monto.HasValue && monto.Value <= 0)
+                    return Result<ChequeDTO>.Failure("El monto debe ser mayor a cero");
+
+                // Realizar actualización
+                bool success = await _chequeRepository.ActualizarAsync(
+                    id,
+                    fechaIngreso,
+                    numeroCheque,
+                    monto,
+                    banco,
+                    fechaCobro,
+                    nombre,
+                    numeroPersonalizado,
+                    fechaVencimiento);
+
+            bool success = await _chequeRepository.ActualizarAsync(id, chequeExistente.Id_cliente, chequeExistente.FechaIngresoCheque, chequeExistente.NumeroCheque, chequeExistente.Banco, chequeExistente.Monto, chequeExistente.FechaCobro);
+            if (success)
+            {
+                ChequeDTO? result = await _chequeRepository.ObtenerPorIdAsync(id);
+                return Result<ChequeDTO>.Success(result);
+            }
+            return Result<ChequeDTO>.Failure("No se pudo realizar la actualización");
+        }
+
+            try
+            {
+                var cheque = await _chequeRepository.ObtenerPorIdAsync(id);
+
+                if (cheque == null)
+                    return Result<bool>.Failure(MensajeError.objetoNulo(nameof(cheque)));
+
+                bool resultado = await _chequeRepository.EliminarAsync(id);
+
+                if (!resultado)
+                    return Result<bool>.Failure(MensajeError.ErrorEliminacion(nameof(Cheque)));
 
                 return Result<bool>.Success(true);
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                throw;
+                return Result<bool>.Failure($"Error al eliminar el cheque: {e.Message}");
             }
-        }
-
-        public async Task<Result<int>> CrearAsync(int id_Cliente, DateOnly FechaIngresoCheque, String NumeroCheque, float Monto, string Banco, DateOnly FechaCobro)
-        {
-            ValidadorCheque validador = new ValidadorCheque(id_Cliente, FechaIngresoCheque, NumeroCheque, Monto, Banco, FechaCobro);
-            //Result<bool> resultadoValidacion = validador.ValidarCompleto();
-
-            //if (!resultadoValidacion.IsSuccess)
-            //    return Result<int>.Failure(resultadoValidacion.Error);
-
-            try
-            {
-                var clienteResult = await _clienteService.ObtenerPorIdAsync(id_Cliente);
-
-                if (!clienteResult.IsSuccess)
-                    return Result<int>.Failure(clienteResult.Error);
-
-                // Intentar insertar en la base de datos
-                int resultado = await _chequeRepository.InsertarAsync(id_Cliente, FechaIngresoCheque, NumeroCheque, Monto, Banco, FechaCobro);
-                if (resultado < 0)
-                    return Result<int>.Failure("El cheque no pudo ser insertado");
-
-                return Result<int>.Success(resultado);
-
-            }
-            catch (Exception)
-            {
-
-                return Result<int>.Failure("Hubo un error al crear el cheque");
-            }
-        }
-
-
-        //public async Task<Result<ChequeDTO>> ActualizarAsync(int id, int? id_cliente = null, DateOnly? FechaIngresoCheque = null, int? NumeroCheque = null, float? Monto = null, string? Banco = null, DateOnly? FechaCobro = null)
-        //{
-        //    if (id <= 0)
-        //        return Result<ChequeDTO>.Failure(MensajeError.IdInvalido(id));
-
-        //    var chequeExistente = await _chequeRepository.ObtenerPorIdAsync(id);
-
-        //    if (chequeExistente == null)
-        //        return Result<ChequeDTO>.Failure(MensajeError.objetoNulo(nameof(chequeExistente)));
-
-
-        //    if (id_cliente.HasValue)
-        //        chequeExistente.Id_cliente = id_cliente.Value;
-
-        //    if (FechaIngresoCheque.HasValue)
-        //        chequeExistente.FechaIngresoCheque = FechaIngresoCheque.Value;
-
-        //    if (NumeroCheque != null)
-        //        chequeExistente.NumeroCheque = (int)NumeroCheque;
-
-        //    if (Monto.HasValue)
-        //        chequeExistente.Monto = Monto.Value;
-
-        //    if (!string.IsNullOrWhiteSpace(Banco))
-        //        chequeExistente.Banco = Banco;
-
-        //    if (FechaCobro.HasValue)
-        //        chequeExistente.FechaCobro = FechaCobro.Value;
-
-        //    if (chequeExistente.FechaIngresoCheque > chequeExistente.FechaCobro)
-        //        return Result<ChequeDTO>.Failure(MensajeError.fechaInvalida(nameof(Cliente)));
-
-
-
-        //    bool success = await _chequeRepository.ActualizarAsync(id, chequeExistente.Id_cliente, chequeExistente.FechaIngresoCheque, chequeExistente.NumeroCheque, chequeExistente.Banco, chequeExistente.Monto, chequeExistente.FechaCobro);
-        //    if (success)
-        //    {
-        //        ChequeDTO? result = await _chequeRepository.ObtenerPorIdAsync(id);
-        //        return Result<ChequeDTO>.Success(result);
-        //    }
-        //    return Result<ChequeDTO>.Failure("No se pudo realizar la actualización");
-        //}
-
-        public async Task<List<ChequeDTO>?> ObtenerTodosAsync()
-        {
-            List<ChequeDTO>? cheques = await _chequeRepository.ObtenerTodosAsync();
-            if (cheques != null)
-            {
-                return cheques;
-            }
-            return null;
         }
     }
 }

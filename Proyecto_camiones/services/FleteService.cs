@@ -100,7 +100,6 @@ namespace Proyecto_camiones.Services
             bool response = await this.fleteRepository.EliminarAsync(id);
             if (response)
             {
-                MessageBox.Show("");
                 return Result<bool>.Success(response);
             }
             MessageBox.Show("No se pudo eliminar el fletero, error interno en la base de datos");

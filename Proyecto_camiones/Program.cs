@@ -36,12 +36,21 @@ namespace Proyecto_camiones
 
         {
 
+
             //// Llamada a Windows Forms para inicializar la aplicación
             //Application.EnableVisualStyles();
             //Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
             
             PagoViewModel pw = new PagoViewModel();
+
+            // Llamada a Windows Forms para inicializar la aplicación
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
+            //Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
+
+            //PagoViewModel pw = new PagoViewModel();
+
 
             //await pw.CrearAsync(1, 1, 1000);
             //await pw.CrearAsync(1, 1, 1000);
@@ -124,7 +133,7 @@ namespace Proyecto_camiones
 
             //INSERCION PARA CUENTA CORRIENTE DE UN FLETERO FUNCIONANDO CORRECTAMENTE
 
-            //var cuenta = await ccvm.InsertarAsync(null, "carlos", new DateOnly(2025, 4, 21), 90, 1000, 600);
+            //var cuenta = await ccvm.InsertarAsync(null, "carlos", new DateOnly(2025, 5, 11), 92, 1000, 500);
             //if (cuenta.IsSuccess)
             //{
             //    Console.WriteLine("Id insertado: " + cuenta.Value);
@@ -136,7 +145,7 @@ namespace Proyecto_camiones
 
             //INSERCION PARA CUENTA CORRIENTE DE UN CLIENTE FUNCIONANDO CORRECTAMENTE
 
-            //var cuenta = await ccvm.InsertarAsync("machaca", null, new DateOnly(2025, 5, 13), 15, 5000, 0);
+            //var cuenta = await ccvm.InsertarAsync("machaca", null, new DateOnly(2025, 5, 18), 12345, 10000, 0);
             //if (cuenta.IsSuccess)
             //{
             //    Console.WriteLine("Id insertado: " + cuenta.Value);
@@ -178,7 +187,7 @@ namespace Proyecto_camiones
             //}
 
             //ELIMINAR CUENTA CORRIENTE
-            //var result = await ccvm.EliminarAsync(1);
+            //var result = await ccvm.EliminarAsync(7);
             //if (result.IsSuccess)
             //{
             //    Console.WriteLine(result.Value);
@@ -189,7 +198,7 @@ namespace Proyecto_camiones
             //}
 
             //ACTUALIZAR UNA CUENTA CORRIENTE
-            //var cuenta = await ccvm.ActualizarAsync(16, null, 20, 1000, 0, null, null);
+            //var cuenta = await ccvm.ActualizarAsync(7, null, null, null, 0, null, null);
             //if (cuenta.IsSuccess)
             //{
             //    Console.WriteLine(cuenta.Value.ToString());
@@ -214,19 +223,19 @@ namespace Proyecto_camiones
 
             //OBTENER VIAJES DE UN FLETERO
 
-            var viajes = await vfvm.ObtenerViajesDeUnFleteroAsync("Carlos");
-            if (viajes.IsSuccess)
-            {
-                foreach (var viaje in viajes.Value)
-                {
-                    Console.WriteLine(viaje);
-                    Console.WriteLine("total: " + viaje.total + "comision: " + viaje.total_comision);
-                }
-            }
-            else
-            {
-                Console.WriteLine(viajes.Error);
-            }
+            //var viajes = await vfvm.ObtenerViajesDeUnFleteroAsync("Carlos");
+            //if (viajes.IsSuccess)
+            //{
+            //    foreach (var viaje in viajes.Value)
+            //    {
+            //        Console.WriteLine(viaje);
+            //        Console.WriteLine("total: " + viaje.total + "comision: " + viaje.total_comision);
+            //    }
+            //}
+            //else
+            //{
+            //    Console.WriteLine(viajes.Error);
+            //}
 
             //ELIMINAR VIAJE POR FLETERO
             //var response = await vfvm.EliminarAsync(12);
@@ -348,7 +357,10 @@ namespace Proyecto_camiones
 
                 //    // VIAJE
                 DateOnly fecha = new DateOnly(2025, 4, 28);
-            //int idViaje = await ViajeTests.ProbarInsertarViaje(fecha, "Tandil", "Buenos Aires", 123, 1000.5f, "Trigo", "Cliente1", "HIJ429", 350.5f, 5000.0f, "Chofer Test", 018f);
+            //int idViaje = await ViajeTest.ProbarInsertarViaje(fecha, "Tandil", "Buenos Aires", 123, 1000.5f, "Trigo", "Cliente1", "PUC111", 350.5f, 5000.0f,null, 15F);
+            ViajeViewModel vvm = new ViajeViewModel();
+            float f = 0.0F;
+            Result<int> viaje = await vvm.CrearAsync(fecha, "Tandil", "Azul", 123, "trigo", 30.0F, "Cliente1", "PUC111", 350.5F, 5000.0F, "nuevo chofer", f);
 
             //await ViajeTest.ProbarActualizarViaje(
             //    id: 1,

@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using NPOI.SS.Formula.Functions;
 using Proyecto_camiones.Presentacion.Models;
 using MySqlX.XDevAPI.Common;
+using Mysqlx.Session;
 
 namespace Proyecto_camiones.Front;
 
@@ -50,6 +51,10 @@ public class FormRegistro : Home
 
     //¿Dónde estoy parado?
     private System.Windows.Forms.Label nombre = new System.Windows.Forms.Label();
+
+    //cartel de aviso
+    private NewRoundPanel avisoPanel = new NewRoundPanel(20);
+    private Button btnAceptarAviso = new Button();
 
 
     //Constructor
@@ -123,7 +128,14 @@ public class FormRegistro : Home
 
             else
             {
-                MessageBox.Show("Error al cargar el viaje");
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() => CartelAviso(result.Error)));
+                }
+                else
+                {
+                    CartelAviso(result.Error);
+                }
             }
         }
         else if (filtro == "Cliente")
@@ -141,8 +153,14 @@ public class FormRegistro : Home
 
             else
             {
-                MessageBox.Show(resultClient.Error);
-                MessageBox.Show("Error al cargar cliente");
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() => CartelAviso(resultClient.Error)));
+                }
+                else
+                {
+                    CartelAviso(resultClient.Error);
+                }
             }
         }
         else if (filtro == "Flete")
@@ -160,11 +178,17 @@ public class FormRegistro : Home
 
             else
             {
-                MessageBox.Show(resultFlete.Error);
-                MessageBox.Show("Error al cargar el flete");
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() => CartelAviso(resultFlete.Error)));
+                }
+                else
+                {
+                    CartelAviso(resultFlete.Error);
+                }
             }
         }
-        else if( filtro == "cuenta corriente")
+        else if (filtro == "cuenta corriente")
         {
             CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
             var resultCuentaCorriente = await ccvm.ObtenerCuentasByClienteAsync(dato);
@@ -176,11 +200,22 @@ public class FormRegistro : Home
                     cheq.Rows.Add(cuenta.Fecha_factura, cuenta.Nro_factura, cuenta.Pagado, cuenta.Adeuda, cuenta.Saldo_Total, cuenta.idCuenta);
                 }
             }
+            else
+            {
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() => CartelAviso(resultCuentaCorriente.Error)));
+                }
+                else
+                {
+                    CartelAviso(resultCuentaCorriente.Error);
+                }
+            }
         }
         else if (filtro == "sueldo")
         {
-            SueldoViewModel svm = new SueldoViewModel();
-            //var resultSueldo = await svm.
+            //SueldoViewModel svm = new SueldoViewModel();
+            //var resultSueldo = await svm.ObtenerTodosAsync();
 
             //if (resultSueldo.IsSuccess)
             //{
@@ -245,7 +280,7 @@ public class FormRegistro : Home
     }
     private void CargarFormulario(List<string> camposForm, int cant, string filtro)
     {
-        if(filtro != "Cliente")
+        if (filtro != "Cliente")
         {
             this.campos.Clear();
             foreach (string i in camposForm)
@@ -448,27 +483,30 @@ public class FormRegistro : Home
                 cheq.Columns.Add(btnPagado);
             }
         }
-        if (cheq.Columns["Eliminar"] == null)
+        if (filtro != "Cliente")
         {
-            DataGridViewButtonColumn btnEliminar = new DataGridViewButtonColumn();
-            btnEliminar.Name = "Eliminar";
-            btnEliminar.HeaderText = "Eliminar";  // Puedes dejarlo vacío si prefieres
-            btnEliminar.Text = "🗑️"; // Ícono de eliminar
-            btnEliminar.UseColumnTextForButtonValue = true; // Hace que todas las celdas muestren "❌"
-            btnEliminar.Width = 20; // Ajustar tamaño
+            if (cheq.Columns["Eliminar"] == null)
+            {
+                DataGridViewButtonColumn btnEliminar = new DataGridViewButtonColumn();
+                btnEliminar.Name = "Eliminar";
+                btnEliminar.HeaderText = "Eliminar";  // Puedes dejarlo vacío si prefieres
+                btnEliminar.Text = "🗑️"; // Ícono de eliminar
+                btnEliminar.UseColumnTextForButtonValue = true; // Hace que todas las celdas muestren "❌"
+                btnEliminar.Width = 20; // Ajustar tamaño
 
-            cheq.Columns.Add(btnEliminar);
-        }
+                cheq.Columns.Add(btnEliminar);
+            }
 
-        if (cheq.Columns["Modificar"] == null)
-        {
-            DataGridViewButtonColumn btnModificar = new DataGridViewButtonColumn();
-            btnModificar.Name = "Modificar";
-            btnModificar.HeaderText = "Modificar";  // Puedes dejarlo vacío si prefieres
-            btnModificar.Text = "✏️"; // Ícono de modificar
-            btnModificar.UseColumnTextForButtonValue = true; // Hace que todas las celdas muestren "✏️"
+            if (cheq.Columns["Modificar"] == null)
+            {
+                DataGridViewButtonColumn btnModificar = new DataGridViewButtonColumn();
+                btnModificar.Name = "Modificar";
+                btnModificar.HeaderText = "Modificar";  // Puedes dejarlo vacío si prefieres
+                btnModificar.Text = "✏️"; // Ícono de modificar
+                btnModificar.UseColumnTextForButtonValue = true; // Hace que todas las celdas muestren "✏️"
 
-            cheq.Columns.Add(btnModificar);
+                cheq.Columns.Add(btnModificar);
+            }
         }
     }
 
@@ -489,7 +527,15 @@ public class FormRegistro : Home
                         {
                             if (textBox.Text == campo.ToString())
                             {
-                                MessageBox.Show("Complete todos los campos");
+
+                                if (this.InvokeRequired)
+                                {
+                                    this.Invoke(new Action(() => CartelAviso("Complete todos los campos")));
+                                }
+                                else
+                                {
+                                    CartelAviso("Complete todos los campos");
+                                }
                                 return;
                             }
                             if (textBox.Name == campo)
@@ -500,7 +546,16 @@ public class FormRegistro : Home
                                     DateTime fecha;
                                     if (!DateTime.TryParse(campoFecha.Text, out fecha))
                                     {
-                                        MessageBox.Show("Por favor, ingrese una fecha válida.");
+                                      
+                                        if (this.InvokeRequired)
+                                        {
+                                            this.Invoke(new Action(() => CartelAviso("Por favor, ingrese una fecha válida")));
+                                        }
+                                        else
+                                        {
+                                            CartelAviso("Ingrese una fecha válida");
+                                        }
+                                        
                                         textBox.Focus();
                                         return;
                                     }
@@ -511,7 +566,15 @@ public class FormRegistro : Home
                                     int km;
                                     if (!int.TryParse(campoKm.Text, out km))
                                     {
-                                        MessageBox.Show("Por favor, ingrese un número válido.");
+                                        if (this.InvokeRequired)
+                                        {
+                                            this.Invoke(new Action(() => CartelAviso("Por favor, ingrese un número válido")));
+                                        }
+                                        else
+                                        {
+                                            CartelAviso("Ingrese un número válido");
+                                        }
+                                      
                                         textBox.Focus();
                                         return;
                                     }
@@ -533,53 +596,97 @@ public class FormRegistro : Home
             {
                 ShowInfoTable(filtro, dato);
             }
-        } else if(filtro == "cuenta corriente")
+            else
+            {
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() => CartelAviso(resultado.Error)));
+                }
+                else
+                {
+                    CartelAviso(resultado.Error);
+                }
+            }
+        }
+        else if (filtro == "cuenta corriente")
         {
             CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
             var resultado = await ccvm.InsertarAsync(dato, null, DateOnly.Parse(datos[0]), int.Parse(datos[1]), float.Parse(datos[3]), float.Parse(datos[2]));
 
             if (resultado.IsSuccess)
             {
-                MessageBox.Show("Agregado");
                 ShowInfoTable(filtro, dato);
             }
-        } else if(filtro == "Flete")
+            else
+            {
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() => CartelAviso(resultado.Error)));
+                }
+                else
+                {
+                    CartelAviso(resultado.Error);
+                }
+            }
+        }
+        else if (filtro == "Flete")
         {
             ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
             var resultado = await vfvm.InsertarAsync(datos[1], datos[2], float.Parse(datos[3]), datos[4], float.Parse(datos[5]), float.Parse(datos[6]), float.Parse(datos[7]), int.Parse(datos[8]), datos[10], dato, datos[11], float.Parse(datos[9]), DateOnly.Parse(datos[0]));
-
+            
             if (resultado.IsSuccess)
             {
-                MessageBox.Show("Agregado");
                 ShowInfoTable(filtro, dato);
             }
-        } else if(filtro == "sueldo")
+            else
+            {
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() => CartelAviso(resultado.Error)));
+                }
+                else
+                {
+                    CartelAviso(resultado.Error);
+                }
+            }
+        }
+        else if (filtro == "sueldo")
         {
             SueldoViewModel svm = new SueldoViewModel();
-            //var resultado = await svm.CrearAsync(1, DateOnly.Parse(datos[0]), DateOnly.Parse(datos[1]));
-            //if (resultado.IsSuccess)
-            //{
-            //    MessageBox.Show("Agregado");
-            //    ShowInfoTable(filtro, dato);
-            //}
+            var resultado = await svm.CrearAsync(1, DateOnly.Parse(datos[0]), DateOnly.Parse(datos[1]));
+            if (resultado.IsSuccess)
+            {
+                ShowInfoTable(filtro, dato);
+            }
+            else
+            {
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() => CartelAviso(resultado.Error)));
+                }
+                else
+                {
+                    CartelAviso(resultado.Error);
+                }
+            }
         }
 
-            foreach (Control control in formFLTextBox.Controls)
+        foreach (Control control in formFLTextBox.Controls)
+        {
+            if (control is Panel panel)
             {
-                if (control is Panel panel)
+                foreach (Control child in panel.Controls)
                 {
-                    foreach (Control child in panel.Controls)
+                    if (child is TextBox textBox)
                     {
-                        if (child is TextBox textBox)
-                        {
-                            string placeholderText = textBox.Text;
-                            textBox.Clear();
-                            textBox.Text = placeholderText; // Restaurar el placeholder??????????
-                            textBox.ForeColor = Color.Black;
-                        }
+                        string placeholderText = textBox.Text;
+                        textBox.Clear();
+                        textBox.Text = placeholderText; // Restaurar el placeholder??????????
+                        textBox.ForeColor = Color.Black;
                     }
                 }
             }
+        }
     }
 
     private async void EliminarFila(object sender, DataGridViewCellEventArgs e, string filtro, string dato)
@@ -605,8 +712,19 @@ public class FormRegistro : Home
                     {
                         ShowInfoTable(filtro, dato);
                     }
-
-                } else if(filtro == "Cliente")
+                    else
+                    {
+                        if (this.InvokeRequired)
+                        {
+                            this.Invoke(new Action(() => CartelAviso(result.Error)));
+                        }
+                        else
+                        {
+                            CartelAviso(result.Error);
+                        }
+                    }
+                }
+                else if (filtro == "Cliente")
                 {
                     string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
                     var result = await vvm.EliminarAsync(int.Parse(id));
@@ -615,7 +733,19 @@ public class FormRegistro : Home
                     {
                         ShowInfoTable(filtro, dato);
                     }
-                } else if(filtro == "Flete")
+                    else
+                    {
+                        if (this.InvokeRequired)
+                        {
+                            this.Invoke(new Action(() => CartelAviso(result.Error)));
+                        }
+                        else
+                        {
+                            CartelAviso(result.Error);
+                        }
+                    }
+                }
+                else if (filtro == "Flete")
                 {
                     string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
                     var result = await vfvm.EliminarAsync(int.Parse(id));
@@ -624,27 +754,59 @@ public class FormRegistro : Home
                     {
                         ShowInfoTable(filtro, dato);
                     }
-                } else if(filtro == "cuenta corriente")
+                    else
+                    {
+                        if (this.InvokeRequired)
+                        {
+                            this.Invoke(new Action(() => CartelAviso(result.Error)));
+                        }
+                        else
+                        {
+                            CartelAviso(result.Error);
+                        }
+                    }
+                }
+                else if (filtro == "cuenta corriente")
                 {
-                    //MessageBox.Show("soy una cuenta corriente");
-                    //string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
-                    //var result = await ccvm.EliminarAsync(int.Parse(id));
-                    //MessageBox.Show(id + " ");
+                    //COMPARA CON UN CLIENTE
+                    string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
+                    var result = await ccvm.EliminarAsync(int.Parse(id));
 
-                    //if (result.IsSuccess)
-                    //{
-                    //    MessageBox.Show("eliminado");
-                    //    ShowInfoTable(filtro, dato);
-                    //}
-                } else if(filtro == "sueldo")
+                    if (result.IsSuccess)
+                    {
+                        ShowInfoTable(filtro, dato);
+                    }
+                    else
+                    {
+                        if (this.InvokeRequired)
+                        {
+                            this.Invoke(new Action(() => CartelAviso(result.Error)));
+                        }
+                        else
+                        {
+                            CartelAviso(result.Error);
+                        }
+                    }
+                }
+                else if (filtro == "sueldo")
                 {
                     string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
                     var result = await svm.EliminarAsync(int.Parse(id));
 
                     if (result.IsSuccess)
                     {
-                        MessageBox.Show("eliminado");
                         ShowInfoTable(filtro, dato);
+                    }
+                    else
+                    {
+                        if (this.InvokeRequired)
+                        {
+                            this.Invoke(new Action(() => CartelAviso(result.Error)));
+                        }
+                        else
+                        {
+                            CartelAviso(result.Error);
+                        }
                     }
                 }
             }
@@ -664,7 +826,7 @@ public class FormRegistro : Home
             DialogResult resultado = MessageBox.Show("¿Desea modificar esta fila?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (resultado == DialogResult.Yes)
             {
-                if(filtro == "Camion")
+                if (filtro == "Camion")
                 {
                     // Obtener los valores de la fila seleccionada
                     string fecha = cheq.Rows[e.RowIndex].Cells["Fecha"].Value.ToString();
@@ -686,25 +848,53 @@ public class FormRegistro : Home
                     {
                         ShowInfoTable(filtro, dato);
                     }
-                } else if (filtro == "cuenta corriente")
+                    else
+                    {
+                        if (this.InvokeRequired)
+                        {
+                            this.Invoke(new Action(() => CartelAviso(result.Error)));
+                        }
+                        else
+                        {
+                            CartelAviso(result.Error);
+                        }
+                    }
+                }
+                else if (filtro == "cuenta corriente")
                 {
                     string fecha = cheq.Rows[e.RowIndex].Cells["Fecha"].Value.ToString();
                     string factura = cheq.Rows[e.RowIndex].Cells["Nro factura"].Value.ToString();
                     string pagado = cheq.Rows[e.RowIndex].Cells["Pagado"].Value.ToString();
                     string adeuda = cheq.Rows[e.RowIndex].Cells["Adeuda"].Value.ToString();
                     string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
-                  
-                    //if (filtro == "Cliente")
-                    //{
-                        var result = await ccvm.ActualizarAsync(int.Parse(id), DateOnly.Parse(fecha), int.Parse(factura), float.Parse(adeuda), float.Parse(pagado), dato, null);
-                        if (result.IsSuccess)
+
+                    var result = await ccvm.ActualizarAsync(int.Parse(id), DateOnly.Parse(fecha), int.Parse(factura), float.Parse(adeuda), float.Parse(pagado), dato, null);
+                    if (result.IsSuccess)
+                    {
+                        if (this.InvokeRequired)
                         {
-                            MessageBox.Show("modificado");
-                            ShowInfoTable(filtro, dato);
+                            this.Invoke(new Action(() => CartelAviso("El registro ha sido modificado")));
+                        }
+                        else
+                        {
+                            CartelAviso("El registro ha sido modificado");
                         }
 
-                   
-                } else if(filtro == "Flete")
+                        ShowInfoTable(filtro, dato);
+                    }
+                    else
+                    {
+                        if (this.InvokeRequired)
+                        {
+                            this.Invoke(new Action(() => CartelAviso(result.Error)));
+                        }
+                        else
+                        {
+                            CartelAviso(result.Error);
+                        }
+                    }
+                }
+                else if (filtro == "Flete")
                 {
                     MessageBox.Show("flete");
                     string fecha = cheq.Rows[e.RowIndex].Cells["Fecha"].Value.ToString();
@@ -722,17 +912,43 @@ public class FormRegistro : Home
                     string comision = cheq.Rows[e.RowIndex].Cells["Comisión"].Value.ToString();
                     string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
 
-                    var result = await fvm.ActualizarAsync(int.Parse(id), origen, destino, float.Parse(remito), carga, float.Parse(km), float.Parse(kg), float.Parse(tarifa), int.Parse(factura),cliente, chofer, float.Parse(comision), DateOnly.Parse(fecha));
+                    var result = await fvm.ActualizarAsync(int.Parse(id), origen, destino, float.Parse(remito), carga, float.Parse(km), float.Parse(kg), float.Parse(tarifa), int.Parse(factura), cliente, chofer, float.Parse(comision), DateOnly.Parse(fecha));
 
-                    MessageBox.Show(id);
                     if (result.IsSuccess)
                     {
                         ShowInfoTable(filtro, dato);
                     }
-                } else if(filtro == "sueldo")
+                    else
+                    {
+                        if (this.InvokeRequired)
+                        {
+                            this.Invoke(new Action(() => CartelAviso(result.Error)));
+                        }
+                        else
+                        {
+                            CartelAviso(result.Error);
+                        }
+                    }
+                }
+                else if (filtro == "sueldo")
                 {
                     string fecha = cheq.Rows[e.RowIndex].Cells["Fecha"].Value.ToString();
-                    
+                    //var result = 
+                    //if (result.IsSuccess)
+                    //{
+                    //    ShowInfoTable(filtro, dato);
+                    //}
+                    //else
+                    //{
+                    //    if (this.InvokeRequired)
+                    //    {
+                    //        this.Invoke(new Action(() => CartelAviso(result.Error)));
+                    //    }
+                    //    else
+                    //    {
+                    //        CartelAviso(result.Error);
+                    //    }
+                    //}
                 }
             }
         }
@@ -748,7 +964,7 @@ public class FormRegistro : Home
             if (resultado == DialogResult.Yes)
             {
                 cheq.CurrentRow.DefaultCellStyle.BackColor = Color.Green;
-                
+
             }
         }
     }
@@ -883,5 +1099,74 @@ public class FormRegistro : Home
                 btnCargar.Location = new Point(this.ClientSize.Width - btnCargar.Width - marginRight, 125);
             };
         }
+    }
+
+    private void CartelAviso(string mensaje)
+    {
+        ButtonAceptProperties();
+        this.Controls.Add(avisoPanel);
+
+        Label ll = new Label();
+        ll.Text = mensaje;
+        ll.Font = new Font("Nunito", 14, FontStyle.Regular);
+        ll.ForeColor = System.Drawing.Color.FromArgb(218, 218, 28);
+        ll.AutoSize = true;
+
+        // Centrar el label dentro del panel
+        ll.Resize += (s, e) =>
+        {
+            ll.Location = new Point(
+            (avisoPanel.Width - ll.Width) / 2, 50);
+        };
+
+        avisoPanel.BringToFront();  // Traer al frente
+        avisoPanel.Visible = true;  // Asegurar que sea visible
+
+
+        avisoPanel.Size = new Size(300, 150);
+        avisoPanel.BackColor = System.Drawing.Color.FromArgb(48, 48, 48);
+
+        avisoPanel.Controls.Add(ll);
+        avisoPanel.Controls.Add(btnAceptarAviso);
+
+        // Centrar el panel en el formulario
+        avisoPanel.Location = new Point(
+            (this.ClientSize.Width - avisoPanel.Width) / 2,
+            (this.ClientSize.Height - avisoPanel.Height) / 2
+        );
+
+
+        // Asegurar centrado dinámico si el formulario se redimensiona
+        this.Resize += (s, e) =>
+        {
+            avisoPanel.Location = new Point(
+                (this.ClientSize.Width - avisoPanel.Width) / 2,
+                (this.ClientSize.Height - avisoPanel.Height) / 2
+            );
+        };
+    }
+
+    private void ButtonAceptProperties()
+    {
+        avisoPanel.Visible = true;
+
+        btnAceptarAviso.BackColor = System.Drawing.Color.FromArgb(218, 218, 28);
+        btnAceptarAviso.ForeColor = System.Drawing.Color.FromArgb(48, 48, 48);
+        btnAceptarAviso.Size = new Size(110, 30);
+
+        btnAceptarAviso.Text = "Aceptar";
+        btnAceptarAviso.FlatStyle = FlatStyle.Flat;
+        btnAceptarAviso.FlatAppearance.BorderSize = 0;
+        btnAceptarAviso.Font = new Font("Nunito", 12, FontStyle.Bold);
+
+        //btnAceptarAviso.Resize += (s, e) =>
+        //{
+            btnAceptarAviso.Location = new Point(avisoPanel.Width / 2, 100);
+        //};
+
+        btnAceptarAviso.Click += (s, e) =>
+        {
+            avisoPanel.Visible = false;
+        };
     }
 }

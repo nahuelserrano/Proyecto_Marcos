@@ -19,7 +19,7 @@ namespace Proyecto_camiones.ViewModels
 
         public FleteViewModel()
         {
-            var repo = new FleteRepository();
+            var repo = new FleteRepository(General.obtenerInstancia());
             fleteService = new FleteService(repo);
         }
 
@@ -70,11 +70,9 @@ namespace Proyecto_camiones.ViewModels
 
         public async Task<Result<bool>> EliminarAsync(int id)
         {
-            MessageBox.Show("conexión");
             bool conexion = await this.TestearConexion();
             if (conexion)
             {
-                MessageBox.Show("conexión");
                 return await this.fleteService.EliminarAsync(id);
             }
             return Result<bool>.Failure("No se pudo establecer la conexión con la base de datos");

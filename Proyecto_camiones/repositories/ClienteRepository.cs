@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using NPOI.POIFS.Properties;
 using Org.BouncyCastle.Bcpg.OpenPgp;
 using Proyecto_camiones.Presentacion.Models;
+using Proyecto_camiones.ViewModels;
 
 namespace Proyecto_camiones.Presentacion.Repositories
 {
@@ -16,7 +17,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
         public ClienteRepository(ApplicationDbContext context)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            this._context = context;
         }
 
         public async Task<bool> ProbarConexionAsync()
@@ -194,7 +195,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
             try
             {
                 Cliente? cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Nombre == nombre_cliente);
-                MessageBox.Show(cliente + " ");
                 return cliente;
 
             }

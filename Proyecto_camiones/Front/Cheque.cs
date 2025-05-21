@@ -54,26 +54,43 @@ namespace Proyecto_camiones.Front
         //Constructor
         public Cheque()
         {
+            ShowInfoTable();
             ResaltarBoton(chequesMenu);
 
             InitializeUI();
 
             //ShowForm
-            CargarFormularioCheque(9);
+            CargarFormularioCheque(10);
 
             //Hovers
             btnCargar.MouseEnter += (s, e) => HoverEffect(s, e, true);
             btnCargar.MouseLeave += (s, e) => HoverEffect(s, e, false);
 
             //Events
-            btnCargar.Click += cargaClickEvent;
+            btnCargar.Click += (s, e) => cargaClickEventAsync(s, e);
 
-            cheq.CellClick += eliminarFila;
+            cheq.CellClick += (s, e) => eliminarFila(s, e);
             cheq.CellClick += modificarFila;
 
             ConfigurarDataGridView();
 
             PositionGrid();
+        }
+
+        private async void ShowInfoTable()
+        {
+            cheq.Rows.Clear();
+            ChequeViewModel cvm = new ChequeViewModel();
+            var result = await cvm.ObtenerTodosAsync();
+
+            if (result.IsSuccess)
+            {
+                foreach (var cheque in result.Value)
+                {
+                    cheq.Rows.Add(cheque.FechaIngresoCheque, cheque.Banco, cheque.NumeroCheque, cheque.Monto, cheque.Nombre, cheque.NumeroPersonalizado, null, cheque.FechaCobro,  "x",cheque.Id);
+                }
+            }
+            
         }
 
         private void ConfigurarDataGridView()
@@ -82,8 +99,8 @@ namespace Proyecto_camiones.Front
             {
                 DataGridViewButtonColumn btnEliminar = new DataGridViewButtonColumn();
                 btnEliminar.Name = "Eliminar";
-                btnEliminar.HeaderText = "X";  // Puedes dejarlo vacío si prefieres
-                btnEliminar.Text = "x"; // Ícono de eliminar
+                btnEliminar.HeaderText = "Eliminar";  // Puedes dejarlo vacío si prefieres
+                btnEliminar.Text = "🗑️"; // Ícono de eliminar
                 btnEliminar.UseColumnTextForButtonValue = true; // Hace que todas las celdas muestren "❌"
                 btnEliminar.Width = 40; // Ajustar tamaño
                 cheq.Columns.Add(btnEliminar);
@@ -93,8 +110,8 @@ namespace Proyecto_camiones.Front
             {
                 DataGridViewButtonColumn btnModificar = new DataGridViewButtonColumn();
                 btnModificar.Name = "Modificar";
-                btnModificar.HeaderText = "X";  // Puedes dejarlo vacío si prefieres
-                btnModificar.Text = "x"; // Ícono de modificar
+                btnModificar.HeaderText = "Modificar";  // Puedes dejarlo vacío si prefieres
+                btnModificar.Text = "✏️"; // Ícono de modificar
                 btnModificar.UseColumnTextForButtonValue = true; // Hace que todas las celdas muestren "M"
                 btnModificar.Width = 40; // Ajustar tamaño
                 cheq.Columns.Add(btnModificar);
@@ -164,8 +181,16 @@ namespace Proyecto_camiones.Front
             cheq.Columns.Add("nroPersonal", "Número personal de cheque");
             cheq.Columns.Add("entregadoA", "Entregado a");
             cheq.Columns.Add("fechaRetiro", "Fecha de retiro");
-            cheq.Columns.Add("eliminar", "Eliminar");
-            cheq.Columns.Add("modificar", "Modificar");
+            cheq.Columns.Add("fechaVencimiento", "F. vencimiento");
+            cheq.Columns.Add("id", "id");
+
+            foreach (DataGridViewColumn col in cheq.Columns)
+            {
+                if (col.HeaderText.Equals("id"))
+                {
+                    col.Visible = false;
+                }
+            }
 
             panelGrid.Controls.Add(cheq);
             this.Controls.Add(panelGrid);
@@ -203,7 +228,7 @@ namespace Proyecto_camiones.Front
         private void CargarFormularioCheque(int cant)
         {
             this.campos.Clear();
-            this.campos = new List<string> { "F. Recibido", "Banco", "Nro. Cheque", "Pesos", "Nombre", "Nro. Personal", "Entregado a", "Fecha de retiro" };
+            this.campos = new List<string> { "F. Recibido", "Banco", "Nro. Cheque", "Pesos", "Nombre", "Nro. Personal", "Entregado a", "Fecha de retiro", "F. vencimiento" };
 
             InitializeFormProperties(cant, campos);
         }
@@ -463,7 +488,7 @@ namespace Proyecto_camiones.Front
 
         //Otros
         //CargaDeDatos
-        private void cargaClickEvent(object sender, EventArgs e)
+        private async Task cargaClickEventAsync(object sender, EventArgs e)
         {
             // Obtener los valores de los TextBox
             List<string> datos = new List<string>();
@@ -506,21 +531,27 @@ namespace Proyecto_camiones.Front
                 }
             }
             ChequeViewModel cvm = new ChequeViewModel();
+            var result = await cvm.CrearAsync(DateOnly.Parse(datos[0]), int.Parse(datos[2]), float.Parse(datos[3]), datos[1], DateOnly.Parse(datos[7]), datos[4], int.Parse(datos[5]), null);
 
-            //var result = cvm.CrearAsync(1, DateOnly.Parse(datos[0]), int.Parse(datos[1]),);
-            // Verificar que los datos no estén vacíos
+            if (result.IsSuccess)
+            {
+                MessageBox.Show("agregado correctamente");
+                ShowInfoTable();
+            }
+
+            //Verificar que los datos no estén vacíos
             //if (datos.All(dato => !string.IsNullOrWhiteSpace(dato)))
             //{
 
-            //    eliminar.Text = "X";
-            //    eliminar.UseColumnTextForButtonValue = true;
+            eliminar.Text = "X";
+            eliminar.UseColumnTextForButtonValue = true;
 
-            //    datos.Add(eliminar.Text);
+            datos.Add(eliminar.Text);
 
-            //    modificar.Text = "M";
-            //    modificar.UseColumnTextForButtonValue = true;
+            modificar.Text = "M";
+            modificar.UseColumnTextForButtonValue = true;
 
-            //    datos.Add(modificar.Text);
+            datos.Add(modificar.Text);
 
             //    cheq.Rows.Add(datos.ToArray());
 
@@ -544,7 +575,7 @@ namespace Proyecto_camiones.Front
             //}
         }
 
-        private void eliminarFila(object sender, DataGridViewCellEventArgs e)
+        private async Task eliminarFila(object sender, DataGridViewCellEventArgs e)
         {
             // Verificar si la celda clickeada pertenece a la columna "Eliminar"
             if (e.ColumnIndex == cheq.Columns["Eliminar"].Index && e.RowIndex >= 0)
@@ -553,13 +584,25 @@ namespace Proyecto_camiones.Front
                 DialogResult resultado = MessageBox.Show("¿Desea eliminar esta fila?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (resultado == DialogResult.Yes)
                 {
-                    cheq.Rows.RemoveAt(e.RowIndex); //funcionEliminar
+                    string id = cheq.Rows[e.RowIndex].Cells["id"].Value.ToString();
+                    ChequeViewModel cvm = new ChequeViewModel();
+                    var result = await cvm.EliminarAsync(int.Parse(id));
+
+                    if (result.IsSuccess)
+                    {
+                        MessageBox.Show("eliminado");
+                        ShowInfoTable();
+                    }
+                    else
+                    {
+                        MessageBox.Show(result.Error);
+                    }
                 }
 
             }
         }
 
-        private void modificarFila(object sender, DataGridViewCellEventArgs e)
+        private async void modificarFila(object sender, DataGridViewCellEventArgs e)
         {
             // Verificar si la celda clickeada pertenece a la columna "Modificar"
             if (e.ColumnIndex == cheq.Columns["Modificar"].Index && e.RowIndex >= 0)
@@ -568,9 +611,29 @@ namespace Proyecto_camiones.Front
                 DialogResult resultado = MessageBox.Show("¿Desea modificar esta fila?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (resultado == DialogResult.Yes)
                 {
-                    //funcionModificar
-                }
 
+                    string id = cheq.Rows[e.RowIndex].Cells["id"].Value.ToString();
+                    string fechaRecibido = cheq.Rows[e.RowIndex].Cells["fRecibido"].Value.ToString();
+                    string monto = cheq.Rows[e.RowIndex].Cells["pesos"].Value.ToString();
+                    string banco = cheq.Rows[e.RowIndex].Cells["banco"].Value.ToString();
+                    string nroCheque = cheq.Rows[e.RowIndex].Cells["nroCheque"].Value.ToString();
+                    string nroPersonal = cheq.Rows[e.RowIndex].Cells["nroPersonal"].Value.ToString();
+                    string fechaRetiro = cheq.Rows[e.RowIndex].Cells["fechaRetiro"].Value.ToString();
+                    //string entregadoA = cheq.Rows[e.RowIndex].Cells["entregadoA"].Value.ToString();
+                    string entrego = cheq.Rows[e.RowIndex].Cells["nombre"].Value.ToString();
+
+                    ChequeViewModel cvm = new ChequeViewModel();
+                    var result = await cvm.ActualizarAsync(int.Parse(id), DateOnly.Parse(fechaRecibido), int.Parse(nroCheque), float.Parse(monto), banco, DateOnly.Parse(fechaRetiro), entrego, int.Parse(nroPersonal), null);
+
+                    if (result.IsSuccess)
+                    {
+                        ShowInfoTable();
+                    }
+                    else
+                    {
+                        MessageBox.Show(result.Error);
+                    }
+                }
             }
         }
     }

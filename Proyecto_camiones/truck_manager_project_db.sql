@@ -60,7 +60,6 @@ INSERT INTO `camion` (`idcamion`, `patente`, `nombre_chofer`) VALUES
 
 CREATE TABLE `cheque` (
   `idcheque` int(11) NOT NULL,
-  `idCliente` int(11) DEFAULT NULL,
   `fecha_ingreso` date NOT NULL,
   `nro_cheque` int(11) NOT NULL,
   `monto` float NOT NULL,
@@ -303,8 +302,7 @@ ALTER TABLE `camion`
 -- Indices de la tabla `cheque`
 --
 ALTER TABLE `cheque`
-  ADD PRIMARY KEY (`idcheque`),
-  ADD KEY `cheque_cliente_fk_idx` (`idCliente`);
+  ADD PRIMARY KEY (`idcheque`);
 
 --
 -- Indices de la tabla `chofer`
@@ -439,16 +437,6 @@ ALTER TABLE `viaje`
 --
 ALTER TABLE `viaje_flete`
   MODIFY `idviaje_flete` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
-
---
--- Restricciones para tablas volcadas
---
-
---
--- Filtros para la tabla `cheque`
---
-ALTER TABLE `cheque`
-  ADD CONSTRAINT `cheque_cliente_fk` FOREIGN KEY (`idCliente`) REFERENCES `cliente` (`idCliente`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `cuenta_corriente`

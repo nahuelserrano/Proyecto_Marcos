@@ -10,6 +10,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using Proyecto_camiones.DTOs;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_camiones.Presentacion.Models;
+using Proyecto_camiones.ViewModels;
 
 namespace Proyecto_camiones.Repositories
 {

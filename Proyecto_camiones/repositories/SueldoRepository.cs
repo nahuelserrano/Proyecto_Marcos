@@ -13,11 +13,11 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace Proyecto_camiones.Presentacion.Repositories
 {
-    public class SueldoRepository(ApplicationDbContext context)
+    public class SueldoRepository()
     {
 
 
-        private readonly ApplicationDbContext _context = context;
+        private readonly ApplicationDbContext _context = General.obtenerInstancia();
 
         public async Task<bool> ProbarConexionAsync()
         {

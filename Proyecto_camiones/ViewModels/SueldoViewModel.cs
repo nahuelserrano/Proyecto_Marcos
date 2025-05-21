@@ -21,8 +21,8 @@ namespace Proyecto_camiones.ViewModels
         public SueldoViewModel()
         {
             var dbContext = General.obtenerInstancia();
-            var sueldoRepo = new SueldoRepository(dbContext);
-            var pagoRepo = new PagoRepository(dbContext);
+            var sueldoRepo = new SueldoRepository();
+            var pagoRepo = new PagoRepository(General.obtenerInstancia());
             this.pagoService = new PagoService(pagoRepo);
             this.sueldoService = new SueldoService(sueldoRepo,pagoService);
         }
