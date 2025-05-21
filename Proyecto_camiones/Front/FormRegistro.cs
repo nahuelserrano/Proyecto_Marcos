@@ -525,10 +525,7 @@ public class FormRegistro : Home
                     {
                         foreach (string campo in campos)
                         {
-                            if (textBox.Text == campo.ToString())
-                            {
-                                datos.Add(null);
-                            }
+                            
                             if (textBox.Name == campo)
                             {
                                 if (campo == "Fecha" || campo == "Fecha inicial" || campo == "Fecha final")
@@ -581,7 +578,7 @@ public class FormRegistro : Home
         if (filtro == "Camion")
         {
             ViajeViewModel viajeViewModel = new ViajeViewModel();
-            var resultado = await viajeViewModel.CrearAsync(DateOnly.Parse(datos[0]), datos[1], datos[2], int.Parse(datos[3]), datos[4], float.Parse(datos[6]), datos[10], dato, float.Parse(datos[5]), float.Parse(datos[7]), datos[9], float.Parse(datos[8]));
+            var resultado = await viajeViewModel.CrearAsync(DateOnly.Parse(datos[0]), datos[1], datos[2], int.Parse(datos[3]), datos[4], float.Parse(datos[6]), datos[10], dato, float.Parse(datos[5]), float.Parse(datos[7]), null, float.Parse(datos[8]));
 
             if (resultado.IsSuccess)
             {
@@ -1094,6 +1091,7 @@ public class FormRegistro : Home
 
     private void CartelAviso(string mensaje)
     {
+        avisoPanel.Controls.Clear();
         ButtonAceptProperties();
         this.Controls.Add(avisoPanel);
 
