@@ -130,7 +130,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
       }
 
 
-        public async Task<List<SueldoDTO>> ObtenerTodosAsync(int idCamionParametro, int idChofer)
+        public async Task<List<SueldoDTO>?> ObtenerTodosAsync(int idCamionParametro, int idChofer)
         {
 
             try
@@ -155,6 +155,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 return sueldos;
             } else if(idChofer < 0 && idCamionParametro > -1)
                 {
+                    Console.WriteLine("Hola if de tenemos camion pero no chofer");
                     sueldos = await _context.Sueldos
                                 .Where(s => s.IdCamion == idCamionParametro)
                                 .OrderByDescending(c => c.Id)

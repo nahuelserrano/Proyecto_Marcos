@@ -63,7 +63,7 @@ namespace Proyecto_camiones.Presentacion.Services
             
                 int idChofer = -1;
 
-                if (!string.IsNullOrEmpty(nombreChofer))
+                if (nombreChofer != null)
                 {
                 Console.WriteLine("hola if de chofer");
                     var chofer = await this._choferService.ObtenerPorNombreAsync(nombreChofer);
@@ -74,7 +74,7 @@ namespace Proyecto_camiones.Presentacion.Services
                 }
 
             Console.WriteLine("llegamos tan lejos?");
-                List<SueldoDTO> sueldos = await this._sueldoRepository.ObtenerTodosAsync(idCamion,idChofer);
+                List<SueldoDTO>? sueldos = await this._sueldoRepository.ObtenerTodosAsync(idCamion,idChofer);
                 
                 
                 if (sueldos != null)
@@ -90,7 +90,7 @@ namespace Proyecto_camiones.Presentacion.Services
 
             if (sueldo == null) return Result<bool>.Failure(MensajeError.objetoNulo(nameof(sueldoId)));
 
-            await _pagoService.ModificarEstado(sueldo.Id_Chofer, sueldo.PagadoDesde, sueldo.PagadoHasta,null,false);
+            await _pagoService.ModificarEstado((int)sueldo.Id_Chofer, sueldo.PagadoDesde, sueldo.PagadoHasta,null,false);
 
             await _sueldoRepository.EliminarAsync(sueldoId);
 
@@ -180,7 +180,7 @@ namespace Proyecto_camiones.Presentacion.Services
 
             if (FechaPago != null)
                 pagoExistente.FechaDePago = FechaPago.Value;
-            bool success = await this._sueldoRepository.ActualizarAsync(id, pagoExistente.Id_Chofer, pagoExistente.PagadoDesde, pagoExistente.PagadoHasta, pagoExistente.Monto_Pagado, pagoExistente.FechaDePago);
+            bool success = await this._sueldoRepository.ActualizarAsync(id, (int)pagoExistente.Id_Chofer, pagoExistente.PagadoDesde, pagoExistente.PagadoHasta, pagoExistente.Monto_Pagado, pagoExistente.FechaDePago);
             
                 if (success)
             {

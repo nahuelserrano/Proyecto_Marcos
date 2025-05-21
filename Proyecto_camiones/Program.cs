@@ -63,22 +63,22 @@ namespace Proyecto_camiones
             SueldoViewModel sueldoViewModel = new SueldoViewModel();
 
             //FUNCIONA OBTENER TODOS LOS SALDOS DE UN CAMION/CHOFER
-            //var result = await sueldoViewModel.ObtenerTodosAsync("HIJ429", "Mili");
-            //if (result.IsSuccess)
-            //{
-            //    Console.WriteLine("hola fue exitoso?");
-            //    List<SueldoDTO> sueldos = result.Value;
-            //    foreach (SueldoDTO sueldo in sueldos)
-            //    {
-            //        Console.WriteLine("hola foreach");
-            //        Console.WriteLine(sueldo.ToString());
-            //    }
-            //}
-            //else
-            //{
-            //    Console.WriteLine("fuck no fue exitoso");
-            //    Console.WriteLine($"Error: {result.Error}");
-            //}
+            var result = await sueldoViewModel.ObtenerTodosAsync("HIJ429", null);
+            if (result.IsSuccess)
+            {
+                Console.WriteLine("hola fue exitoso?");
+                List<SueldoDTO> sueldos = result.Value;
+                foreach (SueldoDTO sueldo in sueldos)
+                {
+                    Console.WriteLine("hola foreach");
+                    Console.WriteLine(sueldo.ToString());
+                }
+            }
+            else
+            {
+                Console.WriteLine("fuck no fue exitoso");
+                Console.WriteLine($"Error: {result.Error}");
+            }
             //await sueldoViewModel.marcarPago(6);
             //await sueldoViewModel.CrearAsync(1, DateOnly.MinValue, DateOnly.MaxValue);
             //Console.WriteLine("sueldo calculado : " + suel);

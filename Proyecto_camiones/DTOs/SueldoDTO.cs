@@ -9,24 +9,24 @@ namespace Proyecto_camiones.DTOs
     public class SueldoDTO
     {
         public int idSueldo { get; set; }
-        public int Id_Chofer { get; set; }
+        public int? Id_Chofer { get; set; }
         public DateOnly? FechaDePago { get; set; }
         public float Monto_Pagado { get; set; }
         public DateOnly PagadoDesde { get; set; }
         public DateOnly PagadoHasta { get; set; }
         public bool Pagado { get; set; }
-        public int IdCamion { get; set; }
+        public int? IdCamion { get; set; }
 
-        public SueldoDTO(int id, float monto, int Id_Chofer, DateOnly pagadoDesde, DateOnly pagadoHasta, DateOnly? FechaPago , bool pagado , int IdCamion)
+        public SueldoDTO(int id, float monto, int? Id_Chofer, DateOnly pagadoDesde, DateOnly pagadoHasta, DateOnly? FechaPago, bool pagado, int? IdCamion)
         {
             this.idSueldo = id;
-            this.Id_Chofer = Id_Chofer;
+            this.Id_Chofer = Id_Chofer;  // Sin casting
             this.FechaDePago = FechaPago;
             this.Monto_Pagado = monto;
             this.PagadoDesde = pagadoDesde;
             this.PagadoHasta = pagadoHasta;
             this.Pagado = pagado;
-            this.IdCamion = IdCamion;
+            this.IdCamion = IdCamion;  // Sin casting
         }
 
         public SueldoDTO()
