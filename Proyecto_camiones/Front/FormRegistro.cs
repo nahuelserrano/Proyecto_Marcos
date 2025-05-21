@@ -527,16 +527,7 @@ public class FormRegistro : Home
                         {
                             if (textBox.Text == campo.ToString())
                             {
-
-                                if (this.InvokeRequired)
-                                {
-                                    this.Invoke(new Action(() => CartelAviso("Complete todos los campos")));
-                                }
-                                else
-                                {
-                                    CartelAviso("Complete todos los campos");
-                                }
-                                return;
+                                datos.Add(null);
                             }
                             if (textBox.Name == campo)
                             {
