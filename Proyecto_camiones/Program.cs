@@ -36,12 +36,12 @@ namespace Proyecto_camiones
 
         {
 
-            // Llamada a Windows Forms para inicializar la aplicación
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
+            //// Llamada a Windows Forms para inicializar la aplicación
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
+            //Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
             
-            //PagoViewModel pw = new PagoViewModel();
+            PagoViewModel pw = new PagoViewModel();
 
             //await pw.CrearAsync(1, 1, 1000);
             //await pw.CrearAsync(1, 1, 1000);
@@ -52,8 +52,23 @@ namespace Proyecto_camiones
             //float suel=  await pw.ObtenerSueldoCalculado(1, DateOnly.MinValue, DateOnly.MaxValue);
 
             SueldoViewModel sueldoViewModel = new SueldoViewModel();
-           //await sueldoViewModel.CrearAsync(1, DateOnly.MinValue, DateOnly.MaxValue);
-          //  Console.WriteLine("sueldo calculado : " + suel);
+
+            //var result = await sueldoViewModel.ObtenerTodosAsync("HIJ429", "Mili");
+            //if (result.IsSuccess)
+            //{
+            //    List<SueldoDTO> sueldos = result.Value;
+            //    foreach (var sueldo in sueldos)
+            //    {
+            //        Console.WriteLine(sueldo.ToString());
+            //    }
+            //}
+            //else
+            //{
+            //    Console.WriteLine($"Error: {result.Error}");
+            //}
+            //await sueldoViewModel.marcarPago(6);
+            //await sueldoViewModel.CrearAsync(1, DateOnly.MinValue, DateOnly.MaxValue);
+            //  Console.WriteLine("sueldo calculado : " + suel);
 
 
             //SueldoViewModel sw = new SueldoViewModel();
@@ -199,19 +214,19 @@ namespace Proyecto_camiones
 
             //OBTENER VIAJES DE UN FLETERO
 
-            //var viajes = await vfvm.ObtenerViajesDeUnFleteroAsync("Carlos");
-            //if (viajes.IsSuccess)
-            //{
-            //    foreach (var viaje in viajes.Value)
-            //    {
-            //        Console.WriteLine(viaje);
-            //        Console.WriteLine("total: " + viaje.total + "comision: " + viaje.total_comision);
-            //    }
-            //}
-            //else
-            //{
-            //    Console.WriteLine(viajes.Error);
-            //}
+            var viajes = await vfvm.ObtenerViajesDeUnFleteroAsync("Carlos");
+            if (viajes.IsSuccess)
+            {
+                foreach (var viaje in viajes.Value)
+                {
+                    Console.WriteLine(viaje);
+                    Console.WriteLine("total: " + viaje.total + "comision: " + viaje.total_comision);
+                }
+            }
+            else
+            {
+                Console.WriteLine(viajes.Error);
+            }
 
             //ELIMINAR VIAJE POR FLETERO
             //var response = await vfvm.EliminarAsync(12);

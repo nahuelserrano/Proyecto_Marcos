@@ -24,7 +24,7 @@ namespace Proyecto_camiones.ViewModels
             return await _chequeService.ProbarConexionAsync();
         }
 
-        public async Task<Result<int>> CrearAsync(int idCliente, DateOnly fechaIngreso, int numeroCheque,
+        public async Task<Result<int>> CrearAsync(int idCliente, DateOnly fechaIngreso, String numeroCheque,
                                                  float monto, string banco, DateOnly fechaCobro)
         {
             if (!await TestearConexionAsync())
@@ -36,12 +36,12 @@ namespace Proyecto_camiones.ViewModels
             return resultado;
         }
 
-        public async Task<Result<ChequeDTO>> ObtenerPorIdAsync(int id)
+        public async Task<Result<ChequeDTO>> ObtenerPorNumeroCheque(String nroCheque)
         {
             if (!await TestearConexionAsync())
                 return Result<ChequeDTO>.Failure("La conexión no pudo establecerse");
 
-            var resultado = await _chequeService.ObtenerPorIdAsync(id);
+            var resultado = await _chequeService.ObtenerPorNumeroChequeAsync(nroCheque);
 
             return resultado;
         }

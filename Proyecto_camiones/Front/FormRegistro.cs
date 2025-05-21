@@ -556,12 +556,12 @@ public class FormRegistro : Home
         } else if(filtro == "sueldo")
         {
             SueldoViewModel svm = new SueldoViewModel();
-            var resultado = await svm.CrearAsync(1, DateOnly.Parse(datos[0]), DateOnly.Parse(datos[1]));
-            if (resultado.IsSuccess)
-            {
-                MessageBox.Show("Agregado");
-                ShowInfoTable(filtro, dato);
-            }
+            //var resultado = await svm.CrearAsync(1, DateOnly.Parse(datos[0]), DateOnly.Parse(datos[1]));
+            //if (resultado.IsSuccess)
+            //{
+            //    MessageBox.Show("Agregado");
+            //    ShowInfoTable(filtro, dato);
+            //}
         }
 
             foreach (Control control in formFLTextBox.Controls)

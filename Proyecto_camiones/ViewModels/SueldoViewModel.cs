@@ -32,12 +32,12 @@ namespace Proyecto_camiones.ViewModels
             return await this.sueldoService.ProbarConexionAsync();
         }
 
-        public async Task<Result<int>> CrearAsync(int Id_Chofer, DateOnly pagoDesde, DateOnly pagoHasta)
+        public async Task<Result<int>> CrearAsync(int Id_Chofer, DateOnly pagoDesde, DateOnly pagoHasta,int idCamion)
         {
             if (await this.testearConexion())
             {
-                Console.WriteLine("omg entré!!");
-                var resultado = await this.sueldoService.CrearAsync(Id_Chofer, pagoDesde, pagoHasta);
+            
+                var resultado = await this.sueldoService.CrearAsync(Id_Chofer, pagoDesde, pagoHasta,idCamion);
 
                
                 // Ahora puedes acceder al resultado
@@ -58,11 +58,18 @@ namespace Proyecto_camiones.ViewModels
             return Result<int>.Failure("La conexión no pude establecerse");
         }
 
-
-        public async Task<Result<List<SueldoDTO>>> ObtenerTodosAsync() {
+        public async Task<Result<bool>> marcarPago(int idSueldo)
+        {
             if (await this.testearConexion())
             {
-                Result<List<SueldoDTO>> sueldos = await this.sueldoService.ObtenerTodosAsync();
+                return await this.sueldoService.marcarPagado(idSueldo);
+            }
+            return Result<bool>.Failure("No se pudo establecer la conexión");
+        }
+        public async Task<Result<List<SueldoDTO>>> ObtenerTodosAsync(string patente,string? nombreChofer=null) {
+            if (await this.testearConexion())
+            {
+                Result<List<SueldoDTO>> sueldos = await this.sueldoService.ObtenerTodosAsync(patente,nombreChofer);
                 if(sueldos!=null)
                 return sueldos;
             }

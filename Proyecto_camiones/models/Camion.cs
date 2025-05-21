@@ -1,4 +1,5 @@
 ﻿
+using Proyecto_camiones.Presentacion.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,10 +29,6 @@ namespace Proyecto_camiones.Presentacion.Models
 
         public ICollection<Viaje> Viajes { get; set; }
 
-        public static implicit operator Task<object>(Camion v)
-        {
-            throw new NotImplementedException();
-        }
-
+       
     }
 }
