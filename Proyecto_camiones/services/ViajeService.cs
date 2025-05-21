@@ -101,10 +101,8 @@ namespace Proyecto_camiones.Presentacion.Services
 
                 using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
-                    var obtenerChoferResult = await _choferService.ObtenerPorNombreAsync(nombreChofer);
-                    int idChofer;
-
-                    if (!obtenerChoferResult.IsSuccess)
+                    int idChofer = -1;
+                    if(nombreChofer != null)
                     {
                         Result<int> crearChoferResult = await _choferService.CrearAsync(nombreChofer);
 
@@ -114,7 +112,22 @@ namespace Proyecto_camiones.Presentacion.Services
                             return Result<int>.Failure(MensajeError.ErrorCreacion(nameof(Chofer)));
                     }
                     else
-                        idChofer = obtenerChoferResult.Value.Id;
+                    {
+                        Result<String> obtenerChoferResult = await _camionService.ObtenerChofer(camion);
+                        if (!obtenerChoferResult.IsSuccess)
+                        {
+                            return Result<int>.Failure("No se pudo crear el viaje ya que el camión no tiene un chofer asignado y no se ha adjuntado un chofer en el formulario");
+                        }
+                        else
+                        {
+                            nombreChofer = obtenerChoferResult.Value;
+                            Result<Chofer> c = await this._choferService.ObtenerPorNombreAsync(obtenerChoferResult.Value);
+                            if(c.IsSuccess)
+                            {
+                                idChofer = c.Value.Id;
+                            }
+                        }
+                    }
 
                     // Crear el viaje
                     int id = await _viajeRepository.InsertarAsync(
@@ -127,10 +140,13 @@ namespace Proyecto_camiones.Presentacion.Services
                     // Crear el pago asociado al viaje
                     float pagoMonto = tarifa * kg * porcentajeChofer;
 
-                    int idPago = await _pagoService.CrearAsync(idChofer, id, pagoMonto);
+                    if(idChofer != -1)
+                    {
+                        int idPago = await _pagoService.CrearAsync(idChofer, id, pagoMonto);
 
-                    if (idPago <= 0)
-                        return Result<int>.Failure(MensajeError.ErrorCreacion(nameof(Pago)));
+                        if (idPago <= 0)
+                            return Result<int>.Failure(MensajeError.ErrorCreacion(nameof(Pago)));
+                    }
 
                     scope.Complete();
                     return Result<int>.Success(id);
