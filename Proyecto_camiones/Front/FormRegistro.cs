@@ -52,6 +52,10 @@ public class FormRegistro : Home
     //¿Dónde estoy parado?
     private System.Windows.Forms.Label nombre = new System.Windows.Forms.Label();
 
+    //cartel de aviso
+    private NewRoundPanel avisoPanel = new NewRoundPanel(20);
+    private Button btnAceptarAviso = new Button();
+
 
     //Constructor
     public FormRegistro(List<string> camposForm, int cant, string dato, string filtro, List<string> camposFaltantesTablas)
@@ -124,7 +128,14 @@ public class FormRegistro : Home
 
             else
             {
-                MessageBox.Show(result.Error);
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() => CartelAviso(result.Error)));
+                }
+                else
+                {
+                    CartelAviso(result.Error);
+                }
             }
         }
         else if (filtro == "Cliente")
@@ -142,7 +153,14 @@ public class FormRegistro : Home
 
             else
             {
-                MessageBox.Show(resultClient.Error);
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() => CartelAviso(resultClient.Error)));
+                }
+                else
+                {
+                    CartelAviso(resultClient.Error);
+                }
             }
         }
         else if (filtro == "Flete")
@@ -160,7 +178,14 @@ public class FormRegistro : Home
 
             else
             {
-                MessageBox.Show(resultFlete.Error);
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() => CartelAviso(resultFlete.Error)));
+                }
+                else
+                {
+                    CartelAviso(resultFlete.Error);
+                }
             }
         }
         else if (filtro == "cuenta corriente")
@@ -177,7 +202,14 @@ public class FormRegistro : Home
             }
             else
             {
-                MessageBox.Show(resultCuentaCorriente.Error);
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() => CartelAviso(resultCuentaCorriente.Error)));
+                }
+                else
+                {
+                    CartelAviso(resultCuentaCorriente.Error);
+                }
             }
         }
         else if (filtro == "sueldo")
@@ -495,7 +527,15 @@ public class FormRegistro : Home
                         {
                             if (textBox.Text == campo.ToString())
                             {
-                                MessageBox.Show("Complete todos los campos");
+
+                                if (this.InvokeRequired)
+                                {
+                                    this.Invoke(new Action(() => CartelAviso("Complete todos los campos")));
+                                }
+                                else
+                                {
+                                    CartelAviso("Complete todos los campos");
+                                }
                                 return;
                             }
                             if (textBox.Name == campo)
@@ -506,7 +546,16 @@ public class FormRegistro : Home
                                     DateTime fecha;
                                     if (!DateTime.TryParse(campoFecha.Text, out fecha))
                                     {
-                                        MessageBox.Show("Por favor, ingrese una fecha válida.");
+                                      
+                                        if (this.InvokeRequired)
+                                        {
+                                            this.Invoke(new Action(() => CartelAviso("Por favor, ingrese una fecha válida")));
+                                        }
+                                        else
+                                        {
+                                            CartelAviso("Ingrese una fecha válida");
+                                        }
+                                        
                                         textBox.Focus();
                                         return;
                                     }
@@ -517,7 +566,15 @@ public class FormRegistro : Home
                                     int km;
                                     if (!int.TryParse(campoKm.Text, out km))
                                     {
-                                        MessageBox.Show("Por favor, ingrese un número válido.");
+                                        if (this.InvokeRequired)
+                                        {
+                                            this.Invoke(new Action(() => CartelAviso("Por favor, ingrese un número válido")));
+                                        }
+                                        else
+                                        {
+                                            CartelAviso("Ingrese un número válido");
+                                        }
+                                      
                                         textBox.Focus();
                                         return;
                                     }
@@ -541,7 +598,14 @@ public class FormRegistro : Home
             }
             else
             {
-                MessageBox.Show(resultado.Error);
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() => CartelAviso(resultado.Error)));
+                }
+                else
+                {
+                    CartelAviso(resultado.Error);
+                }
             }
         }
         else if (filtro == "cuenta corriente")
@@ -555,22 +619,35 @@ public class FormRegistro : Home
             }
             else
             {
-                MessageBox.Show(resultado.Error);
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() => CartelAviso(resultado.Error)));
+                }
+                else
+                {
+                    CartelAviso(resultado.Error);
+                }
             }
         }
         else if (filtro == "Flete")
         {
             ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
             var resultado = await vfvm.InsertarAsync(datos[1], datos[2], float.Parse(datos[3]), datos[4], float.Parse(datos[5]), float.Parse(datos[6]), float.Parse(datos[7]), int.Parse(datos[8]), datos[10], dato, datos[11], float.Parse(datos[9]), DateOnly.Parse(datos[0]));
-
+            
             if (resultado.IsSuccess)
             {
-                MessageBox.Show("Agregado");
                 ShowInfoTable(filtro, dato);
             }
             else
             {
-                MessageBox.Show(resultado.Error);
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() => CartelAviso(resultado.Error)));
+                }
+                else
+                {
+                    CartelAviso(resultado.Error);
+                }
             }
         }
         else if (filtro == "sueldo")
@@ -579,12 +656,18 @@ public class FormRegistro : Home
             var resultado = await svm.CrearAsync(1, DateOnly.Parse(datos[0]), DateOnly.Parse(datos[1]));
             if (resultado.IsSuccess)
             {
-                MessageBox.Show("Agregado");
                 ShowInfoTable(filtro, dato);
             }
             else
             {
-                MessageBox.Show(resultado.Error);
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() => CartelAviso(resultado.Error)));
+                }
+                else
+                {
+                    CartelAviso(resultado.Error);
+                }
             }
         }
 
@@ -631,9 +714,15 @@ public class FormRegistro : Home
                     }
                     else
                     {
-                        MessageBox.Show(result.Error);
+                        if (this.InvokeRequired)
+                        {
+                            this.Invoke(new Action(() => CartelAviso(result.Error)));
+                        }
+                        else
+                        {
+                            CartelAviso(result.Error);
+                        }
                     }
-
                 }
                 else if (filtro == "Cliente")
                 {
@@ -646,7 +735,14 @@ public class FormRegistro : Home
                     }
                     else
                     {
-                        MessageBox.Show(result.Error);
+                        if (this.InvokeRequired)
+                        {
+                            this.Invoke(new Action(() => CartelAviso(result.Error)));
+                        }
+                        else
+                        {
+                            CartelAviso(result.Error);
+                        }
                     }
                 }
                 else if (filtro == "Flete")
@@ -660,7 +756,14 @@ public class FormRegistro : Home
                     }
                     else
                     {
-                        MessageBox.Show(result.Error);
+                        if (this.InvokeRequired)
+                        {
+                            this.Invoke(new Action(() => CartelAviso(result.Error)));
+                        }
+                        else
+                        {
+                            CartelAviso(result.Error);
+                        }
                     }
                 }
                 else if (filtro == "cuenta corriente")
@@ -671,12 +774,18 @@ public class FormRegistro : Home
 
                     if (result.IsSuccess)
                     {
-                        MessageBox.Show("eliminado");
                         ShowInfoTable(filtro, dato);
                     }
                     else
                     {
-                        MessageBox.Show(result.Error);
+                        if (this.InvokeRequired)
+                        {
+                            this.Invoke(new Action(() => CartelAviso(result.Error)));
+                        }
+                        else
+                        {
+                            CartelAviso(result.Error);
+                        }
                     }
                 }
                 else if (filtro == "sueldo")
@@ -686,12 +795,18 @@ public class FormRegistro : Home
 
                     if (result.IsSuccess)
                     {
-                        MessageBox.Show("eliminado");
                         ShowInfoTable(filtro, dato);
                     }
                     else
                     {
-                        MessageBox.Show(result.Error);
+                        if (this.InvokeRequired)
+                        {
+                            this.Invoke(new Action(() => CartelAviso(result.Error)));
+                        }
+                        else
+                        {
+                            CartelAviso(result.Error);
+                        }
                     }
                 }
             }
@@ -735,7 +850,14 @@ public class FormRegistro : Home
                     }
                     else
                     {
-                        MessageBox.Show(result.Error);
+                        if (this.InvokeRequired)
+                        {
+                            this.Invoke(new Action(() => CartelAviso(result.Error)));
+                        }
+                        else
+                        {
+                            CartelAviso(result.Error);
+                        }
                     }
                 }
                 else if (filtro == "cuenta corriente")
@@ -749,12 +871,27 @@ public class FormRegistro : Home
                     var result = await ccvm.ActualizarAsync(int.Parse(id), DateOnly.Parse(fecha), int.Parse(factura), float.Parse(adeuda), float.Parse(pagado), dato, null);
                     if (result.IsSuccess)
                     {
-                        MessageBox.Show("modificado");
+                        if (this.InvokeRequired)
+                        {
+                            this.Invoke(new Action(() => CartelAviso("El registro ha sido modificado")));
+                        }
+                        else
+                        {
+                            CartelAviso("El registro ha sido modificado");
+                        }
+
                         ShowInfoTable(filtro, dato);
                     }
                     else
                     {
-                        MessageBox.Show(result.Error);
+                        if (this.InvokeRequired)
+                        {
+                            this.Invoke(new Action(() => CartelAviso(result.Error)));
+                        }
+                        else
+                        {
+                            CartelAviso(result.Error);
+                        }
                     }
                 }
                 else if (filtro == "Flete")
@@ -777,20 +914,41 @@ public class FormRegistro : Home
 
                     var result = await fvm.ActualizarAsync(int.Parse(id), origen, destino, float.Parse(remito), carga, float.Parse(km), float.Parse(kg), float.Parse(tarifa), int.Parse(factura), cliente, chofer, float.Parse(comision), DateOnly.Parse(fecha));
 
-                    MessageBox.Show(id);
                     if (result.IsSuccess)
                     {
                         ShowInfoTable(filtro, dato);
                     }
                     else
                     {
-                        MessageBox.Show(result.Error);
+                        if (this.InvokeRequired)
+                        {
+                            this.Invoke(new Action(() => CartelAviso(result.Error)));
+                        }
+                        else
+                        {
+                            CartelAviso(result.Error);
+                        }
                     }
                 }
                 else if (filtro == "sueldo")
                 {
                     string fecha = cheq.Rows[e.RowIndex].Cells["Fecha"].Value.ToString();
-
+                    //var result = 
+                    //if (result.IsSuccess)
+                    //{
+                    //    ShowInfoTable(filtro, dato);
+                    //}
+                    //else
+                    //{
+                    //    if (this.InvokeRequired)
+                    //    {
+                    //        this.Invoke(new Action(() => CartelAviso(result.Error)));
+                    //    }
+                    //    else
+                    //    {
+                    //        CartelAviso(result.Error);
+                    //    }
+                    //}
                 }
             }
         }
@@ -941,5 +1099,74 @@ public class FormRegistro : Home
                 btnCargar.Location = new Point(this.ClientSize.Width - btnCargar.Width - marginRight, 125);
             };
         }
+    }
+
+    private void CartelAviso(string mensaje)
+    {
+        ButtonAceptProperties();
+        this.Controls.Add(avisoPanel);
+
+        Label ll = new Label();
+        ll.Text = mensaje;
+        ll.Font = new Font("Nunito", 14, FontStyle.Regular);
+        ll.ForeColor = System.Drawing.Color.FromArgb(218, 218, 28);
+        ll.AutoSize = true;
+
+        // Centrar el label dentro del panel
+        ll.Resize += (s, e) =>
+        {
+            ll.Location = new Point(
+            (avisoPanel.Width - ll.Width) / 2, 50);
+        };
+
+        avisoPanel.BringToFront();  // Traer al frente
+        avisoPanel.Visible = true;  // Asegurar que sea visible
+
+
+        avisoPanel.Size = new Size(300, 150);
+        avisoPanel.BackColor = System.Drawing.Color.FromArgb(48, 48, 48);
+
+        avisoPanel.Controls.Add(ll);
+        avisoPanel.Controls.Add(btnAceptarAviso);
+
+        // Centrar el panel en el formulario
+        avisoPanel.Location = new Point(
+            (this.ClientSize.Width - avisoPanel.Width) / 2,
+            (this.ClientSize.Height - avisoPanel.Height) / 2
+        );
+
+
+        // Asegurar centrado dinámico si el formulario se redimensiona
+        this.Resize += (s, e) =>
+        {
+            avisoPanel.Location = new Point(
+                (this.ClientSize.Width - avisoPanel.Width) / 2,
+                (this.ClientSize.Height - avisoPanel.Height) / 2
+            );
+        };
+    }
+
+    private void ButtonAceptProperties()
+    {
+        avisoPanel.Visible = true;
+
+        btnAceptarAviso.BackColor = System.Drawing.Color.FromArgb(218, 218, 28);
+        btnAceptarAviso.ForeColor = System.Drawing.Color.FromArgb(48, 48, 48);
+        btnAceptarAviso.Size = new Size(110, 30);
+
+        btnAceptarAviso.Text = "Aceptar";
+        btnAceptarAviso.FlatStyle = FlatStyle.Flat;
+        btnAceptarAviso.FlatAppearance.BorderSize = 0;
+        btnAceptarAviso.Font = new Font("Nunito", 12, FontStyle.Bold);
+
+        //btnAceptarAviso.Resize += (s, e) =>
+        //{
+            btnAceptarAviso.Location = new Point(avisoPanel.Width / 2, 100);
+        //};
+
+        btnAceptarAviso.Click += (s, e) =>
+        {
+            avisoPanel.Visible = false;
+        };
     }
 }
