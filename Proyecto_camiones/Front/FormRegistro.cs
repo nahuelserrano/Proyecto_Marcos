@@ -653,22 +653,22 @@ public class FormRegistro : Home
         else if (filtro == "sueldo")
         {
             SueldoViewModel svm = new SueldoViewModel();
-            var resultado = await svm.CrearAsync(1, DateOnly.Parse(datos[0]), DateOnly.Parse(datos[1]));
-            if (resultado.IsSuccess)
-            {
-                ShowInfoTable(filtro, dato);
-            }
-            else
-            {
-                if (this.InvokeRequired)
-                {
-                    this.Invoke(new Action(() => CartelAviso(resultado.Error)));
-                }
-                else
-                {
-                    CartelAviso(resultado.Error);
-                }
-            }
+            //var resultado = await svm.CrearAsync(1, DateOnly.Parse(datos[0]), DateOnly.Parse(datos[1]));
+            //if (resultado.IsSuccess)
+            //{
+            //    ShowInfoTable(filtro, dato);
+            //}
+            //else
+            //{
+            //    if (this.InvokeRequired)
+            //    {
+            //        this.Invoke(new Action(() => CartelAviso(resultado.Error)));
+            //    }
+            //    else
+            //    {
+            //        CartelAviso(resultado.Error);
+            //    }
+            //}
         }
 
         foreach (Control control in formFLTextBox.Controls)

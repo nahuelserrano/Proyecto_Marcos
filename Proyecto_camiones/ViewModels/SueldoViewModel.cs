@@ -66,10 +66,11 @@ namespace Proyecto_camiones.ViewModels
             }
             return Result<bool>.Failure("No se pudo establecer la conexión");
         }
-        public async Task<Result<List<SueldoDTO>>> ObtenerTodosAsync(string patente,string? nombreChofer=null) {
+        public async Task<Result<List<SueldoDTO>>> ObtenerTodosAsync(string? patente,string? nombreChofer) {
             if (await this.testearConexion())
             {
-                Result<List<SueldoDTO>> sueldos = await this.sueldoService.ObtenerTodosAsync(patente,nombreChofer);
+                Console.WriteLine("hola view model");
+                Result<List<SueldoDTO>> sueldos = await this.sueldoService.ObtenerTodosAsync(patente, nombreChofer);
                 if(sueldos!=null)
                 return sueldos;
             }

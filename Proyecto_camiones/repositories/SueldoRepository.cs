@@ -9,6 +9,7 @@ using Proyecto_camiones.Presentacion.Models;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_camiones.Models;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using Proyecto_camiones.ViewModels;
 
 
 namespace Proyecto_camiones.Presentacion.Repositories
@@ -109,12 +110,13 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
         public async Task<SueldoDTO?> ObtenerPorId(int id)
         {
-            Sueldo sueldo = await _context.Sueldos.FindAsync(id);
+            Sueldo? sueldo = await _context.Sueldos.FindAsync(id);
 
             if (sueldo == null)
                 return null;
 
             SueldoDTO sueldoS = new SueldoDTO(
+                sueldo.Id,
                 sueldo.Monto,
                 sueldo.Id_Chofer,
                 sueldo.pagadoDesde,
@@ -128,41 +130,36 @@ namespace Proyecto_camiones.Presentacion.Repositories
       }
 
 
-        public async Task<List<SueldoDTO>> ObtenerTodosAsync(int idCamionParametro,int idChofer) 
+        public async Task<List<SueldoDTO>> ObtenerTodosAsync(int idCamionParametro, int idChofer)
         {
 
             try
             {
-                if (!await _context.Database.CanConnectAsync())
+                List<SueldoDTO> sueldos = new List<SueldoDTO>();
+                if (idChofer > -1 && idCamionParametro >-1) {
+                    Console.WriteLine("hola if de tenemos chofer y camión");
+                sueldos = await _context.Sueldos
+                            .Where(s => s.IdCamion == idCamionParametro && s.Id_Chofer == idChofer)
+                            .OrderByDescending(c => c.Id)
+                               .Select(c => new SueldoDTO(
+                                c.Id,
+                                c.Monto,
+                                c.Id_Chofer,
+                                c.pagadoDesde,
+                                c.pagadoHasta,
+                                c.FechaPago,
+                                c.Pagado,
+                                c.IdCamion
+                            ))
+                            .ToListAsync();
+                return sueldos;
+            } else if(idChofer < 0 && idCamionParametro > -1)
                 {
-                    Console.WriteLine("No se puede conectar a la base de datos");
-                    return null;
-                }
-                if (idChofer>0) {
-                    List<CuentaCorrienteDTO> result1 = new List<CuentaCorrienteDTO>();
-                    var sueldo1 = await _context.Sueldos
-                                .Where(s => s.IdCamion == idCamionParametro && s.Id_Chofer== idChofer)
-                                .OrderByDescending(c => c.Id)
-                                   .Select(c => new SueldoDTO(
-
-                                    c.Monto,
-                                    c.Id_Chofer,
-                                    c.pagadoDesde,
-                                    c.pagadoHasta,
-                                    c.FechaPago,
-                                    c.Pagado,
-                                    c.IdCamion
-                                ))
-                                .ToListAsync();
-                    return sueldo1;
-                }
-
-                    List<CuentaCorrienteDTO> result = new List<CuentaCorrienteDTO>();
-                    var sueldos = await _context.Sueldos
+                    sueldos = await _context.Sueldos
                                 .Where(s => s.IdCamion == idCamionParametro)
                                 .OrderByDescending(c => c.Id)
                                    .Select(c => new SueldoDTO(
-
+                                    c.Id,    
                                     c.Monto,
                                     c.Id_Chofer,
                                     c.pagadoDesde,
@@ -172,11 +169,31 @@ namespace Proyecto_camiones.Presentacion.Repositories
                                     c.IdCamion
                                 ))
                                 .ToListAsync();
+                } else if(idChofer>-1 && idCamionParametro < 0)
+                {
+                    sueldos = await _context.Sueldos
+                                .Where(s => s.Id_Chofer == idChofer)
+                                .OrderByDescending(c => c.Id)
+                                   .Select(c => new SueldoDTO(
+                                    c.Id,
+                                    c.Monto,
+                                    c.Id_Chofer,
+                                    c.pagadoDesde,
+                                    c.pagadoHasta,
+                                    c.FechaPago,
+                                    c.Pagado,
+                                    c.IdCamion
+                                ))
+                                .ToListAsync();
+                }
+                else
+                {
+                    return null;
+                }
+
                     return sueldos;
-                
-                
-            }
-            catch (Exception e)
+
+        }catch (Exception e)
             {
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e.InnerException);

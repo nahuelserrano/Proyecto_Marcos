@@ -62,22 +62,26 @@ namespace Proyecto_camiones
 
             SueldoViewModel sueldoViewModel = new SueldoViewModel();
 
+            //FUNCIONA OBTENER TODOS LOS SALDOS DE UN CAMION/CHOFER
             //var result = await sueldoViewModel.ObtenerTodosAsync("HIJ429", "Mili");
             //if (result.IsSuccess)
             //{
+            //    Console.WriteLine("hola fue exitoso?");
             //    List<SueldoDTO> sueldos = result.Value;
-            //    foreach (var sueldo in sueldos)
+            //    foreach (SueldoDTO sueldo in sueldos)
             //    {
+            //        Console.WriteLine("hola foreach");
             //        Console.WriteLine(sueldo.ToString());
             //    }
             //}
             //else
             //{
+            //    Console.WriteLine("fuck no fue exitoso");
             //    Console.WriteLine($"Error: {result.Error}");
             //}
             //await sueldoViewModel.marcarPago(6);
             //await sueldoViewModel.CrearAsync(1, DateOnly.MinValue, DateOnly.MaxValue);
-            //  Console.WriteLine("sueldo calculado : " + suel);
+            //Console.WriteLine("sueldo calculado : " + suel);
 
 
             //SueldoViewModel sw = new SueldoViewModel();
@@ -360,7 +364,7 @@ namespace Proyecto_camiones
             //int idViaje = await ViajeTest.ProbarInsertarViaje(fecha, "Tandil", "Buenos Aires", 123, 1000.5f, "Trigo", "Cliente1", "PUC111", 350.5f, 5000.0f,null, 15F);
             ViajeViewModel vvm = new ViajeViewModel();
             float f = 0.0F;
-            Result<int> viaje = await vvm.CrearAsync(fecha, "Tandil", "Azul", 123, "trigo", 30.0F, "Cliente1", "PUC111", 350.5F, 5000.0F, "nuevo chofer", f);
+            //Result<int> viaje = await vvm.CrearAsync(fecha, "Tandil", "Azul", 123, "trigo", 30.0F, "Cliente1", "PUC111", 350.5F, 5000.0F, "nuevo chofer", f);
 
             //await ViajeTest.ProbarActualizarViaje(
             //    id: 1,

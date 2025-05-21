@@ -8,6 +8,8 @@ using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Utils;
 using Proyecto_camiones.Repositories;
 using Proyecto_camiones.Models;
+using Proyecto_camiones.ViewModels;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace Proyecto_camiones.Presentacion.Services
 {
@@ -25,6 +27,14 @@ namespace Proyecto_camiones.Presentacion.Services
         {
             this._sueldoRepository = pagosR ?? throw new ArgumentNullException(nameof(pagosR));
             this._pagoService = pagoS ?? throw new ArgumentNullException(nameof(pagoS));
+            CamionRepository cr = new CamionRepository();
+            this._camionService = new CamionService(cr);
+            ViajeRepository vr = new ViajeRepository(General.obtenerInstancia());
+            ClienteRepository clr = new ClienteRepository(General.obtenerInstancia());
+            ClienteService cs = new ClienteService(clr);
+            ChoferRepository chr = new ChoferRepository(General.obtenerInstancia());
+            this._choferService = new ChoferService(chr);
+            this._viajeService = new ViajeService(vr, _camionService, cs, _choferService, pagoS);
         }
 
 
@@ -34,36 +44,42 @@ namespace Proyecto_camiones.Presentacion.Services
             return result;
         }
 
-        public async Task<Result<List<SueldoDTO>>> ObtenerTodosAsync(string patenteCamion,string nombreChofer)
+        public async Task<Result<List<SueldoDTO>>> ObtenerTodosAsync(string? patenteCamion,string? nombreChofer)
         {
-            if (await this.ProbarConexionAsync())
-            {
-                if (string.IsNullOrEmpty(patenteCamion))
-                    return Result<List<SueldoDTO>>.Failure("No se proporcionó la patente del camión ");
+                if (string.IsNullOrEmpty(patenteCamion) && string.IsNullOrEmpty(nombreChofer))
+                    return Result<List<SueldoDTO>>.Failure("No se proporcionó la patente del camión ni un chofer");
 
-                var camion = await this._camionService.ObtenerPorPatenteAsync(patenteCamion);
+                int idCamion = -1;
+                if (patenteCamion != null)
+                        {
+                    Console.WriteLine("hola if de patente");
+                        var camion = await this._camionService.ObtenerPorPatenteAsync(patenteCamion);
 
-                if (camion == null)
-                    return Result<List<SueldoDTO>>.Failure("No se encontró el camión con la patente proporcionada.");
-                int idCamion = camion.Value.Id;
+                        if (camion == null)
+                            return Result<List<SueldoDTO>>.Failure("No se encontró el camión con la patente proporcionada.");
+                Console.WriteLine("sobrevivimos a obtener csmion");
+                idCamion = camion.Value.Id;
+                        }
+            
                 int idChofer = -1;
 
                 if (!string.IsNullOrEmpty(nombreChofer))
                 {
+                Console.WriteLine("hola if de chofer");
                     var chofer = await this._choferService.ObtenerPorNombreAsync(nombreChofer);
                     if (chofer == null)
                         return Result<List<SueldoDTO>>.Failure("No se encontró el chofer con el nombre proporcionado.");
+                Console.WriteLine("sobrevivimos a obtener chofer");
                     idChofer = chofer.Value.Id;
                 }
-              
 
+            Console.WriteLine("llegamos tan lejos?");
                 List<SueldoDTO> sueldos = await this._sueldoRepository.ObtenerTodosAsync(idCamion,idChofer);
                 
                 
                 if (sueldos != null)
                     return Result<List<SueldoDTO>>.Success(sueldos);
-            }
-            return Result<List<SueldoDTO>>.Failure("No se pudo establecer la conexión");
+            return Result<List<SueldoDTO>>.Failure("Hubo un problema al obtener los sueldos");
         }
 
         internal async Task<Result<bool>> EliminarAsync(int sueldoId)
