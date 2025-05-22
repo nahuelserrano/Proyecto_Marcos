@@ -46,17 +46,17 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
        
 
-        public async Task<int> InsertarAsync(float monto, int Id_Chofer, DateOnly pagadoDesde, DateOnly pagadoHasta,int idCamion)
+        public async Task<int> InsertarAsync(float monto, int Id_Chofer, DateOnly pagadoDesde, DateOnly pagadoHasta, DateOnly? fecha_pago, int? idCamion)
         {
             try
             {
-                if (!await _context.Database.CanConnectAsync())
-                {
-                    Console.WriteLine("No se puede conectar a la base de datos");
-                    return -1;
-                }
               
                 var sueldo = new Sueldo(monto, Id_Chofer, pagadoDesde, pagadoHasta, idCamion);
+                if(fecha_pago != null)
+                {
+                    sueldo.FechaPago = fecha_pago;
+                    sueldo.Pagado = true;
+                }
 
                 await _context.Sueldos.AddAsync(sueldo);
                
@@ -64,6 +64,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
                 if (registrosAfectados > 0)
                 {
+                    Console.WriteLine("se insertó el registro correctamente");
                     return sueldo.Id;
                 }
                 Console.WriteLine("No se insertó ningún registro");
@@ -74,35 +75,42 @@ namespace Proyecto_camiones.Presentacion.Repositories
             catch (Exception ex)
             {
                 Console.WriteLine($"Error al insertar pago: {ex.InnerException}");
-
-             
+                Console.WriteLine(ex.InnerException);
                 return -1;
             }
         }
 
-        public async Task<bool> PagarSueldo(int id)
+        public async Task<SueldoDTO?> PagarSueldo(int id, DateOnly? fecha_pagado)
         {
             try
             {
                 var sueldo = await _context.Sueldos.FindAsync(id);
                 if (sueldo == null)
-                    return false;
+                    return null;
                 sueldo.Pagado = true;
-                sueldo.FechaPago = DateOnly.FromDateTime(DateTime.Now);
-                int registrosAfectados = await _context.SaveChangesAsync();
+                if (fecha_pagado != null)
+                {
+                    sueldo.FechaPago = fecha_pagado;
+                }
+                else
+                {
+                    sueldo.FechaPago = DateOnly.FromDateTime(DateTime.Now);
+                }
+                    int registrosAfectados = await _context.SaveChangesAsync();
 
                 if (registrosAfectados > 0)
                 {
-                    return true;
                     Console.WriteLine("sueldo pagado");
+                    return new SueldoDTO(sueldo.Id, sueldo.Monto, sueldo.Id_Chofer, sueldo.pagadoDesde, sueldo.pagadoHasta, sueldo.FechaPago, sueldo.Pagado, sueldo.IdCamion);
                 }
-                return false;
+                return null;
             
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error al pagar sueldo: {ex.Message}");
-                return false;
+                Console.WriteLine(ex.InnerException);
+                return null;
             }
         }
 

@@ -38,10 +38,10 @@ namespace Proyecto_camiones
 
 
             //// Llamada a Windows Forms para inicializar la aplicación
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
-            
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
+
             PagoViewModel pw = new PagoViewModel();
 
             // Llamada a Windows Forms para inicializar la aplicación
@@ -82,16 +82,27 @@ namespace Proyecto_camiones
             //await sueldoViewModel.marcarPago(6);
             //Console.WriteLine("sueldo calculado : " + suel);
 
+            //MARCAR COMO PAGADO UN SUELDO
+            //Result<SueldoDTO?> sueldoModificado = await sueldoViewModel.marcarPago(9, null);
+            //if (sueldoModificado.IsSuccess)
+            //{
+            //    Console.WriteLine(sueldoModificado.Value.ToString());
+            //}
+            //else
+            //{
+            //    Console.WriteLine(sueldoModificado.Error);
+            //}
 
             //SueldoViewModel sw = new SueldoViewModel();
+            //sw.InsertarSueldo(1,DateOnly.Parse("2025/7/3"), DateOnly.Parse("2025/7/3"), DateOnly.MaxValue).Wait();
 
-            //PRUEBA PAGOS
-            //PagoRepository pr = new PagoRepository(General.obtenerInstancia());
-            //PagosService pagosService = new PagosService(pr);
+                //PRUEBA PAGOS
+                //PagoRepository pr = new PagoRepository(General.obtenerInstancia());
+                //PagosService pagosService = new PagosService(pr);
 
-            //pagosService.Crear(1, DateOnly.MinValue, DateOnly.MaxValue, DateOnly.MaxValue);
+                //pagosService.Crear(1, DateOnly.MinValue, DateOnly.MaxValue, DateOnly.MaxValue);
 
-            CamionViewModel cvm = new CamionViewModel();
+                CamionViewModel cvm = new CamionViewModel();
             ////PRUEBA INSERCION
             //Result<int> id = cvm.InsertarAsync("NCS234", "Mili").Result;
             //if (id.IsSuccess)

@@ -97,14 +97,31 @@ namespace Proyecto_camiones.Presentacion.Services
             return Result<bool>.Success(true);
         }
 
-        public async Task<Result<int>> CrearAsync(int Id_Chofer, DateOnly pagoDesde, DateOnly pagoHasta,int idCamion)
+        public async Task<Result<int>> CrearAsync(string nombre_chofer, DateOnly pagoDesde, DateOnly pagoHasta, DateOnly? fecha_pagado, string? patenteCamion)
         {
-            float monto = await calculadorSueldo(Id_Chofer,pagoDesde,pagoHasta);
+            Console.WriteLine("hola service?");
+            Result<Chofer?> c = await this._choferService.ObtenerPorNombreAsync(nombre_chofer);
+            if (!c.IsSuccess)
+            {
+                return Result<int>.Failure("Hubo un problema al obteenr el chofer con ese nombre, chequee los datos ingresados");
+            }
+            Console.WriteLine("sobrevivimos al obtener chofer");
+            Console.WriteLine(c.Value.ToString());
 
-            if(monto <= 0)
+            if(c.Value == null)
+            {
+                return Result<int>.Failure("error, no se pudo insertar el sueldo ya que no se encontró al chofer");
+            }
+            float monto = await calculadorSueldo(c.Value.Id,pagoDesde,pagoHasta);
+            Console.WriteLine("sobrevivimos al calcular monto");
+
+            if (monto <= 0)
+            {
+                Console.WriteLine("fuck no hay pagos");
                 return Result<int>.Failure("No se pudo calcular el sueldo ya que no hay pagos pendientes");
+            }
 
-            ValidadorSueldo validador = new ValidadorSueldo(monto, Id_Chofer, pagoDesde, pagoHasta, pagoHasta);
+            ValidadorSueldo validador = new ValidadorSueldo(monto, c.Value.Id, pagoDesde, pagoHasta, pagoHasta);
          
             Result<bool> resultadoValidacion = validador.ValidarCompleto();
 
@@ -113,17 +130,31 @@ namespace Proyecto_camiones.Presentacion.Services
             if (!resultadoValidacion.IsSuccess)
                 return Result<int>.Failure(resultadoValidacion.Error);
 
+            int? idCamion = null;
+
+            if(patenteCamion != null)
+            {
+                Result<Camion> ca = await this._camionService.ObtenerPorPatenteAsync(patenteCamion);
+                if (!ca.IsSuccess)
+                {
+                    return Result<int>.Failure("No existe camión con esa patente, revise los datos ingresados");
+                }
+                idCamion = ca.Value.Id;
+            }
+
             try
             {
 
-                int idSueldo = await _sueldoRepository.InsertarAsync(monto, Id_Chofer, pagoDesde, pagoHasta,idCamion);
+                int idSueldo = await _sueldoRepository.InsertarAsync(monto, c.Value.Id, pagoDesde, pagoHasta, fecha_pagado, idCamion);
                 if (idSueldo<0)
                     return Result<int>.Failure("No se pudo crear el sueldo en services");
-                 await _pagoService.ModificarEstado(Id_Chofer, pagoDesde, pagoHasta,idSueldo);
+                 await _pagoService.ModificarEstado(c.Value.Id, pagoDesde, pagoHasta,idSueldo);
                 return Result<int>.Success(idSueldo);
             }
             catch (Exception ex)  
             {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.InnerException);
                 return Result<int>.Failure("Hubo un error al crear el cheque");
             }
         }
@@ -136,23 +167,24 @@ namespace Proyecto_camiones.Presentacion.Services
             return sueldo;
         }
 
-        public async Task<Result<bool>> marcarPagado(int id) {
+        public async Task<Result<SueldoDTO>> marcarPagado(int id, DateOnly? fecha_pagado) {
             if (id < 0) 
-                return Result<bool>.Failure("id del sueldo deseado invalido");
+                return Result<SueldoDTO>.Failure("id del sueldo deseado invalido");
 
-            SueldoDTO sueldo = await _sueldoRepository.ObtenerPorId(id);
+            SueldoDTO? sueldo = await _sueldoRepository.ObtenerPorId(id);
             if (sueldo == null)
-                return Result<bool>.Failure("No se encontró el sueldo con el ID proporcionado.");
+                return Result<SueldoDTO>.Failure("No se encontró el sueldo con el ID proporcionado.");
             if (sueldo.Pagado) {
-                return Result<bool>.Failure("el sueldo que se dea marcar como pago ya esta pagado");
+                return Result<SueldoDTO>.Failure("el sueldo que se desea marcar como pago ya esta pagado");
             }
             
-            bool success = await this._sueldoRepository.PagarSueldo(id);
-            if (success)
+            SueldoDTO? success = await this._sueldoRepository.PagarSueldo(id, fecha_pagado);
+            if (success != null)
             {
-                Console.WriteLine("se cambio a pagado");
+                Console.WriteLine("se pagó el sueldo correctamente");
+                return Result<SueldoDTO>.Success(success);
             }
-            return Result<bool>.Success(success);
+            return Result<SueldoDTO>.Failure("Hubo un problema al actualizar el sueldo");
         }
         public async Task<Result<SueldoDTO>> ActualizarAsync(int id, float? monto = null, int? Id_Chofer = null, DateOnly? pagadoDesde = null, DateOnly? pagadoHasta = null, DateOnly? FechaPago = null)
         {
