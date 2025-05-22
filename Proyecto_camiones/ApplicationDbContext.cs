@@ -120,6 +120,10 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.pagadoDesde).HasColumnName("fecha_desde");
             entity.Property(e => e.pagadoHasta).HasColumnName("fecha_hasta");
             entity.Property(e => e.FechaPago).HasColumnName("fecha_pago");
+            entity.Property(e => e.Pagado).HasColumnName("Pagado");
+            entity.Property(e => e.IdCamion).HasColumnName("idCamion");
+
+
         });
 
         modelBuilder.Entity<Cliente>(entity =>

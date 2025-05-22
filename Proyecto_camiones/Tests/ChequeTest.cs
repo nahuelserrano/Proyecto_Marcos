@@ -8,7 +8,7 @@ using Proyecto_camiones.ViewModels;
 
 namespace Proyecto_camiones.Tests
 {
-    public static class ChequeTests
+    public static class ChequeTest
     {
         /// <summary>
         /// Ejecuta todas las pruebas de Cheque en secuencia

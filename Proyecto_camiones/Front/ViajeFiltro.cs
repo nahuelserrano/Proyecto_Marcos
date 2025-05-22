@@ -25,18 +25,18 @@ internal class ViajeFiltro : Home
 
 
     //Constructor 
-    public ViajeFiltro(string dato, int cant, List<string> camposForm, string filtro, List<string> camposFaltantesTablas)
+    public ViajeFiltro(string dato, int cant, List<string> camposForm, string filtro, List<string> camposFaltantesTablas, string choferCamion)
     {
         InitializeGrid(camposForm);
 
         ResaltarBoton(viajesMenu);
 
-        GeneratorForm(dato, cant, filtro, camposFaltantesTablas);
+        GeneratorForm(dato, cant, filtro, camposFaltantesTablas, choferCamion);
     }
 
-    private void GeneratorForm(string dato, int cant, string filtro, List<string> camposFaltantesTablas)
+    private void GeneratorForm(string dato, int cant, string filtro, List<string> camposFaltantesTablas, string choferCamion)
     {
-        FormRegistro formulario = new FormRegistro(campos, cant, dato, filtro, camposFaltantesTablas);
+        FormRegistro formulario = new FormRegistro(campos, cant, dato, filtro, camposFaltantesTablas, choferCamion);
         formulario.TopLevel = true;
         this.Close();
         formulario.ShowDialog();

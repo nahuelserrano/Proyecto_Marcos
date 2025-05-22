@@ -87,10 +87,10 @@ namespace Proyecto_camiones.Front
             {
                 foreach (var cheque in result.Value)
                 {
-                    cheq.Rows.Add(cheque.FechaIngresoCheque, cheque.Banco, cheque.NumeroCheque, cheque.Monto, cheque.Nombre, cheque.NumeroPersonalizado, null, cheque.FechaCobro,  "x",cheque.Id);
+                    cheq.Rows.Add(cheque.FechaIngresoCheque, cheque.Banco, cheque.NumeroCheque, cheque.Monto, cheque.Nombre, cheque.NumeroPersonalizado, null, cheque.FechaCobro, null, cheque.Id);
                 }
             }
-            
+
         }
 
         private void ConfigurarDataGridView()
@@ -540,10 +540,10 @@ namespace Proyecto_camiones.Front
             }
 
             //Verificar que los datos no estén vacíos
-            //if (datos.All(dato => !string.IsNullOrWhiteSpace(dato)))
-            //{
+            if (datos.All(dato => !string.IsNullOrWhiteSpace(dato)))
+            {
 
-            eliminar.Text = "X";
+                eliminar.Text = "X";
             eliminar.UseColumnTextForButtonValue = true;
 
             datos.Add(eliminar.Text);
@@ -572,7 +572,7 @@ namespace Proyecto_camiones.Front
                         }
                     }
                 }
-            //}
+            }
         }
 
         private async Task eliminarFila(object sender, DataGridViewCellEventArgs e)
@@ -598,7 +598,6 @@ namespace Proyecto_camiones.Front
                         MessageBox.Show(result.Error);
                     }
                 }
-
             }
         }
 

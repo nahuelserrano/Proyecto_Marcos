@@ -7,6 +7,8 @@ using System.Windows.Forms;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Models;
 using Microsoft.EntityFrameworkCore;
+using Proyecto_camiones.Models;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using Proyecto_camiones.ViewModels;
 
 
@@ -44,7 +46,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
        
 
-        public async Task<int> InsertarAsync(float monto, int Id_Chofer, DateOnly pagadoDesde, DateOnly pagadoHasta)
+        public async Task<int> InsertarAsync(float monto, int Id_Chofer, DateOnly pagadoDesde, DateOnly pagadoHasta,int idCamion)
         {
             try
             {
@@ -54,7 +56,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     return -1;
                 }
               
-                var sueldo = new Sueldo(monto, Id_Chofer, pagadoDesde, pagadoHasta);
+                var sueldo = new Sueldo(monto, Id_Chofer, pagadoDesde, pagadoHasta, idCamion);
 
                 await _context.Sueldos.AddAsync(sueldo);
                
@@ -78,43 +80,130 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
         }
 
+        public async Task<bool> PagarSueldo(int id)
+        {
+            try
+            {
+                var sueldo = await _context.Sueldos.FindAsync(id);
+                if (sueldo == null)
+                    return false;
+                sueldo.Pagado = true;
+                sueldo.FechaPago = DateOnly.FromDateTime(DateTime.Now);
+                int registrosAfectados = await _context.SaveChangesAsync();
+
+                if (registrosAfectados > 0)
+                {
+                    return true;
+                    Console.WriteLine("sueldo pagado");
+                }
+                return false;
+            
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al pagar sueldo: {ex.Message}");
+                return false;
+            }
+        }
+
 
 
         public async Task<SueldoDTO?> ObtenerPorId(int id)
         {
-            Sueldo sueldo = await _context.Sueldos.FindAsync(id);
+            Sueldo? sueldo = await _context.Sueldos.FindAsync(id);
 
             if (sueldo == null)
                 return null;
 
             SueldoDTO sueldoS = new SueldoDTO(
+                sueldo.Id,
                 sueldo.Monto,
                 sueldo.Id_Chofer,
                 sueldo.pagadoDesde,
                 sueldo.pagadoHasta,
-                sueldo.FechaPago
+                sueldo.FechaPago,
+                sueldo.Pagado,
+                sueldo.IdCamion
             );
 
             return sueldoS;
       }
 
-       
-        public async Task<List<SueldoDTO>> ObtenerTodosAsync()
+
+        public async Task<List<SueldoDTO>?> ObtenerTodosAsync(int idCamionParametro, int idChofer)
         {
-            
-                var sueldo = await _context.Sueldos.Select(p => new SueldoDTO
+
+            try
+            {
+                List<SueldoDTO> sueldos = new List<SueldoDTO>();
+                if (idChofer > -1 && idCamionParametro >-1) {
+                    Console.WriteLine("hola if de tenemos chofer y camión");
+                sueldos = await _context.Sueldos
+                            .Where(s => s.IdCamion == idCamionParametro && s.Id_Chofer == idChofer)
+                            .OrderByDescending(c => c.Id)
+                               .Select(c => new SueldoDTO(
+                                c.Id,
+                                c.Monto,
+                                c.Id_Chofer,
+                                c.pagadoDesde,
+                                c.pagadoHasta,
+                                c.FechaPago,
+                                c.Pagado,
+                                c.IdCamion
+                            ))
+                            .ToListAsync();
+                return sueldos;
+            } else if(idChofer < 0 && idCamionParametro > -1)
                 {
-                    Monto_Pagado = p.Monto,
-                    Id_Chofer = p.Id_Chofer,
-                    pagadoDesde = p.pagadoDesde,
-                    pagadoHasta = p.pagadoHasta,
-                    FechaDePago = p.FechaPago
+                    Console.WriteLine("Hola if de tenemos camion pero no chofer");
+                    sueldos = await _context.Sueldos
+                                .Where(s => s.IdCamion == idCamionParametro)
+                                .OrderByDescending(c => c.Id)
+                                   .Select(c => new SueldoDTO(
+                                    c.Id,    
+                                    c.Monto,
+                                    c.Id_Chofer,
+                                    c.pagadoDesde,
+                                    c.pagadoHasta,
+                                    c.FechaPago,
+                                    c.Pagado,
+                                    c.IdCamion
+                                ))
+                                .ToListAsync();
+                } else if(idChofer>-1 && idCamionParametro < 0)
+                {
+                    sueldos = await _context.Sueldos
+                                .Where(s => s.Id_Chofer == idChofer)
+                                .OrderByDescending(c => c.Id)
+                                   .Select(c => new SueldoDTO(
+                                    c.Id,
+                                    c.Monto,
+                                    c.Id_Chofer,
+                                    c.pagadoDesde,
+                                    c.pagadoHasta,
+                                    c.FechaPago,
+                                    c.Pagado,
+                                    c.IdCamion
+                                ))
+                                .ToListAsync();
+                }
+                else
+                {
+                    return null;
+                }
 
-                }).ToListAsync();
+                    return sueldos;
 
-            return sueldo;
+        }catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.InnerException);
+                return null;
+            }
 
         }
+       
+
 
 
         public async Task<bool> ActualizarAsync(int id,int id_Chofer, DateOnly? pagadoDesde = null, DateOnly? pagadoHasta = null, float? monto = null, DateOnly? FechaPago = null)

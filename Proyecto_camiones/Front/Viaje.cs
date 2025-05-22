@@ -371,7 +371,7 @@ internal class Viaje : Home
         card.Click += (s, e) =>
         {
             this.Hide();
-            ViajeFiltro form = new ViajeFiltro(item.nombre, cantCamposTabla, campos, filtro, camposFaltantesTabla);
+            ViajeFiltro form = new ViajeFiltro(item.nombre, cantCamposTabla, campos, filtro, camposFaltantesTabla, " ");
             form.TopLevel = true;
             form.ShowDialog();
         };
@@ -457,7 +457,7 @@ internal class Viaje : Home
         card.Click += (s, e) =>
         {
             this.Hide();
-            ViajeFiltro form = new ViajeFiltro(item.Nombre, cantCamposTabla, campos, filtro, camposFaltantesTabla);
+            ViajeFiltro form = new ViajeFiltro(item.Nombre, cantCamposTabla, campos, filtro, camposFaltantesTabla, " ");
             form.TopLevel = true;
             form.ShowDialog();
         };
@@ -557,7 +557,7 @@ internal class Viaje : Home
         card.Click += (s, e) =>
         {
             this.Hide();
-            ViajeFiltro form = new ViajeFiltro(item.Patente, cantCamposTabla, campos, filtro, camposFaltantesTabla);
+            ViajeFiltro form = new ViajeFiltro(item.Patente, cantCamposTabla, campos, filtro, camposFaltantesTabla, item.Nombre_Chofer);
             form.TopLevel = true;
             form.ShowDialog();
         };

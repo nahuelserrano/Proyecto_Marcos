@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Services;
@@ -53,7 +52,7 @@ namespace Proyecto_camiones.ViewModels
         {
             if (!await TestearConexionAsync())
                 return Result<ChequeDTO>.Failure("La conexión no pudo establecerse");
-            
+
             return await _chequeService.ObtenerPorIdAsync(id);
         }
 
@@ -110,7 +109,6 @@ namespace Proyecto_camiones.ViewModels
         public async Task<Result<bool>> EliminarAsync(int id)
         {
             if (!await TestearConexionAsync())
-                MessageBox.Show("hola");
                 return Result<bool>.Failure(MensajeError.errorConexion());
 
             return await _chequeService.EliminarAsync(id);

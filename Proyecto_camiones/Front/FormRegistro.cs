@@ -58,9 +58,9 @@ public class FormRegistro : Home
 
 
     //Constructor
-    public FormRegistro(List<string> camposForm, int cant, string dato, string filtro, List<string> camposFaltantesTablas)
+    public FormRegistro(List<string> camposForm, int cant, string dato, string filtro, List<string> camposFaltantesTablas, string choferCamion)
     {
-        InitializeUI(camposForm, cant, filtro, camposFaltantesTablas, dato);
+        InitializeUI(camposForm, cant, filtro, camposFaltantesTablas, dato, choferCamion);
 
         //ShowForm
         CargarFormulario(camposForm, cant, filtro);
@@ -95,7 +95,7 @@ public class FormRegistro : Home
     }
 
     //Initializations
-    private void InitializeUI(List<string> camposForm, int cant, string filtro, List<string> camposFaltantesTablas, string dato)
+    private void InitializeUI(List<string> camposForm, int cant, string filtro, List<string> camposFaltantesTablas, string dato, string choferCamion)
     {
         this.AutoScaleMode = AutoScaleMode.Dpi;
         this.AutoSize = true;
@@ -105,10 +105,10 @@ public class FormRegistro : Home
         ResaltarBoton(viajesMenu);
         GridChequesProperties();
         ButtonProperties(filtro, dato);
-        ShowInfoTable(filtro, dato);
+        ShowInfoTable(filtro, dato, choferCamion);
     }
 
-    private async void ShowInfoTable(string filtro, string dato)
+    private async void ShowInfoTable(string filtro, string dato, string choferCamion)
     {
         cheq.Rows.Clear();
 
@@ -214,22 +214,22 @@ public class FormRegistro : Home
         }
         else if (filtro == "sueldo")
         {
-            //SueldoViewModel svm = new SueldoViewModel();
-            //var resultSueldo = await svm.ObtenerTodosAsync();
+            SueldoViewModel svm = new SueldoViewModel();
+            var resultSueldo = await svm.ObtenerTodosAsync(dato, choferCamion);
 
-            //if (resultSueldo.IsSuccess)
-            //{
-            //    foreach (var flete in resultSueldo.Value)
-            //    {
-            //        cheq.Rows.Add(flete.fecha_salida, flete.origen, flete.destino, flete.remito, flete.carga, flete.km, flete.kg, flete.tarifa, flete.factura, flete.comision, flete.cliente, flete.nombre_chofer, flete.total, flete.total_comision, flete.idViajeFlete);
-            //    }
-            //}
+            if (resultSueldo.IsSuccess)
+            {
+                foreach (var sueldo in resultSueldo.Value)
+                {
+                    cheq.Rows.Add(sueldo.FechaDePago + " " + sueldo.FechaDePago, choferCamion, sueldo.Monto_Pagado);
+                }
+            }
 
-            //else
-            //{
-            //    MessageBox.Show(resultSueldo.Error);
-            //    MessageBox.Show("Error al cargar el flete");
-            //}
+            else
+            {
+                MessageBox.Show(resultSueldo.Error);
+                MessageBox.Show("Error al cargar el flete");
+            }
         }
     }
 
@@ -582,7 +582,7 @@ public class FormRegistro : Home
 
             if (resultado.IsSuccess)
             {
-                ShowInfoTable(filtro, dato);
+                ShowInfoTable(filtro, dato, " ");
             }
             else
             {
@@ -603,7 +603,7 @@ public class FormRegistro : Home
 
             if (resultado.IsSuccess)
             {
-                ShowInfoTable(filtro, dato);
+                ShowInfoTable(filtro, dato, " ");
             }
             else
             {
@@ -624,7 +624,7 @@ public class FormRegistro : Home
             
             if (resultado.IsSuccess)
             {
-                ShowInfoTable(filtro, dato);
+                ShowInfoTable(filtro, dato, " ");
             }
             else
             {
@@ -641,22 +641,22 @@ public class FormRegistro : Home
         else if (filtro == "sueldo")
         {
             SueldoViewModel svm = new SueldoViewModel();
-            var resultado = await svm.CrearAsync(1, DateOnly.Parse(datos[0]), DateOnly.Parse(datos[1]));
-            if (resultado.IsSuccess)
-            {
-                ShowInfoTable(filtro, dato);
-            }
-            else
-            {
-                if (this.InvokeRequired)
-                {
-                    this.Invoke(new Action(() => CartelAviso(resultado.Error)));
-                }
-                else
-                {
-                    CartelAviso(resultado.Error);
-                }
-            }
+            //var resultado = await svm.CrearAsync();
+            //if (resultado.IsSuccess)
+            //{
+            //    ShowInfoTable(filtro, dato, " ");
+            //}
+            //else
+            //{
+            //    if (this.InvokeRequired)
+            //    {
+            //        this.Invoke(new Action(() => CartelAviso(resultado.Error)));
+            //    }
+            //    else
+            //    {
+            //        CartelAviso(resultado.Error);
+            //    }
+            //}
         }
 
         foreach (Control control in formFLTextBox.Controls)
@@ -698,7 +698,7 @@ public class FormRegistro : Home
 
                     if (result.IsSuccess)
                     {
-                        ShowInfoTable(filtro, dato);
+                        ShowInfoTable(filtro, dato, " ");
                     }
                     else
                     {
@@ -719,7 +719,7 @@ public class FormRegistro : Home
 
                     if (result.IsSuccess)
                     {
-                        ShowInfoTable(filtro, dato);
+                        ShowInfoTable(filtro, dato, " ");
                     }
                     else
                     {
@@ -740,7 +740,7 @@ public class FormRegistro : Home
 
                     if (result.IsSuccess)
                     {
-                        ShowInfoTable(filtro, dato);
+                        ShowInfoTable(filtro, dato, " ");
                     }
                     else
                     {
@@ -762,7 +762,7 @@ public class FormRegistro : Home
 
                     if (result.IsSuccess)
                     {
-                        ShowInfoTable(filtro, dato);
+                        ShowInfoTable(filtro, dato, " ");
                     }
                     else
                     {
@@ -783,7 +783,7 @@ public class FormRegistro : Home
 
                     if (result.IsSuccess)
                     {
-                        ShowInfoTable(filtro, dato);
+                        ShowInfoTable(filtro, dato, " ");
                     }
                     else
                     {
@@ -834,7 +834,7 @@ public class FormRegistro : Home
 
                     if (result.IsSuccess)
                     {
-                        ShowInfoTable(filtro, dato);
+                        ShowInfoTable(filtro, dato, " ");
                     }
                     else
                     {
@@ -868,7 +868,7 @@ public class FormRegistro : Home
                             CartelAviso("El registro ha sido modificado");
                         }
 
-                        ShowInfoTable(filtro, dato);
+                        ShowInfoTable(filtro, dato, " ");
                     }
                     else
                     {
@@ -904,7 +904,7 @@ public class FormRegistro : Home
 
                     if (result.IsSuccess)
                     {
-                        ShowInfoTable(filtro, dato);
+                        ShowInfoTable(filtro, dato, " ");
                     }
                     else
                     {
