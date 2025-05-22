@@ -93,15 +93,16 @@ namespace Proyecto_camiones.Services
 
         public async Task<float> ObtenerSueldoCalculado(int id_chofer, DateOnly calcularDesde, DateOnly calcularHasta)
         {
-
+            Console.WriteLine("id chofer: " + id_chofer);
             List<Pago> pagos = await _pagoRepository.ObtenerPagosAsync(id_chofer, calcularDesde, calcularHasta);
+            Console.WriteLine("lenght de pagos a pagar: "+pagos.Count);
 
             float totalPagar = 0;
             foreach (var pago in pagos)
             {
-                Console.WriteLine(pago.Monto_Pagado);
                 totalPagar += pago.Monto_Pagado;
             }
+            Console.WriteLine("total a pagar: " + totalPagar);
             return totalPagar;
 
 

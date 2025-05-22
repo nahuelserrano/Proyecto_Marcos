@@ -35,11 +35,11 @@ namespace Proyecto_camiones
         static async Task Main(string[] args)
 
         {
-
-            // Llamada a Windows Forms para inicializar la aplicación
+            //// Llamada a Windows Forms para inicializar la aplicación
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
+
 
             //PagoViewModel pw = new PagoViewModel();
 
@@ -55,37 +55,52 @@ namespace Proyecto_camiones
             SueldoViewModel sueldoViewModel = new SueldoViewModel();
 
             //FUNCIONA OBTENER TODOS LOS SALDOS DE UN CAMION/CHOFER
-            var result = await sueldoViewModel.ObtenerTodosAsync("HIJ429", null);
-            if (result.IsSuccess)
-            {
-                Console.WriteLine("hola fue exitoso?");
-                List<SueldoDTO> sueldos = result.Value;
-                foreach (SueldoDTO sueldo in sueldos)
-                {
-                    Console.WriteLine("hola foreach");
-                    Console.WriteLine(sueldo.ToString());
-                }
-            }
-            else
-            {
-                Console.WriteLine("fuck no fue exitoso");
-                Console.WriteLine($"Error: {result.Error}");
-            }
-            //await sueldoViewModel.marcarPago(6);
-            //await sueldoViewModel.CrearAsync(1, DateOnly.MinValue, DateOnly.MaxValue);
-            //Console.WriteLine("sueldo calculado : " + suel);
+            //var result = await sueldoViewModel.ObtenerTodosAsync("HIJ429", null);
+            //if (result.IsSuccess)
+            //{
+            //    Console.WriteLine("hola fue exitoso?");
+            //    List<SueldoDTO> sueldos = result.Value;
+            //    foreach (SueldoDTO sueldo in sueldos)
+            //    {
+            //        Console.WriteLine("hola foreach");
+            //        Console.WriteLine(sueldo.ToString());
+            //    }
+            //}
+            //else
+            //{
+            //    Console.WriteLine("fuck no fue exitoso");
+            //    Console.WriteLine($"Error: {result.Error}");
+            //}
 
+            //MARCAR COMO PAGADO UN SUELDO
+            //Result<SueldoDTO?> sueldoModificado = await sueldoViewModel.marcarPago(9, null);
+            //if (sueldoModificado.IsSuccess)
+            //{
+            //    Console.WriteLine(sueldoModificado.Value.ToString());
+            //}
+            //else
+            //{
+            //    Console.WriteLine(sueldoModificado.Error);
+            //}
 
-            //SueldoViewModel sw = new SueldoViewModel();
-            //sw.InsertarSueldo(1,DateOnly.Parse("2025/7/3"), DateOnly.Parse("2025/7/3"), DateOnly.MaxValue).Wait();
+            //Result<int> sueldo = await sueldoViewModel.CrearAsync("nuevo chofer", DateOnly.MinValue, DateOnly.MaxValue, new DateOnly(2025, 5, 11), null) ;
+            //if (sueldo.IsSuccess)
+            //{
+            //    Console.WriteLine(sueldo.Value);
+            //}
+            //else
+            //{
+            //    Console.WriteLine(sueldo.Error);
+            //}
+                //Console.WriteLine("sueldo calculado : " + suel);
 
-            //PRUEBA PAGOS
-            //PagoRepository pr = new PagoRepository(General.obtenerInstancia());
-            //PagosService pagosService = new PagosService(pr);
+                //PRUEBA PAGOS
+                //PagoRepository pr = new PagoRepository(General.obtenerInstancia());
+                //PagosService pagosService = new PagosService(pr);
 
-            //pagosService.Crear(1, DateOnly.MinValue, DateOnly.MaxValue, DateOnly.MaxValue);
+                //pagosService.Crear(1, DateOnly.MinValue, DateOnly.MaxValue, DateOnly.MaxValue);
 
-            CamionViewModel cvm = new CamionViewModel();
+                CamionViewModel cvm = new CamionViewModel();
             ////PRUEBA INSERCION
             //Result<int> id = cvm.InsertarAsync("NCS234", "Mili").Result;
             //if (id.IsSuccess)
@@ -413,7 +428,7 @@ namespace Proyecto_camiones
             //    Console.WriteLine(viajes.Error);
             //}
 
-            await ChequeTest.EjecutarTodasLasPruebas();
+            //await ChequeTest.EjecutarTodasLasPruebas();
 
             //ELIMINAR CLIENTE
 
