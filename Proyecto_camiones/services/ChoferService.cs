@@ -120,23 +120,16 @@ namespace Proyecto_camiones.Presentacion.Services
             }
         }
 
-        public async Task<Result<Chofer>> ObtenerPorNombreAsync(string nombre)
+        public async Task<Result<Chofer?>> ObtenerPorNombreAsync(string nombre)
         {
             try
             {
-                ValidadorChofer validador = new ValidadorChofer(nombre);
-
-                Result<bool> resultadoValidarCompleto = validador.ValidarCompleto();
-
-                if (!resultadoValidarCompleto.IsSuccess)
-                    return Result<Chofer>.Failure(resultadoValidarCompleto.Error);
-
-                var chofer = await _choferRepository.ObtenerPorNombreAsync(nombre);
+                Chofer? chofer = await _choferRepository.ObtenerPorNombreAsync(nombre);
 
                 if (chofer == null)
-                    return Result<Chofer>.Failure(MensajeError.EntidadNoEncontrada(nameof(Chofer), 0));
+                    return Result<Chofer?>.Failure("no se encontró a un chofer con ese nombre");
 
-                return Result<Chofer>.Success(chofer);
+                return Result<Chofer?>.Success(chofer);
             }
             catch (Exception e)
             {

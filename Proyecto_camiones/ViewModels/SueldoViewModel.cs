@@ -32,28 +32,13 @@ namespace Proyecto_camiones.ViewModels
             return await this.sueldoService.ProbarConexionAsync();
         }
 
-        public async Task<Result<int>> CrearAsync(int Id_Chofer, DateOnly pagoDesde, DateOnly pagoHasta,int idCamion)
+        public async Task<Result<int>> CrearAsync(string nombre_chofer, DateOnly pagoDesde, DateOnly pagoHasta, DateOnly? fechaPago, string? patente_camion)
         {
             if (await this.testearConexion())
             {
-            
-                var resultado = await this.sueldoService.CrearAsync(Id_Chofer, pagoDesde, pagoHasta,idCamion);
+                Console.WriteLine("hola view model hay conexion");
+                return await this.sueldoService.CrearAsync(nombre_chofer, pagoDesde, pagoHasta,fechaPago, patente_camion);
 
-               
-                // Ahora puedes acceder al resultado
-                if (resultado.IsSuccess)
-                {
-                    // La operación fue exitosa
-                    int idSueldo = resultado.Value;
-                    Console.WriteLine($"sueldo creado con ID: {idSueldo}");
-                    return Result<int>.Success(resultado.Value);
-                }
-                else
-                {
-                    // Si la operación falló, maneja el error
-                    Console.WriteLine($"Error al crear el sueldo: "+resultado);
-                    return Result<int>.Failure(nameof(resultado));
-                }
             }
             return Result<int>.Failure("La conexión no pude establecerse");
         }
