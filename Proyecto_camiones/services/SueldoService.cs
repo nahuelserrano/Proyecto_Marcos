@@ -84,17 +84,26 @@ namespace Proyecto_camiones.Presentacion.Services
 
         internal async Task<Result<bool>> EliminarAsync(int sueldoId)
         {
-            if (sueldoId <= 0) return Result<bool>.Failure(MensajeError.IdInvalido(sueldoId));
+            if (sueldoId < 0) return Result<bool>.Failure(MensajeError.IdInvalido(sueldoId));
            
-            SueldoDTO sueldo = await _sueldoRepository.ObtenerPorId(sueldoId);
+            SueldoDTO? sueldo = await _sueldoRepository.ObtenerPorId(sueldoId);
 
             if (sueldo == null) return Result<bool>.Failure(MensajeError.objetoNulo(nameof(sueldoId)));
+            if(sueldo.Id_Chofer == null)
+            {
+                return Result<bool>.Failure("No se pudo eliminar el pago ya que no se encontró el id del pago/chofer");
+            }
+            int id_chofer = (int)sueldo.Id_Chofer;
 
-            await _pagoService.ModificarEstado((int)sueldo.Id_Chofer, sueldo.PagadoDesde, sueldo.PagadoHasta,null,false);
+            await _pagoService.ModificarEstado(id_chofer, sueldo.PagadoDesde, sueldo.PagadoHasta,null,false);
 
-            await _sueldoRepository.EliminarAsync(sueldoId);
+            bool response = await _sueldoRepository.EliminarAsync(sueldoId);
+            if (response)
+            {
+                return Result<bool>.Success(response);
+            }
+            return Result<bool>.Failure("Hubo un problema al eliminar el sueldo");
 
-            return Result<bool>.Success(true);
         }
 
         public async Task<Result<int>> CrearAsync(string nombre_chofer, DateOnly pagoDesde, DateOnly pagoHasta, DateOnly? fecha_pagado, string? patenteCamion)

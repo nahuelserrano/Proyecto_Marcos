@@ -100,13 +100,24 @@ namespace Proyecto_camiones
             //{
             //    Console.WriteLine(sueldo.Error);
             //}
-                //Console.WriteLine("sueldo calculado : " + suel);
+            //Console.WriteLine("sueldo calculado : " + suel);
 
-                //PRUEBA PAGOS
-                //PagoRepository pr = new PagoRepository(General.obtenerInstancia());
-                //PagosService pagosService = new PagosService(pr);
+            //PRUEBA PAGOS
+            //PagoRepository pr = new PagoRepository(General.obtenerInstancia());
+            //PagosService pagosService = new PagosService(pr);
 
-                //pagosService.Crear(1, DateOnly.MinValue, DateOnly.MaxValue, DateOnly.MaxValue);
+            //pagosService.Crear(1, DateOnly.MinValue, DateOnly.MaxValue, DateOnly.MaxValue);
+
+            //ELIMINAR SUELDO
+            //var eliminado = await sueldoViewModel.EliminarAsync(5);
+            //if (eliminado.IsSuccess)
+            //{
+            //    Console.WriteLine(eliminado.Value);
+            //}
+            //else
+            //{
+            //    Console.WriteLine(eliminado.Error);
+            //}
 
                 CamionViewModel cvm = new CamionViewModel();
             ////PRUEBA INSERCION
