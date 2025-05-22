@@ -38,9 +38,9 @@ namespace Proyecto_camiones
 
 
             //// Llamada a Windows Forms para inicializar la aplicación
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
 
             PagoViewModel pw = new PagoViewModel();
 
@@ -91,15 +91,15 @@ namespace Proyecto_camiones
             //    Console.WriteLine(sueldoModificado.Error);
             //}
 
-            Result<int> sueldo = await sueldoViewModel.CrearAsync("nuevo chofer", DateOnly.MinValue, DateOnly.MaxValue, new DateOnly(2025, 5, 11), null) ;
-            if (sueldo.IsSuccess)
-            {
-                Console.WriteLine(sueldo.Value);
-            }
-            else
-            {
-                Console.WriteLine(sueldo.Error);
-            }
+            //Result<int> sueldo = await sueldoViewModel.CrearAsync("nuevo chofer", DateOnly.MinValue, DateOnly.MaxValue, new DateOnly(2025, 5, 11), null) ;
+            //if (sueldo.IsSuccess)
+            //{
+            //    Console.WriteLine(sueldo.Value);
+            //}
+            //else
+            //{
+            //    Console.WriteLine(sueldo.Error);
+            //}
                 //Console.WriteLine("sueldo calculado : " + suel);
 
                 //PRUEBA PAGOS
