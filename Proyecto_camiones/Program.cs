@@ -55,22 +55,24 @@ namespace Proyecto_camiones
             SueldoViewModel sueldoViewModel = new SueldoViewModel();
 
             //FUNCIONA OBTENER TODOS LOS SALDOS DE UN CAMION/CHOFER
-            //var result = await sueldoViewModel.ObtenerTodosAsync("HIJ429", null);
-            //if (result.IsSuccess)
-            //{
-            //    Console.WriteLine("hola fue exitoso?");
-            //    List<SueldoDTO> sueldos = result.Value;
-            //    foreach (SueldoDTO sueldo in sueldos)
-            //    {
-            //        Console.WriteLine("hola foreach");
-            //        Console.WriteLine(sueldo.ToString());
-            //    }
-            //}
-            //else
-            //{
-            //    Console.WriteLine("fuck no fue exitoso");
-            //    Console.WriteLine($"Error: {result.Error}");
-            //}
+            var result = await sueldoViewModel.ObtenerTodosAsync("HIJ429", null);
+            if (result.IsSuccess)
+            {
+                Console.WriteLine("hola fue exitoso?");
+                List<SueldoDTO> sueldos = result.Value;
+                foreach (SueldoDTO sueldo in sueldos)
+                {
+                    Console.WriteLine("hola foreach");
+                    Console.WriteLine(sueldo.ToString());
+                }
+            }
+            else
+            {
+                Console.WriteLine("fuck no fue exitoso");
+                Console.WriteLine($"Error: {result.Error}");
+            }
+            //await sueldoViewModel.marcarPago(6);
+            //Console.WriteLine("sueldo calculado : " + suel);
 
             //MARCAR COMO PAGADO UN SUELDO
             //Result<SueldoDTO?> sueldoModificado = await sueldoViewModel.marcarPago(9, null);
@@ -83,16 +85,8 @@ namespace Proyecto_camiones
             //    Console.WriteLine(sueldoModificado.Error);
             //}
 
-            //Result<int> sueldo = await sueldoViewModel.CrearAsync("nuevo chofer", DateOnly.MinValue, DateOnly.MaxValue, new DateOnly(2025, 5, 11), null) ;
-            //if (sueldo.IsSuccess)
-            //{
-            //    Console.WriteLine(sueldo.Value);
-            //}
-            //else
-            //{
-            //    Console.WriteLine(sueldo.Error);
-            //}
-                //Console.WriteLine("sueldo calculado : " + suel);
+            //SueldoViewModel sw = new SueldoViewModel();
+            //sw.InsertarSueldo(1,DateOnly.Parse("2025/7/3"), DateOnly.Parse("2025/7/3"), DateOnly.MaxValue).Wait();
 
                 //PRUEBA PAGOS
                 //PagoRepository pr = new PagoRepository(General.obtenerInstancia());
@@ -392,6 +386,61 @@ namespace Proyecto_camiones
             //await ViajeTest.ProbarObtenerViajesPorCliente(3);
             //await ViajeTest.ProbarObtenerViajesPorChofer(2);
             //await ViajeTest.ProbarEliminarViaje(10);
+
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    await ViajeTest.ProbarCreacionExitosa();
+            //}
+
+            int resultado1 = await ViajeTest.ProbarInsertarViaje(
+                fechaInicio: DateOnly.FromDateTime(DateTime.Today),
+                lugarPartida: "Córdoba",
+                destino: "Rosario",
+                remito: 1234,
+                kg: 12.5f,
+                carga: "Electrodomésticos",
+                cliente: "COOPERATIVA",
+                camion: "NCS234",
+                km: 400.0f,
+                tarifa: 18.0f,
+                nombreChofer: "Juan Pérez",
+                porcentajeChofer: 18.0f
+            );
+
+            //int resultado2 = await ViajeTest.ProbarInsertarViaje(
+            //    fechaInicio: DateOnly.FromDateTime(DateTime.Today.AddDays(-1)),
+            //    lugarPartida: "Mendoza",
+            //    destino: "San Juan",
+            //    remito: 1235,
+            //    kg: 980.0f,
+            //    carga: "Vinos",
+            //    cliente: "COOPERATIVA",
+            //    camion: "NCS234",
+            //    km: 160.0f,
+            //    tarifa: 1200.0f,
+            //    nombreChofer: "María López",
+            //    porcentajeChofer: 15.0f
+            //);
+
+            //int resultado3 = await ViajeTest.ProbarInsertarViaje(
+            //    fechaInicio: DateOnly.FromDateTime(DateTime.Today.AddDays(-2)),
+            //    lugarPartida: "Salta",
+            //    destino: "Tucumán",
+            //    remito: 1236,
+            //    kg: 1500.0f,
+            //    carga: "Granos",
+            //    cliente: "COOPERATIVA",
+            //    camion: "NCS234",
+            //    km: 300.0f,
+            //    tarifa: 2000.0f,
+            //    nombreChofer: "Carlos Gómez",
+            //    porcentajeChofer: 10.0f
+            //);
+
+            //for (int i = 0; i < 25; i++)
+            //{
+            //    await ViajeTest.ProbarEliminarViaje(i);
+            //}
 
             //}
             //catch (Exception ex)

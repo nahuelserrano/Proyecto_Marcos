@@ -22,8 +22,8 @@ namespace Proyecto_camiones.DTOs
         public float PorcentajeChofer { get; set; } // Porcentaje por defecto del chofer
 
         public string PatenteCamion { get; set; }
-        public float Total => Tarifa * Kg;
-        public float GananciaChofer => Total * PorcentajeChofer;
+        public float Total => Tarifa * Kg * 1000;
+        public float GananciaChofer => Total * PorcentajeChofer / 100;
 
         public int Camion { get; internal set; }
 
