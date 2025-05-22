@@ -81,16 +81,16 @@ namespace Proyecto_camiones.Front
         {
             cheq.Rows.Clear();
             ChequeViewModel cvm = new ChequeViewModel();
-            //var result = await cvm.ObtenerTodosAsync();
+            var result = await cvm.ObtenerTodosAsync();
 
-            //if (result.IsSuccess)
-            //{
-            //    foreach (var cheque in result.Value)
-            //    {
-            //        cheq.Rows.Add(cheque.FechaIngresoCheque, cheque.Banco, cheque.NumeroCheque, cheque.Monto, cheque.Nombre, cheque.NumeroPersonalizado, null, cheque.FechaCobro,  "x",cheque.Id);
-            //    }
-            //}
-            
+            if (result.IsSuccess)
+            {
+                foreach (var cheque in result.Value)
+                {
+                    cheq.Rows.Add(cheque.FechaIngresoCheque, cheque.Banco, cheque.NumeroCheque, cheque.Monto, cheque.Nombre, cheque.NumeroPersonalizado, null, cheque.FechaCobro, null, cheque.Id);
+                }
+            }
+
         }
 
         private void ConfigurarDataGridView()
@@ -531,19 +531,19 @@ namespace Proyecto_camiones.Front
                 }
             }
             ChequeViewModel cvm = new ChequeViewModel();
-            //var result = await cvm.CrearAsync(DateOnly.Parse(datos[0]), int.Parse(datos[2]), float.Parse(datos[3]), datos[1], DateOnly.Parse(datos[7]), datos[4], int.Parse(datos[5]), null);
+            var result = await cvm.CrearAsync(DateOnly.Parse(datos[0]), int.Parse(datos[2]), float.Parse(datos[3]), datos[1], DateOnly.Parse(datos[7]), datos[4], int.Parse(datos[5]), null);
 
-            //if (result.IsSuccess)
-            //{
-            //    MessageBox.Show("agregado correctamente");
-            //    ShowInfoTable();
-            //}
+            if (result.IsSuccess)
+            {
+                MessageBox.Show("agregado correctamente");
+                ShowInfoTable();
+            }
 
             //Verificar que los datos no estén vacíos
-            //if (datos.All(dato => !string.IsNullOrWhiteSpace(dato)))
-            //{
+            if (datos.All(dato => !string.IsNullOrWhiteSpace(dato)))
+            {
 
-            eliminar.Text = "X";
+                eliminar.Text = "X";
             eliminar.UseColumnTextForButtonValue = true;
 
             datos.Add(eliminar.Text);
@@ -572,7 +572,7 @@ namespace Proyecto_camiones.Front
                         }
                     }
                 }
-            //}
+            }
         }
 
         private async Task eliminarFila(object sender, DataGridViewCellEventArgs e)
@@ -586,19 +586,18 @@ namespace Proyecto_camiones.Front
                 {
                     string id = cheq.Rows[e.RowIndex].Cells["id"].Value.ToString();
                     ChequeViewModel cvm = new ChequeViewModel();
-                    //var result = await cvm.EliminarAsync(int.Parse(id));
+                    var result = await cvm.EliminarAsync(int.Parse(id));
 
-                    //if (result.IsSuccess)
-                    //{
-                    //    MessageBox.Show("eliminado");
-                    //    ShowInfoTable();
-                    //}
-                    //else
-                    //{
-                    //    MessageBox.Show(result.Error);
-                    //}
+                    if (result.IsSuccess)
+                    {
+                        MessageBox.Show("eliminado");
+                        ShowInfoTable();
+                    }
+                    else
+                    {
+                        MessageBox.Show(result.Error);
+                    }
                 }
-
             }
         }
 
@@ -623,16 +622,16 @@ namespace Proyecto_camiones.Front
                     string entrego = cheq.Rows[e.RowIndex].Cells["nombre"].Value.ToString();
 
                     ChequeViewModel cvm = new ChequeViewModel();
-                    //var result = await cvm.ActualizarAsync(int.Parse(id), DateOnly.Parse(fechaRecibido), int.Parse(nroCheque), float.Parse(monto), banco, DateOnly.Parse(fechaRetiro), entrego, int.Parse(nroPersonal), null);
+                    var result = await cvm.ActualizarAsync(int.Parse(id), DateOnly.Parse(fechaRecibido), int.Parse(nroCheque), float.Parse(monto), banco, DateOnly.Parse(fechaRetiro), entrego, int.Parse(nroPersonal), null);
 
-                    //if (result.IsSuccess)
-                    //{
-                    //    ShowInfoTable();
-                    //}
-                    //else
-                    //{
-                    //    MessageBox.Show(result.Error);
-                    //}
+                    if (result.IsSuccess)
+                    {
+                        ShowInfoTable();
+                    }
+                    else
+                    {
+                        MessageBox.Show(result.Error);
+                    }
                 }
             }
         }

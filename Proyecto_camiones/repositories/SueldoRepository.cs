@@ -80,7 +80,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
         }
 
-        public async Task<SueldoDTO?> PagarSueldo(int id, DateOnly? fecha_pagado)
+        public async Task<SueldoDTO?> PagarSueldo(int id)
         {
             try
             {
@@ -88,14 +88,14 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 if (sueldo == null)
                     return null;
                 sueldo.Pagado = true;
-                if (fecha_pagado != null)
-                {
-                    sueldo.FechaPago = fecha_pagado;
-                }
-                else
-                {
-                    sueldo.FechaPago = DateOnly.FromDateTime(DateTime.Now);
-                }
+                //if (fecha_pagado != null)
+                //{
+                //    sueldo.FechaPago = fecha_pagado;
+                //}
+                //else
+                //{
+                //    sueldo.FechaPago = DateOnly.FromDateTime(DateTime.Now);
+                //}
                     int registrosAfectados = await _context.SaveChangesAsync();
 
                 if (registrosAfectados > 0)

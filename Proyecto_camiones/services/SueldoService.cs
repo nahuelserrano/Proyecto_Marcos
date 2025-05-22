@@ -176,7 +176,7 @@ namespace Proyecto_camiones.Presentacion.Services
             return sueldo;
         }
 
-        public async Task<Result<SueldoDTO>> marcarPagado(int id, DateOnly? fecha_pagado) {
+        public async Task<Result<SueldoDTO>> marcarPagado(int id) {
             if (id < 0) 
                 return Result<SueldoDTO>.Failure("id del sueldo deseado invalido");
 
@@ -187,7 +187,7 @@ namespace Proyecto_camiones.Presentacion.Services
                 return Result<SueldoDTO>.Failure("el sueldo que se desea marcar como pago ya esta pagado");
             }
             
-            SueldoDTO? success = await this._sueldoRepository.PagarSueldo(id, fecha_pagado);
+            SueldoDTO? success = await this._sueldoRepository.PagarSueldo(id);
             if (success != null)
             {
                 Console.WriteLine("se pagó el sueldo correctamente");
