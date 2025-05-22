@@ -136,23 +136,24 @@ namespace Proyecto_camiones.Presentacion.Services
             return sueldo;
         }
 
-        public async Task<Result<bool>> marcarPagado(int id) {
+        public async Task<Result<SueldoDTO>> marcarPagado(int id, DateOnly? fecha_pagado) {
             if (id < 0) 
-                return Result<bool>.Failure("id del sueldo deseado invalido");
+                return Result<SueldoDTO>.Failure("id del sueldo deseado invalido");
 
-            SueldoDTO sueldo = await _sueldoRepository.ObtenerPorId(id);
+            SueldoDTO? sueldo = await _sueldoRepository.ObtenerPorId(id);
             if (sueldo == null)
-                return Result<bool>.Failure("No se encontró el sueldo con el ID proporcionado.");
+                return Result<SueldoDTO>.Failure("No se encontró el sueldo con el ID proporcionado.");
             if (sueldo.Pagado) {
-                return Result<bool>.Failure("el sueldo que se dea marcar como pago ya esta pagado");
+                return Result<SueldoDTO>.Failure("el sueldo que se desea marcar como pago ya esta pagado");
             }
             
-            bool success = await this._sueldoRepository.PagarSueldo(id);
-            if (success)
+            SueldoDTO? success = await this._sueldoRepository.PagarSueldo(id, fecha_pagado);
+            if (success != null)
             {
-                Console.WriteLine("se cambio a pagado");
+                Console.WriteLine("se pagó el sueldo correctamente");
+                return Result<SueldoDTO>.Success(success);
             }
-            return Result<bool>.Success(success);
+            return Result<SueldoDTO>.Failure("Hubo un problema al actualizar el sueldo");
         }
         public async Task<Result<SueldoDTO>> ActualizarAsync(int id, float? monto = null, int? Id_Chofer = null, DateOnly? pagadoDesde = null, DateOnly? pagadoHasta = null, DateOnly? FechaPago = null)
         {

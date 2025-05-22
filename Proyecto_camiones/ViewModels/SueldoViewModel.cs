@@ -58,13 +58,13 @@ namespace Proyecto_camiones.ViewModels
             return Result<int>.Failure("La conexión no pude establecerse");
         }
 
-        public async Task<Result<bool>> marcarPago(int idSueldo)
+        public async Task<Result<SueldoDTO>> marcarPago(int idSueldo, DateOnly? fecha_pagado)
         {
             if (await this.testearConexion())
             {
-                return await this.sueldoService.marcarPagado(idSueldo);
+                return await this.sueldoService.marcarPagado(idSueldo, fecha_pagado);
             }
-            return Result<bool>.Failure("No se pudo establecer la conexión");
+            return Result<SueldoDTO>.Failure("No se pudo establecer la conexión");
         }
         public async Task<Result<List<SueldoDTO>>> ObtenerTodosAsync(string? patente,string? nombreChofer) {
             if (await this.testearConexion())
