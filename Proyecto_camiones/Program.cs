@@ -55,22 +55,22 @@ namespace Proyecto_camiones
             SueldoViewModel sueldoViewModel = new SueldoViewModel();
 
             //FUNCIONA OBTENER TODOS LOS SALDOS DE UN CAMION/CHOFER
-            var result = await sueldoViewModel.ObtenerTodosAsync("HIJ429", null);
-            if (result.IsSuccess)
-            {
-                Console.WriteLine("hola fue exitoso?");
-                List<SueldoDTO> sueldos = result.Value;
-                foreach (SueldoDTO sueldo in sueldos)
-                {
-                    Console.WriteLine("hola foreach");
-                    Console.WriteLine(sueldo.ToString());
-                }
-            }
-            else
-            {
-                Console.WriteLine("fuck no fue exitoso");
-                Console.WriteLine($"Error: {result.Error}");
-            }
+            //var result = await sueldoViewModel.ObtenerTodosAsync("HIJ429", null);
+            //if (result.IsSuccess)
+            //{
+            //    Console.WriteLine("hola fue exitoso?");
+            //    List<SueldoDTO> sueldos = result.Value;
+            //    foreach (SueldoDTO sueldo in sueldos)
+            //    {
+            //        Console.WriteLine("hola foreach");
+            //        Console.WriteLine(sueldo.ToString());
+            //    }
+            //}
+            //else
+            //{
+            //    Console.WriteLine("fuck no fue exitoso");
+            //    Console.WriteLine($"Error: {result.Error}");
+            //}
             //await sueldoViewModel.marcarPago(6);
             //Console.WriteLine("sueldo calculado : " + suel);
 
@@ -85,14 +85,33 @@ namespace Proyecto_camiones
             //    Console.WriteLine(sueldoModificado.Error);
             //}
 
-            //SueldoViewModel sw = new SueldoViewModel();
-            //sw.InsertarSueldo(1,DateOnly.Parse("2025/7/3"), DateOnly.Parse("2025/7/3"), DateOnly.MaxValue).Wait();
+            //Result<int> sueldo = await sueldoViewModel.CrearAsync("nuevo chofer", DateOnly.MinValue, DateOnly.MaxValue, new DateOnly(2025, 5, 11), null) ;
+            //if (sueldo.IsSuccess)
+            //{
+            //    Console.WriteLine(sueldo.Value);
+            //}
+            //else
+            //{
+            //    Console.WriteLine(sueldo.Error);
+            //}
+            //Console.WriteLine("sueldo calculado : " + suel);
 
-                //PRUEBA PAGOS
-                //PagoRepository pr = new PagoRepository(General.obtenerInstancia());
-                //PagosService pagosService = new PagosService(pr);
+            //PRUEBA PAGOS
+            //PagoRepository pr = new PagoRepository(General.obtenerInstancia());
+            //PagosService pagosService = new PagosService(pr);
 
-                //pagosService.Crear(1, DateOnly.MinValue, DateOnly.MaxValue, DateOnly.MaxValue);
+            //pagosService.Crear(1, DateOnly.MinValue, DateOnly.MaxValue, DateOnly.MaxValue);
+
+            //ELIMINAR SUELDO
+            //var eliminado = await sueldoViewModel.EliminarAsync(5);
+            //if (eliminado.IsSuccess)
+            //{
+            //    Console.WriteLine(eliminado.Value);
+            //}
+            //else
+            //{
+            //    Console.WriteLine(eliminado.Error);
+            //}
 
                 CamionViewModel cvm = new CamionViewModel();
             ////PRUEBA INSERCION
