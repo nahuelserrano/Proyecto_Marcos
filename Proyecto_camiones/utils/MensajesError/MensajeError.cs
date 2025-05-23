@@ -14,15 +14,15 @@ namespace Proyecto_camiones.Presentacion.Utils
 
         // 3. No se pudo crear X
         public static string ErrorCreacion(string nombreEntidad) =>
-            $"No se pudo crear {nombreEntidad} en la base de datos";
+            $"No se pudo crear {nombreEntidad}";
 
         // 4. No se pudo eliminar X
         public static string ErrorEliminacion(string nombreEntidad) =>
-            $"No se pudo eliminar {nombreEntidad} de la base de datos";
+            $"No se pudo eliminar {nombreEntidad}";
 
         // 5. No se pudo actualizar X
         public static string ErrorActualizacion(string nombreEntidad) =>
-            $"No se pudo actualizar {nombreEntidad} en la base de datos";
+            $"No se pudo actualizar {nombreEntidad}";
 
         // 6. Error en la base de datos
         public static string ErrorBaseDatos(string detalleError) =>

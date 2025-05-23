@@ -1011,13 +1011,19 @@ internal class Viaje : Home
         ll.Text = mensaje;
         ll.Font = new Font("Nunito", 14, FontStyle.Regular);
         ll.ForeColor = System.Drawing.Color.FromArgb(218, 218, 28);
-        ll.AutoSize = true;
+        ll.AutoSize = false; // permite controlar el tamaño manualmente
+        ll.Width = 300; // ajustá el ancho según el diseño
+        ll.Height = 100; // ajustá la altura
+        ll.TextAlign = ContentAlignment.MiddleCenter;
+        ll.MaximumSize = new Size(300, 0); // límite de ancho, altura auto
+        ll.AutoSize = true; // activa ajuste automático de altura
+
 
         // Centrar el label dentro del panel
         ll.Resize += (s, e) =>
         {
             ll.Location = new Point(
-            (avisoPanel.Width - ll.Width) / 2, 50);
+            (avisoPanel.Width - ll.Width) / 2, 25);
         };
 
         avisoPanel.BringToFront();  // Traer al frente
@@ -1025,7 +1031,7 @@ internal class Viaje : Home
 
 
         avisoPanel.Size = new Size(300, 150);
-        avisoPanel.BackColor = System.Drawing.Color.FromArgb(48, 48, 48);
+        avisoPanel.BackColor =  System.Drawing.Color.FromArgb(32, 32, 32);
 
         avisoPanel.Controls.Add(ll);
         avisoPanel.Controls.Add(btnAceptarAviso);

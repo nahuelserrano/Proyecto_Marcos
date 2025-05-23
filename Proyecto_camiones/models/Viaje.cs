@@ -20,7 +20,7 @@ namespace Proyecto_camiones.Presentacion.Models
         public float Tarifa { get; set; }
         public string NombreChofer { get; set; }
         public float PorcentajeChofer { get; set; }
-        public float Total => Tarifa * Kg * 1000;
+        public float Total => Tarifa * Kg;
 
         // Propiedades de navegación
         public Cliente ClienteNavigation { get; set; } // La entidad Cliente relacionada
