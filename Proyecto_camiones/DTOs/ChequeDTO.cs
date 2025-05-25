@@ -12,7 +12,30 @@ namespace Proyecto_camiones.DTOs
         public DateOnly FechaCobro { get; set; }
         public string Nombre { get; set; } = string.Empty;
         public int? NumeroPersonalizado { get; set; }
+        public DateOnly? FechaVencimiento { get; set; } = null;
+        public string? EntregadoA { get; set; } = null; // Añadido para operaciones CRUD
 
+        public ChequeDTO(
+            DateOnly fechaIngreso,
+            int numeroCheque,
+            float monto,
+            string banco,
+            DateOnly fechaCobro,
+            string nombre = "",
+            int? numeroPersonalizado = null,
+            DateOnly? fechaVencimiento = null,
+            string entregadoA = null)
+        {
+            FechaIngresoCheque = fechaIngreso;
+            NumeroCheque = numeroCheque;
+            Monto = monto;
+            Banco = banco;
+            FechaCobro = fechaCobro;
+            Nombre = nombre;
+            NumeroPersonalizado = numeroPersonalizado;
+            FechaVencimiento = fechaVencimiento;
+            EntregadoA = entregadoA; // Inicializa a cadena vacía si es nulo
+        }
         public ChequeDTO(
             DateOnly fechaIngreso,
             int numeroCheque,
@@ -30,6 +53,7 @@ namespace Proyecto_camiones.DTOs
             FechaCobro = fechaCobro;
             Nombre = nombre;
             NumeroPersonalizado = numeroPersonalizado;
+            FechaVencimiento = fechaVencimiento;
         }
         public ChequeDTO(int id_Cliente, DateOnly FechaIngresoCheque, int NumeroCheque, float Monto, string Banco, DateOnly FechaCobro)
         {

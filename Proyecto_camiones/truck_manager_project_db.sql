@@ -67,16 +67,17 @@ CREATE TABLE `cheque` (
   `fecha_cobro` date NOT NULL,
   `nombre` varchar(45) NOT NULL,
   `numero_personalizado` int(11) DEFAULT NULL,
-  `fecha_vencimieto` date NOT NULL
+  `fecha_vencimieto` date NULL,
+  `entregado_a` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `cheque`
 --
 
-INSERT INTO `cheque` (`idcheque`, `fecha_ingreso`, `nro_cheque`, `monto`, `banco`, `fecha_cobro`, `nombre`, `numero_personalizado`, `fecha_vencimieto`) VALUES
-(1, '2025-05-19', 54321, 2000, 'Banco Control', '2025-06-18', '', NULL, '2025-06-18'),
-(2, '2025-05-19', 12345, 6000, 'Banco Nación', '2025-06-18', '', NULL, '2025-06-18');
+INSERT INTO `cheque` (`idcheque`, `fecha_ingreso`, `nro_cheque`, `monto`, `banco`, `fecha_cobro`, `nombre`, `numero_personalizado`, `fecha_vencimieto`, `entregado_a`) VALUES
+(1, '2025-05-19', 54321, 2000, 'Banco Control', '2025-06-18', '', NULL, '2025-06-18', NULL),
+(2, '2025-05-19', 12345, 6000, 'Banco Nación', '2025-06-18', '', NULL, '2025-06-18', NULL);
 
 -- --------------------------------------------------------
 
@@ -489,7 +490,7 @@ ALTER TABLE `cuenta_corriente`
 ALTER TABLE `pago`
   ADD CONSTRAINT `fk_pago_chofer` FOREIGN KEY (`idChofer`) REFERENCES `chofer` (`idChofer`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_pago_sueldo` FOREIGN KEY (`idSueldo`) REFERENCES `sueldo` (`idsueldo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_pago_viaje` FOREIGN KEY (`idViaje`) REFERENCES `viaje` (`idviaje`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_pago_viaje` FOREIGN KEY (`idViaje`) REFERENCES `viaje` (`idviaje`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `sueldo`

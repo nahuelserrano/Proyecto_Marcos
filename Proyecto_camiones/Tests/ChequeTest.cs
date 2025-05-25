@@ -25,8 +25,8 @@ namespace Proyecto_camiones.Tests
                 // 1.5 NUEVO: Probamos las validaciones
                 await ProbarValidacionesCheque();
 
-                // 2. Creamos un cheque para las pruebas
-                int idCheque = await ProbarInsertarCheque(2, 12345, 5000.0f, "Banco Galicia");
+                // 2. Creamos un cheque para las pruebas - AHORA CON CAMPO EntregadoA
+                int idCheque = await ProbarInsertarCheque(2, 12345, 5000.0f, "Banco Galicia", "María González");
 
                 // 3. Obtenemos el cheque por ID
                 await ProbarObtenerChequePorId(idCheque);
@@ -34,8 +34,8 @@ namespace Proyecto_camiones.Tests
                 // 4. Probamos obtener todos los cheques
                 await ProbarObtenerTodosCheques();
 
-                // 5. Probamos actualizar un cheque
-                await ProbarActualizarCheque(idCheque, banco: "Banco Nación", monto: 6000.0f);
+                // 5. Probamos actualizar un cheque - AHORA CON CAMPO EntregadoA
+                await ProbarActualizarCheque(idCheque, banco: "Banco Nación", monto: 6000.0f, entregadoA: "Carlos Rodríguez");
 
                 // 6. Eliminamos el cheque de prueba
                 await ProbarEliminarCheque(idCheque);
@@ -86,12 +86,13 @@ namespace Proyecto_camiones.Tests
             int idCliente,
             int numeroCheque,
             float monto,
-            string banco)
+            string banco,
+            string entregadoA = "Cliente Genérico") // NUEVO PARÁMETRO CON VALOR POR DEFECTO
         {
             DateOnly fechaHoy = DateOnly.FromDateTime(DateTime.Today);
-            DateOnly fechaCobro = fechaHoy.AddDays(30); // Suponiendo un cheque a 30 días
+            DateOnly fechaCobro = fechaHoy.AddDays(30);
 
-            Console.WriteLine($"\n=== INSERTANDO CHEQUE: {numeroCheque} de ${monto} ===");
+            Console.WriteLine($"\n=== INSERTANDO CHEQUE: {numeroCheque} de ${monto} entregado a {entregadoA} ===");
 
             try
             {
@@ -101,7 +102,8 @@ namespace Proyecto_camiones.Tests
                     numeroCheque: numeroCheque,
                     monto: monto,
                     banco: banco,
-                    fechaCobro: fechaCobro
+                    fechaCobro: fechaCobro,
+                    entregadoA: entregadoA // PASAR NUEVO PARÁMETRO
                 );
 
                 if (resultado.IsSuccess)
@@ -135,9 +137,10 @@ namespace Proyecto_camiones.Tests
                 if (resultado.IsSuccess)
                 {
                     var cheque = resultado.Value;
-                    //Console.WriteLine($"[ÉXITO] Cheque encontrado: ID {cheque.Id}");
+                    Console.WriteLine($"[ÉXITO] Cheque encontrado: ID {cheque.Id}");
                     Console.WriteLine($"  Número: {cheque.NumeroCheque}, Monto: ${cheque.Monto}");
                     Console.WriteLine($"  Banco: {cheque.Banco}, Fecha Cobro: {cheque.FechaCobro}");
+                    Console.WriteLine($"  Entregado a: {cheque.EntregadoA}"); // MOSTRAR NUEVO CAMPO
                 }
                 else
                 {
@@ -149,6 +152,7 @@ namespace Proyecto_camiones.Tests
                 Console.WriteLine($"[EXCEPCIÓN] Al obtener cheque por ID: {ex.Message}");
             }
         }
+
 
         /// <summary>
         /// Prueba la obtención de todos los cheques
@@ -167,7 +171,7 @@ namespace Proyecto_camiones.Tests
                     Console.WriteLine($"[ÉXITO] Cheques encontrados: {resultado.Value.Count}");
                     foreach (var cheque in resultado.Value)
                     {
-                        Console.WriteLine($"Número: {cheque.NumeroCheque}, Monto: ${cheque.Monto}, Banco: {cheque.Banco}");
+                        Console.WriteLine($"Número: {cheque.NumeroCheque}, Monto: ${cheque.Monto}, Banco: {cheque.Banco}, Entregado a: {cheque.EntregadoA}");
                     }
                 }
                 else
@@ -190,7 +194,8 @@ namespace Proyecto_camiones.Tests
             int? numeroCheque = null,
             float? monto = null,
             string banco = null,
-            DateOnly? fechaCobro = null)
+            DateOnly? fechaCobro = null,
+            string entregadoA = null) // NUEVO PARÁMETRO
         {
             Console.WriteLine($"\n=== ACTUALIZANDO CHEQUE ID: {id} ===");
 
@@ -202,7 +207,8 @@ namespace Proyecto_camiones.Tests
                     numeroCheque: numeroCheque,
                     monto: monto,
                     banco: banco,
-                    fechaCobro: fechaCobro
+                    fechaCobro: fechaCobro,
+                    entregadoA: entregadoA // PASAR NUEVO PARÁMETRO
                 );
 
                 if (resultado.IsSuccess)
@@ -211,6 +217,7 @@ namespace Proyecto_camiones.Tests
                     Console.WriteLine($"[ÉXITO] Cheque actualizado correctamente");
                     Console.WriteLine($"  Nuevos valores: Número: {cheque.NumeroCheque}, Monto: ${cheque.Monto}");
                     Console.WriteLine($"  Banco: {cheque.Banco}, Fecha Cobro: {cheque.FechaCobro}");
+                    Console.WriteLine($"  Entregado a: {cheque.EntregadoA}"); // MOSTRAR NUEVO CAMPO
                 }
                 else
                 {
@@ -365,7 +372,8 @@ namespace Proyecto_camiones.Tests
                     numeroCheque: 54321,
                     monto: 2000,
                     banco: "Banco Control",
-                    fechaCobro: fechaFutura
+                    fechaCobro: fechaFutura,
+                    entregadoA: "Juan Pérez" // AGREGAR NUEVO CAMPO EN LA PRUEBA
                 );
 
                 if (resultado7.IsSuccess)
