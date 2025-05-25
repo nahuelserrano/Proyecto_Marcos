@@ -215,6 +215,7 @@ public class FormRegistro : Home
         else if (filtro == "sueldo")
         {
             SueldoViewModel svm = new SueldoViewModel();
+            SueldoDTO sdto = new SueldoDTO();
             var resultSueldo = await svm.ObtenerTodosAsync(dato, choferCamion);
 
             if (resultSueldo.IsSuccess)
@@ -222,6 +223,11 @@ public class FormRegistro : Home
                 foreach (var sueldo in resultSueldo.Value)
                 {
                     string fechas = sueldo.PagadoDesde + " - " + sueldo.PagadoHasta;
+                    if (sdto.Pagado)
+                    {
+                        MessageBox.Show("pagado");
+                        cheq.CurrentRow.DefaultCellStyle.BackColor = Color.Green;
+                    }
                     cheq.Rows.Add(fechas, choferCamion, sueldo.Monto_Pagado, sueldo.idSueldo);
                 }
             }
@@ -931,8 +937,9 @@ public class FormRegistro : Home
     private async void MarcarComoPagado(object sender, DataGridViewCellEventArgs e)
     {
         SueldoViewModel svm = new SueldoViewModel();
-        string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
-        string fecha = cheq.Rows[e.RowIndex].Cells["Rango fechas"].Value.ToString();
+        var cellValue = cheq.Rows[e.RowIndex].Cells["Id"].Value;
+        string id = cellValue != null ? cellValue.ToString() : string.Empty;
+
         if (e.ColumnIndex == cheq.Columns["Pagado"].Index && e.RowIndex >= 0)
         {
             // Confirmar antes de modificar (opcional)
@@ -943,8 +950,10 @@ public class FormRegistro : Home
                 if (result.IsSuccess)
                 {
                     cheq.CurrentRow.DefaultCellStyle.BackColor = Color.Green;
+                } else
+                {
+                    CartelAviso(result.Error);
                 }
-
             }
         }
     }

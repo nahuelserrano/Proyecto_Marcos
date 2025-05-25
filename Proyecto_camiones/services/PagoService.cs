@@ -8,6 +8,7 @@ using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Utils;
 using Proyecto_camiones.Repositories;
 using Proyecto_camiones.DTOs;
+using System.Windows.Forms;
 
 
 namespace Proyecto_camiones.Services
@@ -100,6 +101,7 @@ namespace Proyecto_camiones.Services
             float totalPagar = 0;
             foreach (var pago in pagos)
             {
+                MessageBox.Show(pago.Monto_Pagado + " ");
                 totalPagar += pago.Monto_Pagado;
             }
             Console.WriteLine("total a pagar: " + totalPagar);
