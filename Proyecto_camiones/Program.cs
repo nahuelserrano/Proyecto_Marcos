@@ -411,20 +411,20 @@ namespace Proyecto_camiones
             //    await ViajeTest.ProbarCreacionExitosa();
             //}
 
-            int resultado1 = await ViajeTest.ProbarInsertarViaje(
-                fechaInicio: DateOnly.FromDateTime(DateTime.Today),
-                lugarPartida: "Córdoba",
-                destino: "Rosario",
-                remito: 1234,
-                kg: 12.5f,
-                carga: "Electrodomésticos",
-                cliente: "COOPERATIVA",
-                camion: "NCS234",
-                km: 400.0f,
-                tarifa: 18.0f,
-                nombreChofer: "Juan Pérez",
-                porcentajeChofer: 18.0f
-            );
+            //int resultado1 = await ViajeTest.ProbarInsertarViaje(
+            //    fechaInicio: DateOnly.FromDateTime(DateTime.Today),
+            //    lugarPartida: "Córdoba",
+            //    destino: "Rosario",
+            //    remito: 1234,
+            //    kg: 12.5f,
+            //    carga: "Electrodomésticos",
+            //    cliente: "COOPERATIVA",
+            //    camion: "NCS234",
+            //    km: 400.0f,
+            //    tarifa: 18.0f,
+            //    nombreChofer: "Juan Pérez",
+            //    porcentajeChofer: 18.0f
+            //);
 
             //int resultado2 = await ViajeTest.ProbarInsertarViaje(
             //    fechaInicio: DateOnly.FromDateTime(DateTime.Today.AddDays(-1)),
@@ -496,7 +496,7 @@ namespace Proyecto_camiones
             //    Console.WriteLine(viajes.Error);
             //}
 
-            //await ChequeTest.EjecutarTodasLasPruebas();
+            await ChequeTest.EjecutarTodasLasPruebas();
 
             //ELIMINAR CLIENTE
 

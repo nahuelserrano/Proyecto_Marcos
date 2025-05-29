@@ -20,6 +20,7 @@ namespace Proyecto_camiones.Presentacion.Utils
         private readonly string _nombre;
         private readonly int? _numeroPersonalizado;
         private readonly DateOnly _fechaVencimiento;
+        private readonly string _entregadoA;
         private List<string> _errores;
 
         public ValidadorCheque(
@@ -30,7 +31,8 @@ namespace Proyecto_camiones.Presentacion.Utils
             DateOnly fechaCobro,
             string nombre = "",
             int? numeroPersonalizado = null,
-            DateOnly? fechaVencimiento = null)
+            DateOnly? fechaVencimiento = null,
+            string entregadoA = null)
         {
             _fechaIngresoCheque = fechaIngresoCheque;
             _numeroCheque = numeroCheque;
@@ -40,6 +42,7 @@ namespace Proyecto_camiones.Presentacion.Utils
             _nombre = nombre ?? string.Empty;
             _numeroPersonalizado = numeroPersonalizado;
             _fechaVencimiento = fechaVencimiento ?? fechaCobro;
+            _entregadoA = entregadoA;
             _errores = new List<string>();
         }
 

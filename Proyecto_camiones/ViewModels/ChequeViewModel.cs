@@ -32,7 +32,8 @@ namespace Proyecto_camiones.ViewModels
             DateOnly fechaCobro,
             string nombre = "",
             int? numeroPersonalizado = null,
-            DateOnly? fechaVencimiento = null)
+            DateOnly? fechaVencimiento = null,
+            string entregadoA = "") // NUEVO PARÁMETRO - Más importante que saber si existe vida extraterrestre
         {
             if (!await TestearConexionAsync())
                 return Result<int>.Failure(MensajeError.errorConexion());
@@ -45,7 +46,8 @@ namespace Proyecto_camiones.ViewModels
                 fechaCobro,
                 nombre,
                 numeroPersonalizado,
-                fechaVencimiento);
+                fechaVencimiento,
+                entregadoA); // PASAR NUEVO PARÁMETRO
         }
 
         public async Task<Result<ChequeDTO>> ObtenerPorIdAsync(int id)
@@ -89,7 +91,8 @@ namespace Proyecto_camiones.ViewModels
             DateOnly? fechaCobro = null,
             string? nombre = null,
             int? numeroPersonalizado = null,
-            DateOnly? fechaVencimiento = null)
+            DateOnly? fechaVencimiento = null,
+            string? entregadoA = null) // NUEVO PARÁMETRO
         {
             if (!await TestearConexionAsync())
                 return Result<ChequeDTO>.Failure(MensajeError.errorConexion());
@@ -103,7 +106,8 @@ namespace Proyecto_camiones.ViewModels
                 fechaCobro,
                 nombre,
                 numeroPersonalizado,
-                fechaVencimiento);
+                fechaVencimiento,
+                entregadoA); // PASAR NUEVO PARÁMETRO
         }
 
         public async Task<Result<bool>> EliminarAsync(int id)

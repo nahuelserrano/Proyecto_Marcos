@@ -52,7 +52,7 @@ namespace Proyecto_camiones.Presentacion.Services
             int idCamion = -1;
             if (patenteCamion != null)
             {
-                var camion = await this._camionService.ObtenerPorPatenteAsync(patenteCamion);
+                var camion = await this._camionService.ObtenerPorPatenteAsync(patenteCamion.ToUpper());
 
                 if (camion == null)
                     return Result<List<SueldoDTO>>.Failure("No se encontró el camión con la patente proporcionada.");
@@ -65,7 +65,7 @@ namespace Proyecto_camiones.Presentacion.Services
             if (nombreChofer != null)
             {
                 Console.WriteLine("hola if de chofer");
-                var chofer = await this._choferService.ObtenerPorNombreAsync(nombreChofer);
+                var chofer = await this._choferService.ObtenerPorNombreAsync(nombreChofer.ToUpper());
                 if (chofer == null)
                     return Result<List<SueldoDTO>>.Failure("No se encontró el chofer con el nombre proporcionado.");
                 Console.WriteLine("sobrevivimos a obtener chofer");
