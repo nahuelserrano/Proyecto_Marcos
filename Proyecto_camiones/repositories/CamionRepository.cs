@@ -12,7 +12,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
 {
     public class CamionRepository
     {
-        private readonly ApplicationDbContext _context;
+        private ApplicationDbContext _context;
 
         public CamionRepository()
         {
@@ -24,6 +24,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             //MessageBox.Show("testeando conexión");
             try
             {
+                this._context = General.obtenerInstancia();
                 // Intentar comprobar si la conexión a la base de datos es exitosa
                 bool puedeConectar = await _context.Database.CanConnectAsync();
                 if (puedeConectar)
@@ -50,7 +51,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-
+                this._context = General.obtenerInstancia();
                 if (!await _context.Database.CanConnectAsync())
                 {
                     Console.WriteLine("No se puede conectar a la base de datos");
@@ -112,6 +113,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 var camion = await _context.Camiones.FindAsync(id);
                 if (camion == null) return false;
 
@@ -164,6 +166,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 var camion = await _context.Camiones.FindAsync(id);
                 Console.WriteLine("se encontró el camión");
 

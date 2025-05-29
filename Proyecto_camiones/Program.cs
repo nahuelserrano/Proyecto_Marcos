@@ -113,9 +113,9 @@ namespace Proyecto_camiones
             //    Console.WriteLine(eliminado.Error);
             //}
 
-                CamionViewModel cvm = new CamionViewModel();
+            CamionViewModel cvm = new CamionViewModel();
             ////PRUEBA INSERCION
-            //Result<int> id = cvm.InsertarAsync("NCS234", "Mili").Result;
+            //Result<int> id = cvm.InsertarAsync("KJH921", "Vicky").Result;
             //if (id.IsSuccess)
             //{
             //    Console.WriteLine("se pudo agregar con el id: " + id.Value);
@@ -123,41 +123,41 @@ namespace Proyecto_camiones
             //else
             //{
             //    Console.WriteLine(id.Error);
-
-            //PRUEBA SELECT ALL
-            //var camiones = await cvm.ObtenerTodosAsync();
-            //if (camiones.IsSuccess)
-            //{
-            //    foreach (var camion in camiones.Value)
-            //    {
-            //        Console.WriteLine(camion.ToString());
-            //    }
             //}
+                //PRUEBA SELECT ALL
+                //var camiones = await cvm.ObtenerTodosAsync();
+                //if (camiones.IsSuccess)
+                //{
+                //    foreach (var camion in camiones.Value)
+                //    {
+                //        Console.WriteLine(camion.ToString());
+                //    }
+                //}
 
-            //PRUEBA UPDATE CAMION
-            //var camionUpdated = await cvm.ActualizarAsync(11, "PUC111", "JUAN");
-            //if (camionUpdated.IsSuccess)
-            //{
-            //    CamionDTO camion = camionUpdated.Value;
-            //    Console.WriteLine("camion actualizado a: " + camion.ToString());
-            //}
+                //PRUEBA UPDATE CAMION
+                //var camionUpdated = await cvm.ActualizarAsync(11, "PUC111", "JUAN");
+                //if (camionUpdated.IsSuccess)
+                //{
+                //    CamionDTO camion = camionUpdated.Value;
+                //    Console.WriteLine("camion actualizado a: " + camion.ToString());
+                //}
 
-            //PRUEBA ELIMINAR CAMION
-            //var response = await cvm.EliminarAsync(2);
-            //if (response.IsSuccess)
-            //{
-            //    Console.WriteLine(response.Value);
-            //}
-            //else
-            //{
-            //    Console.WriteLine(response.Error);
-            //}
+                //PRUEBA ELIMINAR CAMION
+                //var response = await cvm.EliminarAsync(2);
+                //if (response.IsSuccess)
+                //{
+                //    Console.WriteLine(response.Value);
+                //}
+                //else
+                //{
+                //    Console.WriteLine(response.Error);
+                //}
 
-            CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
+                CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
 
             //INSERCION PARA CUENTA CORRIENTE DE UN FLETERO FUNCIONANDO CORRECTAMENTE
 
-            //var cuenta = await ccvm.InsertarAsync(null, "carlos", new DateOnly(2025, 5, 11), 92, 1000, 500);
+            //var cuenta = await ccvm.InsertarAsync(null, "carlos", new DateOnly(2025, 5, 11), 92, 1000, 10000);
             //if (cuenta.IsSuccess)
             //{
             //    Console.WriteLine("Id insertado: " + cuenta.Value);
@@ -237,7 +237,7 @@ namespace Proyecto_camiones
 
             //INSERTAR
 
-            //var idViaje = await vfvm.InsertarAsync("Tandil", "Necochea", 40, "trigo", 120, 130, 19000, 12345, "MACHACA", "CARLOS", "Chofer de Carlos", 10, new DateOnly(2025, 4, 11));
+            //var idViaje = await vfvm.InsertarAsync("Tandil", "Azul", 40, "trigo", 120, 130, 19000, 9998, "cooperativa", "carlos", "Chofer de Carlos", 10, new DateOnly(2025, 4, 11));
             //if (idViaje.IsSuccess)
             //{
             //    Console.WriteLine("Viaje ingresado con el id: " + idViaje.Value);
@@ -294,7 +294,7 @@ namespace Proyecto_camiones
             FleteViewModel fvm = new FleteViewModel();
 
             //INSERTAR FLETERO
-            //var idFletero = await fvm.InsertarAsync("Carlos");
+            //var idFletero = await fvm.InsertarAsync("Anita");
             //if (idFletero.IsSuccess)
             //{
             //    Console.WriteLine("Fletero insertado con el id: " + idFletero.Value);
@@ -353,123 +353,123 @@ namespace Proyecto_camiones
             //    Console.WriteLine(fletero.Error);
             //}
 
-                //try
+            //try
+            //{
+
+            //    // Descomentar la prueba que se desea ejecutar
+
+            //    // PRUEBAS DE CLIENTE
+            //    //await ClienteTests.EjecutarTodasLasPruebas();
+
+            //    // PRUEBAS DE CHOFER
+            //await ChoferTests.EjecutarTodasLasPruebas();
+
+            //    // PRUEBAS DE VIAJE
+            //await ViajeTest.EjecutarTodasLasPruebas();
+
+            //    // O EJECUTAR PRUEBAS INDIVIDUALES:
+
+            //    // CLIENTE
+            //    //int idCliente await ClienteTests.ProbarInsertarCliente("TRANSPORTES TEST");
+            //    //await ClienteTests.ProbarObtenerClientePorId(idCliente);
+            //    //await ClienteTests.ProbarEliminarCliente(idCliente);
+
+            //    // CHOFER
+            //    //await ChoferTests.ProbarInsertarChofer("Chofer Test");
+            //    //await ChoferTests.ProbarObtenerChoferPorId(1);
+            //    //await ChoferTests.ProbarEliminarChofer(2);
+
+            //    // VIAJE
+            DateOnly fecha = new DateOnly(2025, 4, 28);
+                //int idViaje = await ViajeTest.ProbarInsertarViaje(fecha, "Tandil", "Buenos Aires", 123, 1000.5f, "Trigo", "Cliente1", "PUC111", 350.5f, 5000.0f,null, 15F);
+                ViajeViewModel vvm = new ViajeViewModel();
+                float f = 0.0F;
+                //Result<int> viaje = await vvm.CrearAsync(fecha, "Tandil", "Azul", 123, "trigo", 30.0F, "Cliente1", "PUC111", 350.5F, 5000.0F, "nuevo chofer", f);
+
+                //await ViajeTest.ProbarActualizarViaje(
+                //    id: 1,
+                //    fechaInicio: new DateOnly(2025, 5, 10),
+                //    lugarPartida: "Rosario",
+                //    destino: "Córdoba",
+                //    remito: 12345,
+                //    carga: "Soja",
+                //    kg: 25000.5f,
+                //    cliente: "COOPERATIVA",
+                //    camion: "HIJ429",
+                //    km: 400.0f,
+                //    tarifa: 75000.0f,
+                //    nombreChofer: "Chofer Test"
+                //);
+
+                //await ViajeTest.ProbarObtenerViajePorId(4);
+                //await ViajeTest.ProbarObtenerViajesPorCliente(3);
+                //await ViajeTest.ProbarObtenerViajesPorChofer(2);
+                //await ViajeTest.ProbarEliminarViaje(10);
+
+                //for (int i = 0; i < 10; i++)
                 //{
+                //    await ViajeTest.ProbarCreacionExitosa();
+                //}
 
-                //    // Descomentar la prueba que se desea ejecutar
+                //int resultado1 = await ViajeTest.ProbarInsertarViaje(
+                //    fechaInicio: DateOnly.FromDateTime(DateTime.Today),
+                //    lugarPartida: "Córdoba",
+                //    destino: "Rosario",
+                //    remito: 1234,
+                //    kg: 12.5f,
+                //    carga: "Electrodomésticos",
+                //    cliente: "COOPERATIVA",
+                //    camion: "NCS234",
+                //    km: 400.0f,
+                //    tarifa: 18.0f,
+                //    nombreChofer: "Juan Pérez",
+                //    porcentajeChofer: 18.0f
+                //);
 
-                //    // PRUEBAS DE CLIENTE
-                //    //await ClienteTests.EjecutarTodasLasPruebas();
+                //int resultado2 = await ViajeTest.ProbarInsertarViaje(
+                //    fechaInicio: DateOnly.FromDateTime(DateTime.Today.AddDays(-1)),
+                //    lugarPartida: "Mendoza",
+                //    destino: "San Juan",
+                //    remito: 1235,
+                //    kg: 980.0f,
+                //    carga: "Vinos",
+                //    cliente: "COOPERATIVA",
+                //    camion: "NCS234",
+                //    km: 160.0f,
+                //    tarifa: 1200.0f,
+                //    nombreChofer: "María López",
+                //    porcentajeChofer: 15.0f
+                //);
 
-                //    // PRUEBAS DE CHOFER
-                //await ChoferTests.EjecutarTodasLasPruebas();
+                //int resultado3 = await ViajeTest.ProbarInsertarViaje(
+                //    fechaInicio: DateOnly.FromDateTime(DateTime.Today.AddDays(-2)),
+                //    lugarPartida: "Salta",
+                //    destino: "Tucumán",
+                //    remito: 1236,
+                //    kg: 1500.0f,
+                //    carga: "Granos",
+                //    cliente: "COOPERATIVA",
+                //    camion: "NCS234",
+                //    km: 300.0f,
+                //    tarifa: 2000.0f,
+                //    nombreChofer: "Carlos Gómez",
+                //    porcentajeChofer: 10.0f
+                //);
 
-                //    // PRUEBAS DE VIAJE
-                //await ViajeTest.EjecutarTodasLasPruebas();
+                //for (int i = 0; i < 25; i++)
+                //{
+                //    await ViajeTest.ProbarEliminarViaje(i);
+                //}
 
-                //    // O EJECUTAR PRUEBAS INDIVIDUALES:
+                //}
+                //catch (Exception ex)
+                //{
+                //    Console.WriteLine($"\n¡ERROR CRÍTICO EN EL PROGRAMA DE PRUEBAS!");
+                //    Console.WriteLine($"Mensaje: {ex.Message}");
+                //    Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                //}
 
-                //    // CLIENTE
-                //    //int idCliente await ClienteTests.ProbarInsertarCliente("TRANSPORTES TEST");
-                //    //await ClienteTests.ProbarObtenerClientePorId(idCliente);
-                //    //await ClienteTests.ProbarEliminarCliente(idCliente);
-
-                //    // CHOFER
-                //    //await ChoferTests.ProbarInsertarChofer("Chofer Test");
-                //    //await ChoferTests.ProbarObtenerChoferPorId(1);
-                //    //await ChoferTests.ProbarEliminarChofer(2);
-
-                //    // VIAJE
-                DateOnly fecha = new DateOnly(2025, 4, 28);
-            //int idViaje = await ViajeTest.ProbarInsertarViaje(fecha, "Tandil", "Buenos Aires", 123, 1000.5f, "Trigo", "Cliente1", "PUC111", 350.5f, 5000.0f,null, 15F);
-            ViajeViewModel vvm = new ViajeViewModel();
-            float f = 0.0F;
-            //Result<int> viaje = await vvm.CrearAsync(fecha, "Tandil", "Azul", 123, "trigo", 30.0F, "Cliente1", "PUC111", 350.5F, 5000.0F, "nuevo chofer", f);
-
-            //await ViajeTest.ProbarActualizarViaje(
-            //    id: 1,
-            //    fechaInicio: new DateOnly(2025, 5, 10),
-            //    lugarPartida: "Rosario",
-            //    destino: "Córdoba",
-            //    remito: 12345,
-            //    carga: "Soja",
-            //    kg: 25000.5f,
-            //    cliente: "COOPERATIVA",
-            //    camion: "HIJ429",
-            //    km: 400.0f,
-            //    tarifa: 75000.0f,
-            //    nombreChofer: "Chofer Test"
-            //);
-
-            //await ViajeTest.ProbarObtenerViajePorId(4);
-            //await ViajeTest.ProbarObtenerViajesPorCliente(3);
-            //await ViajeTest.ProbarObtenerViajesPorChofer(2);
-            //await ViajeTest.ProbarEliminarViaje(10);
-
-            //for (int i = 0; i < 10; i++)
-            //{
-            //    await ViajeTest.ProbarCreacionExitosa();
-            //}
-
-            //int resultado1 = await ViajeTest.ProbarInsertarViaje(
-            //    fechaInicio: DateOnly.FromDateTime(DateTime.Today),
-            //    lugarPartida: "Córdoba",
-            //    destino: "Rosario",
-            //    remito: 1234,
-            //    kg: 12.5f,
-            //    carga: "Electrodomésticos",
-            //    cliente: "COOPERATIVA",
-            //    camion: "NCS234",
-            //    km: 400.0f,
-            //    tarifa: 18.0f,
-            //    nombreChofer: "Juan Pérez",
-            //    porcentajeChofer: 18.0f
-            //);
-
-            //int resultado2 = await ViajeTest.ProbarInsertarViaje(
-            //    fechaInicio: DateOnly.FromDateTime(DateTime.Today.AddDays(-1)),
-            //    lugarPartida: "Mendoza",
-            //    destino: "San Juan",
-            //    remito: 1235,
-            //    kg: 980.0f,
-            //    carga: "Vinos",
-            //    cliente: "COOPERATIVA",
-            //    camion: "NCS234",
-            //    km: 160.0f,
-            //    tarifa: 1200.0f,
-            //    nombreChofer: "María López",
-            //    porcentajeChofer: 15.0f
-            //);
-
-            //int resultado3 = await ViajeTest.ProbarInsertarViaje(
-            //    fechaInicio: DateOnly.FromDateTime(DateTime.Today.AddDays(-2)),
-            //    lugarPartida: "Salta",
-            //    destino: "Tucumán",
-            //    remito: 1236,
-            //    kg: 1500.0f,
-            //    carga: "Granos",
-            //    cliente: "COOPERATIVA",
-            //    camion: "NCS234",
-            //    km: 300.0f,
-            //    tarifa: 2000.0f,
-            //    nombreChofer: "Carlos Gómez",
-            //    porcentajeChofer: 10.0f
-            //);
-
-            //for (int i = 0; i < 25; i++)
-            //{
-            //    await ViajeTest.ProbarEliminarViaje(i);
-            //}
-
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine($"\n¡ERROR CRÍTICO EN EL PROGRAMA DE PRUEBAS!");
-            //    Console.WriteLine($"Mensaje: {ex.Message}");
-            //    Console.WriteLine($"Stack Trace: {ex.StackTrace}");
-            //}
-
-            ClienteViewModel clientevm = new ClienteViewModel();
+                ClienteViewModel clientevm = new ClienteViewModel();
 
             //OBTENER TODOS LOS CLIENTES
 
@@ -496,7 +496,7 @@ namespace Proyecto_camiones
             //    Console.WriteLine(viajes.Error);
             //}
 
-            await ChequeTest.EjecutarTodasLasPruebas();
+            //await ChequeTest.EjecutarTodasLasPruebas();
 
             //ELIMINAR CLIENTE
 
@@ -521,6 +521,6 @@ namespace Proyecto_camiones
             //    Console.WriteLine(cliente.Error);
             //}
         }
+        }
     }
-}
 

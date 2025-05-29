@@ -4,6 +4,7 @@ using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Models;
 using Proyecto_camiones.Presentacion;
 using Proyecto_camiones.Presentacion.Models;
+using Proyecto_camiones.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -17,11 +18,11 @@ namespace Proyecto_camiones.Repositories
     public class CuentaCorrienteRepository
     {
 
-        private readonly ApplicationDbContext _context;
+        private ApplicationDbContext _context;
 
-        public CuentaCorrienteRepository(ApplicationDbContext context)
+        public CuentaCorrienteRepository()
         {
-            _context = context;
+            this._context = General.obtenerInstancia();
         }
 
         public async Task<bool> ProbarConexionAsync()
@@ -54,7 +55,7 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
-
+                this._context = General.obtenerInstancia();
                 if (!await _context.Database.CanConnectAsync())
                 {
                     MessageBox.Show("No se puede conectar a la base de datos");
@@ -231,6 +232,7 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 var cuenta = await _context.Cuentas.FindAsync(id);
                 Console.WriteLine("se encontró la cuenta corriente");
 
@@ -270,6 +272,7 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 CuentaCorriente? cuenta = await this._context.Cuentas.FindAsync(id);
                 if (cuenta == null)
                 {

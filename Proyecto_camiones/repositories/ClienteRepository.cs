@@ -13,11 +13,11 @@ namespace Proyecto_camiones.Presentacion.Repositories
 {
     public class ClienteRepository
     {
-        private readonly ApplicationDbContext _context;
+        private ApplicationDbContext _context;
 
-        public ClienteRepository(ApplicationDbContext context)
+        public ClienteRepository()
         {
-            this._context = context;
+            this._context = General.obtenerInstancia();
         }
 
         public async Task<bool> ProbarConexionAsync()
@@ -109,6 +109,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 if (!await _context.Database.CanConnectAsync())
                 {
                     Console.WriteLine("No se puede conectar a la base de datos");
@@ -145,6 +146,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 Cliente? cliente = await this._context.Clientes.FindAsync(id);
                 if (cliente != null)
                 {
@@ -173,6 +175,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 var cliente = await _context.Clientes.FindAsync(id);
 
                 if (cliente == null)
