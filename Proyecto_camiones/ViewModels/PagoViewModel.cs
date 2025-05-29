@@ -17,8 +17,7 @@ namespace Proyecto_camiones.ViewModels
 
         public PagoViewModel()
         {
-            var dbContext = General.obtenerInstancia();
-            var PagoRepo = new PagoRepository(dbContext);
+            var PagoRepo = new PagoRepository();
             this.pagoService = new PagoService(PagoRepo);
         }
 

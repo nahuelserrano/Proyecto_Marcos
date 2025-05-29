@@ -29,10 +29,10 @@ namespace Proyecto_camiones.Presentacion.Services
             this._pagoService = pagoS ?? throw new ArgumentNullException(nameof(pagoS));
             CamionRepository cr = new CamionRepository();
             this._camionService = new CamionService(cr);
-            ViajeRepository vr = new ViajeRepository(General.obtenerInstancia());
-            ClienteRepository clr = new ClienteRepository(General.obtenerInstancia());
+            ViajeRepository vr = new ViajeRepository();
+            ClienteRepository clr = new ClienteRepository();
             ClienteService cs = new ClienteService(clr);
-            ChoferRepository chr = new ChoferRepository(General.obtenerInstancia());
+            ChoferRepository chr = new ChoferRepository();
             this._choferService = new ChoferService(chr);
             this._viajeService = new ViajeService(vr, _camionService, cs, _choferService, pagoS);
         }

@@ -24,8 +24,8 @@ namespace Proyecto_camiones.Presentacion.Services
         {
             this._clienteRepository = clienteRepository ?? throw new ArgumentNullException(nameof(_clienteRepository));
             this._viajeFleteRepository = new ViajeFleteRepository();
-            this._viajeRepository = new ViajeRepository(General.obtenerInstancia());
-            this._cuentaCorrienteRepository = new CuentaCorrienteRepository(General.obtenerInstancia());
+            this._viajeRepository = new ViajeRepository();
+            this._cuentaCorrienteRepository = new CuentaCorrienteRepository();
         }
 
         public async Task<bool> ProbarConexionAsync()

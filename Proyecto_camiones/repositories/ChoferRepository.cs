@@ -10,17 +10,18 @@ namespace Proyecto_camiones.Presentacion.Repositories
 {
     public class ChoferRepository
     {
-        private readonly ApplicationDbContext _context;
+        private ApplicationDbContext _context;
 
-        public ChoferRepository(ApplicationDbContext context)
+        public ChoferRepository()
         {
-            this._context = context;
+            this._context = General.obtenerInstancia();
         }
 
         public async Task<bool> ProbarConexionAsync()
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 bool puedeConectar = await _context.Database.CanConnectAsync();
 
                 if (puedeConectar)
@@ -48,6 +49,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 if (!await _context.Database.CanConnectAsync())
                 {
                     Console.WriteLine("No se puede conectar a la base de datos");
@@ -148,6 +150,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 if (id <= 0)
                 {
                     return null;
@@ -180,6 +183,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 if (id <= 0)
                 {
                     return false;

@@ -17,7 +17,7 @@ namespace Proyecto_camiones.Repositories
     public class ViajeFleteRepository
     {
 
-        private readonly ApplicationDbContext _context;
+        private ApplicationDbContext _context;
 
         public ViajeFleteRepository()
         {
@@ -54,6 +54,7 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 var viaje = await this._context.ViajesFlete.FindAsync(id);
                 if(viaje == null)
                 {
@@ -123,6 +124,7 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 var viaje = await _context.ViajesFlete.FindAsync(id);
                 Console.WriteLine("se encontró el fletero");
 
@@ -147,6 +149,7 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 ViajeFlete viaje = new ViajeFlete(origen, destino, remito, carga, km, kg, tarifa, factura, idCliente, idFlete, nombre_chofer, comision, fecha_salida);
                 this._context.ViajesFlete.Add(viaje);
                 int registros_afectados = await this._context.SaveChangesAsync();

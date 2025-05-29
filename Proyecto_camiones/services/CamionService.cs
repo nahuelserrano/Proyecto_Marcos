@@ -21,8 +21,8 @@ namespace Proyecto_camiones.Presentacion.Services
         public CamionService(CamionRepository camionR)
         {
             this._camionRepository = camionR ?? throw new ArgumentNullException(nameof(camionR));
-            this._choferRepository = new ChoferRepository(General.obtenerInstancia());
-            this._viajeRepo = new ViajeRepository(General.obtenerInstancia());
+            this._choferRepository = new ChoferRepository();
+            this._viajeRepo = new ViajeRepository();
         }
 
         //PROBAR CONEXION
