@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
@@ -70,6 +70,7 @@
     <Compile Include="Repositories\ViajeRepository.cs" />
     <Compile Include="Repositories\ViajeFleteRepository.cs" />
     <Compile Include="Tests\ChequeTest.cs" />
+    <Compile Include="Tests\SueldoTest.cs" />
 
     <!-- ViewModels -->
     <Compile Include="ViewModels\CamionViewModel.cs" />
