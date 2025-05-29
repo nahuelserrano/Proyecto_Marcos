@@ -19,7 +19,7 @@ namespace Proyecto_camiones.ViewModels
 
         public FleteViewModel()
         {
-            var repo = new FleteRepository(General.obtenerInstancia());
+            var repo = new FleteRepository();
             fleteService = new FleteService(repo);
         }
 

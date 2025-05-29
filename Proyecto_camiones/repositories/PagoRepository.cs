@@ -16,11 +16,11 @@ namespace Proyecto_camiones.Repositories
 {
     public class PagoRepository
     {
-        private readonly ApplicationDbContext _context;
+        private ApplicationDbContext _context;
 
-        public PagoRepository(ApplicationDbContext context)
+        public PagoRepository()
         {
-            this._context = context;
+            this._context = General.obtenerInstancia();
         }
         public async Task<bool> ProbarConexionAsync()
         {
@@ -50,6 +50,7 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 if (!await _context.Database.CanConnectAsync())
                 {
                     Console.WriteLine("No se puede conectar a la base de datos");
@@ -77,7 +78,7 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
-                
+                this._context = General.obtenerInstancia();
                 var pagosModificar = await _context.Pagos
                 .Where(pago => pago.Id_Chofer == idChofer && pago.Pagado  ==  !pagado) // Filtrar pagos por el Id_Viaje y ver si esta pago o no
                 .Join(
@@ -118,6 +119,7 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 var pago = await _context.Pagos.FindAsync(id_viaje);
                 if (pago != null)
                 {

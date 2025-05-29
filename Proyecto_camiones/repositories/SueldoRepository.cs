@@ -18,7 +18,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
     {
 
 
-        private readonly ApplicationDbContext _context = General.obtenerInstancia();
+        private ApplicationDbContext _context = General.obtenerInstancia();
 
         public async Task<bool> ProbarConexionAsync()
         {
@@ -50,7 +50,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-              
+                this._context = General.obtenerInstancia();
                 var sueldo = new Sueldo(monto, Id_Chofer, pagadoDesde, pagadoHasta, idCamion);
                 if(fecha_pago != null)
                 {
@@ -84,6 +84,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 var sueldo = await _context.Sueldos.FindAsync(id);
                 if (sueldo == null)
                     return null;
@@ -218,6 +219,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 var pago = await _context.Sueldos.FindAsync(id);
 
                 // Actualizar solo los campos proporcionados
@@ -267,6 +269,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 var pago = await _context.Sueldos.FindAsync(id);
 
                 if (pago == null)

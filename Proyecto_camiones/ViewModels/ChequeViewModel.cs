@@ -16,7 +16,7 @@ namespace Proyecto_camiones.ViewModels
         {
             var dbContext = General.obtenerInstancia();
             var chequeRepository = new ChequeRepository(dbContext);
-            _chequeService = new ChequeService(chequeRepository, new ClienteService(new ClienteRepository(General.obtenerInstancia())));
+            _chequeService = new ChequeService(chequeRepository, new ClienteService(new ClienteRepository()));
         }
 
         public async Task<bool> TestearConexionAsync()

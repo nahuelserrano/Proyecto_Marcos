@@ -7,6 +7,7 @@ using MySqlX.XDevAPI.Common;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Utils;
+using Proyecto_camiones.ViewModels;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace Proyecto_camiones.Presentacion.Repositories
@@ -14,7 +15,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
     public class ChequeRepository
     {
-        private readonly ApplicationDbContext _context;
+        private ApplicationDbContext _context;
 
 
         public ChequeRepository(ApplicationDbContext context)
@@ -26,6 +27,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 // Intentar comprobar si la conexión a la base de datos es exitosa
                 bool puedeConectar = await _context.Database.CanConnectAsync();
                 if (puedeConectar)
@@ -60,6 +62,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 if (!await _context.Database.CanConnectAsync())
                 {
                     Console.WriteLine("No se puede conectar a la base de datos");
@@ -174,6 +177,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 var cheque = await _context.Cheques.FindAsync(id);
 
                 if (cheque == null)
@@ -258,6 +262,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 Cheque? cheque = await _context.Cheques.FindAsync(id);
 
                 if (cheque == null)

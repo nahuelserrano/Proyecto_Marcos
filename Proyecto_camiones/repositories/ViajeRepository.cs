@@ -17,9 +17,9 @@ namespace Proyecto_camiones.Presentacion.Repositories
 {
     public class ViajeRepository
     {
-        private readonly ApplicationDbContext _context;
+        private ApplicationDbContext _context;
 
-        public ViajeRepository(ApplicationDbContext context)
+        public ViajeRepository()
         {
             this._context = General.obtenerInstancia();
         }
@@ -63,6 +63,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
+
                 if (!await _context.Database.CanConnectAsync())
                 {
                     Console.WriteLine("No se puede conectar a la base de datos");
@@ -242,6 +244,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 var viaje = await _context.Viajes.FindAsync(id);
 
                 if (viaje == null)
@@ -307,6 +310,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 var viaje = await _context.Viajes.FindAsync(id);
 
                 if (viaje == null)

@@ -13,9 +13,9 @@ namespace Proyecto_camiones.Repositories
 {
     public class FleteRepository
     {
-        private readonly ApplicationDbContext _context;
+        private ApplicationDbContext _context;
 
-        public FleteRepository(ApplicationDbContext context)
+        public FleteRepository()
         {
             this._context = General.obtenerInstancia();
         }
@@ -49,6 +49,7 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 Flete nuevo = new Flete(nombre);
                 await this._context.Fletes.AddAsync(nuevo);
                 int registrosAfectados = await this._context.SaveChangesAsync();
@@ -117,6 +118,7 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 var fletero = await _context.Fletes.FindAsync(id);
                 MessageBox.Show("se encontró el fletero");
 
@@ -141,6 +143,7 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 Flete? fletero = await this._context.Fletes.FindAsync(id);
                 if (fletero == null) return null;
                 fletero.nombre = nombre;

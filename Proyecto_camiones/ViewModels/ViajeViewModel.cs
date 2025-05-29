@@ -20,11 +20,11 @@ namespace Proyecto_camiones.ViewModels
         { 
             // Obtenemos la instancia de la base de datos
             // Creamos las dependencias necesarias
-            var viajeRepository = new ViajeRepository(General.obtenerInstancia());
+            var viajeRepository = new ViajeRepository();
             var camionRepository = new CamionRepository();
-            var clienteRepository = new ClienteRepository(General.obtenerInstancia());
-            var choferRepository = new ChoferRepository(General.obtenerInstancia());
-            var pagoRepository = new PagoRepository(General.obtenerInstancia());
+            var clienteRepository = new ClienteRepository();
+            var choferRepository = new ChoferRepository();
+            var pagoRepository = new PagoRepository();
 
             // Creamos los servicios que ViajeService necesita
             var camionService = new CamionService(camionRepository);

@@ -36,13 +36,13 @@ namespace Proyecto_camiones
 
         {
             //// Llamada a Windows Forms para inicializar la aplicación
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
 
 
             await SueldoTest.EjecutarTodasLasPruebas();
         }
+        }
     }
-}
 
