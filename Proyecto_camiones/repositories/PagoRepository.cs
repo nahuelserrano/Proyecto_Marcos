@@ -11,6 +11,7 @@ using Proyecto_camiones.DTOs;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.ViewModels;
+using System.Windows.Forms;
 
 namespace Proyecto_camiones.Repositories
 {
@@ -159,7 +160,7 @@ namespace Proyecto_camiones.Repositories
                     .Where(joinResult => joinResult.Viaje.FechaInicio >= fechaDesde && joinResult.Viaje.FechaInicio <= fechaHasta)
                     .Select(joinResult => joinResult.Pago) // Seleccionamos solo los objetos Pago resultantes
                     .ToListAsync();
-
+                MessageBox.Show(" " + pagosPorViajeEnRango);
                 return pagosPorViajeEnRango;
             }
             catch (Exception ex)

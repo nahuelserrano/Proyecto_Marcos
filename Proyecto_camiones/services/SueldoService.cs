@@ -10,6 +10,7 @@ using Proyecto_camiones.Repositories;
 using Proyecto_camiones.Models;
 using Proyecto_camiones.ViewModels;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using System.Windows.Forms;
 
 namespace Proyecto_camiones.Presentacion.Services
 {
@@ -102,7 +103,6 @@ namespace Proyecto_camiones.Presentacion.Services
                 return Result<bool>.Success(response);
             }
             return Result<bool>.Failure("Hubo un problema al eliminar el sueldo");
-
         }
 
         public async Task<Result<int>> CrearAsync(string nombre_chofer, DateOnly pagoDesde, DateOnly pagoHasta, DateOnly? fecha_pagado, string? patenteCamion)

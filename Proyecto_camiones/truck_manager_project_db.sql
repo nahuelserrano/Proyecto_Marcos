@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `camion` (
   `idcamion` int(11) NOT NULL,
-  `patente` varchar(45) NOT NULL,
+  `patente` varchar(45) NOT NULL UNIQUE,
   `nombre_chofer` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -61,7 +61,7 @@ INSERT INTO `camion` (`idcamion`, `patente`, `nombre_chofer`) VALUES
 CREATE TABLE `cheque` (
   `idcheque` int(11) NOT NULL,
   `fecha_ingreso` date NOT NULL,
-  `nro_cheque` int(11) NOT NULL,
+  `nro_cheque` int(11) NOT NULL UNIQUE,
   `monto` float NOT NULL,
   `banco` varchar(45) NOT NULL,
   `fecha_cobro` date NOT NULL,
@@ -87,7 +87,7 @@ INSERT INTO `cheque` (`idcheque`, `fecha_ingreso`, `nro_cheque`, `monto`, `banco
 
 CREATE TABLE `chofer` (
   `idChofer` int(11) NOT NULL,
-  `nombre` varchar(50) NOT NULL
+  `nombre` varchar(50) NOT NULL UNIQUE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -108,7 +108,7 @@ INSERT INTO `chofer` (`idChofer`, `nombre`) VALUES
 
 CREATE TABLE `cliente` (
   `idCliente` int(11) NOT NULL,
-  `nombre` varchar(45) NOT NULL
+  `nombre` varchar(45) NOT NULL UNIQUE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --

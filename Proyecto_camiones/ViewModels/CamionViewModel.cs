@@ -34,7 +34,6 @@ namespace Proyecto_camiones.ViewModels
             bool result = await this.testearConexion();
             if (result)
             {
-                Console.WriteLine("omg entré!!");
                 var resultado = await this._camionService.CrearAsync( patente, nombre);
 
                 // Ahora puedes acceder al resultado

@@ -225,7 +225,6 @@ public class FormRegistro : Home
                     string fechas = sueldo.PagadoDesde + " - " + sueldo.PagadoHasta;
                     if (sdto.Pagado)
                     {
-                        MessageBox.Show("pagado");
                         cheq.CurrentRow.DefaultCellStyle.BackColor = Color.Green;
                     }
                     cheq.Rows.Add(fechas, choferCamion, sueldo.Monto_Pagado, sueldo.idSueldo);
@@ -234,7 +233,7 @@ public class FormRegistro : Home
 
             else
             {
-                MessageBox.Show(resultSueldo.Error);
+                CartelAviso(resultSueldo.Error);
             }
         }
     }
@@ -653,7 +652,7 @@ public class FormRegistro : Home
             var resultado = await svm.CrearAsync(datos[2], DateOnly.Parse(datos[0]), DateOnly.Parse(datos[1]), null, dato);
             if (resultado.IsSuccess)
             {
-                ShowInfoTable(filtro, dato, " ");
+                ShowInfoTable(filtro, dato, datos[2]);
             }
             else
             {
@@ -789,6 +788,7 @@ public class FormRegistro : Home
                 {
                     string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
                     var result = await svm.EliminarAsync(int.Parse(id));
+                    MessageBox.Show(id);
 
                     if (result.IsSuccess)
                     {
