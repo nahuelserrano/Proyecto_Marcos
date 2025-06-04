@@ -521,6 +521,6 @@ namespace Proyecto_camiones
             //    Console.WriteLine(cliente.Error);
             //}
         }
-        }
     }
+}
 
