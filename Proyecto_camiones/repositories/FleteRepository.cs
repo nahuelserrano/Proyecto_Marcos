@@ -54,7 +54,6 @@ namespace Proyecto_camiones.Repositories
                 await this._context.Fletes.AddAsync(nuevo);
                 int registrosAfectados = await this._context.SaveChangesAsync();
                 Console.WriteLine($"Registros afectados: {registrosAfectados}");
-                MessageBox.Show("Registros afectados: " + registrosAfectados);
                 if (registrosAfectados > 0)
                 {
                     return nuevo.Id;

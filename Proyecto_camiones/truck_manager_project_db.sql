@@ -151,7 +151,7 @@ INSERT INTO `cuenta_corriente` (`idcuenta_corriente`, `fecha_factura`, `nro_fact
 
 CREATE TABLE `fletero` (
   `idFletero` int(11) NOT NULL,
-  `nombre` varchar(50) NOT NULL
+  `nombre` varchar(50) NOT NULL, UNIQUE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --

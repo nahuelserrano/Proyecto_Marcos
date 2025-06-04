@@ -73,6 +73,7 @@ internal class Viaje : Home
     private FlowLayoutPanel cardsContainerFL = new FlowLayoutPanel();
 
     private CamionViewModel cvm = new CamionViewModel();
+    private bool yaCorrido = false;
 
 
 
@@ -93,9 +94,13 @@ internal class Viaje : Home
         camionFilter.MouseEnter += (s, e) => HoverEffect(s, e, true);
         camionFilter.MouseLeave += (s, e) => HoverEffect(s, e, false);
 
-        fleteFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Flete");
-        clienteFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Cliente");
-        camionFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Camion");
+        if (!yaCorrido)
+        {
+            fleteFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Flete");
+            clienteFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Cliente");
+            camionFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Camion");
+            yaCorrido = true;
+        }
     }
 
     public Viaje(string filtro)
@@ -122,9 +127,13 @@ internal class Viaje : Home
 
     private void FunctionFilter(string filtro)
     {
-        fleteFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Flete");
-        clienteFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Cliente");
-        camionFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Camion");
+        if (!yaCorrido)
+        {
+            fleteFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Flete");
+            clienteFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Cliente");
+            camionFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Camion");
+            yaCorrido = true;
+        }
 
         fleteFilter.MouseEnter += (s, e) => HoverEffect(s, e, true);
         fleteFilter.MouseLeave += (s, e) => HoverEffect(s, e, false);
@@ -307,7 +316,7 @@ internal class Viaje : Home
 
         RoundButton remove = new RoundButton
         {
-            Text = "🗑️",
+            Text = "🗑",
             BackColor = System.Drawing.Color.FromArgb(48, 48, 48),
             ForeColor = System.Drawing.Color.FromArgb(218, 218, 28),
             Size = new Size(30, 40),
@@ -391,7 +400,7 @@ internal class Viaje : Home
 
         RoundButton remove = new RoundButton
         {
-            Text = "🗑️",
+            Text = "🗑",
             BackColor = System.Drawing.Color.FromArgb(48, 48, 48),
             ForeColor = System.Drawing.Color.FromArgb(218, 218, 28),
             Size = new Size(30, 40),
@@ -489,7 +498,7 @@ internal class Viaje : Home
 
         RoundButton remove = new RoundButton
         {
-            Text = "🗑️",
+            Text = "🗑",
             BackColor = System.Drawing.Color.FromArgb(48, 48, 48),
             ForeColor = System.Drawing.Color.FromArgb(218, 218, 28),
             Size = new Size(30, 40),
@@ -554,7 +563,6 @@ internal class Viaje : Home
 
     private void buttonsVisibleOrInvisible(string filtro)
     {
-        buttonBack.Click -= (s, e) => ButtonNewAddProperties(filtro);
         buttonBack.Click += (s, e) => ButtonNewAddProperties(filtro);
         buttonBack.Visible = true;
         buttonAddNew.Visible = false;
@@ -578,6 +586,7 @@ internal class Viaje : Home
 
                     if (resultado.IsSuccess)
                     {
+                        cardsContainerFL.Controls.Clear();
                         ObtenerTodosSegunFiltro(filtro);
                     }
                     else
@@ -616,6 +625,7 @@ internal class Viaje : Home
 
                     if (resultado.IsSuccess)
                     {
+                        cardsContainerFL.Controls.Clear();
                         ObtenerTodosSegunFiltro(filtro);
                     }
                     else
@@ -652,6 +662,7 @@ internal class Viaje : Home
                     var fletero = await fvm.ObtenerPorIdAsync(idfletero);
                     if (fletero.IsSuccess)
                     {
+                        cardsContainerFL.Controls.Clear();
                         ObtenerTodosSegunFiltro(filtro);
                     }
                     else
@@ -679,7 +690,6 @@ internal class Viaje : Home
                 }
             }
         }
-        // Retornar la lista correspondiente
     }
 
     private void ButtonProperties()
@@ -953,7 +963,7 @@ internal class Viaje : Home
         buttonAcept.ForeColor = System.Drawing.Color.FromArgb(32, 32, 32);
         buttonAcept.Font = new Font("Nunito", 12, FontStyle.Bold);
 
-        buttonAcept.Click -= (s, e) => ButtonAcept_Click1(s, e);
+
         buttonAcept.Click += (s, e) => ButtonAcept_Click1(s, e);
 
         CenterButtonFormSection(); // Para posicionar correctamente al inicio

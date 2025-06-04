@@ -52,7 +52,7 @@ namespace Proyecto_camiones.Presentacion.Services
             try
             {
                 // Intentar insertar en la base de datos
-                Camion response = await _camionRepository.InsertarAsync( patente, nombre);
+                Camion response = await _camionRepository.InsertarAsync(patente, nombre);
                 if (response != null)
                 {
                     int id = await this._choferRepository.InsertarAsync(nombre);

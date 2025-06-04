@@ -32,14 +32,12 @@ public class FormRegistro : Home
 
     private List<string> campos = new List<string>();
 
-
     //Button
     private Panel btnPanel = new Panel();
     private RoundButton btnCargar = new RoundButton();
     private RoundButton btnVolver = new RoundButton();
     private RoundButton btnCuentaCorriente = new RoundButton();
     private RoundButton btnSueldoMensual = new RoundButton();
-
 
     //Grid
     private DataGridView cheq = new DataGridView();
@@ -70,7 +68,10 @@ public class FormRegistro : Home
         btnCargar.MouseLeave += (s, e) => HoverEffect(s, e, false);
 
         //Events
-        btnCargar.Click += (s, e) => cargaClickEvent(s, e, filtro, dato);
+        btnCargar.Click += (s, e) => BtnCargar_Click(s, e, filtro, dato);
+        //btnCargar.Click -= (s, e) => cargaClickEvent(s, e, filtro, dato); // remueve si ya estaba
+        //btnCargar.Click += (s, e) => cargaClickEvent(s, e, filtro, dato); // vuelve a asignar
+
 
         cheq.CellClick += (s, e) => EliminarFila(s, e, filtro, dato);
         cheq.CellClick += (s, e) => ModificarFilaAsync(s, e, dato, filtro);
@@ -106,6 +107,15 @@ public class FormRegistro : Home
         GridChequesProperties();
         ButtonProperties(filtro, dato);
         ShowInfoTable(filtro, dato, choferCamion);
+    }
+
+    private async void BtnCargar_Click(object sender, EventArgs e, string filtro, string dato)
+    {
+        btnCargar.Enabled = false;
+
+        await cargaClickEvent(sender, e, filtro, dato); // Ejecuta tu lógica
+
+        btnCargar.Enabled = true;
     }
 
     private async void ShowInfoTable(string filtro, string dato, string choferCamion)
@@ -482,8 +492,8 @@ public class FormRegistro : Home
                 DataGridViewButtonColumn btnPagado = new DataGridViewButtonColumn();
                 btnPagado.Name = "Pagado";
                 btnPagado.HeaderText = "Pagado";  // Puedes dejarlo vacío si prefieres
-                btnPagado.Text = "✔️"; // Ícono de modificar
-                btnPagado.UseColumnTextForButtonValue = true; // Hace que todas las celdas muestren "✔️"
+                btnPagado.Text = "✔"; // Ícono de modificar
+                btnPagado.UseColumnTextForButtonValue = true; // Hace que todas las celdas muestren "✔"
 
                 cheq.Columns.Add(btnPagado);
             }
@@ -495,7 +505,7 @@ public class FormRegistro : Home
                 DataGridViewButtonColumn btnEliminar = new DataGridViewButtonColumn();
                 btnEliminar.Name = "Eliminar";
                 btnEliminar.HeaderText = "Eliminar";  // Puedes dejarlo vacío si prefieres
-                btnEliminar.Text = "🗑️"; // Ícono de eliminar
+                btnEliminar.Text = "🗑"; // Ícono de eliminar
                 btnEliminar.UseColumnTextForButtonValue = true; // Hace que todas las celdas muestren "❌"
                 btnEliminar.Width = 20; // Ajustar tamaño
 
@@ -509,8 +519,8 @@ public class FormRegistro : Home
                     DataGridViewButtonColumn btnModificar = new DataGridViewButtonColumn();
                     btnModificar.Name = "Modificar";
                     btnModificar.HeaderText = "Modificar";  // Puedes dejarlo vacío si prefieres
-                    btnModificar.Text = "✏️"; // Ícono de modificar
-                    btnModificar.UseColumnTextForButtonValue = true; // Hace que todas las celdas muestren "✏️"
+                    btnModificar.Text = "✏"; // Ícono de modificar
+                    btnModificar.UseColumnTextForButtonValue = true; // Hace que todas las celdas muestren "✏"
 
                     cheq.Columns.Add(btnModificar);
                 }
@@ -533,7 +543,7 @@ public class FormRegistro : Home
                     {
                         foreach (string campo in campos)
                         {
-                            
+
                             if (textBox.Name == campo)
                             {
                                 if (campo == "Fecha" || campo == "Fecha inicial" || campo == "Fecha final")
@@ -542,7 +552,7 @@ public class FormRegistro : Home
                                     DateTime fecha;
                                     if (!DateTime.TryParse(campoFecha.Text, out fecha))
                                     {
-                                      
+
                                         if (this.InvokeRequired)
                                         {
                                             this.Invoke(new Action(() => CartelAviso("Por favor, ingrese una fecha válida")));
@@ -551,7 +561,7 @@ public class FormRegistro : Home
                                         {
                                             CartelAviso("Ingrese una fecha válida");
                                         }
-                                        
+
                                         textBox.Focus();
                                         return;
                                     }
@@ -570,7 +580,7 @@ public class FormRegistro : Home
                                         {
                                             CartelAviso("Ingrese un número válido");
                                         }
-                                      
+
                                         textBox.Focus();
                                         return;
                                     }
@@ -629,7 +639,7 @@ public class FormRegistro : Home
         {
             ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
             var resultado = await vfvm.InsertarAsync(datos[1], datos[2], float.Parse(datos[3]), datos[4], float.Parse(datos[5]), float.Parse(datos[6]), float.Parse(datos[7]), int.Parse(datos[8]), datos[10], dato, datos[11], float.Parse(datos[9]), DateOnly.Parse(datos[0]));
-            
+
             if (resultado.IsSuccess)
             {
                 ShowInfoTable(filtro, dato, " ");
@@ -950,7 +960,8 @@ public class FormRegistro : Home
                 if (result.IsSuccess)
                 {
                     cheq.CurrentRow.DefaultCellStyle.BackColor = Color.Green;
-                } else
+                }
+                else
                 {
                     CartelAviso(result.Error);
                 }
@@ -1151,7 +1162,7 @@ public class FormRegistro : Home
 
         //btnAceptarAviso.Resize += (s, e) =>
         //{
-            btnAceptarAviso.Location = new Point(avisoPanel.Width / 2, 100);
+        btnAceptarAviso.Location = new Point(avisoPanel.Width / 2, 100);
         //};
 
         btnAceptarAviso.Click += (s, e) =>
