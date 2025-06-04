@@ -46,7 +46,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
        
 
-        public async Task<int> InsertarAsync(float monto, int Id_Chofer, DateOnly pagadoDesde, DateOnly pagadoHasta, DateOnly? fecha_pago, int? idCamion)
+        public async Task<int> InsertarAsync(float monto, int Id_Chofer, DateOnly pagadoDesde, DateOnly pagadoHasta, DateOnly? fecha_pago, int idCamion)
         {
             try
             {
