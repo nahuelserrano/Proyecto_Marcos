@@ -35,10 +35,10 @@ namespace Proyecto_camiones
         static async Task Main(string[] args)
 
         {
-            //// Llamada a Windows Forms para inicializar la aplicación
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
+            // Llamada a Windows Forms para inicializar la aplicación
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
+            //Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
 
 
             //PagoViewModel pw = new PagoViewModel();
@@ -115,7 +115,7 @@ namespace Proyecto_camiones
 
             CamionViewModel cvm = new CamionViewModel();
             ////PRUEBA INSERCION
-            //Result<int> id = cvm.InsertarAsync("KJH921", "Vicky").Result;
+            //Result<int> id = cvm.InsertarAsync("pruebaagregar2", "nuevoPrueba2").Result;
             //if (id.IsSuccess)
             //{
             //    Console.WriteLine("se pudo agregar con el id: " + id.Value);
@@ -124,36 +124,36 @@ namespace Proyecto_camiones
             //{
             //    Console.WriteLine(id.Error);
             //}
-                //PRUEBA SELECT ALL
-                //var camiones = await cvm.ObtenerTodosAsync();
-                //if (camiones.IsSuccess)
-                //{
-                //    foreach (var camion in camiones.Value)
-                //    {
-                //        Console.WriteLine(camion.ToString());
-                //    }
-                //}
+            //PRUEBA SELECT ALL
+            //var camiones = await cvm.ObtenerTodosAsync();
+            //if (camiones.IsSuccess)
+            //{
+            //    foreach (var camion in camiones.Value)
+            //    {
+            //        Console.WriteLine(camion.ToString());
+            //    }
+            //}
 
-                //PRUEBA UPDATE CAMION
-                //var camionUpdated = await cvm.ActualizarAsync(11, "PUC111", "JUAN");
-                //if (camionUpdated.IsSuccess)
-                //{
-                //    CamionDTO camion = camionUpdated.Value;
-                //    Console.WriteLine("camion actualizado a: " + camion.ToString());
-                //}
+            //PRUEBA UPDATE CAMION
+            //var camionUpdated = await cvm.ActualizarAsync(11, "PUC111", "JUAN");
+            //if (camionUpdated.IsSuccess)
+            //{
+            //    CamionDTO camion = camionUpdated.Value;
+            //    Console.WriteLine("camion actualizado a: " + camion.ToString());
+            //}
 
-                //PRUEBA ELIMINAR CAMION
-                //var response = await cvm.EliminarAsync(2);
-                //if (response.IsSuccess)
-                //{
-                //    Console.WriteLine(response.Value);
-                //}
-                //else
-                //{
-                //    Console.WriteLine(response.Error);
-                //}
+            //PRUEBA ELIMINAR CAMION
+            //var response = await cvm.EliminarAsync(2);
+            //if (response.IsSuccess)
+            //{
+            //    Console.WriteLine(response.Value);
+            //}
+            //else
+            //{
+            //    Console.WriteLine(response.Error);
+            //}
 
-                CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
+            CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
 
             //INSERCION PARA CUENTA CORRIENTE DE UN FLETERO FUNCIONANDO CORRECTAMENTE
 

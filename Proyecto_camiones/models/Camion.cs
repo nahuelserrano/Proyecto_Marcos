@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Proyecto_camiones.Presentacion.Models
 {
-    public class Camion
+    public class Camion // entidad camión con sus atributos propios
     {
         public int Id { get; set; }
         public String Patente { get; set; }

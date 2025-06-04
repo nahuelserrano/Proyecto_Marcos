@@ -4,7 +4,7 @@ using Proyecto_camiones.DTOs;
 
 namespace Proyecto_camiones.Presentacion.Models
 {
-    public class Viaje
+    public class Viaje // entidad viaje, con sus atributos propios
     {
 
         public int Id { get; set; }
