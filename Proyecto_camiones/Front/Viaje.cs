@@ -66,6 +66,8 @@ internal class Viaje : Home
 
     private NewRoundPanel avisoPanel = new NewRoundPanel(20);
     private System.Windows.Forms.Button btnAceptarAviso = new System.Windows.Forms.Button();
+    private string filtroActual;
+
 
 
     //Card
@@ -82,6 +84,7 @@ internal class Viaje : Home
         InitializeFilterCards(" ");
         ResaltarBoton(viajesMenu);
 
+        buttonAddNew.Click += ButtonAddNew_Click;
 
         //Hovers
         fleteFilter.MouseEnter += (s, e) => HoverEffect(s, e, true);
@@ -767,6 +770,8 @@ internal class Viaje : Home
 
     private void ButtonNewAddProperties(string filtro)
     {
+        filtroActual = filtro; // Guardamos el filtro actual
+
         cardsContainerFL.Controls.Clear();
 
         buttonAddNew.Visible = true;
@@ -774,8 +779,8 @@ internal class Viaje : Home
         buttonAddNew.BackColor = System.Drawing.Color.FromArgb(200, Color.Black);
         buttonAddNew.Text = "+";
         buttonAddNew.FlatStyle = FlatStyle.Flat;
-        buttonAddNew.FlatAppearance.BorderSize = 3;  // Grosor del borde
-        buttonAddNew.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(218, 218, 28); // Color del borde
+        buttonAddNew.FlatAppearance.BorderSize = 3;
+        buttonAddNew.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(218, 218, 28);
         buttonAddNew.ForeColor = System.Drawing.Color.FromArgb(218, 218, 28);
         buttonAddNew.Font = new Font("Nunito", 24, FontStyle.Bold);
         buttonAddNew.Margin = new Padding((cardsContainerFL.Width - buttonAddNew.Width) / 2, (cardsContainerFL.Height - buttonAddNew.Height) / 2, 0, 0);
@@ -783,9 +788,6 @@ internal class Viaje : Home
         buttonBack.Visible = false;
 
         AddButtonNewAdd();
-
-        buttonAddNew.Click -= (s, e) => FormAddNew(s, e, filtro);
-        buttonAddNew.Click += (s, e) => FormAddNew(s, e, filtro);
     }
 
 
@@ -953,11 +955,13 @@ internal class Viaje : Home
         buttonAcept.ForeColor = System.Drawing.Color.FromArgb(32, 32, 32);
         buttonAcept.Font = new Font("Nunito", 12, FontStyle.Bold);
 
-        buttonAcept.Click -= (s, e) => ButtonAcept_Click1(s, e);
-        buttonAcept.Click += (s, e) => ButtonAcept_Click1(s, e);
+        // Suscribimos solo una vez
+        buttonAcept.Click -= ButtonAcept_Click1;
+        buttonAcept.Click += ButtonAcept_Click1;
 
-        CenterButtonFormSection(); // Para posicionar correctamente al inicio
+        CenterButtonFormSection();
     }
+
 
     private void ButtonAcept_Click1(object sender, EventArgs e)
     {
@@ -1063,4 +1067,10 @@ internal class Viaje : Home
             avisoPanel.Visible = false;
         };
     }
+
+    private void ButtonAddNew_Click(object sender, EventArgs e)
+    {
+        FormAddNew(sender, e, filtroActual);
+    }
+
 }
