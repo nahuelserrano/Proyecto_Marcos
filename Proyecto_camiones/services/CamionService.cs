@@ -133,7 +133,7 @@ namespace Proyecto_camiones.Presentacion.Services
             if(viajes.Count > 0)
             {
                 Console.WriteLine("entramos al if");
-                return Result<string>.Failure("No se pudo eliminar el camión ya que el mismo tiene viajes a cargo");
+                return Result<string>.Failure("No se puede eliminar, hay pagos pendientes");
             }
             bool success = await this._camionRepository.EliminarAsync(id);
             

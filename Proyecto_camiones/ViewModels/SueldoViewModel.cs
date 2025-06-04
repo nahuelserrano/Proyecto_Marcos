@@ -1,4 +1,5 @@
-﻿using Proyecto_camiones.DTOs;
+﻿using NPOI.POIFS.Properties;
+using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Services;
 using Proyecto_camiones.Presentacion.Utils;
@@ -6,6 +7,7 @@ using Proyecto_camiones.Repositories;
 using Proyecto_camiones.Services;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -53,14 +55,13 @@ namespace Proyecto_camiones.ViewModels
         public async Task<Result<List<SueldoDTO>>> ObtenerTodosAsync(string? patente,string? nombreChofer) {
             if (await this.testearConexion())
             {
-                Console.WriteLine("hola view model");
                 Result<List<SueldoDTO>> sueldos = await this.sueldoService.ObtenerTodosAsync(patente, nombreChofer);
-                if(sueldos!=null)
+
+                if (sueldos!=null)
                 return sueldos;
             }
             return Result<List<SueldoDTO>>.Failure("No se pudo establecer la conexión");
         }
-
 
         public async Task<Result<bool>> EliminarAsync(int id)   
         {

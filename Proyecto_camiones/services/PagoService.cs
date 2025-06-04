@@ -8,6 +8,7 @@ using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Utils;
 using Proyecto_camiones.Repositories;
 using Proyecto_camiones.DTOs;
+using System.Windows.Forms;
 
 
 namespace Proyecto_camiones.Services
@@ -88,18 +89,17 @@ namespace Proyecto_camiones.Services
         }
 
 
-
-
-
         public async Task<float> ObtenerSueldoCalculado(int id_chofer, DateOnly calcularDesde, DateOnly calcularHasta)
         {
             Console.WriteLine("id chofer: " + id_chofer);
             List<Pago> pagos = await _pagoRepository.ObtenerPagosAsync(id_chofer, calcularDesde, calcularHasta);
-            Console.WriteLine("lenght de pagos a pagar: "+pagos.Count);
+            Console.WriteLine("lenght de pagos a pagar: " + pagos.Count);
 
             float totalPagar = 0;
+
             foreach (var pago in pagos)
             {
+                MessageBox.Show(pago.Monto_Pagado + " " + pagos.Count);
                 totalPagar += pago.Monto_Pagado;
             }
             Console.WriteLine("total a pagar: " + totalPagar);

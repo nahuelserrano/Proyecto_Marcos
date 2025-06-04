@@ -19,10 +19,11 @@ namespace Proyecto_camiones.DTOs
         public string NombreChofer { get; set; } // Obtenido por join con la entidad Chofer
         public float Km { get; set; }
         public float Tarifa { get; set; }
-        public float PorcentajeChofer { get; set; } // Obtenido por join con la entidad Chofer
-        public string PatenteCamion { get; set; } // Obtenido por join con la entidad Camión
-        public float Total => Tarifa * Kg * 1000; // Calculos propios del negocio que no se persisten en la db
-        public float GananciaChofer => Total * PorcentajeChofer / 100;
+        public float PorcentajeChofer { get; set; } // Porcentaje por defecto del chofer
+
+        public string PatenteCamion { get; set; }
+        public float Total => Tarifa * Kg;
+        public float GananciaChofer => Total * PorcentajeChofer;
 
         public int Camion { get; internal set; }
 

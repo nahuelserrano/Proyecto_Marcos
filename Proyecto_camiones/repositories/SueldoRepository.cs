@@ -89,14 +89,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 if (sueldo == null)
                     return null;
                 sueldo.Pagado = true;
-                //if (fecha_pagado != null)
-                //{
-                //    sueldo.FechaPago = fecha_pagado;
-                //}
-                //else
-                //{
-                //    sueldo.FechaPago = DateOnly.FromDateTime(DateTime.Now);
-                //}
+                MessageBox.Show("pagado");
                     int registrosAfectados = await _context.SaveChangesAsync();
 
                 if (registrosAfectados > 0)

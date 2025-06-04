@@ -36,7 +36,7 @@ namespace Proyecto_camiones.DTOs
             this.PagadoHasta = default;
             this.Id_Chofer = 0;
             this.FechaDePago = default;
-            this.Monto_Pagado = 0.0f;
+            this.Monto_Pagado = 0;
             this.IdCamion = 0;
         }
 
