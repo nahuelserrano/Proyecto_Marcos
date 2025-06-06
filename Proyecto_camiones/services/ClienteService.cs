@@ -54,14 +54,6 @@ namespace Proyecto_camiones.Presentacion.Services
             Cliente cliente = await this._clienteRepository.ObtenerPorIdAsync(clienteId);
             if(cliente != null)
             {
-                List<ViajeMixtoDTO> vfletes = await this._viajeFleteRepository.ObtenerViajesDeUnClienteAsync(clienteId);
-                List<ViajeMixtoDTO> viajes = await this._viajeRepository.ObtenerViajeMixtoPorClienteAsync(clienteId);
-                List<CuentaCorrienteDTO> cuentas = await this._cuentaCorrienteRepository.ObtenerCuentasPorIdClienteAsync(clienteId);
-                if (vfletes == null || viajes == null || cuentas == null) return Result<bool>.Failure("Hubo un error al validar la eliminación del cliente");
-                if(vfletes.Count>0 || viajes.Count > 0 || cuentas.Count>0)
-                {
-                    return Result<bool>.Failure("No se pudo eliminar el cliente ya que el mismo es requerido en viajes o tiene cuentas corrientes registradas");
-                }
                 bool result = await this._clienteRepository.EliminarAsync(clienteId);
                 if (result) return Result<bool>.Success(true);
                 return Result<bool>.Failure("No se pudo eliminar el cliente, error interno en la base de datos");
