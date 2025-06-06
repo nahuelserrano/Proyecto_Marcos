@@ -37,7 +37,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al intentar conectar: {ex.Message}");
                 return false;
             }
         }
@@ -52,7 +51,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 this._context = General.obtenerInstancia();
                 if (!await _context.Database.CanConnectAsync())
                 {
-                    Console.WriteLine("No se puede conectar a la base de datos");
                     return -1; // Mejor retornar un valor específico de error que null
                 }
 
@@ -70,8 +68,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al insertar chofer: {ex.Message}");
-                Console.WriteLine($"Stack trace: {ex.StackTrace}");
                 return -1; // Mejor retornar un valor específico de error
             }
         }
@@ -87,8 +83,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al obtener choferes: {ex.Message}");
-                Console.WriteLine($"Stack trace: {ex.StackTrace}");
                 return new List<Chofer>();
             }
         }
@@ -100,7 +94,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
             {
                 if (id <= 0)
                 {
-                    Console.WriteLine("ID inválido");
                     return null;
                 }
 
@@ -108,7 +101,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
                 if (chofer == null)
                 {
-                    Console.WriteLine($"Chofer con ID {id} no encontrado");
                     return null;
                 }
 
@@ -116,7 +108,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al obtener chofer: {ex.Message}");
                 return null;
             }
         }
@@ -127,20 +118,17 @@ namespace Proyecto_camiones.Presentacion.Repositories
             {
                 if (string.IsNullOrEmpty(nombre))
                 {
-                    Console.WriteLine("Nombre inválido");
                     return null;
                 }
                 var chofer = await _context.Choferes.FirstOrDefaultAsync(c => c.Nombre == nombre);
                 if (chofer == null)
                 {
-                    Console.WriteLine($"Chofer con nombre {nombre} no encontrado");
                     return null;
                 }
                 return chofer;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al obtener chofer: {ex.Message}");
                 return null;
             }
         }
@@ -173,7 +161,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al actualizar chofer: {ex.Message}");
                 return null;
             }
         }
@@ -205,7 +192,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al eliminar chofer: {ex.Message}");
                 return false;
             }
         }

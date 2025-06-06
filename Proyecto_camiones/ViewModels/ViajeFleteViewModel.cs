@@ -26,7 +26,6 @@ namespace Proyecto_camiones.ViewModels
 
         public async Task<bool> TestearConexion()
         {
-            MessageBox.Show("hola");
             return await this.fleteService.ProbarConexionAsync();
         }
 

@@ -11,6 +11,8 @@ public class RoundButton : Button
     {
     }
 
+    public bool Transform { get; internal set; }
+
     protected override void OnPaint(PaintEventArgs pevent)
     {
         base.OnPaint(pevent);

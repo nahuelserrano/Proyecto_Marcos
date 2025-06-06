@@ -251,7 +251,7 @@ namespace Proyecto_camiones.Front
 
             filterTextBox.Size = new Size(120, 30);
             filterTextBox.Font = new Font("Nunito", 10);
-            filterTextBox.PlaceholderText = "Buscar por Nro. Cheque...";
+            filterTextBox.PlaceholderText = "Buscar";
             filterTextBox.Margin = new Padding(5, 10, 5, 10);
 
             filterBtn.Text = "🔍";
@@ -272,6 +272,14 @@ namespace Proyecto_camiones.Front
                         row.Visible = true;
                     }
                     if (row.Cells["nroPersonal"].Value != null && !row.Cells["nroPersonal"].Value.ToString().ToLower().Contains(filterTextBox.Text.ToLower()))
+                    {
+                        row.Visible = false;
+                    }
+                    if (row.Cells["banco"].Value != null && row.Cells["banco"].Value.ToString().ToLower().Contains(filterTextBox.Text.ToLower()))
+                    {
+                        row.Visible = true;
+                    }
+                    if (row.Cells["banco"].Value != null && !row.Cells["banco"].Value.ToString().ToLower().Contains(filterTextBox.Text.ToLower()))
                     {
                         row.Visible = false;
                     }
@@ -504,13 +512,9 @@ namespace Proyecto_camiones.Front
                         {
                             foreach (string campo in campos)
                             {
-                                if (textBox.Text == campo.ToString())
-                                {
-                                    datos.Add(" ");
-                                }
                                 if (textBox.Name == campo)
                                 {
-                                    if (campo == "Fecha")
+                                    if (campo == "fRecibido" || campo == "fechaRetiro" || campo == "fechaVencimiento")
                                     {
                                         TextBox campoFecha = textBox;
                                         DateTime fecha;
@@ -521,6 +525,10 @@ namespace Proyecto_camiones.Front
                                             return;
                                         }
                                     }
+                                }
+                                if (textBox.Text == campo.ToString())
+                                {
+                                    datos.Add(" ");
                                 }
                             }
 
@@ -550,9 +558,6 @@ namespace Proyecto_camiones.Front
             modificar.UseColumnTextForButtonValue = true;
 
             datos.Add(modificar.Text);
-
-            //    cheq.Rows.Add(datos.ToArray());
-
 
             foreach (Control control in formFLTextBox.Controls)
                 {
@@ -588,7 +593,6 @@ namespace Proyecto_camiones.Front
 
                     if (result.IsSuccess)
                     {
-                        MessageBox.Show("eliminado");
                         ShowInfoTable();
                     }
                     else

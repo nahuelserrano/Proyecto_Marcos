@@ -252,8 +252,6 @@ namespace Proyecto_camiones.Presentacion.Services
                     {
                         idChofer = obtenerChoferResult.Value.Id;
                     }
-
-                    Console.WriteLine("if " + idChofer);
                 }
                 else
                 {
@@ -264,7 +262,6 @@ namespace Proyecto_camiones.Presentacion.Services
                         return Result<bool>.Failure(MensajeError.EntidadNoEncontrada(nameof(Chofer), idChofer));
 
                     idChofer = obtenerChoferResult.Value.Id;
-                    Console.WriteLine("Else " + idChofer);
                 }
 
                 Console.WriteLine(idChofer);
@@ -344,8 +341,6 @@ namespace Proyecto_camiones.Presentacion.Services
             try
             {
                 // Verificar que el camión existe usando el servicio
-                
-                
                 var camionResult = await _camionService.ObtenerPorPatenteAsync(patente);
                 if (camionResult.IsSuccess)
                 {

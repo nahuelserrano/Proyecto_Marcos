@@ -69,13 +69,10 @@ public class FormRegistro : Home
 
         //Events
         btnCargar.Click += (s, e) => BtnCargar_Click(s, e, filtro, dato);
-        //btnCargar.Click -= (s, e) => cargaClickEvent(s, e, filtro, dato); // remueve si ya estaba
-        //btnCargar.Click += (s, e) => cargaClickEvent(s, e, filtro, dato); // vuelve a asignar
 
 
         cheq.CellClick += (s, e) => EliminarFila(s, e, filtro, dato);
         cheq.CellClick += (s, e) => ModificarFilaAsync(s, e, dato, filtro);
-        //cheq.CellClick += (s, e) => MarcarComoPagado(s, e, dato, filtro);
 
 
         if (filtro == "sueldo")
@@ -131,7 +128,7 @@ public class FormRegistro : Home
             {
                 foreach (var viaje in result.Value)
                 {
-                    cheq.Rows.Add(viaje.FechaInicio, viaje.LugarPartida, viaje.Destino, viaje.Remito, viaje.Carga, viaje.Km, viaje.Kg, viaje.Tarifa, viaje.PorcentajeChofer, viaje.NombreChofer, viaje.NombreCliente, viaje.Total, viaje.GananciaChofer, viaje.Id);
+                    cheq.Rows.Add(viaje.FechaInicio, viaje.LugarPartida, viaje.Destino, viaje.Remito, viaje.Carga, viaje.Km, viaje.Kg, viaje.Tarifa, viaje.PorcentajeChofer, viaje.NombreCliente, viaje.NombreChofer, viaje.Total, viaje.GananciaChofer, viaje.Id);
 
                 }
             }
@@ -596,7 +593,7 @@ public class FormRegistro : Home
         if (filtro == "Camion")
         {
             ViajeViewModel viajeViewModel = new ViajeViewModel();
-            var resultado = await viajeViewModel.CrearAsync(DateOnly.Parse(datos[0]), datos[1], datos[2], int.Parse(datos[3]), datos[4], float.Parse(datos[6]), datos[10], dato, float.Parse(datos[5]), float.Parse(datos[7]), null, float.Parse(datos[8]));
+            var resultado = await viajeViewModel.CrearAsync(DateOnly.Parse(datos[0]), datos[1], datos[2], int.Parse(datos[3]), datos[4], float.Parse(datos[6]), datos[9], dato, float.Parse(datos[5]), float.Parse(datos[7]), null, float.Parse(datos[8]));
 
             if (resultado.IsSuccess)
             {
@@ -703,7 +700,7 @@ public class FormRegistro : Home
         SueldoViewModel svm = new SueldoViewModel();
 
         // Verificar si la celda clickeada pertenece a la columna "Eliminar"
-        if (e.ColumnIndex == cheq.Columns["Eliminar"].Index && e.RowIndex >= 0)
+        if (e.ColumnIndex == cheq.Columns["Eliminar"]?.Index && e.RowIndex >= 0)
         {
             // Confirmar antes de eliminar (opcional)
             DialogResult resultado = MessageBox.Show("¿Desea eliminar esta fila?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);

@@ -40,7 +40,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al intentar conectar: {ex.Message}");
                 return false;
             }
         }
@@ -67,7 +66,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
                 if (!await _context.Database.CanConnectAsync())
                 {
-                    Console.WriteLine("No se puede conectar a la base de datos");
                     return -1;
                 }
                 var viaje = new Viaje(fechaInicio, lugarPartida, destino, remito, kg,
@@ -80,7 +78,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
                 if (registrosAfectados == 0)
                 {
-                    Console.WriteLine("No se insertó ningún registro");
                     return -1;
                 }
 
@@ -88,11 +85,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
-                Console.WriteLine();
-                Console.WriteLine($"Error al insertar viaje: {ex.Message}");
-                Console.WriteLine();
-                Console.WriteLine($"Stack trace: {ex.StackTrace}");
                 if (ex.InnerException != null)
                 {
                     Console.WriteLine($"Error interno: {ex.InnerException.Message}");
@@ -173,7 +165,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al obtener viaje: {ex.Message}");
                 return null;
             }
         }
@@ -214,13 +205,10 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 })
                   .ToListAsync();
 
-                Console.WriteLine($"Se encontraron {viajes.Count} viajes.");
-
                 return viajes;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al filtrar viajes: {ex.Message}");
                 return null;
             }
         }
@@ -292,7 +280,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
                 if (registorsAfectados == 0)
                 {
-                    Console.WriteLine("No se actualizó ningún registro");
                     return false;
                 }
 
@@ -300,7 +287,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al actualizar campos del viaje: {ex.Message}");
                 return false;
             }
         }
@@ -323,7 +309,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al eliminar viaje: {ex.InnerException}");
                 return false;
             }
         }
@@ -357,13 +342,10 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     })
                     .ToListAsync();
 
-                Console.WriteLine($"Se encontraron {viajes.Count} viajes para el camión con ID {camionId}.");
-
                 return viajes;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al obtener viajes con detalles: {ex.Message}");
                 return null;
             }
         }
@@ -400,9 +382,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
-                MessageBox.Show(ex.InnerException?.Message);
-                Console.WriteLine($"Error al obtener viajes por cliente: {ex.Message}");
                 return null;
             }
         }
@@ -442,7 +421,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al obtener viajes por chofer: {ex.Message}");
                 return null;
             }
         }

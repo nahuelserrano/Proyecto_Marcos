@@ -28,11 +28,8 @@ namespace Proyecto_camiones.Services
         }
         public async Task<int> CrearAsync(int id_chofer, int id_viaje, float monto_pagado)
         {
-
-
             try
             {
-
                 int idPago = await _pagoRepository.InsertarAsync(id_chofer, id_viaje, monto_pagado);
                 if (idPago > 0)
                 {
@@ -40,7 +37,6 @@ namespace Proyecto_camiones.Services
                 }
                 else
                 {
-                    Console.WriteLine(idPago + "pago services");
                     return -2;
                 }
             }
@@ -48,7 +44,6 @@ namespace Proyecto_camiones.Services
             {
                 return -1;
             }
-
         }
 
         public async Task<Result<bool>> ActualizarAsync(int id_chofer, int id_viaje, float monto_pagado) {
@@ -66,7 +61,6 @@ namespace Proyecto_camiones.Services
             catch (Exception ex)
             {
                 return Result<bool>.Failure("Error al actualizar el pago");
-                Console.WriteLine($"Error al actualizar el pago: {ex.Message}");
             }
         }
 
@@ -83,37 +77,21 @@ namespace Proyecto_camiones.Services
             catch (Exception ex)
             {
                 return Result<bool>.Failure("error al marcar como pagados los pagos correspondientes al sueldo");
-                Console.WriteLine($"Error al marcar los pagos: {ex.Message}");
             }
-
         }
 
 
         public async Task<float> ObtenerSueldoCalculado(int id_chofer, DateOnly calcularDesde, DateOnly calcularHasta)
         {
-            Console.WriteLine("id chofer: " + id_chofer);
             List<Pago> pagos = await _pagoRepository.ObtenerPagosAsync(id_chofer, calcularDesde, calcularHasta);
-            Console.WriteLine("lenght de pagos a pagar: " + pagos.Count);
 
             float totalPagar = 0;
 
             foreach (var pago in pagos)
             {
-                MessageBox.Show(pago.Monto_Pagado + " " + pagos.Count);
-                totalPagar += pago.Monto_Pagado;
+                totalPagar += pago.Monto_Pagado/1000;
             }
-            Console.WriteLine("total a pagar: " + totalPagar);
             return totalPagar;
-
-
-
-
-
-
         }
-
-
-
-
     }
 }
