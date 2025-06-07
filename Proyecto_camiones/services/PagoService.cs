@@ -65,8 +65,8 @@ namespace Proyecto_camiones.Services
             }
             catch (Exception ex)
             {
-                return Result<bool>.Failure("Error al actualizar el pago");
                 Console.WriteLine($"Error al actualizar el pago: {ex.Message}");
+                return Result<bool>.Failure("Error al actualizar el pago");
             }
         }
 

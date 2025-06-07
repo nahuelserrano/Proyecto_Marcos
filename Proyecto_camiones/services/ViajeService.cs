@@ -104,6 +104,7 @@ namespace Proyecto_camiones.Presentacion.Services
                 using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
                     int idChofer = -1;
+
                     if(nombreChofer != null)
                     {
                         Result<int> crearChoferResult = await _choferService.CrearAsync(nombreChofer);
@@ -113,9 +114,11 @@ namespace Proyecto_camiones.Presentacion.Services
                         else
                             return Result<int>.Failure(MensajeError.ErrorCreacion(nameof(Chofer)));
                     }
+
                     else
                     {
                         Result<String> obtenerChoferResult = await _camionService.ObtenerChofer(camion);
+
                         if (!obtenerChoferResult.IsSuccess)
                         {
                             return Result<int>.Failure("No se pudo crear el viaje ya que el camión no tiene un chofer asignado y no se ha adjuntado un chofer en el formulario");
@@ -236,38 +239,21 @@ namespace Proyecto_camiones.Presentacion.Services
 
                 if (chofer != null)
                 {
+                    Console.WriteLine($"🔍 Procesando chofer: '{chofer}'");
 
                     var obtenerChoferResult = await _choferService.ObtenerPorNombreAsync(chofer);
 
                     if (!obtenerChoferResult.IsSuccess)
-                    {
-                        var crearChoferResult = await _choferService.CrearAsync(chofer);
-
-                        if (!crearChoferResult.IsSuccess)
-                            return Result<bool>.Failure(MensajeError.ErrorCreacion(nameof(Chofer)));
-
-                        idChofer = crearChoferResult.Value;
-                    }
-                    else
-                    {
-                        idChofer = obtenerChoferResult.Value.Id;
-                    }
-
-                    Console.WriteLine("if " + idChofer);
-                }
-                else
-                {
-
-                    var obtenerChoferResult = await _choferService.ObtenerPorNombreAsync(viajeActual.NombreChofer);
-
-                    if (!obtenerChoferResult.IsSuccess)
-                        return Result<bool>.Failure(MensajeError.EntidadNoEncontrada(nameof(Chofer), idChofer));
+                        return Result<bool>.Failure(MensajeError.ErrorCreacion(nameof(Chofer)));
 
                     idChofer = obtenerChoferResult.Value.Id;
-                    Console.WriteLine("Else " + idChofer);
+                    chofer = obtenerChoferResult.Value.Nombre;
+
+                    Console.WriteLine($"Nombre obtenido por busqueda: {chofer}");
+
                 }
 
-                Console.WriteLine(idChofer);
+                Console.WriteLine($"ID Chofer: {idChofer} - ViajeService.ActualizarAsync");
 
                 using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
@@ -293,7 +279,7 @@ namespace Proyecto_camiones.Presentacion.Services
                     var pagoResult = await _pagoService.ActualizarAsync(idChofer, id,  viajeActual.GananciaChofer);
 
                     if (!pagoResult.IsSuccess)
-                        return Result<bool>.Failure("No se pudo actualizar el pago asociado al viaje");
+                        return Result<bool>.Failure($"No se pudo actualizar el pago asociado al viaje: {pagoResult.Error}");
 
                     scope.Complete();
                     return Result<bool>.Success(true);

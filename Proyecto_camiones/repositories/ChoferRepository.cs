@@ -139,7 +139,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
                         Console.WriteLine($"Chofer con nombre {nombre} no encontrado");
                         return null;
                     }
-
                     Console.WriteLine($"Chofer con nombre {nombre} no encontrado, Match {chofer.Nombre} con una similitud de {similitud}");
                 }
 
