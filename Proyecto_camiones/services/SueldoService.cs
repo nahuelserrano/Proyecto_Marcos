@@ -65,15 +65,11 @@ namespace Proyecto_camiones.Presentacion.Services
 
             if (nombreChofer != null)
             {
-                Console.WriteLine("hola if de chofer");
                 var chofer = await this._choferService.ObtenerPorNombreAsync(nombreChofer.ToUpper());
                 if (!chofer.IsSuccess)
                     return Result<List<SueldoDTO>>.Failure("No se encontró el chofer con el nombre proporcionado.");
-                Console.WriteLine("sobrevivimos a obtener chofer");
                 idChofer = chofer.Value.Id;
             }
-
-            Console.WriteLine("llegamos tan lejos?");
             List<SueldoDTO>? sueldos = await this._sueldoRepository.ObtenerTodosAsync(idCamion, idChofer);
 
 
@@ -128,8 +124,6 @@ namespace Proyecto_camiones.Presentacion.Services
 
             Result<bool> resultadoValidacion = validador.ValidarCompleto();
 
-            Console.WriteLine("resultadoValidacion: " + resultadoValidacion.IsSuccess);
-
             if (!resultadoValidacion.IsSuccess)
                 return Result<int>.Failure(resultadoValidacion.Error);
 
@@ -156,8 +150,6 @@ namespace Proyecto_camiones.Presentacion.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine(ex.InnerException);
                 return Result<int>.Failure("Hubo un error al crear el cheque");
             }
         }

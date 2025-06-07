@@ -21,6 +21,7 @@ using NPOI.SS.Formula.Functions;
 using Proyecto_camiones.Presentacion.Models;
 using MySqlX.XDevAPI.Common;
 using Mysqlx.Session;
+using System.Drawing.Drawing2D;
 
 namespace Proyecto_camiones.Front;
 
@@ -68,23 +69,20 @@ internal class Viaje : Home
     private System.Windows.Forms.Button btnAceptarAviso = new System.Windows.Forms.Button();
     private string filtroActual;
 
-
-
     //Card
     private Panel cardsContainer = new Panel();
     private FlowLayoutPanel cardsContainerFL = new FlowLayoutPanel();
 
     private CamionViewModel cvm = new CamionViewModel();
+    private bool yaCorrido = false;
 
 
 
-    //Constructor
+    //ConstructortenerTodos
     public Viaje()
     {
         InitializeFilterCards(" ");
         ResaltarBoton(viajesMenu);
-
-        buttonAddNew.Click += ButtonAddNew_Click;
 
         //Hovers
         fleteFilter.MouseEnter += (s, e) => HoverEffect(s, e, true);
@@ -96,13 +94,22 @@ internal class Viaje : Home
         camionFilter.MouseEnter += (s, e) => HoverEffect(s, e, true);
         camionFilter.MouseLeave += (s, e) => HoverEffect(s, e, false);
 
-        fleteFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Flete");
-        clienteFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Cliente");
-        camionFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Camion");
+        buttonAddNew.Click += (s, e) => ButtonAddNew_Click(s, e);
+
+        if (!yaCorrido)
+        {
+            fleteFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Flete");
+            clienteFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Cliente");
+            camionFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Camion");
+            yaCorrido = true;
+        }
     }
 
     public Viaje(string filtro)
     {
+
+        buttonAddNew.Click += (s, e) => ButtonAddNew_Click(s, e);
+
         InitializeFilterCards(filtro);
         FunctionFilter(filtro);
         ResaltarBoton(viajesMenu);
@@ -125,9 +132,13 @@ internal class Viaje : Home
 
     private void FunctionFilter(string filtro)
     {
-        fleteFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Flete");
-        clienteFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Cliente");
-        camionFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Camion");
+        if (!yaCorrido)
+        {
+            fleteFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Flete");
+            clienteFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Cliente");
+            camionFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Camion");
+            yaCorrido = true;
+        }
 
         fleteFilter.MouseEnter += (s, e) => HoverEffect(s, e, true);
         fleteFilter.MouseLeave += (s, e) => HoverEffect(s, e, false);
@@ -196,6 +207,8 @@ internal class Viaje : Home
             var resultado = await cvm.ObtenerTodosAsync();
             if (resultado.IsSuccess)
             {
+                camionFilter.ForeColor = Color.Yellow;
+                camionFilter.Font = new Font("Nunito", 20, FontStyle.Regular);
                 CardCamionGenerator("Camion", resultado);
             }
             else
@@ -217,6 +230,8 @@ internal class Viaje : Home
 
             if (resultado.IsSuccess)
             {
+                clienteFilter.ForeColor = Color.Yellow;
+                clienteFilter.Font = new Font("Nunito", 20, FontStyle.Regular);
                 CardClienteGenerator("Cliente", resultado);
             }
             else
@@ -237,6 +252,8 @@ internal class Viaje : Home
             var resultado = await fvm.ObtenerTodosAsync();
             if (resultado.IsSuccess)
             {
+                fleteFilter.ForeColor = Color.Yellow;
+                fleteFilter.Font = new Font("Nunito", 20, FontStyle.Regular);
                 CardFleteGenerator("Flete", resultado);
             }
             else
@@ -310,7 +327,7 @@ internal class Viaje : Home
 
         RoundButton remove = new RoundButton
         {
-            Text = "🗑️",
+            Text = "🗑",
             BackColor = System.Drawing.Color.FromArgb(48, 48, 48),
             ForeColor = System.Drawing.Color.FromArgb(218, 218, 28),
             Size = new Size(30, 40),
@@ -357,7 +374,7 @@ internal class Viaje : Home
 
         campos.Clear();
         camposFaltantesTabla.Clear();
-        this.campos = new List<string> { "Fecha", "Origen", "Destino", "RTO o CPE", "Carga", "Km", "Kg", "Tarifa", "Factura", "Comisión", "Cliente", "Chofer" };
+        this.campos = new List<string> { "Fecha", "Origen", "Destino", "RTO o CPE", "Carga", "Km", "Toneladas", "Tarifa", "Factura", "Comisión", "Cliente", "Chofer" };
         cantCamposTabla = campos.Count();
 
         this.camposFaltantesTabla = new List<string> { "Total", "Total comisión" };
@@ -394,7 +411,7 @@ internal class Viaje : Home
 
         RoundButton remove = new RoundButton
         {
-            Text = "🗑️",
+            Text = "🗑",
             BackColor = System.Drawing.Color.FromArgb(48, 48, 48),
             ForeColor = System.Drawing.Color.FromArgb(218, 218, 28),
             Size = new Size(30, 40),
@@ -440,7 +457,7 @@ internal class Viaje : Home
 
         campos.Clear();
         camposFaltantesTabla.Clear();
-        this.campos = new List<string> { "Fecha", "Origen", "Destino", "RTO o CPE", "Carga", "Km", "Kg", "Tarifa", "Chofer", "Camión", "Flete" };
+        this.campos = new List<string> { "Fecha", "Origen", "Destino", "RTO o CPE", "Carga", "Km", "Toneladas", "Tarifa", "Chofer", "Camión", "Flete" };
         cantCamposTabla = campos.Count();
 
 
@@ -492,7 +509,7 @@ internal class Viaje : Home
 
         RoundButton remove = new RoundButton
         {
-            Text = "🗑️",
+            Text = "🗑",
             BackColor = System.Drawing.Color.FromArgb(48, 48, 48),
             ForeColor = System.Drawing.Color.FromArgb(218, 218, 28),
             Size = new Size(30, 40),
@@ -536,10 +553,9 @@ internal class Viaje : Home
             }
         };
 
-
         campos.Clear();
         camposFaltantesTabla.Clear();
-        this.campos = new List<string> { "Fecha", "Origen", "Destino", "RTO o CPE", "Carga", "Km", "Kg", "Tarifa", "Porcentaje", "Chofer", "Cliente" };
+        this.campos = new List<string> { "Fecha", "Origen", "Destino", "RTO o CPE", "Carga", "Km", "Toneladas", "Tarifa", "Porcentaje", "Cliente", "Chofer" };
         cantCamposTabla = campos.Count();
 
         this.camposFaltantesTabla = new List<string> { "Total", "Monto chofer" };
@@ -557,7 +573,6 @@ internal class Viaje : Home
 
     private void buttonsVisibleOrInvisible(string filtro)
     {
-        buttonBack.Click -= (s, e) => ButtonNewAddProperties(filtro);
         buttonBack.Click += (s, e) => ButtonNewAddProperties(filtro);
         buttonBack.Visible = true;
         buttonAddNew.Visible = false;
@@ -571,7 +586,7 @@ internal class Viaje : Home
     {
         if (!string.IsNullOrWhiteSpace(info))
         {
-            if (filtro == "Camion")
+            if (filtro == "Camión")
             {
                 var idCamion = await cvm.InsertarAsync(info, text);
 
@@ -581,6 +596,7 @@ internal class Viaje : Home
 
                     if (resultado.IsSuccess)
                     {
+                        cardsContainerFL.Controls.Clear();
                         ObtenerTodosSegunFiltro(filtro);
                     }
                     else
@@ -619,6 +635,7 @@ internal class Viaje : Home
 
                     if (resultado.IsSuccess)
                     {
+                        cardsContainerFL.Controls.Clear();
                         ObtenerTodosSegunFiltro(filtro);
                     }
                     else
@@ -655,6 +672,7 @@ internal class Viaje : Home
                     var fletero = await fvm.ObtenerPorIdAsync(idfletero);
                     if (fletero.IsSuccess)
                     {
+                        cardsContainerFL.Controls.Clear();
                         ObtenerTodosSegunFiltro(filtro);
                     }
                     else
@@ -682,18 +700,16 @@ internal class Viaje : Home
                 }
             }
         }
-        // Retornar la lista correspondiente
     }
-
     private void ButtonProperties()
     {
         buttonBack.Text = "Volver";
         buttonBack.Size = new Size(140, 40);
         buttonBack.FlatAppearance.BorderSize = 0;
         buttonBack.FlatStyle = FlatStyle.Flat;
-        buttonBack.Location = new Point(40, 100);
+        buttonBack.Location = new Point(80, 160);
         buttonBack.Font = new Font("Nunito", 16, FontStyle.Regular);
-        buttonBack.BackColor = System.Drawing.Color.FromArgb(48, 48, 48);
+        buttonBack.BackColor = System.Drawing.Color.FromArgb(64, 64, 64);
         buttonBack.ForeColor = System.Drawing.Color.FromArgb(218, 218, 28);
     }
 
@@ -723,6 +739,7 @@ internal class Viaje : Home
             btn.FlatAppearance.MouseOverBackColor = Color.Transparent;
             btn.Margin = new Padding(0, 20, 0, 0);
             btn.TextAlign = ContentAlignment.MiddleCenter;
+            btn.Cursor = Cursors.Hand;
 
             if (j < buttonsNameFilter.Count)
             {
@@ -739,11 +756,9 @@ internal class Viaje : Home
             {
                 ObtenerTodosSegunFiltro(btn.Text);
             };
-
             filterFL.Controls.Add(btn);
         }
     }
-
 
     //CardProperties
     private void CardProperties()
@@ -768,29 +783,6 @@ internal class Viaje : Home
         cardsContainerFL.Location = new Point((cardsContainer.Width - cardsContainerFL.Width) / 2, ((cardsContainer.Height - cardsContainerFL.Height) / 2));
     }
 
-    private void ButtonNewAddProperties(string filtro)
-    {
-        filtroActual = filtro; // Guardamos el filtro actual
-
-        cardsContainerFL.Controls.Clear();
-
-        buttonAddNew.Visible = true;
-        buttonAddNew.Size = new Size(200, 150);
-        buttonAddNew.BackColor = System.Drawing.Color.FromArgb(200, Color.Black);
-        buttonAddNew.Text = "+";
-        buttonAddNew.FlatStyle = FlatStyle.Flat;
-        buttonAddNew.FlatAppearance.BorderSize = 3;
-        buttonAddNew.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(218, 218, 28);
-        buttonAddNew.ForeColor = System.Drawing.Color.FromArgb(218, 218, 28);
-        buttonAddNew.Font = new Font("Nunito", 24, FontStyle.Bold);
-        buttonAddNew.Margin = new Padding((cardsContainerFL.Width - buttonAddNew.Width) / 2, (cardsContainerFL.Height - buttonAddNew.Height) / 2, 0, 0);
-
-        buttonBack.Visible = false;
-
-        AddButtonNewAdd();
-    }
-
-
     //FROM NEW ELEMENT
     private void FormAddNew(object sender, EventArgs e, string filtro)
     {
@@ -803,15 +795,62 @@ internal class Viaje : Home
         ComboBoxProperties();
         ButtonAceptProperties();
     }
+    private void ButtonNewAddProperties(string filtro)
+    {
+        filtroActual = filtro; // Guardamos el filtro actual
+
+        cardsContainerFL.Controls.Clear();
+
+        buttonAddNew.Visible = true;
+        buttonAddNew.Size = new Size(200, 150);
+        buttonAddNew.BackColor = System.Drawing.Color.FromArgb(200, Color.Black);
+        buttonAddNew.Text = "agregar tarjeta";
+        buttonAddNew.Text = buttonAddNew.Text.ToUpper();
+        buttonAddNew.FlatStyle = FlatStyle.Flat;
+        buttonAddNew.FlatAppearance.BorderSize = 3;
+        buttonAddNew.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(76, 175, 80);
+        buttonAddNew.ForeColor = System.Drawing.Color.FromArgb(76, 175, 80);
+        buttonAddNew.Font = new Font("Nunito", 18, FontStyle.Bold);
+        buttonAddNew.Margin = new Padding((cardsContainerFL.Width - buttonAddNew.Width) / 2, (cardsContainerFL.Height - buttonAddNew.Height) / 2, 0, 0);
+
+        buttonBack.Visible = false;
+        buttonAddNew.Cursor = Cursors.Hand;
+
+        AddButtonNewAdd();
+    }   
 
     private void FormProperties()
     {
-        formCargarSection.Size = new Size(200, 300);
-        formCargarSection.Margin = new Padding((cardsContainerFL.Width - formCargarSection.Width) / 2, (cardsContainerFL.Height - formCargarSection.Height) / 2, 0, 0);
-        formCargarSection.BackColor = System.Drawing.Color.FromArgb(48, 48, 48);
+        // Formulario principal con bordes redondeados y sombra
+        formCargarSection.Size = new Size(220, 300);
+        formCargarSection.Margin = new Padding((cardsContainerFL.Width - formCargarSection.Width) / 2,
+                                              (cardsContainerFL.Height - formCargarSection.Height) / 2, 0, 0);
+        formCargarSection.BackColor = System.Drawing.Color.FromArgb(34, 34, 30);
+
         cardsContainerFL.Controls.Add(formCargarSection);
         formCargarSection.Controls.Add(layourFormSection);
         formCargarSection.Controls.Add(buttonAcept);
+
+        // Agregar título al formulario
+        AddFormTitle();
+    }
+
+    private void AddFormTitle()
+    {
+        Label titleLabel = new Label();
+        titleLabel.Text = "Nuevo Registro";
+        titleLabel.Font = new Font("Segoe UI", 16, FontStyle.Bold);
+        titleLabel.ForeColor = Color.White;
+        titleLabel.AutoSize = true;
+        titleLabel.Location = new Point((formCargarSection.Width - titleLabel.PreferredWidth) / 2, 15);
+        formCargarSection.Controls.Add(titleLabel);
+
+        // Línea decorativa debajo del título
+        Panel separatorLine = new Panel();
+        separatorLine.Size = new Size(200, 2);
+        separatorLine.BackColor = System.Drawing.Color.FromArgb(76, 175, 80);
+        separatorLine.Location = new Point((formCargarSection.Width - separatorLine.Width) / 2, 50);
+        formCargarSection.Controls.Add(separatorLine);
     }
 
     private void LayoutFormProperties(string filtro)
@@ -821,20 +860,17 @@ internal class Viaje : Home
         layourFormSection.AutoSize = true;
         layourFormSection.AutoSizeMode = AutoSizeMode.GrowAndShrink;
 
-        // Centramos después de la carga
-        formCargarSection.Resize += (s, e) => CenterLayoutFormSection();
-
         // Llamar al método después de agregar los elementos
         AddElementsOfLayoutFrom(filtro);
-        CenterLayoutFormSection(); // Para posicionar correctamente al inicio
+        CenterLayoutFormSection(80); // Para posicionar correctamente al inicio
     }
 
-    private void CenterLayoutFormSection()
+    private void CenterLayoutFormSection(int posicionH)
     {
         if (layourFormSection.Parent != null)
         {
             layourFormSection.Location = new Point(
-                (formCargarSection.Width - layourFormSection.Width) / 2, 60
+                (formCargarSection.Width - layourFormSection.Width) / 2, posicionH
             );
         }
     }
@@ -842,9 +878,10 @@ internal class Viaje : Home
     {
         select.Size = new Size(120, 30);
         select.Items.Clear();
-        select.Items.Add("Cliente");
-        select.Items.Add("Flete");
-        select.Items.Add("Camion");
+
+        select.Items.AddRange(new string[] { "Cliente", "Camión", "Flete" });
+        select.Font = new Font("Segoe UI", 10);
+        select.Location = new Point(30, 55);
 
         select.SelectedIndex = 0;
 
@@ -856,15 +893,16 @@ internal class Viaje : Home
     {
         string seleccion = select.SelectedItem?.ToString();
 
-
-        if (seleccion == "Camion")
+        if (seleccion == "Camión")
         {
-            AddElementsOfLayoutFrom("Camion");
-        } else
+            CenterLayoutFormSection(60);
+            AddElementsOfLayoutFrom("Camión");
+        }
+        else
         {
             AddElementsOfLayoutFrom(" ");
+            CenterLayoutFormSection(80);
         }
-         CenterLayoutFormSection(); // Volvés a centrar
     }
 
 
@@ -875,12 +913,12 @@ internal class Viaje : Home
 
         campo.Add("Seleccionar");
 
-        if (filtro != "Camion")
+        if (filtro != "Camión")
         {
             campo.Add("Nombre");
         }
 
-        if(filtro == "Camion")
+        if (filtro == "Camión")
         {
             campo.Add("Patente");
             campo.Add("Chofer");
@@ -888,22 +926,22 @@ internal class Viaje : Home
 
         foreach (string i in campo)
         {
-             Label labelForm = LabelProperties(i);
+            Label labelForm = LabelProperties(i);
 
-             layourFormSection.Controls.Add(labelForm);
-             AddTheRestComponents(i);
+            layourFormSection.Controls.Add(labelForm);
+            AddTheRestComponents(i);
         }
     }
 
     private Label LabelProperties(string nombreCampo)
     {
         Label ll = new Label();
-
         ll.Text = nombreCampo;
-        ll.Font = new Font("Nunito", 10, FontStyle.Regular);
-        ll.ForeColor = System.Drawing.Color.FromArgb(217, 217, 217);
-        ll.BackColor = Color.Transparent;
+        ll.ForeColor = Color.White;
+        ll.Font = new Font("Segoe UI", 10);
+        ll.Location = new Point(30, 30);
         ll.AutoSize = true;
+        this.Controls.Add(ll);
 
         return ll;
     }
@@ -914,7 +952,7 @@ internal class Viaje : Home
         {
             layourFormSection.Controls.Add(select);
         }
-        else if(nombreCampo == "Nombre" || nombreCampo == "Patente")
+        else if (nombreCampo == "Nombre" || nombreCampo == "Patente")
         {
             layourFormSection.Controls.Add(textBoxNombre);
         }
@@ -945,15 +983,23 @@ internal class Viaje : Home
 
     private void ButtonAceptProperties()
     {
-        buttonAcept.BackColor = System.Drawing.Color.FromArgb(218, 218, 28);
-        buttonAcept.AutoSize = true;
-        buttonAcept.Height = 30;
+        buttonAcept.Size = new Size(120, 35);
+        buttonAcept.BackColor = System.Drawing.Color.FromArgb(76, 175, 80);
         buttonAcept.Text = "Cargar";
         buttonAcept.FlatStyle = FlatStyle.Flat;
         buttonAcept.FlatAppearance.BorderSize = 0;
-        buttonAcept.Margin = new Padding(132, 10, 0, 0);
-        buttonAcept.ForeColor = System.Drawing.Color.FromArgb(32, 32, 32);
-        buttonAcept.Font = new Font("Nunito", 12, FontStyle.Bold);
+        buttonAcept.ForeColor = Color.White;
+        buttonAcept.Font = new Font("Segoe UI", 12, FontStyle.Bold);
+        buttonAcept.Cursor = Cursors.Hand;
+
+        // Efectos hover
+        buttonAcept.MouseEnter += (s, e) => {
+            buttonAcept.BackColor = System.Drawing.Color.FromArgb(67, 160, 71);
+            buttonAcept.Transform = true; // Efecto de elevación
+        };
+        buttonAcept.MouseLeave += (s, e) => {
+            buttonAcept.BackColor = System.Drawing.Color.FromArgb(76, 175, 80);
+        };
 
         // Suscribimos solo una vez
         buttonAcept.Click -= ButtonAcept_Click1;
@@ -962,7 +1008,17 @@ internal class Viaje : Home
         CenterButtonFormSection();
     }
 
-
+    private void CenterButtonFormSection()
+    {
+        if (buttonAcept.Parent != null && formCargarSection != null)
+        {
+            buttonAcept.Location = new Point(
+                (formCargarSection.Width - buttonAcept.Width) / 2,
+                230
+                // Posición Y fija
+            );
+        }
+    }
     private void ButtonAcept_Click1(object sender, EventArgs e)
     {
         if (select.SelectedItem.ToString() == null)
@@ -983,16 +1039,7 @@ internal class Viaje : Home
         GetFilterInfoAsync(seleccion, textBoxNombre.Text, textBoxChofer.Text);
     }
 
-    private void CenterButtonFormSection()
-    {
-        if (buttonAcept.Parent != null)
-        {
-            buttonAcept.Location = new Point(
-                (formCargarSection.Width - buttonAcept.Width) / 2, 210
-            );
-        }
-    }
-
+    //CARTEL AVISO
     private void CartelAviso(string mensaje)
     {
         ButtonAceptAvisoProperties();

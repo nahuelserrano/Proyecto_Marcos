@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-06-2025 a las 19:21:27
+-- Tiempo de generación: 05-06-2025 a las 18:21:56
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -46,7 +46,9 @@ INSERT INTO `camion` (`idcamion`, `patente`, `nombre_chofer`) VALUES
 (17, 'KJH921', 'Vicky'),
 (21, 'pruebaagregar1', 'nuevoPrueba1'),
 (22, 'pruebaagregar2', 'nuevoPrueba2'),
-(24, 'HOLA1234', 'Vicky');
+(24, 'HOLA1234', 'Vicky'),
+(25, 'JJJ999', 'inventado'),
+(26, 'HHH888', 'inventado2');
 
 -- --------------------------------------------------------
 
@@ -73,7 +75,8 @@ CREATE TABLE `cheque` (
 
 INSERT INTO `cheque` (`idcheque`, `fecha_ingreso`, `nro_cheque`, `monto`, `banco`, `fecha_cobro`, `nombre`, `numero_personalizado`, `fecha_vencimieto`, `entregado_a`) VALUES
 (1, '2025-05-19', 54321, 2000, 'Banco Control', '2025-06-18', '', NULL, '2025-06-18', NULL),
-(2, '2025-05-19', 12345, 6000, 'Banco Nación', '2025-06-18', '', NULL, '2025-06-18', NULL);
+(2, '2025-05-19', 12345, 6000, 'Banco Nación', '2025-06-18', '', NULL, '2025-06-18', NULL),
+(3, '2021-12-12', 1234, 150000, 'Banco Nacion', '2021-12-12', 'Marcos', 1234, '2022-12-12', 'cristian');
 
 -- --------------------------------------------------------
 
@@ -96,7 +99,9 @@ INSERT INTO `chofer` (`idChofer`, `nombre`) VALUES
 (5, 'Vicky'),
 (6, 'nuevoPrueba1'),
 (10, 'nuevoPrueba2'),
-(12, 'Vicky');
+(12, 'Vicky'),
+(13, 'inventado'),
+(14, 'inventado2');
 
 -- --------------------------------------------------------
 
@@ -121,7 +126,9 @@ INSERT INTO `cliente` (`idCliente`, `nombre`) VALUES
 (6, 'CARGA PESADA SA'),
 (7, 'DISTRIBUIDORA TANDIL'),
 (8, 'PRUEBACLIENTE1'),
-(20, 'CLIENTEPRUEBA');
+(20, 'CLIENTEPRUEBA'),
+(21, 'PRUEBACORRECCION'),
+(22, 'PRUEBACORRECCION2');
 
 -- --------------------------------------------------------
 
@@ -172,7 +179,9 @@ INSERT INTO `fletero` (`idFletero`, `nombre`) VALUES
 (4, 'JUAN'),
 (6, 'CARLOS'),
 (7, 'ANITA'),
-(9, 'FLETEROPRUEBA');
+(9, 'FLETEROPRUEBA'),
+(12, 'FLETERONUEVOO'),
+(13, 'MARCELO');
 
 -- --------------------------------------------------------
 
@@ -194,7 +203,9 @@ CREATE TABLE `pago` (
 --
 
 INSERT INTO `pago` (`idpago`, `monto`, `idChofer`, `pagado`, `idViaje`, `idSueldo`) VALUES
-(1, 0, 4, 0, 9, NULL);
+(1, 0, 4, 0, 9, NULL),
+(2, 4000000000, 5, 0, 11, NULL),
+(3, 4000000000, 5, 0, 12, NULL);
 
 -- --------------------------------------------------------
 
@@ -222,21 +233,6 @@ INSERT INTO `sueldo` (`idsueldo`, `idchofer`, `fecha_desde`, `fecha_hasta`, `fec
 (6, 4, '2025-04-01', '2025-04-30', NULL, 84848, 14, 0),
 (9, 4, '2025-05-01', '2025-05-31', NULL, 45000, NULL, 0),
 (10, NULL, '2025-05-01', '2025-05-31', '2025-05-29', 100000, 2, 1);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `usuario`
---
-
-CREATE TABLE `usuario` (
-  `idUsuario` int(11) NOT NULL,
-  `nombre` varchar(45) NOT NULL,
-  `apellido` varchar(45) NOT NULL,
-  `email` varchar(45) NOT NULL,
-  `contrasenia` varchar(45) NOT NULL,
-  `username` varchar(45) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -269,7 +265,9 @@ INSERT INTO `viaje` (`idviaje`, `partida`, `origen`, `destino`, `remito`, `kg`, 
 (4, '2025-04-12', 'Córdoba', 'Mendoza', 10004, 8000, 'Maquinaria', 4, 5, 700, 35, 'carlos', 0.18),
 (7, '2025-04-20', 'Buenos Aires', 'Córdoba', 10007, 9000, 'Electrónicos', 7, 11, 700, 36, 'roman', 0.18),
 (8, '2025-04-22', 'Rosario', 'Santa Fe', 10008, 6700, 'Papel', 7, 12, 160, 15, 'Pepito', 0.18),
-(9, '2025-04-28', 'Tandil', 'Azul', 123, 30, 'trigo', 2, 11, 350.5, 5000, 'JUAN', 0);
+(9, '2025-04-28', 'Tandil', 'Azul', 123, 30, 'trigo', 2, 11, 350.5, 5000, 'JUAN', 0),
+(11, '2025-05-29', 'Tandil', 'Necochea', 8888, 500, 'trigo', 3, 17, 789, 40000, 'Vicky', 20),
+(12, '2025-05-30', 'Tandil', 'Azul', 9999, 500, 'maiz', 4, 17, 789, 40000, 'Vicky', 20);
 
 -- --------------------------------------------------------
 
@@ -303,7 +301,8 @@ INSERT INTO `viaje_flete` (`idviaje_flete`, `origen`, `destino`, `remito`, `carg
 (13, 'Tandil', 'Necochea', 40, 'trigo', 120, 130, 19000, 12345, 5, 6, 'Chofer de Carlos', 10, '2025-04-11'),
 (15, 'Tandil', 'Ayacucho', 19292, 'trigo', 150, 300, 19000, 12244, 3, 1, 'Justo', 10, '2025-04-15'),
 (16, 'Pilar', 'Tandil', 2000, 'soja', 650, 880, 35000, 1235, 3, 2, 'Patricio', 15, '2025-04-10'),
-(17, 'Tandil', 'Azul', 40, 'trigo', 120, 130, 19000, 9998, 3, 6, 'Chofer de Carlos', 10, '2025-04-11');
+(17, 'Tandil', 'Azul', 40, 'trigo', 120, 130, 19000, 9998, 3, 6, 'Chofer de Carlos', 10, '2025-04-11'),
+(18, 'Tandil', 'MDP', 1245, 'trigo', 200, 500, 20000, 382882, 4, 2, 'lauty', 10, '2025-01-12');
 
 --
 -- Índices para tablas volcadas
@@ -365,12 +364,6 @@ ALTER TABLE `sueldo`
   ADD KEY `fk_sueldo_camion_idx` (`idCamion`);
 
 --
--- Indices de la tabla `usuario`
---
-ALTER TABLE `usuario`
-  ADD PRIMARY KEY (`idUsuario`);
-
---
 -- Indices de la tabla `viaje`
 --
 ALTER TABLE `viaje`
@@ -394,25 +387,25 @@ ALTER TABLE `viaje_flete`
 -- AUTO_INCREMENT de la tabla `camion`
 --
 ALTER TABLE `camion`
-  MODIFY `idcamion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `idcamion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT de la tabla `cheque`
 --
 ALTER TABLE `cheque`
-  MODIFY `idcheque` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idcheque` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `chofer`
 --
 ALTER TABLE `chofer`
-  MODIFY `idChofer` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `idChofer` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `idCliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `idCliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT de la tabla `cuenta_corriente`
@@ -424,13 +417,13 @@ ALTER TABLE `cuenta_corriente`
 -- AUTO_INCREMENT de la tabla `fletero`
 --
 ALTER TABLE `fletero`
-  MODIFY `idFletero` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `idFletero` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `pago`
 --
 ALTER TABLE `pago`
-  MODIFY `idpago` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idpago` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `sueldo`
@@ -439,22 +432,16 @@ ALTER TABLE `sueldo`
   MODIFY `idsueldo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT de la tabla `usuario`
---
-ALTER TABLE `usuario`
-  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT de la tabla `viaje`
 --
 ALTER TABLE `viaje`
-  MODIFY `idviaje` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `idviaje` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `viaje_flete`
 --
 ALTER TABLE `viaje_flete`
-  MODIFY `idviaje_flete` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `idviaje_flete` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Restricciones para tablas volcadas

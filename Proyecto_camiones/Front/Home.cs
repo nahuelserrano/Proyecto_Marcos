@@ -10,7 +10,6 @@ public class Home : Form
     //NavBar
     protected MenuStrip menuStrip = new MenuStrip();
 
-    //protected ToolStripMenuItem homeMenu = new ToolStripMenuItem("home");
     protected ToolStripMenuItem viajesMenu = new ToolStripMenuItem("viajes");
     protected ToolStripMenuItem chequesMenu = new ToolStripMenuItem("cheques");
     private string filtro = " ";
@@ -26,7 +25,6 @@ public class Home : Form
         //Redirections
         chequesMenu.Click += (sender, e) => OpenForm<Cheque>();
         viajesMenu.Click += (sender, e) => OpenForm<Viaje>();
-        //homeMenu.Click += (sender, e) => OpenForm<Form1>();
     }
 
 
@@ -62,8 +60,8 @@ public class Home : Form
 
         if (menuItem != null)
         {
-            menuItem.Font = new Font("Nunito", 18, FontStyle.Regular);
-            menuItem.ForeColor = System.Drawing.Color.FromArgb(194, 194, 119);
+            menuItem.Font = new Font("Nunito", 18, FontStyle.Underline);
+            menuItem.ForeColor = System.Drawing.Color.FromArgb(218, 218, 28);
         }
     }
 
@@ -75,7 +73,6 @@ public class Home : Form
         InitializeToolBar();
         InitializeBackImage();
         InitializeIconoApp();
-        //InitializeIconoUser();
     }
     private void InitializeToolBar()
     {
@@ -154,12 +151,8 @@ public class Home : Form
     //Adds
     private void AddItemsToMenu()
     {
-        //menuStrip.Items.Add(homeMenu);
         menuStrip.Items.Add(viajesMenu);
         menuStrip.Items.Add(chequesMenu);
-        //menuStrip.Items.Add(userMenu);
-
-        //userMenu.DropDownItems.Add(closeSession);
 
         this.MainMenuStrip = menuStrip;
         this.Controls.Add(menuStrip);
@@ -171,10 +164,8 @@ public class Home : Form
     //NavProperties
     private void ItemsCapitalLetter()
     {
-        //homeMenu.Text = homeMenu.Text.ToUpper();
         viajesMenu.Text = viajesMenu.Text.ToUpper();
         chequesMenu.Text = chequesMenu.Text.ToUpper();
-        //userMenu.Text = userMenu.Text.ToUpper();
     }
     private void MenuProperties()
     {
@@ -188,22 +179,18 @@ public class Home : Form
     }
     private void ItemsColor()
     {
-        //homeMenu.ForeColor = System.Drawing.Color.FromArgb(218, 218, 28);
         viajesMenu.ForeColor = System.Drawing.Color.FromArgb(218, 218, 28);
         chequesMenu.ForeColor = System.Drawing.Color.FromArgb(218, 218, 28);
-        //userMenu.ForeColor = System.Drawing.Color.FromArgb(218, 218, 28);
-        //closeSession.ForeColor = System.Drawing.Color.FromArgb(141, 138, 138);
+
+        //viajesMenu.ForeColor = System.Drawing.Color.FromArgb(76, 175, 80);
+        //chequesMenu.ForeColor = System.Drawing.Color.FromArgb(76, 175, 80);
     }
     private void MarginToItems()
     {
         int x = this.Width;
         int y = x / 10;
-        //int t = (menuStrip.Width - userMenu.Width);
 
-        //homeMenu.Margin = new Padding(y, 0, 0, 0);
         viajesMenu.Margin = new Padding(y, 0, 0, 0);
         chequesMenu.Margin = new Padding(y, 0, 0, 0);
-        //userMenu.Margin = new Padding(t, 0, 0, 0);
-        //closeSession.Margin = new Padding(0, 10, 0, 0);
     }
 }

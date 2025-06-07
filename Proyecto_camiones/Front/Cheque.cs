@@ -16,6 +16,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using TextBox = System.Windows.Forms.TextBox;
 using Button = System.Windows.Forms.Button;
 using Proyecto_camiones.ViewModels;
+using NPOI.SS.UserModel;
 
 namespace Proyecto_camiones.Front
 {
@@ -85,9 +86,26 @@ namespace Proyecto_camiones.Front
 
             if (result.IsSuccess)
             {
+                foreach (DataGridViewColumn col in cheq.Columns)
+                {
+                    if (col.HeaderText.Equals("Pesos")) // O el nombre correcto de tu columna de monto
+                    {
+                        col.DefaultCellStyle.Format = "N2";
+                        col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                    }
+                }
+
+                // SEGUNDO: Agregar las filas con los datos convertidos
                 foreach (var cheque in result.Value)
                 {
-                    cheq.Rows.Add(cheque.FechaIngresoCheque, cheque.Banco, cheque.NumeroCheque, cheque.Monto, cheque.Nombre, cheque.NumeroPersonalizado, cheque.EntregadoA, cheque.FechaCobro, cheque.FechaVencimiento, cheque.Id);
+                    // Convertir el monto a decimal si viene como string
+                    decimal pesosDecimal = 0;
+
+                    if (cheque.Monto is float)
+                    {
+                        pesosDecimal = (decimal)cheque.Monto;
+                    }
+                    cheq.Rows.Add(cheque.FechaIngresoCheque, cheque.Banco, cheque.NumeroCheque, pesosDecimal, cheque.Nombre, cheque.NumeroPersonalizado, cheque.EntregadoA, cheque.FechaCobro, cheque.FechaVencimiento, cheque.Id);
                 }
             }
 
@@ -251,7 +269,7 @@ namespace Proyecto_camiones.Front
 
             filterTextBox.Size = new Size(120, 30);
             filterTextBox.Font = new Font("Nunito", 10);
-            filterTextBox.PlaceholderText = "Buscar por Nro. Cheque...";
+            filterTextBox.PlaceholderText = "Buscar";
             filterTextBox.Margin = new Padding(5, 10, 5, 10);
 
             filterBtn.Text = "🔍";
@@ -275,6 +293,14 @@ namespace Proyecto_camiones.Front
                     {
                         row.Visible = false;
                     }
+                    if (row.Cells["banco"].Value != null && row.Cells["banco"].Value.ToString().ToLower().Contains(filterTextBox.Text.ToLower()))
+                    {
+                        row.Visible = true;
+                    }
+                    if (row.Cells["banco"].Value != null && !row.Cells["banco"].Value.ToString().ToLower().Contains(filterTextBox.Text.ToLower()))
+                    {
+                        row.Visible = false;
+                    }
                 }
             };
         }
@@ -284,28 +310,26 @@ namespace Proyecto_camiones.Front
         private void FormProperties(int cant)
         {
             formPanel.Size = new Size(100 * cant, 80);
-            formPanel.AutoScroll = true;
-            formPanel.HorizontalScroll.Enabled = true;
-            formPanel.HorizontalScroll.Visible = true;
-            formPanel.VerticalScroll.Enabled = false;
-            formPanel.VerticalScroll.Visible = false;
+            formPanel.BackColor = Color.FromArgb(45, 45, 48); // Gris oscuro moderno
+            formPanel.BorderStyle = System.Windows.Forms.BorderStyle.None;
 
             this.Resize += (s, e) =>
             {
                 formPanel.Location = new Point((this.Width - formPanel.Width) / 2, 100);
             };
-
-            formPanel.BackColor = System.Drawing.Color.FromArgb(200, Color.Black);
         }
         private void LayoutFormProperties(int cant)
         {
             formFLTextBox = PropertiesLayoutForm();
             formFLLabel = PropertiesLayoutForm();
 
-            formFLTextBox.Size = new Size(formPanel.Width, 50);
+            formFLTextBox.Size = new Size(formPanel.Width - 10, 55);
             formFLTextBox.Dock = DockStyle.Bottom;
+            formFLTextBox.Margin = new Padding(5);
 
-            formFLLabel.Size = new Size(formPanel.Width, 25);
+            formFLLabel.Size = new Size(formPanel.Width - 10, 30);
+            formFLLabel.Dock = DockStyle.Top;
+            formFLLabel.Margin = new Padding(5);
 
             formPanel.Controls.Add(formFLLabel);
             formPanel.Controls.Add(formFLTextBox);
@@ -314,11 +338,11 @@ namespace Proyecto_camiones.Front
         private FlowLayoutPanel PropertiesLayoutForm()
         {
             FlowLayoutPanel formFL = new FlowLayoutPanel();
-
             formFL.FlowDirection = FlowDirection.LeftToRight;
             formFL.WrapContents = false;
             formFL.BackColor = Color.Transparent;
-
+            formFL.AutoScroll = true;
+            formFL.Padding = new Padding(5, 0, 5, 0);
             return formFL;
         }
 
@@ -330,9 +354,9 @@ namespace Proyecto_camiones.Front
             foreach (string campo in campos)
             {
                 Panel campoPanel = PropertiesFormPanel();
-
                 TextBox textBoxForm = CreateTextBoxAndProperties(campo);
                 Label labelForm = CreateLabelAndProperties(campo);
+
 
                 formFLLabel.Controls.Add(labelForm);
 
@@ -341,15 +365,12 @@ namespace Proyecto_camiones.Front
             }
         }
 
-
-
         private Panel PropertiesFormPanel()
         {
             Panel campoTextBox = new Panel();
-            campoTextBox.Size = new Size(105, 30);
-            campoTextBox.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            //campoTextBox.Dock = DockStyle.Top;
-
+            campoTextBox.Size = new Size(105, 40);
+            campoTextBox.Margin = new Padding(2, 0, 2, 0);
+            campoTextBox.BackColor = Color.Transparent;
 
             return campoTextBox;
         }
@@ -357,45 +378,48 @@ namespace Proyecto_camiones.Front
         private Label CreateLabelAndProperties(object campo)
         {
             Label ll = new Label();
-
             ll.Text = campo.ToString();
-            ll.Font = new Font("Nunito", 12, FontStyle.Regular);
-            ll.ForeColor = System.Drawing.Color.FromArgb(224, 224, 224);
+            ll.Font = new Font("Segoe UI", 10, FontStyle.Regular);
+            ll.ForeColor = Color.FromArgb(220, 220, 220);
             ll.BackColor = Color.Transparent;
-            ll.Margin = new Padding(10, 0, 0, 0);
+            ll.Size = new Size(105, 25);
             ll.TextAlign = ContentAlignment.MiddleCenter;
+            ll.Margin = new Padding(2, 0, 2, 0);
+
+            // Efecto de sombra del texto
+            ll.FlatStyle = FlatStyle.Flat;
 
             return ll;
         }
         private TextBox CreateTextBoxAndProperties(object campo)
         {
             TextBox textBoxCampo = new TextBox();
-            textBoxCampo.Font = new Font("Nunito", 10, FontStyle.Regular);
-            textBoxCampo.BackColor = System.Drawing.Color.FromArgb(153, 145, 145);
-            textBoxCampo.Multiline = true;
-            textBoxCampo.Width = 200;
-            textBoxCampo.Height = 20;
-            textBoxCampo.MinimumSize = new Size(200, 40);
-            textBoxCampo.BorderStyle = BorderStyle.FixedSingle;
-            textBoxCampo.Margin = new Padding(0, 0, 0, 20);
-            textBoxCampo.ForeColor = System.Drawing.Color.Gray;
-            textBoxCampo.TextAlign = HorizontalAlignment.Left;
-            textBoxCampo.ForeColor = System.Drawing.Color.FromArgb(81, 77, 77);
 
-            string placeholderDefault = !string.IsNullOrWhiteSpace(campo?.ToString()) ? campo.ToString() : "Placeholder";
+            // Estilo base
+            textBoxCampo.Font = new Font("Segoe UI", 9, FontStyle.Regular);
+            textBoxCampo.BackColor = Color.FromArgb(60, 60, 65);
+            textBoxCampo.ForeColor = Color.FromArgb(220, 220, 220);
+            textBoxCampo.Size = new Size(110, 35);
+            textBoxCampo.Margin = new Padding(0, 80, 0, 0);
+            textBoxCampo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            textBoxCampo.Dock = DockStyle.None;
+            textBoxCampo.Anchor = AnchorStyles.None; // o la configuración que necesites
 
-            //PlaceHolersProperties
+            // Placeholder mejorado
             string placeholderText = campo.ToString();
             textBoxCampo.Text = placeholderText;
+            textBoxCampo.ForeColor = Color.FromArgb(150, 150, 150);
 
+            // Eventos mejorados
             textBoxCampo.GotFocus += (s, e) =>
             {
                 if (textBoxCampo.Text == placeholderText)
                 {
                     textBoxCampo.Text = "";
-
-                    textBoxCampo.ForeColor = Color.Black;
+                    textBoxCampo.ForeColor = Color.FromArgb(220, 220, 220);
                 }
+                // Efecto de foco
+                textBoxCampo.BackColor = Color.FromArgb(70, 70, 75);
             };
 
             textBoxCampo.LostFocus += (s, e) =>
@@ -403,18 +427,13 @@ namespace Proyecto_camiones.Front
                 if (string.IsNullOrWhiteSpace(textBoxCampo.Text))
                 {
                     textBoxCampo.Text = placeholderText;
-                    textBoxCampo.ForeColor = System.Drawing.Color.FromArgb(81, 77, 77);
+                    textBoxCampo.ForeColor = Color.FromArgb(150, 150, 150);
                 }
+                // Restaurar color
+                textBoxCampo.BackColor = Color.FromArgb(60, 60, 65);
             };
-
-            textBoxCampo.SizeChanged += (s, e) =>
-            {
-                textBoxCampo.Height = 40;
-            };
-
             return textBoxCampo;
         }
-
 
 
         //ButtonProperties
@@ -504,13 +523,9 @@ namespace Proyecto_camiones.Front
                         {
                             foreach (string campo in campos)
                             {
-                                if (textBox.Text == campo.ToString())
-                                {
-                                    datos.Add(" ");
-                                }
                                 if (textBox.Name == campo)
                                 {
-                                    if (campo == "Fecha")
+                                    if (campo == "fRecibido" || campo == "fechaRetiro" || campo == "fechaVencimiento")
                                     {
                                         TextBox campoFecha = textBox;
                                         DateTime fecha;
@@ -521,6 +536,10 @@ namespace Proyecto_camiones.Front
                                             return;
                                         }
                                     }
+                                }
+                                if (textBox.Text == campo.ToString())
+                                {
+                                    datos.Add(" ");
                                 }
                             }
 
@@ -534,6 +553,7 @@ namespace Proyecto_camiones.Front
 
             if (result.IsSuccess)
             {
+                LimpiarFormulario();
                 ShowInfoTable();
             }
 
@@ -550,9 +570,6 @@ namespace Proyecto_camiones.Front
             modificar.UseColumnTextForButtonValue = true;
 
             datos.Add(modificar.Text);
-
-            //    cheq.Rows.Add(datos.ToArray());
-
 
             foreach (Control control in formFLTextBox.Controls)
                 {
@@ -573,6 +590,18 @@ namespace Proyecto_camiones.Front
             }
         }
 
+        public void LimpiarFormulario()
+        {
+            foreach (Control control in formFLTextBox.Controls)
+            {
+                if (control is Panel panel && panel.Controls[0] is TextBox textBox)
+                {
+                    textBox.Text = "";
+                    textBox.BackColor = Color.FromArgb(60, 60, 65);
+                }
+            }
+        }
+
         private async Task eliminarFila(object sender, DataGridViewCellEventArgs e)
         {
             // Verificar si la celda clickeada pertenece a la columna "Eliminar"
@@ -588,7 +617,6 @@ namespace Proyecto_camiones.Front
 
                     if (result.IsSuccess)
                     {
-                        MessageBox.Show("eliminado");
                         ShowInfoTable();
                     }
                     else

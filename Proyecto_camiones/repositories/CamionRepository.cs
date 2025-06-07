@@ -41,7 +41,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
             catch (Exception ex)
             {
                 // Si ocurre un error (por ejemplo, si la base de datos no está disponible)
-                MessageBox.Show($"Error al intentar conectar: {ex.Message}");
                 return false;
             }
         }
@@ -54,7 +53,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 this._context = General.obtenerInstancia();
                 if (!await _context.Database.CanConnectAsync())
                 {
-                    Console.WriteLine("No se puede conectar a la base de datos");
                     return null;
                 }
 
@@ -63,8 +61,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 // Agregar el camión a la base de datos (esto solo marca el objeto para insertar)
                 _context.Camiones.Add(camion);
 
-                Console.WriteLine($"SQL a ejecutar: {_context.ChangeTracker.DebugView.LongView}");
-
                 // Guardar los cambios en la base de datos (aquí se genera el SQL real y se ejecuta)
                 int registrosAfectados = await _context.SaveChangesAsync();
 
@@ -72,16 +68,10 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 {
                     return camion;
                 }
-                Console.WriteLine("No se insertó ningún registro");
                 return null;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al insertar camión: {ex.Message}");
-                // Para debuggear, también es útil ver la excepción completa:
-                Console.WriteLine($"Stack trace: {ex.StackTrace}");
-                MessageBox.Show("Error de conexión" + ex.Message);
-                MessageBox.Show("Error de conexión" + ex.InnerException);
                 return null;
             }
         }
@@ -102,8 +92,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al insertar camión: {ex.Message}");
-                Console.WriteLine($"Stack trace: {ex.StackTrace}");
                 return null;
             }
 
@@ -136,7 +124,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al actualizar camión: {ex.Message}");
                 return false;
             }
         }
@@ -155,8 +142,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                Console.WriteLine(e.InnerException);
                 return null;
             }
 
@@ -168,7 +153,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
             {
                 this._context = General.obtenerInstancia();
                 var camion = await _context.Camiones.FindAsync(id);
-                Console.WriteLine("se encontró el camión");
 
                 if (camion == null)
                     return false;
@@ -181,8 +165,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                Console.WriteLine(e.InnerException);
                 return false;
             }
         }
@@ -196,8 +178,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                Console.WriteLine(e.InnerException);
                 return null;
             }
         }

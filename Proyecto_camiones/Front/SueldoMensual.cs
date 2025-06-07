@@ -36,7 +36,7 @@ internal class SueldoMensual : FormRegistro
         {
             this.Hide();
 
-            List<string> campos = new List<string> { "Fecha", "Origen", "Destino", "RTO o CPE", "Carga", "Km", "Kg", "Tarifa", "Porcentaje", "Chofer", "Cliente" };
+            List<string> campos = new List<string> { "Fecha", "Origen", "Destino", "RTO o CPE", "Carga", "Km", "Kg", "Tarifa", "Porcentaje", "Cliente", "Chofer" };
             int cantCamposTabla = campos.Count;
 
             List<string> camposFaltantesTabla = new List<string> { "Total", "Monto chofer" };

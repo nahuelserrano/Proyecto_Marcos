@@ -19,8 +19,8 @@ namespace Proyecto_camiones.Presentacion.Services
         private readonly ClienteService _clienteService;
         private readonly ChoferService _choferService;
         private readonly PagoService _pagoService;
-        private int Porcentaje = 100;
-        private int Tonelada = 1000;
+        //private int Porcentaje = 100;
+        //private int Tonelada = 1000;
 
         public ViajeService(
             ViajeRepository viajeRepository,
@@ -143,9 +143,10 @@ namespace Proyecto_camiones.Presentacion.Services
                         return Result<int>.Failure(MensajeError.ErrorCreacion(nameof(Viaje)));
 
                     // Crear el pago asociado al viaje
-                    float pagoMonto = tarifa * kg * porcentajeChofer * Tonelada / Porcentaje;
+                    float pagoMonto = tarifa * kg * porcentajeChofer;
+                   // *Tonelada / Porcentaje
 
-                    if(idChofer != -1)
+                    if (idChofer != -1)
                     {
                         int idPago = await _pagoService.CrearAsync(idChofer, id, pagoMonto);
 
@@ -330,8 +331,6 @@ namespace Proyecto_camiones.Presentacion.Services
             try
             {
                 // Verificar que el camión existe usando el servicio
-                
-                
                 var camionResult = await _camionService.ObtenerPorPatenteAsync(patente);
                 if (camionResult.IsSuccess)
                 {
