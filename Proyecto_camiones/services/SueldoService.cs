@@ -55,17 +55,18 @@ namespace Proyecto_camiones.Presentacion.Services
             {
                 var camion = await this._camionService.ObtenerPorPatenteAsync(patenteCamion.ToUpper());
 
-                if (camion == null)
+                if (!camion.IsSuccess)
                     return Result<List<SueldoDTO>>.Failure("No se encontró el camión con la patente proporcionada.");
+                Console.WriteLine("sobrevivimos a obtener camion");
                 idCamion = camion.Value.Id;
             }
 
-            int idChofer = -1;
+            int? idChofer = -1;
 
             if (nombreChofer != null)
             {
                 var chofer = await this._choferService.ObtenerPorNombreAsync(nombreChofer.ToUpper());
-                if (chofer == null)
+                if (!chofer.IsSuccess)
                     return Result<List<SueldoDTO>>.Failure("No se encontró el chofer con el nombre proporcionado.");
                 idChofer = chofer.Value.Id;
             }

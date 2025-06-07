@@ -374,7 +374,7 @@ internal class Viaje : Home
 
         campos.Clear();
         camposFaltantesTabla.Clear();
-        this.campos = new List<string> { "Fecha", "Origen", "Destino", "RTO o CPE", "Carga", "Km", "Kg", "Tarifa", "Factura", "Comisión", "Cliente", "Chofer" };
+        this.campos = new List<string> { "Fecha", "Origen", "Destino", "RTO o CPE", "Carga", "Km", "Toneladas", "Tarifa", "Factura", "Comisión", "Cliente", "Chofer" };
         cantCamposTabla = campos.Count();
 
         this.camposFaltantesTabla = new List<string> { "Total", "Total comisión" };
@@ -457,7 +457,7 @@ internal class Viaje : Home
 
         campos.Clear();
         camposFaltantesTabla.Clear();
-        this.campos = new List<string> { "Fecha", "Origen", "Destino", "RTO o CPE", "Carga", "Km", "Kg", "Tarifa", "Chofer", "Camión", "Flete" };
+        this.campos = new List<string> { "Fecha", "Origen", "Destino", "RTO o CPE", "Carga", "Km", "Toneladas", "Tarifa", "Chofer", "Camión", "Flete" };
         cantCamposTabla = campos.Count();
 
 
@@ -555,7 +555,7 @@ internal class Viaje : Home
 
         campos.Clear();
         camposFaltantesTabla.Clear();
-        this.campos = new List<string> { "Fecha", "Origen", "Destino", "RTO o CPE", "Carga", "Km", "Kg", "Tarifa", "Porcentaje", "Cliente", "Chofer" };
+        this.campos = new List<string> { "Fecha", "Origen", "Destino", "RTO o CPE", "Carga", "Km", "Toneladas", "Tarifa", "Porcentaje", "Cliente", "Chofer" };
         cantCamposTabla = campos.Count();
 
         this.camposFaltantesTabla = new List<string> { "Total", "Monto chofer" };
