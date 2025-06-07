@@ -124,6 +124,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                         FechaCobro = cheque.FechaCobro,
                         Nombre = cheque.Nombre,
                         NumeroPersonalizado = cheque.NumeroPersonalizado,
+                        FechaVencimiento = cheque.FechaVencimiento,
                         EntregadoA = cheque.EntregadoA // MAPEAR NUEVO CAMPO
                     };
                     return nuevo;
