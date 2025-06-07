@@ -116,15 +116,35 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
+<<<<<<< HEAD
                 if (string.IsNullOrEmpty(nombre))
                 {
                     return null;
                 }
+=======
+>>>>>>> 6ecf0cf0c56e1aa981fa948d45318028dd2782ff
                 var chofer = await _context.Choferes.FirstOrDefaultAsync(c => c.Nombre == nombre);
+
                 if (chofer == null)
                 {
+<<<<<<< HEAD
                     return null;
+=======
+                    var match = await ObtenerPorSimilitudAsync(nombre);
+
+                    chofer = match.Value.chofer;
+                    double similitud = match.Value.similitud;
+
+                    if (chofer == null || similitud < 75.0)
+                    {
+                        Console.WriteLine($"Chofer con nombre {nombre} no encontrado");
+                        return null;
+                    }
+
+                    Console.WriteLine($"Chofer con nombre {nombre} no encontrado, Match {chofer.Nombre} con una similitud de {similitud}");
+>>>>>>> 6ecf0cf0c56e1aa981fa948d45318028dd2782ff
                 }
+
                 return chofer;
             }
             catch (Exception ex)
@@ -195,5 +215,96 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 return false;
             }
         }
+
+        /// <summary>
+        /// Búsqueda híbrida: Combina LIKE y similitud calculada en C#
+        /// Mejor balance entre performance y precisión
+        /// </summary>
+        public async Task<(Chofer chofer, double similitud)?> ObtenerPorSimilitudAsync(string nombreBuscado, double umbralMinimo = 75.0)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(nombreBuscado))
+                    return null;
+
+                // Paso 1: Filtrado rápido con LIKE (reduce el dataset)
+                var candidatos = await BuscarChoferConLikeAsync(nombreBuscado);
+
+                if (!candidatos.Any())
+                {
+                    // Paso 2: Si no hay resultados con LIKE, buscar en todos
+                    candidatos = await _context.Choferes.ToListAsync();
+                }
+
+                // Paso 3: Calcular similitud en memoria (solo para candidatos filtrados)
+                var mejorMatch = candidatos
+                    .Select(c => new {
+                        Chofer = c,
+                        Similitud = CalcularSimilitudSimple(nombreBuscado, c.Nombre)
+                    })
+                    .Where(x => x.Similitud >= umbralMinimo)
+                    .OrderByDescending(x => x.Similitud)
+                    .FirstOrDefault();
+
+                return mejorMatch != null ? (mejorMatch.Chofer, mejorMatch.Similitud) : null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error en búsqueda híbrida: {ex.Message}");
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Cálculo de similitud simple y rápido (más eficiente que Levenshtein completo)
+        /// </summary>
+        private double CalcularSimilitudSimple(string s1, string s2)
+        {
+            if (string.IsNullOrEmpty(s1) || string.IsNullOrEmpty(s2))
+                return 0.0;
+
+            s1 = s1.ToLower();
+            s2 = s2.ToLower();
+
+            // Coincidencia exacta
+            if (s1 == s2) return 100.0;
+
+            // Conteo de caracteres comunes
+            var caracteresComunes = s1.Intersect(s2).Count();
+            var maxLength = Math.Max(s1.Length, s2.Length);
+
+            return (double)caracteresComunes / maxLength * 100.0;
+        }
+
+        /// <summary>
+        /// Busca choferes usando LIKE pattern matching - Simple y efectivo
+        /// </summary>
+        public async Task<List<Chofer>> BuscarChoferConLikeAsync(string nombreBuscado)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(nombreBuscado))
+                    return new List<Chofer>();
+
+                // Crear patrones de búsqueda flexibles
+                string patron1 = $"%{nombreBuscado}%";
+                string patron2 = $"{nombreBuscado}%";
+                string patron3 = $"%{nombreBuscado}";
+
+                var choferes = await _context.Choferes
+                    .Where(c => EF.Functions.Like(c.Nombre, patron1) ||
+                                EF.Functions.Like(c.Nombre, patron2) ||
+                                EF.Functions.Like(c.Nombre, patron3))
+                    .ToListAsync();
+
+                return choferes;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error en búsqueda LIKE: {ex.Message}");
+                return new List<Chofer>();
+            }
+        }
+
     }
 }

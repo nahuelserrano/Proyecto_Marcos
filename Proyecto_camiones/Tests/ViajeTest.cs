@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Models;
@@ -805,5 +806,331 @@ namespace Proyecto_camiones.Tests
             var eliminacion = await viajeVM.EliminarAsync(id);
             Console.WriteLine(eliminacion.IsSuccess ? "Eliminado con éxito" : $"Error al eliminar: {eliminacion.Error}");
         }
+
+        // Agregar estos métodos a la clase ViajeTest existente
+
+        #region Pruebas Fuzzy Matching - Métodos simples para ViajeTest
+
+        /// <summary>
+        /// Ejecuta pruebas básicas de fuzzy matching para choferes
+        /// </summary>
+        public static async Task ProbarFuzzyMatchingBasico()
+        {
+            Console.WriteLine("\n======= PRUEBAS BÁSICAS DE FUZZY MATCHING =======\n");
+
+            await ProbarActualizarViajeConTypoChofer();
+            await ProbarCrearViajeConChoferSimilar();
+            await ProbarVariosErroresEnNombreChofer();
+
+            Console.WriteLine("\n======= FIN PRUEBAS FUZZY MATCHING =======\n");
+        }
+
+        /// <summary>
+        /// Prueba actualizar un viaje con un typo en el nombre del chofer
+        /// </summary>
+        public static async Task ProbarActualizarViajeConTypoChofer()
+        {
+            Console.WriteLine("\n=== PRUEBA: ACTUALIZAR VIAJE CON TYPO EN CHOFER ===");
+            ViajeViewModel vvm = new ViajeViewModel();
+            DateOnly fecha = new DateOnly(2025, 4, 28);
+
+            try
+            {
+                // Crear un viaje inicial
+                var resultadoCreacion = await vvm.CrearAsync(
+                    fechaInicio: fecha,
+                    lugarPartida: "Tandil",
+                    destino: "Buenos Aires",
+                    remito: 99991,
+                    carga: "Test Fuzzy",
+                    kg: 1000f,
+                    cliente: "Cliente1",
+                    camion: "HIJ429",
+                    km: 350f,
+                    tarifa: 5000f,
+                    nombreChofer: "Juan Pérez",
+                    porcentajeChofer: 0.18f
+                );
+
+                if (!resultadoCreacion.IsSuccess)
+                {
+                    Console.WriteLine($"[✗] Error creando viaje: {resultadoCreacion.Error}");
+                    return;
+                }
+
+                int idViaje = resultadoCreacion.Value;
+                Console.WriteLine($"[✓] Viaje creado con ID: {idViaje}, chofer: Juan Pérez");
+
+                // Actualizar con typo en el chofer (debería encontrar "Juan Pérez" usando fuzzy)
+                // NOTA: Esto depende de que hayas implementado el fuzzy matching en ViajeService
+                var resultadoActualizacion = await vvm.ActualizarAsync(
+                    id: idViaje,
+                    nombreChofer: "Juab Pérez" // Typo: 'b' en lugar de 'n'
+                );
+
+                if (resultadoActualizacion.IsSuccess)
+                {
+                    Console.WriteLine($"[✓] FUZZY EXITOSO: 'Juab Pérez' fue corregido automáticamente");
+
+                    // Verificar el viaje actualizado
+                    var viajeVerificacion = await vvm.ObtenerPorIdAsync(idViaje);
+                    if (viajeVerificacion.IsSuccess)
+                    {
+                        Console.WriteLine($"[✓] Chofer final en BD: '{viajeVerificacion.Value.NombreChofer}'");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"[✗] FUZZY FALLÓ: {resultadoActualizacion.Error}");
+                }
+
+                // Limpiar
+                await vvm.EliminarAsync(idViaje);
+                Console.WriteLine($"[🗑] Viaje de prueba eliminado");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[✗] EXCEPCIÓN: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Prueba crear un viaje con un chofer que tiene nombre similar a uno existente
+        /// </summary>
+        public static async Task ProbarCrearViajeConChoferSimilar()
+        {
+            Console.WriteLine("\n=== PRUEBA: CREAR VIAJE CON CHOFER SIMILAR ===");
+            ViajeViewModel vvm = new ViajeViewModel();
+            DateOnly fecha = new DateOnly(2025, 4, 28);
+
+            try
+            {
+                // Crear viaje con chofer que ya existe pero con error tipográfico
+                var resultado = await vvm.CrearAsync(
+                    fechaInicio: fecha,
+                    lugarPartida: "Tandil",
+                    destino: "La Plata",
+                    remito: 99992,
+                    carga: "Test Fuzzy 2",
+                    kg: 800f,
+                    cliente: "Cliente1",
+                    camion: "HIJ429",
+                    km: 200f,
+                    tarifa: 3000f,
+                    nombreChofer: "Pepito",  // Existe "Pepito" en la BD
+                    porcentajeChofer: 0.18f
+                );
+
+                if (resultado.IsSuccess)
+                {
+                    Console.WriteLine($"[✓] Viaje creado con chofer exacto: Pepito");
+                    await vvm.EliminarAsync(resultado.Value);
+                }
+
+                // Ahora con un typo
+                var resultado2 = await vvm.CrearAsync(
+                    fechaInicio: fecha,
+                    lugarPartida: "Tandil",
+                    destino: "Necochea",
+                    remito: 99993,
+                    carga: "Test Fuzzy 3",
+                    kg: 800f,
+                    cliente: "Cliente1",
+                    camion: "HIJ429",
+                    km: 200f,
+                    tarifa: 3000f,
+                    nombreChofer: "Pepoto",  // Typo: 'o' en lugar de 'i'
+                    porcentajeChofer: 0.18f
+                );
+
+                if (resultado2.IsSuccess)
+                {
+                    Console.WriteLine($"[✓] FUZZY EN CREACIÓN: 'Pepoto' debería usar chofer existente");
+
+                    var viajeCreado = await vvm.ObtenerPorIdAsync(resultado2.Value);
+                    if (viajeCreado.IsSuccess)
+                    {
+                        Console.WriteLine($"[✓] Chofer asignado: '{viajeCreado.Value.NombreChofer}'");
+                    }
+
+                    await vvm.EliminarAsync(resultado2.Value);
+                }
+                else
+                {
+                    Console.WriteLine($"[✗] Error con fuzzy en creación: {resultado2.Error}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[✗] EXCEPCIÓN: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Prueba varios tipos de errores en nombres de choferes
+        /// </summary>
+        public static async Task ProbarVariosErroresEnNombreChofer()
+        {
+            Console.WriteLine("\n=== PRUEBA: VARIOS TIPOS DE ERRORES ===");
+            ViajeViewModel vvm = new ViajeViewModel();
+            DateOnly fecha = new DateOnly(2025, 4, 28);
+
+            var casosTest = new List<(string choferConError, string descripcion)>
+    {
+        ("Pepit", "Eliminación de carácter"),
+        ("Peppito", "Inserción de carácter"),
+        ("Pepato", "Sustitución de carácter"),
+        ("pepito", "Cambio de mayúsculas"),
+        ("PEPITO", "Todo mayúsculas")
+    };
+
+            int contador = 99994;
+
+            foreach (var (choferError, descripcion) in casosTest)
+            {
+                try
+                {
+                    Console.WriteLine($"\n--- Probando: {descripcion} ('{choferError}') ---");
+
+                    var resultado = await vvm.CrearAsync(
+                        fechaInicio: fecha,
+                        lugarPartida: "Tandil",
+                        destino: "Olavarría",
+                        remito: contador++,
+                        carga: $"Test {descripcion}",
+                        kg: 500f,
+                        cliente: "Cliente1",
+                        camion: "HIJ429",
+                        km: 100f,
+                        tarifa: 2000f,
+                        nombreChofer: choferError,
+                        porcentajeChofer: 0.18f
+                    );
+
+                    if (resultado.IsSuccess)
+                    {
+                        var viajeCreado = await vvm.ObtenerPorIdAsync(resultado.Value);
+                        if (viajeCreado.IsSuccess)
+                        {
+                            Console.WriteLine($"[✓] {descripcion}: '{choferError}' → '{viajeCreado.Value.NombreChofer}'");
+                        }
+
+                        await vvm.EliminarAsync(resultado.Value);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"[✗] {descripcion} falló: {resultado.Error}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[✗] EXCEPCIÓN en {descripcion}: {ex.Message}");
+                }
+            }
+        }
+
+        #endregion
+
+        #region Métodos de prueba directa del ChoferRepository
+
+        /// <summary>
+        /// Prueba directa de los métodos fuzzy del ChoferRepository
+        /// </summary>
+        public static async Task ProbarMetodosFuzzyRepository()
+        {
+            Console.WriteLine("\n======= PRUEBAS DIRECTAS DE CHOFER REPOSITORY =======\n");
+
+            try
+            {
+                var choferRepo = new ChoferRepository();
+
+                // Casos de prueba para búsqueda fuzzy
+                var busquedasTest = new List<(string busqueda, string descripcion)>
+                {
+                    ("Juab", "Typo simple: b por n"),
+                    ("Pepoto", "Typo simple: o por i"),
+                    ("carlos", "Minúsculas"),
+                    ("PEPITO", "Mayúsculas"),
+                    ("Pepit", "Carácter faltante"),
+                    ("Marria", "Carácter duplicado"),
+                    ("Jośe", "Carácter especial")
+                };
+
+                Console.WriteLine("=== BÚSQUEDA CON LIKE ===");
+                foreach (var (busqueda, descripcion) in busquedasTest)
+                {
+                    try
+                    {
+                        var resultadosLike = await choferRepo.BuscarChoferConLikeAsync(busqueda);
+                        Console.WriteLine($"[LIKE] {descripcion}: '{busqueda}' → {resultadosLike.Count} resultados");
+
+                        foreach (var chofer in resultadosLike.Take(3)) // Solo primeros 3
+                        {
+                            Console.WriteLine($"    - {chofer.Nombre}");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"[✗] Error LIKE '{busqueda}': {ex.Message}");
+                    }
+                }
+
+                Console.WriteLine("\n=== BÚSQUEDA HÍBRIDA ===");
+                foreach (var (busqueda, descripcion) in busquedasTest)
+                {
+                    try
+                    {
+                        var resultadoHibrido = await choferRepo.ObtenerPorSimilitudAsync(busqueda, 70.0);
+
+                        if (resultadoHibrido.HasValue)
+                        {
+                            Console.WriteLine($"[✓] {descripcion}: '{busqueda}' → '{resultadoHibrido.Value.chofer.Nombre}' ({resultadoHibrido.Value.similitud:F1}%)");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"[✗] {descripcion}: '{busqueda}' → Sin coincidencias");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"[✗] Error HÍBRIDO '{busqueda}': {ex.Message}");
+                    }
+                }
+
+                Console.WriteLine("\n=== PRUEBA DE RENDIMIENTO ===");
+                var inicio = DateTime.Now;
+                int busquedasRealizadas = 0;
+                int busquedasExitosas = 0;
+
+                foreach (var (busqueda, _) in busquedasTest)
+                {
+                    try
+                    {
+                        var resultado = await choferRepo.ObtenerPorSimilitudAsync(busqueda, 70.0);
+                        busquedasRealizadas++;
+
+                        if (resultado.HasValue)
+                            busquedasExitosas++;
+                    }
+                    catch
+                    {
+                        busquedasRealizadas++;
+                    }
+                }
+
+                var tiempoTotal = DateTime.Now - inicio;
+                Console.WriteLine($"📊 Búsquedas: {busquedasRealizadas}, Exitosas: {busquedasExitosas}");
+                Console.WriteLine($"📊 Tiempo total: {tiempoTotal.TotalMilliseconds:F2} ms");
+                Console.WriteLine($"📊 Promedio: {tiempoTotal.TotalMilliseconds / busquedasRealizadas:F2} ms/búsqueda");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[✗] ERROR GENERAL: {ex.Message}");
+            }
+        }
+
+        #endregion
+
+
     }
 }
