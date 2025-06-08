@@ -124,6 +124,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                         FechaCobro = cheque.FechaCobro,
                         Nombre = cheque.Nombre,
                         NumeroPersonalizado = cheque.NumeroPersonalizado,
+                        FechaVencimiento = cheque.FechaVencimiento,
                         EntregadoA = cheque.EntregadoA // MAPEAR NUEVO CAMPO
                     };
                     return nuevo;
@@ -151,6 +152,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     FechaCobro = c.FechaCobro,
                     Nombre = c.Nombre,
                     NumeroPersonalizado = c.NumeroPersonalizado,
+                    FechaVencimiento = c.FechaVencimiento,
                     EntregadoA = c.EntregadoA // MAPEAR NUEVO CAMPO
                 }).ToListAsync();
 
@@ -244,6 +246,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                         FechaCobro = cheque.FechaCobro,
                         Nombre = cheque.Nombre,
                         NumeroPersonalizado = cheque.NumeroPersonalizado,
+                        FechaVencimiento = cheque.FechaVencimiento,
                         EntregadoA = cheque.EntregadoA // MAPEAR NUEVO CAMPO
                     };
                     return nuevo;

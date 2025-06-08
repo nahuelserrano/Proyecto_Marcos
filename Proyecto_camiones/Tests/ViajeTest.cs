@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Models;
@@ -805,5 +806,340 @@ namespace Proyecto_camiones.Tests
             var eliminacion = await viajeVM.EliminarAsync(id);
             Console.WriteLine(eliminacion.IsSuccess ? "Eliminado con éxito" : $"Error al eliminar: {eliminacion.Error}");
         }
+
+        #region Pruebas Fuzzy Matching - SOLO ACTUALIZACIÓN
+
+        /// <summary>
+        /// Ejecuta pruebas básicas de fuzzy matching SOLO para actualización de viajes
+        /// </summary>
+        public static async Task ProbarFuzzyMatchingActualizacion()
+        {
+            Console.WriteLine("\n======= PRUEBAS FUZZY MATCHING - SOLO ACTUALIZACIÓN =======\n");
+
+            await ProbarActualizarViajeConVariosTypos();
+            await ProbarActualizarConChoferesDiferentes();
+            await ProbarActualizarConCasosExtremos();
+
+            Console.WriteLine("\n======= FIN PRUEBAS FUZZY ACTUALIZACIÓN =======\n");
+        }
+
+        /// <summary>
+        /// Prueba actualizar viajes con diferentes tipos de errores tipográficos
+        /// </summary>
+        public static async Task ProbarActualizarViajeConVariosTypos()
+        {
+            Console.WriteLine("\n=== PRUEBA: ACTUALIZAR VIAJE CON VARIOS TYPOS ===");
+            ViajeViewModel vvm = new ViajeViewModel();
+
+            // Casos de prueba basados en choferes que existen en tu BD
+            var casosTypo = new List<(string typo, string esperado, string descripcion)>
+            {
+                ("Juab Pérez", "Juan Pérez", "Sustitución simple: b por n"),
+                ("juan pérez", "Juan Pérez", "Minúsculas"),
+                ("JUAN PÉREZ", "Juan Pérez", "Mayúsculas"),
+                ("Carlos Gómes", "Carlos Gómez", "Sustitución: s por z"),
+                ("carlos gómez", "Carlos Gómez", "Todo minúsculas"),
+                ("Luis Martínes", "Luis Martínez", "Sustitución: s por z"),
+                ("Pedro Sánche", "Pedro Sánchez", "Eliminación de carácter"),
+                ("Roberto Díazz", "Roberto Díaz", "Inserción de carácter")
+            };
+
+            foreach (var (typo, esperado, descripcion) in casosTypo)
+            {
+                try
+                {
+                    Console.WriteLine($"\n--- Probando: {descripcion} ('{typo}' → '{esperado}') ---");
+
+                    // Usar un viaje existente de tu BD (ID 1 existe)
+                    var resultadoActualizacion = await vvm.ActualizarAsync(
+                        id: 1, // Viaje que ya existe en tu BD
+                        nombreChofer: typo
+                    );
+
+                    if (resultadoActualizacion.IsSuccess)
+                    {
+                        // Verificar que el fuzzy matching funcionó
+                        var viajeVerificacion = await vvm.ObtenerPorIdAsync(1);
+                        if (viajeVerificacion.IsSuccess)
+                        {
+                            string choferFinal = viajeVerificacion.Value.NombreChofer;
+                            bool fuzzyFunciono = choferFinal == esperado;
+
+                            if (fuzzyFunciono)
+                            {
+                                Console.WriteLine($"[✅ FUZZY] {descripcion}: '{typo}' → '{choferFinal}' ✓");
+                            }
+                            else
+                            {
+                                Console.WriteLine($"[❌ FALLÓ] {descripcion}: '{typo}' → '{choferFinal}' (esperado: '{esperado}')");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine($"[❌ ERROR] No se pudo verificar el viaje: {viajeVerificacion.Error}");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"[❌ ERROR] Actualización falló: {resultadoActualizacion.Error}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[❌ EXCEPCIÓN] {descripcion}: {ex.Message}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Prueba actualizar el mismo viaje con diferentes choferes
+        /// </summary>
+        public static async Task ProbarActualizarConChoferesDiferentes()
+        {
+            Console.WriteLine("\n=== PRUEBA: CAMBIAR CHOFER CON FUZZY MATCHING ===");
+            ViajeViewModel vvm = new ViajeViewModel();
+
+            // Secuencia de choferes para probar
+            var choferesPrueba = new List<(string input, string esperado, string descripcion)>
+            {
+                ("Juan Pérez", "Juan Pérez", "Chofer original (exacto)"),
+                ("Qarlos Gómez", "Carlos Gómez", "Cambio con typo"),
+                ("luis martínez", "Luis Martínez", "Cambio a minúsculas"),
+                ("Pedro Sánche", "Pedro Sánchez", "Cambio con eliminación"),
+                ("Roberto Díazz", "Roberto Díaz", "Cambio con inserción"),
+                ("Juab Pérez", "Juan Pérez", "Volver al original con typo")
+            };
+
+            foreach (var (input, esperado, descripcion) in choferesPrueba)
+            {
+                try
+                {
+                    Console.WriteLine($"\n--- {descripcion}: '{input}' → '{esperado}' ---");
+
+                    var resultado = await vvm.ActualizarAsync(
+                        id: 2, // Usar viaje ID 2
+                        nombreChofer: input
+                    );
+
+                    if (resultado.IsSuccess)
+                    {
+                        var verificacion = await vvm.ObtenerPorIdAsync(2);
+                        if (verificacion.IsSuccess)
+                        {
+                            string choferFinal = verificacion.Value.NombreChofer;
+                            bool correcto = choferFinal == esperado;
+                            string status = correcto ? "✅" : "❌";
+
+                            Console.WriteLine($"[{status}] {descripcion}: '{input}' → '{choferFinal}'");
+
+                            if (!correcto)
+                            {
+                                Console.WriteLine($"    ⚠ Esperado: '{esperado}'");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"[❌] Error: {resultado.Error}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[❌] Excepción: {ex.Message}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Prueba casos extremos y límites del fuzzy matching en actualización
+        /// </summary>
+        public static async Task ProbarActualizarConCasosExtremos()
+        {
+            Console.WriteLine("\n=== PRUEBA: CASOS EXTREMOS EN ACTUALIZACIÓN ===");
+            ViajeViewModel vvm = new ViajeViewModel();
+
+            var casosExtremos = new List<(string input, string descripcion, bool deberiaFuncionar)>
+            {
+                ("J", "Una sola letra", false),
+                ("Juan", "Solo nombre", true),
+                ("Pérez", "Solo apellido", true),
+                ("XYZ123", "Nombre inexistente", false),
+                ("Jhuan Peres", "Múltiples errores", true),
+                ("Carlos", "Coincidencia parcial", true),
+                ("", "String vacío", false),
+                ("   ", "Solo espacios", false),
+                ("Roberto", "Solo primer nombre", true)
+            };
+
+            foreach (var (input, descripcion, deberiaFuncionar) in casosExtremos)
+            {
+                try
+                {
+                    Console.WriteLine($"\n--- {descripcion}: '{input}' ---");
+
+                    var resultado = await vvm.ActualizarAsync(
+                        id: 3, // Usar viaje ID 3
+                        nombreChofer: input
+                    );
+
+                    if (resultado.IsSuccess)
+                    {
+                        var verificacion = await vvm.ObtenerPorIdAsync(3);
+                        if (verificacion.IsSuccess)
+                        {
+                            string choferFinal = verificacion.Value.NombreChofer;
+
+                            if (deberiaFuncionar)
+                            {
+                                // Verificar si encontró un chofer existente o creó uno nuevo
+                                var chofersExistentes = new[] { "Juan Pérez", "Carlos Gómez", "Luis Martínez", "Pedro Sánchez", "Roberto Díaz" };
+                                bool esExistente = chofersExistentes.Contains(choferFinal);
+
+                                if (esExistente)
+                                {
+                                    Console.WriteLine($"[✅ FUZZY] {descripcion}: '{input}' → '{choferFinal}' (encontrado)");
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"[🆕 NUEVO] {descripcion}: '{input}' → '{choferFinal}' (creado)");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine($"[⚠ INESPERADO] {descripcion}: '{input}' → '{choferFinal}' (no debería funcionar)");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (deberiaFuncionar)
+                        {
+                            Console.WriteLine($"[❌ ERROR] {descripcion}: {resultado.Error}");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"[✅ ESPERADO] {descripcion}: Falló como esperado - {resultado.Error}");
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[❌ EXCEPCIÓN] {descripcion}: {ex.Message}");
+                }
+            }
+        }
+
+        #endregion
+
+        #region Métodos de prueba directa del ChoferRepository - ADAPTADO
+
+        /// <summary>
+        /// Prueba directa de los métodos fuzzy del ChoferRepository - ADAPTADO PARA NUEVA BD
+        /// </summary>
+        public static async Task ProbarMetodosFuzzyRepository()
+        {
+            Console.WriteLine("\n======= PRUEBAS DIRECTAS DE CHOFER REPOSITORY (NUEVA BD) =======\n");
+
+            try
+            {
+                var choferRepo = new ChoferRepository();
+
+                // Casos de prueba basados en choferes que existen en tu BD
+                var busquedasTest = new List<(string busqueda, string esperado, string descripcion)>
+                {
+                    ("Juab Pérez", "Juan Pérez", "Typo simple: b por n"),
+                    ("carlos gómez", "Carlos Gómez", "Minúsculas"),
+                    ("LUIS MARTÍNEZ", "Luis Martínez", "Mayúsculas"),
+                    ("Pedro Sánche", "Pedro Sánchez", "Carácter faltante"),
+                    ("Roberto Díazz", "Roberto Díaz", "Carácter duplicado"),
+                    ("Qarlos", "Carlos Gómez", "Typo en nombre"),
+                    ("Martínez", "Luis Martínez", "Solo apellido"),
+                    ("Juan", "Juan Pérez", "Solo nombre")
+                };
+
+                Console.WriteLine("=== BÚSQUEDA CON LIKE ===");
+                foreach (var (busqueda, esperado, descripcion) in busquedasTest)
+                {
+                    try
+                    {
+                        var resultadosLike = await choferRepo.BuscarChoferConLikeAsync(busqueda);
+                        Console.WriteLine($"[LIKE] {descripcion}: '{busqueda}' → {resultadosLike.Count} resultados");
+
+                        foreach (var chofer in resultadosLike.Take(3)) // Solo primeros 3
+                        {
+                            Console.WriteLine($"    - {chofer.Nombre}");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"[✗] Error LIKE '{busqueda}': {ex.Message}");
+                    }
+                }
+
+                Console.WriteLine("\n=== BÚSQUEDA HÍBRIDA ===");
+                foreach (var (busqueda, esperado, descripcion) in busquedasTest)
+                {
+                    try
+                    {
+                        var resultadoHibrido = await choferRepo.ObtenerPorSimilitudAsync(busqueda, 60.0); // Umbral más bajo
+
+                        if (resultadoHibrido.HasValue)
+                        {
+                            bool coincideEsperado = resultadoHibrido.Value.chofer.Nombre == esperado;
+                            string status = coincideEsperado ? "✅" : "⚠️";
+                            Console.WriteLine($"[{status}] {descripcion}: '{busqueda}' → '{resultadoHibrido.Value.chofer.Nombre}' ({resultadoHibrido.Value.similitud:F1}%)");
+
+                            if (!coincideEsperado)
+                            {
+                                Console.WriteLine($"    (Esperado: '{esperado}')");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine($"[✗] {descripcion}: '{busqueda}' → Sin coincidencias");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"[✗] Error HÍBRIDO '{busqueda}': {ex.Message}");
+                    }
+                }
+
+                Console.WriteLine("\n=== PRUEBA DE RENDIMIENTO ===");
+                var inicio = DateTime.Now;
+                int busquedasRealizadas = 0;
+                int busquedasExitosas = 0;
+
+                foreach (var (busqueda, _, _) in busquedasTest)
+                {
+                    try
+                    {
+                        var resultado = await choferRepo.ObtenerPorSimilitudAsync(busqueda, 60.0);
+                        busquedasRealizadas++;
+
+                        if (resultado.HasValue)
+                            busquedasExitosas++;
+                    }
+                    catch
+                    {
+                        busquedasRealizadas++;
+                    }
+                }
+
+                var tiempoTotal = DateTime.Now - inicio;
+                Console.WriteLine($"📊 Búsquedas: {busquedasRealizadas}, Exitosas: {busquedasExitosas}");
+                Console.WriteLine($"📊 Tiempo total: {tiempoTotal.TotalMilliseconds:F2} ms");
+                Console.WriteLine($"📊 Promedio: {tiempoTotal.TotalMilliseconds / busquedasRealizadas:F2} ms/búsqueda");
+                Console.WriteLine($"📊 Tasa de éxito: {(double)busquedasExitosas / busquedasRealizadas * 100:F1}%");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[✗] ERROR GENERAL: {ex.Message}");
+            }
+        }
+
+        #endregion
+
+
     }
 }

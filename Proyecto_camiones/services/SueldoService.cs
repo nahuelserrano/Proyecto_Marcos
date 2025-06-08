@@ -55,25 +55,21 @@ namespace Proyecto_camiones.Presentacion.Services
             {
                 var camion = await this._camionService.ObtenerPorPatenteAsync(patenteCamion.ToUpper());
 
-                if (camion == null)
+                if (!camion.IsSuccess)
                     return Result<List<SueldoDTO>>.Failure("No se encontró el camión con la patente proporcionada.");
-                Console.WriteLine("sobrevivimos a obtener csmion");
+                Console.WriteLine("sobrevivimos a obtener camion");
                 idCamion = camion.Value.Id;
             }
 
-            int idChofer = -1;
+            int? idChofer = -1;
 
             if (nombreChofer != null)
             {
-                Console.WriteLine("hola if de chofer");
                 var chofer = await this._choferService.ObtenerPorNombreAsync(nombreChofer.ToUpper());
-                if (chofer == null)
+                if (!chofer.IsSuccess)
                     return Result<List<SueldoDTO>>.Failure("No se encontró el chofer con el nombre proporcionado.");
-                Console.WriteLine("sobrevivimos a obtener chofer");
                 idChofer = chofer.Value.Id;
             }
-
-            Console.WriteLine("llegamos tan lejos?");
             List<SueldoDTO>? sueldos = await this._sueldoRepository.ObtenerTodosAsync(idCamion, idChofer);
 
 
@@ -105,7 +101,7 @@ namespace Proyecto_camiones.Presentacion.Services
             return Result<bool>.Failure("Hubo un problema al eliminar el sueldo");
         }
 
-        public async Task<Result<int>> CrearAsync(string nombre_chofer, DateOnly pagoDesde, DateOnly pagoHasta, DateOnly? fecha_pagado, string? patenteCamion)
+        public async Task<Result<int>> CrearAsync(string nombre_chofer, DateOnly pagoDesde, DateOnly pagoHasta, DateOnly? fecha_pagado, string patenteCamion)
         {
             Result<Chofer?> c = await this._choferService.ObtenerPorNombreAsync(nombre_chofer);
             if (!c.IsSuccess)
@@ -128,22 +124,19 @@ namespace Proyecto_camiones.Presentacion.Services
 
             Result<bool> resultadoValidacion = validador.ValidarCompleto();
 
-            Console.WriteLine("resultadoValidacion: " + resultadoValidacion.IsSuccess);
-
             if (!resultadoValidacion.IsSuccess)
                 return Result<int>.Failure(resultadoValidacion.Error);
 
-            int? idCamion = null;
+           
 
-            if (patenteCamion != null)
-            {
+          
                 Result<Camion> ca = await this._camionService.ObtenerPorPatenteAsync(patenteCamion);
                 if (!ca.IsSuccess)
                 {
                     return Result<int>.Failure("No existe camión con esa patente, revise los datos ingresados");
                 }
-                idCamion = ca.Value.Id;
-            }
+                int idCamion = ca.Value.Id;
+            
 
             try
             {
@@ -156,8 +149,6 @@ namespace Proyecto_camiones.Presentacion.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine(ex.InnerException);
                 return Result<int>.Failure("Hubo un error al crear el cheque");
             }
         }

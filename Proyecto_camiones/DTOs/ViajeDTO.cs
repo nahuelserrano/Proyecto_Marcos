@@ -8,22 +8,22 @@ namespace Proyecto_camiones.DTOs
 {
     public class ViajeDTO
     {
-        public int Id { get; set; } // ID del viaje}
+        public int Id { get; set; } // ID del viaje, útil para futuras referencias en el frontend
         public DateOnly FechaInicio { get; set; }
         public string LugarPartida { get; set; }
         public string Destino { get; set; }
         public int Remito { get; set; }
         public float Kg { get; set; }
         public string Carga { get; set; }
-        public string NombreCliente { get; set; }
-        public string NombreChofer { get; set; }
+        public string NombreCliente { get; set; } // Obtenido por join con la entidad Cliente
+        public string NombreChofer { get; set; } // Obtenido por join con la entidad Chofer
         public float Km { get; set; }
         public float Tarifa { get; set; }
         public float PorcentajeChofer { get; set; } // Porcentaje por defecto del chofer
 
         public string PatenteCamion { get; set; }
         public float Total => Tarifa * Kg;
-        public float GananciaChofer => Total * PorcentajeChofer;
+        public float GananciaChofer => Total * PorcentajeChofer / 100;
 
         public int Camion { get; internal set; }
 
@@ -95,7 +95,7 @@ namespace Proyecto_camiones.DTOs
             NombreChofer = "default";
             Km = 0;
             Tarifa = 1200;
-            PorcentajeChofer = 0.18f; // Porcentaje por defecto del chofer
+            PorcentajeChofer = 18.0f; // Porcentaje por defecto del chofer
             PatenteCamion = "default";
         }
 

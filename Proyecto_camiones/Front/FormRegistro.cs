@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
@@ -20,6 +21,7 @@ using NPOI.SS.Formula.Functions;
 using Proyecto_camiones.Presentacion.Models;
 using MySqlX.XDevAPI.Common;
 using Mysqlx.Session;
+using System.Data;
 
 namespace Proyecto_camiones.Front;
 
@@ -32,14 +34,12 @@ public class FormRegistro : Home
 
     private List<string> campos = new List<string>();
 
-
     //Button
     private Panel btnPanel = new Panel();
     private RoundButton btnCargar = new RoundButton();
     private RoundButton btnVolver = new RoundButton();
     private RoundButton btnCuentaCorriente = new RoundButton();
     private RoundButton btnSueldoMensual = new RoundButton();
-
 
     //Grid
     private DataGridView cheq = new DataGridView();
@@ -70,13 +70,11 @@ public class FormRegistro : Home
         btnCargar.MouseLeave += (s, e) => HoverEffect(s, e, false);
 
         //Events
-        btnCargar.Click -= (s, e) => cargaClickEvent(s, e, filtro, dato); // remueve si ya estaba
-        btnCargar.Click += (s, e) => cargaClickEvent(s, e, filtro, dato); // vuelve a asignar
+        btnCargar.Click += (s, e) => BtnCargar_Click(s, e, filtro, dato);
 
 
         cheq.CellClick += (s, e) => EliminarFila(s, e, filtro, dato);
         cheq.CellClick += (s, e) => ModificarFilaAsync(s, e, dato, filtro);
-        //cheq.CellClick += (s, e) => MarcarComoPagado(s, e, dato, filtro);
 
 
         if (filtro == "sueldo")
@@ -130,9 +128,30 @@ public class FormRegistro : Home
 
             if (result.IsSuccess)
             {
+                foreach (DataGridViewColumn col in cheq.Columns)
+                {
+                    if (col.HeaderText.Equals("Tarifa") || col.HeaderText.Equals("Total") || col.HeaderText.Equals("Monto chofer")) // O el nombre correcto de tu columna de monto
+                    {
+                        col.DefaultCellStyle.Format = "N2";
+                        col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                    }
+                }
+
+                // SEGUNDO: Agregar las filas con los datos convertidos
                 foreach (var viaje in result.Value)
                 {
-                    cheq.Rows.Add(viaje.FechaInicio, viaje.LugarPartida, viaje.Destino, viaje.Remito, viaje.Carga, viaje.Km, viaje.Kg, viaje.Tarifa, viaje.PorcentajeChofer, viaje.NombreChofer, viaje.NombreCliente, viaje.Total, viaje.GananciaChofer, viaje.Id);
+                    // Convertir el monto a decimal si viene como string
+                    decimal tarifaDecimal = 0;
+                    decimal totalDecimal = 0;
+                    decimal totalGananciaChofer = 0;
+
+                    if (viaje.Tarifa is float || viaje.Total is float)
+                    {
+                        tarifaDecimal = (decimal)viaje.Tarifa;
+                        totalDecimal = (decimal)viaje.Total;
+                        totalGananciaChofer = (decimal)viaje.GananciaChofer;
+                    }
+                    cheq.Rows.Add(viaje.FechaInicio, viaje.LugarPartida, viaje.Destino, viaje.Remito, viaje.Carga, viaje.Km, viaje.Kg, tarifaDecimal, viaje.PorcentajeChofer, viaje.NombreCliente, viaje.NombreChofer, totalDecimal, totalGananciaChofer, viaje.Id);
 
                 }
             }
@@ -156,9 +175,28 @@ public class FormRegistro : Home
 
             if (resultClient.IsSuccess)
             {
+                foreach (DataGridViewColumn col in cheq.Columns)
+                {
+                    if (col.HeaderText.Equals("Tarifa") || col.HeaderText.Equals("Total")) // O el nombre correcto de tu columna de monto
+                    {
+                        col.DefaultCellStyle.Format = "N2";
+                        col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                    }
+                }
+
+                // SEGUNDO: Agregar las filas con los datos convertidos
                 foreach (var cliente in resultClient.Value)
                 {
-                    cheq.Rows.Add(cliente.Fecha_salida, cliente.Origen, cliente.Destino, cliente.Remito, cliente.Carga, cliente.Km, cliente.Kg, cliente.Tarifa, cliente.Nombre_chofer, cliente.Camion, cliente.Fletero, cliente.Total, cliente.Id);
+                    // Convertir el monto a decimal si viene como string
+                    decimal tarifaDecimal = 0;
+                    decimal totalDecimal = 0;
+
+                    if (cliente.Tarifa is float || cliente.Total is float)
+                    {
+                        tarifaDecimal = (decimal)cliente.Tarifa;
+                        totalDecimal = (decimal)cliente.Total;
+                    }
+                    cheq.Rows.Add(cliente.Fecha_salida, cliente.Origen, cliente.Destino, cliente.Remito, cliente.Carga, cliente.Km, cliente.Kg, tarifaDecimal, cliente.Nombre_chofer, cliente.Camion, cliente.Fletero, totalDecimal, cliente.Id);
                 }
             }
 
@@ -181,12 +219,32 @@ public class FormRegistro : Home
 
             if (resultFlete.IsSuccess)
             {
+                foreach (DataGridViewColumn col in cheq.Columns)
+                {
+                    if (col.HeaderText.Equals("Tarifa") || col.HeaderText.Equals("Total") || col.HeaderText.Equals("Total comisión")) // O el nombre correcto de tu columna de monto
+                    {
+                        col.DefaultCellStyle.Format = "N2";
+                        col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                    }
+                }
+
+                // SEGUNDO: Agregar las filas con los datos convertidos
                 foreach (var flete in resultFlete.Value)
                 {
-                    cheq.Rows.Add(flete.fecha_salida, flete.origen, flete.destino, flete.remito, flete.carga, flete.km, flete.kg, flete.tarifa, flete.factura, flete.comision, flete.cliente, flete.nombre_chofer, flete.total, flete.total_comision, flete.idViajeFlete);
+                    // Convertir el monto a decimal si viene como string
+                    decimal tarifaDecimal = 0;
+                    decimal totalComisionDecimal = 0;
+                    decimal totalDecimal = 0;
+
+                    if (flete.tarifa is float || flete.total_comision is float || flete.total is float)
+                    {
+                        tarifaDecimal = (decimal)flete.tarifa;
+                        totalComisionDecimal = (decimal)flete.total_comision;
+                        totalDecimal = (decimal)flete.total;
+                    }
+                    cheq.Rows.Add(flete.fecha_salida, flete.origen, flete.destino, flete.remito, flete.carga, flete.km, flete.kg, tarifaDecimal, flete.factura, flete.comision, flete.cliente, flete.nombre_chofer, totalDecimal, totalComisionDecimal, flete.idViajeFlete);
                 }
             }
-
             else
             {
                 if (this.InvokeRequired)
@@ -206,10 +264,34 @@ public class FormRegistro : Home
 
             if (resultCuentaCorriente.IsSuccess)
             {
+                foreach (DataGridViewColumn col in cheq.Columns)
+                {
+                    if (col.HeaderText.Equals("Pagado") || col.HeaderText.Equals("Adeuda") || col.HeaderText.Equals("Total adeudado")) // O el nombre correcto de tu columna de monto
+                    {
+                        col.DefaultCellStyle.Format = "N2";
+                        col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                    }
+                }
+
+                // SEGUNDO: Agregar las filas con los datos convertidos
                 foreach (var cuenta in resultCuentaCorriente.Value)
                 {
-                    cheq.Rows.Add(cuenta.Fecha_factura, cuenta.Nro_factura, cuenta.Pagado, cuenta.Adeuda, cuenta.Saldo_Total, cuenta.idCuenta);
+                    // Convertir el monto a decimal si viene como string
+                    decimal pagadoDecimal = 0;
+                    decimal adeudaDecimal = 0;
+                    decimal totalDecimal = 0;
+
+                    if (cuenta.Pagado is float || cuenta.Adeuda is float || cuenta.Saldo_Total is float)
+                    {
+                        pagadoDecimal = (decimal)cuenta.Pagado;
+                        adeudaDecimal = (decimal)cuenta.Adeuda;
+                        totalDecimal = (decimal)cuenta.Saldo_Total;
+                    }
+
+
+                    cheq.Rows.Add(cuenta.Fecha_factura, cuenta.Nro_factura, pagadoDecimal, adeudaDecimal, totalDecimal, cuenta.idCuenta);
                 }
+
             }
             else
             {
@@ -231,14 +313,37 @@ public class FormRegistro : Home
 
             if (resultSueldo.IsSuccess)
             {
+                foreach (DataGridViewColumn col in cheq.Columns)
+                {
+                    if (col.HeaderText.Equals("Sueldo"))  // O el nombre correcto de tu columna de monto
+                    {
+                        col.DefaultCellStyle.Format = "N2";
+                        col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                        break; // Salir del bucle una vez encontrada la columna
+                    }
+                }
+
+                // SEGUNDO: Agregar las filas con los datos convertidos
                 foreach (var sueldo in resultSueldo.Value)
                 {
                     string fechas = sueldo.PagadoDesde + " - " + sueldo.PagadoHasta;
-                    if (sdto.Pagado)
+
+                    // Convertir el monto a decimal si viene como string
+                    decimal montoDecimal = 0;
+
+                    if (sueldo.Monto_Pagado is float)
                     {
-                        cheq.CurrentRow.DefaultCellStyle.BackColor = Color.Green;
+                        montoDecimal = (decimal)sueldo.Monto_Pagado;
                     }
-                    cheq.Rows.Add(fechas, choferCamion, sueldo.Monto_Pagado, sueldo.idSueldo);
+
+                    // Agregar la fila con el valor decimal
+                    int rowIndex = cheq.Rows.Add(fechas, sueldo.chofer, montoDecimal, sueldo.idSueldo);
+
+                    // Aplicar color si está pagado
+                    if (sdto.Pagado)  // Asumo que quieres usar alguna propiedad del sueldo actual
+                    {
+                        cheq.Rows[rowIndex].DefaultCellStyle.BackColor = Color.Green;
+                    }
                 }
             }
 
@@ -597,7 +702,7 @@ public class FormRegistro : Home
         if (filtro == "Camion")
         {
             ViajeViewModel viajeViewModel = new ViajeViewModel();
-            var resultado = await viajeViewModel.CrearAsync(DateOnly.Parse(datos[0]), datos[1], datos[2], int.Parse(datos[3]), datos[4], float.Parse(datos[6]), datos[10], dato, float.Parse(datos[5]), float.Parse(datos[7]), null, float.Parse(datos[8]));
+            var resultado = await viajeViewModel.CrearAsync(DateOnly.Parse(datos[0]), datos[1], datos[2], int.Parse(datos[3]), datos[4], float.Parse(datos[6]), datos[9], dato, float.Parse(datos[5]), float.Parse(datos[7]), null, float.Parse(datos[8]));
 
             if (resultado.IsSuccess)
             {
@@ -704,7 +809,7 @@ public class FormRegistro : Home
         SueldoViewModel svm = new SueldoViewModel();
 
         // Verificar si la celda clickeada pertenece a la columna "Eliminar"
-        if (e.ColumnIndex == cheq.Columns["Eliminar"].Index && e.RowIndex >= 0)
+        if (e.ColumnIndex == cheq.Columns["Eliminar"]?.Index && e.RowIndex >= 0)
         {
             // Confirmar antes de eliminar (opcional)
             DialogResult resultado = MessageBox.Show("¿Desea eliminar esta fila?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);

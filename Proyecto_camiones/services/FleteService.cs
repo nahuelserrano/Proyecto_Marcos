@@ -91,12 +91,7 @@ namespace Proyecto_camiones.Services
                 MessageBox.Show("id < 0");
                 return Result<bool>.Failure(MensajeError.IdInvalido(id));
             }
-            List<ViajeFleteDTO> viajes = await this.viajeFleteRepository.ObtenerViajesPorIdFleteroAsync(id);
-            if (viajes.Count > 0)
-            {
-                MessageBox.Show("No se puede eliminar el fletero ya que contiene viajes a cargo");
-                return Result<bool>.Failure("No se puede eliminar el fletero ya que contiene viajes a cargo");
-            }
+           
             bool response = await this.fleteRepository.EliminarAsync(id);
             if (response)
             {

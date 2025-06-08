@@ -12,8 +12,8 @@ namespace Proyecto_camiones.DTOs
         public DateOnly FechaCobro { get; set; }
         public string Nombre { get; set; } = string.Empty;
         public int? NumeroPersonalizado { get; set; }
-        public DateOnly? FechaVencimiento { get; set; } = null;
-        public string? EntregadoA { get; set; } = null; // Añadido para operaciones CRUD
+        public DateOnly? FechaVencimiento { get; set; }
+        public string? EntregadoA { get; set; } // Añadido para operaciones CRUD
 
         public ChequeDTO(
             DateOnly fechaIngreso,

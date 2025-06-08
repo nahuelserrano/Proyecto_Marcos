@@ -52,7 +52,7 @@ namespace Proyecto_camiones.Presentacion.Services
             try
             {
                 // Intentar insertar en la base de datos
-                Camion response = await _camionRepository.InsertarAsync( patente, nombre);
+                Camion response = await _camionRepository.InsertarAsync(patente, nombre);
                 if (response != null)
                 {
                     int id = await this._choferRepository.InsertarAsync(nombre);
@@ -129,12 +129,18 @@ namespace Proyecto_camiones.Presentacion.Services
 
         public async Task<Result<string>> EliminarAsync(int id)
         {
-            var viajes = await this._viajeRepo.ObtenerPorFechaYCamionAsync(id);
-            if(viajes.Count > 0)
+            CamionDTO? c = await this._camionRepository.ObtenerPorIdAsync(id);
+            if(c == null)
             {
-                Console.WriteLine("entramos al if");
-                return Result<string>.Failure("No se puede eliminar, hay pagos pendientes");
+                return Result<string>.Failure("No se encontró un camión con ese id");
             }
+
+            Chofer? ch = await this._choferRepository.ObtenerPorNombreAsync(c.Nombre_Chofer);
+            if(ch != null)
+            {
+                await this._choferRepository.EliminarAsync(ch.Id);
+            }
+
             bool success = await this._camionRepository.EliminarAsync(id);
             
             Console.WriteLine("rompimos acá?");

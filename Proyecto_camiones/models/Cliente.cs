@@ -10,7 +10,8 @@ namespace Proyecto_camiones.Presentacion.Models
     {
 
         public int Id { get; set; }
-        public string? Nombre { get; set; }
+        public string Nombre { get; set; }
+
         // Navegación inversa (colección)
         public ICollection<Viaje> Viajes { get; set; } = new List<Viaje>();
 

@@ -60,10 +60,7 @@ namespace Proyecto_camiones.Services
             }
             int id = c.Id;
             List<CuentaCorrienteDTO> cuentas = await this.ccRepository.ObtenerCuentasPorIdClienteAsync(id);
-            if(cuentas == null || cuentas.Count() == 0)
-            {
-                return Result<List<CuentaCorrienteDTO>>.Failure("No existen cuentas para ese cliente o hubo un fallo en la conexión");
-            }
+  
             return Result<List<CuentaCorrienteDTO>>.Success(cuentas);
         }
 

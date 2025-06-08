@@ -95,7 +95,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 if (registrosAfectados > 0)
                 {
                     Console.WriteLine("sueldo pagado");
-                    return new SueldoDTO(sueldo.Id, sueldo.Monto, sueldo.Id_Chofer, sueldo.pagadoDesde, sueldo.pagadoHasta, sueldo.FechaPago, sueldo.Pagado, sueldo.IdCamion);
+                    return new SueldoDTO(sueldo.Id, sueldo.Monto, sueldo.Id_Chofer, sueldo.pagadoDesde, sueldo.pagadoHasta, sueldo.FechaPago, sueldo.Pagado, sueldo.IdCamion, null);
                 }
                 return null;
             
@@ -125,69 +125,89 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 sueldo.pagadoHasta,
                 sueldo.FechaPago,
                 sueldo.Pagado,
-                sueldo.IdCamion
+                sueldo.IdCamion,
+                null
             );
 
             return sueldoS;
       }
 
 
-        public async Task<List<SueldoDTO>?> ObtenerTodosAsync(int idCamionParametro, int idChofer)
+        public async Task<List<SueldoDTO>?> ObtenerTodosAsync(int idCamionParametro, int? idChofer)
         {
 
             try
             {
+                if(idChofer == null)
+                {
+                    return null;
+                }
                 List<SueldoDTO> sueldos = new List<SueldoDTO>();
                 if (idChofer > -1 && idCamionParametro >-1) {
                     Console.WriteLine("hola if de tenemos chofer y camión");
-                sueldos = await _context.Sueldos
-                            .Where(s => s.IdCamion == idCamionParametro && s.Id_Chofer == idChofer)
-                            .OrderByDescending(c => c.Id)
-                               .Select(c => new SueldoDTO(
-                                c.Id,
-                                c.Monto,
-                                c.Id_Chofer,
-                                c.pagadoDesde,
-                                c.pagadoHasta,
-                                c.FechaPago,
-                                c.Pagado,
-                                c.IdCamion
-                            ))
-                            .ToListAsync();
-                return sueldos;
+                    sueldos = await _context.Sueldos
+                    .Join(_context.Choferes,
+                          s => s.Id_Chofer,
+                          chofer => chofer.Id,
+                          (s, chofer) => new { Sueldo = s, Chofer = chofer })
+                    .Where(sc => sc.Sueldo.IdCamion == idCamionParametro && sc.Sueldo.Id_Chofer == idChofer)
+                    .OrderByDescending(sc => sc.Sueldo.Id)
+                    .Select(sc => new SueldoDTO(
+                        sc.Sueldo.Id,
+                        sc.Sueldo.Monto,
+                        sc.Sueldo.Id_Chofer,
+                        sc.Sueldo.pagadoDesde,
+                        sc.Sueldo.pagadoHasta,
+                        sc.Sueldo.FechaPago,
+                        sc.Sueldo.Pagado,
+                        sc.Sueldo.IdCamion,
+                        sc.Chofer.Nombre
+                    ))
+                    .ToListAsync();
+                    return sueldos;
             } else if(idChofer < 0 && idCamionParametro > -1)
                 {
                     Console.WriteLine("Hola if de tenemos camion pero no chofer");
                     sueldos = await _context.Sueldos
-                                .Where(s => s.IdCamion == idCamionParametro)
-                                .OrderByDescending(c => c.Id)
-                                   .Select(c => new SueldoDTO(
-                                    c.Id,    
-                                    c.Monto,
-                                    c.Id_Chofer,
-                                    c.pagadoDesde,
-                                    c.pagadoHasta,
-                                    c.FechaPago,
-                                    c.Pagado,
-                                    c.IdCamion
-                                ))
-                                .ToListAsync();
+                      .Join(_context.Choferes,
+                            s => s.Id_Chofer,
+                            chofer => chofer.Id,
+                            (s, chofer) => new { Sueldo = s, Chofer = chofer })
+                      .Where(sc => sc.Sueldo.IdCamion == idCamionParametro)
+                      .OrderByDescending(sc => sc.Sueldo.Id)
+                      .Select(sc => new SueldoDTO(
+                          sc.Sueldo.Id,
+                          sc.Sueldo.Monto,
+                          sc.Sueldo.Id_Chofer,
+                          sc.Sueldo.pagadoDesde,
+                          sc.Sueldo.pagadoHasta,
+                          sc.Sueldo.FechaPago,
+                          sc.Sueldo.Pagado,
+                          sc.Sueldo.IdCamion,
+                          sc.Chofer.Nombre
+                      ))
+                      .ToListAsync();
                 } else if(idChofer>-1 && idCamionParametro < 0)
                 {
                     sueldos = await _context.Sueldos
-                                .Where(s => s.Id_Chofer == idChofer)
-                                .OrderByDescending(c => c.Id)
-                                   .Select(c => new SueldoDTO(
-                                    c.Id,
-                                    c.Monto,
-                                    c.Id_Chofer,
-                                    c.pagadoDesde,
-                                    c.pagadoHasta,
-                                    c.FechaPago,
-                                    c.Pagado,
-                                    c.IdCamion
-                                ))
-                                .ToListAsync();
+                     .Join(_context.Choferes,
+                           s => s.Id_Chofer,
+                           chofer => chofer.Id,
+                           (s, chofer) => new { Sueldo = s, Chofer = chofer })
+                     .Where(sc => sc.Sueldo.Id_Chofer == idChofer)
+                     .OrderByDescending(sc => sc.Sueldo.Id)
+                     .Select(sc => new SueldoDTO(
+                         sc.Sueldo.Id,
+                         sc.Sueldo.Monto,
+                         sc.Sueldo.Id_Chofer,
+                         sc.Sueldo.pagadoDesde,
+                         sc.Sueldo.pagadoHasta,
+                         sc.Sueldo.FechaPago,
+                         sc.Sueldo.Pagado,
+                         sc.Sueldo.IdCamion,
+                         sc.Chofer.Nombre
+                     ))
+                     .ToListAsync();
                 }
                 else
                 {

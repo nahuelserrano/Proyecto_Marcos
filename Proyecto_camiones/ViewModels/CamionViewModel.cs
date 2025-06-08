@@ -34,14 +34,13 @@ namespace Proyecto_camiones.ViewModels
             bool result = await this.testearConexion();
             if (result)
             {
-                var resultado = await this._camionService.CrearAsync( patente, nombre);
+                var resultado = await this._camionService.CrearAsync(patente, nombre);
 
                 // Ahora puedes acceder al resultado
                 if (resultado.IsSuccess)
                 {
                     // La operación fue exitosa
                     int idCamion = resultado.Value;
-                    Console.WriteLine($"Camión creado con ID: {idCamion}");
                     return resultado;
                 }
                 else
@@ -50,7 +49,6 @@ namespace Proyecto_camiones.ViewModels
                     return Result<int>.Failure(resultado.Error);
                 }
             }
-            MessageBox.Show("Error de conexión");
             return Result<int>.Failure("La conexión no pude establecerse");
         }
 
@@ -60,7 +58,6 @@ namespace Proyecto_camiones.ViewModels
             if (result)
             {
                 var camiones = await this._camionService.ObtenerTodosAsync();
-                Console.WriteLine("no rompió ante la llamada");
                 return Result<List<CamionDTO>>.Success(camiones);
             }
             return Result<List<CamionDTO>>.Failure("La conexión no pudo establecerse");
@@ -99,10 +96,8 @@ namespace Proyecto_camiones.ViewModels
                 {
                     return Result<CamionDTO>.Success(camion);
                 }
-                MessageBox.Show("No se pudo obtener");
                 return Result<CamionDTO>.Failure("No se pudo obtener el camión con ese id");
             }
-            MessageBox.Show("error de conexion wtf");
             return Result<CamionDTO>.Failure("error de conexión");
         }
 

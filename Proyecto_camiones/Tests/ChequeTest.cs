@@ -103,6 +103,7 @@ namespace Proyecto_camiones.Tests
                     monto: monto,
                     banco: banco,
                     fechaCobro: fechaCobro,
+                    fechaVencimiento: fechaCobro,
                     entregadoA: entregadoA // PASAR NUEVO PARÁMETRO
                 );
 
@@ -141,6 +142,7 @@ namespace Proyecto_camiones.Tests
                     Console.WriteLine($"  Número: {cheque.NumeroCheque}, Monto: ${cheque.Monto}");
                     Console.WriteLine($"  Banco: {cheque.Banco}, Fecha Cobro: {cheque.FechaCobro}");
                     Console.WriteLine($"  Entregado a: {cheque.EntregadoA}"); // MOSTRAR NUEVO CAMPO
+                    Console.WriteLine($"  Fecha Ingreso: {cheque.FechaIngresoCheque}, Fecha vencimiento: {cheque.FechaVencimiento}");
                 }
                 else
                 {
