@@ -116,15 +116,21 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
+<<<<<<< HEAD
                 if (string.IsNullOrEmpty(nombre))
                 {
                     return null;
                 }
+=======
+>>>>>>> c0a7b9488fdfa92f8dc8cff342f45bd55875d42c
                 var chofer = await _context.Choferes.FirstOrDefaultAsync(c => c.Nombre == nombre);
 
                 if (chofer == null)
                 {
+<<<<<<< HEAD
                     return null;
+=======
+>>>>>>> c0a7b9488fdfa92f8dc8cff342f45bd55875d42c
                     var match = await ObtenerPorSimilitudAsync(nombre);
 
                     chofer = match.Value.chofer;
@@ -135,7 +141,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
                         Console.WriteLine($"Chofer con nombre {nombre} no encontrado");
                         return null;
                     }
-
                     Console.WriteLine($"Chofer con nombre {nombre} no encontrado, Match {chofer.Nombre} con una similitud de {similitud}");
                 }
 

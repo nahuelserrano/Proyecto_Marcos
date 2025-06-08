@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
@@ -281,7 +282,7 @@ public class FormRegistro : Home
                     decimal totalDecimal = 0;
 
                     if (cuenta.Pagado is float || cuenta.Adeuda is float || cuenta.Saldo_Total is float)
-                    { 
+                    {
                         pagadoDecimal = (decimal)cuenta.Pagado;
                         adeudaDecimal = (decimal)cuenta.Adeuda;
                         totalDecimal = (decimal)cuenta.Saldo_Total;
@@ -290,7 +291,7 @@ public class FormRegistro : Home
 
                     cheq.Rows.Add(cuenta.Fecha_factura, cuenta.Nro_factura, pagadoDecimal, adeudaDecimal, totalDecimal, cuenta.idCuenta);
                 }
-                
+
             }
             else
             {
@@ -329,7 +330,7 @@ public class FormRegistro : Home
 
                     // Convertir el monto a decimal si viene como string
                     decimal montoDecimal = 0;
-      
+
                     if (sueldo.Monto_Pagado is float)
                     {
                         montoDecimal = (decimal)sueldo.Monto_Pagado;

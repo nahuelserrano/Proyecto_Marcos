@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using Microsoft.EntityFrameworkCore;
-using NPOI.POIFS.Properties;
-using Org.BouncyCastle.Bcpg.OpenPgp;
 using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.ViewModels;
 

@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "Proyecto_camiones": {
+      "commandName": "Project"
+    },
+    "Perfil 1": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Users\\roark\\OneDrive\\Escritorio\\proyecto Marcos\\Proyecto_Marcos\\Proyecto_camiones.sln"
+    }
+  }
+}

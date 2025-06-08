@@ -1,10 +1,5 @@
-﻿using Proyecto_camiones.DTOs;
-using Proyecto_camiones.Presentacion.Models;
-using Proyecto_camiones.Presentacion.Repositories;
-using Proyecto_camiones.Presentacion.Services;
-using Proyecto_camiones.Presentacion.Utils;
+﻿using Proyecto_camiones.Presentacion.Utils;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Proyecto_camiones.Services;
 using Proyecto_camiones.Repositories;

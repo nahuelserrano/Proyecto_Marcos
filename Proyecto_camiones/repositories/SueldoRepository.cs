@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Models;
 using Microsoft.EntityFrameworkCore;
-using Proyecto_camiones.Models;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using Proyecto_camiones.ViewModels;
 
 
@@ -46,7 +43,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
        
 
-        public async Task<int> InsertarAsync(float monto, int Id_Chofer, DateOnly pagadoDesde, DateOnly pagadoHasta, DateOnly? fecha_pago, int? idCamion)
+        public async Task<int> InsertarAsync(float monto, int Id_Chofer, DateOnly pagadoDesde, DateOnly pagadoHasta, DateOnly? fecha_pago, int idCamion)
         {
             try
             {

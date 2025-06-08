@@ -6,11 +6,6 @@ using Proyecto_camiones.Services;
 using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Utils;
-using Proyecto_camiones.Repositories;
-using Proyecto_camiones.Models;
-using Proyecto_camiones.ViewModels;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
-using System.Windows.Forms;
 
 namespace Proyecto_camiones.Presentacion.Services
 {
@@ -101,7 +96,7 @@ namespace Proyecto_camiones.Presentacion.Services
             return Result<bool>.Failure("Hubo un problema al eliminar el sueldo");
         }
 
-        public async Task<Result<int>> CrearAsync(string nombre_chofer, DateOnly pagoDesde, DateOnly pagoHasta, DateOnly? fecha_pagado, string? patenteCamion)
+        public async Task<Result<int>> CrearAsync(string nombre_chofer, DateOnly pagoDesde, DateOnly pagoHasta, DateOnly? fecha_pagado, string patenteCamion)
         {
             Result<Chofer?> c = await this._choferService.ObtenerPorNombreAsync(nombre_chofer);
             if (!c.IsSuccess)
@@ -127,17 +122,16 @@ namespace Proyecto_camiones.Presentacion.Services
             if (!resultadoValidacion.IsSuccess)
                 return Result<int>.Failure(resultadoValidacion.Error);
 
-            int? idCamion = null;
+           
 
-            if (patenteCamion != null)
-            {
+          
                 Result<Camion> ca = await this._camionService.ObtenerPorPatenteAsync(patenteCamion);
                 if (!ca.IsSuccess)
                 {
                     return Result<int>.Failure("No existe camión con esa patente, revise los datos ingresados");
                 }
-                idCamion = ca.Value.Id;
-            }
+                int idCamion = ca.Value.Id;
+            
 
             try
             {

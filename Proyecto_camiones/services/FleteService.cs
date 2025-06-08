@@ -1,13 +1,8 @@
-﻿using MySqlX.XDevAPI.Common;
-using Proyecto_camiones.DTOs;
-using Proyecto_camiones.Models;
-using Proyecto_camiones.Presentacion.Models;
+﻿using Proyecto_camiones.Models;
 using Proyecto_camiones.Presentacion.Utils;
 using Proyecto_camiones.Repositories;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 

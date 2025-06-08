@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Proyecto_camiones.Models;
-using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Utils;
 using Proyecto_camiones.Repositories;
-using Proyecto_camiones.DTOs;
-using System.Windows.Forms;
 
 
 namespace Proyecto_camiones.Services
@@ -35,10 +30,7 @@ namespace Proyecto_camiones.Services
                 {
                     return idPago;
                 }
-                else
-                {
-                    return -2;
-                }
+                return -2;
             }
             catch
             {
@@ -60,6 +52,7 @@ namespace Proyecto_camiones.Services
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"Error al actualizar el pago: {ex.Message}");
                 return Result<bool>.Failure("Error al actualizar el pago");
             }
         }

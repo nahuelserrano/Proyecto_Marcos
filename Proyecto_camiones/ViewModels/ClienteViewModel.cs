@@ -5,10 +5,7 @@ using Proyecto_camiones.Presentacion.Services;
 using Proyecto_camiones.Presentacion.Utils;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Proyecto_camiones.ViewModels
 {

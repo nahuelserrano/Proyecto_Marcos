@@ -1,5 +1,4 @@
 ﻿using Proyecto_camiones.DTOs;
-using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Services;
 using Proyecto_camiones.Presentacion.Utils;
@@ -8,7 +7,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Proyecto_camiones.Repositories;
 using Proyecto_camiones.Services;
-using System.Windows.Forms;
 
 namespace Proyecto_camiones.ViewModels
 {

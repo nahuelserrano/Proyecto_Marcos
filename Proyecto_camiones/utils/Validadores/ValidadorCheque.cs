@@ -1,10 +1,6 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Proyecto_camiones.Presentacion.Models;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace Proyecto_camiones.Presentacion.Utils
 {

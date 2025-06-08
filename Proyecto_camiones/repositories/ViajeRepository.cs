@@ -1,17 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using Microsoft.EntityFrameworkCore;
-using MySql.Data.MySqlClient;
-using MySqlX.XDevAPI;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Models;
-using Proyecto_camiones.Presentacion.Utils;
 using Proyecto_camiones.ViewModels;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace Proyecto_camiones.Presentacion.Repositories
 {
@@ -29,13 +23,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
             try
             {
                 var puedeConectar = await _context.Database.CanConnectAsync();
-
-                if (puedeConectar)
-                    Console.WriteLine("Conexión exitosa a la base de datos.");
-                else
-                    Console.WriteLine(MensajeError.ErrorBaseDatos("No se pudo establecer conexión"));
-
-
                 return puedeConectar;
             }
             catch (Exception ex)

@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Proyecto_camiones.Presentacion;
-using Proyecto_camiones.Presentacion.Utils;
 using Proyecto_camiones.Models;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using Proyecto_camiones.DTOs;
 using Microsoft.EntityFrameworkCore;
-using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.ViewModels;
 using System.Windows.Forms;
 
@@ -121,17 +116,21 @@ namespace Proyecto_camiones.Repositories
             try
             {
                 this._context = General.obtenerInstancia();
-                var pago = await _context.Pagos.FindAsync(id_viaje);
+                var pago = await _context.Pagos
+                    .Where(p => p.Id_Viaje == id_viaje)
+                    .FirstOrDefaultAsync();
+
                 if (pago != null)
                 {
-                    if (pago.Pagado == false) { 
-                        if (pago.Id_Chofer != id_chofer)
-                        {
-                         pago.Id_Chofer = id_chofer;
-                        }
-                        if(pago.Monto_Pagado!=monto_pagado)
-                        pago.Monto_Pagado = monto_pagado;
+                    if (!pago.Pagado) {
 
+                        Console.WriteLine($"📊 Pago encontrado - ID: {pago.Id}, Chofer actual: {pago.Id_Chofer}, Pagado: {pago.Pagado}");
+
+                        if (pago.Id_Chofer != id_chofer)
+                            pago.Id_Chofer = id_chofer;
+                        
+                        if(pago.Monto_Pagado!=monto_pagado)
+                            pago.Monto_Pagado = monto_pagado;
 
                         await _context.SaveChangesAsync();
                         return true;
