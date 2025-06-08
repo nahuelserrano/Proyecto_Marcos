@@ -21,8 +21,8 @@ namespace Proyecto_camiones.Presentacion.Services
         public CamionService(CamionRepository camionR)
         {
             this._camionRepository = camionR ?? throw new ArgumentNullException(nameof(camionR));
-            this._choferRepository = new ChoferRepository(General.obtenerInstancia());
-            this._viajeRepo = new ViajeRepository(General.obtenerInstancia());
+            this._choferRepository = new ChoferRepository();
+            this._viajeRepo = new ViajeRepository();
         }
 
         //PROBAR CONEXION
@@ -133,7 +133,7 @@ namespace Proyecto_camiones.Presentacion.Services
             if(viajes.Count > 0)
             {
                 Console.WriteLine("entramos al if");
-                return Result<string>.Failure("No se pudo eliminar el camión ya que el mismo tiene viajes a cargo");
+                return Result<string>.Failure("No se puede eliminar, hay pagos pendientes");
             }
             bool success = await this._camionRepository.EliminarAsync(id);
             

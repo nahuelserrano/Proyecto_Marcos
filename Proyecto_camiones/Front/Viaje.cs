@@ -79,7 +79,6 @@ internal class Viaje : Home
     //Constructor
     public Viaje()
     {
-        //buttonAcept.Click += (s, e) => ButtonAcept_Click1(s, e);
         InitializeFilterCards(" ");
         ResaltarBoton(viajesMenu);
 
@@ -97,10 +96,6 @@ internal class Viaje : Home
         fleteFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Flete");
         clienteFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Cliente");
         camionFilter.Click += (s, e) => ObtenerTodosSegunFiltro("Camion");
-
-        //Events
-
-
     }
 
     public Viaje(string filtro)
@@ -328,8 +323,6 @@ internal class Viaje : Home
         card.Controls.Add(remove);
         cardsContainerFL.Controls.Add(card);
 
-
-
         // Evento para eliminar la card
         remove.Click += async (s, e) =>
         {
@@ -355,7 +348,6 @@ internal class Viaje : Home
                             CartelAviso(response.Error);
                         }
                     }
-
                 }
             }
         };
@@ -367,11 +359,10 @@ internal class Viaje : Home
 
         this.camposFaltantesTabla = new List<string> { "Total", "Total comisión" };
 
-
         card.Click += (s, e) =>
         {
             this.Hide();
-            ViajeFiltro form = new ViajeFiltro(item.nombre, cantCamposTabla, campos, filtro, camposFaltantesTabla);
+            ViajeFiltro form = new ViajeFiltro(item.nombre, cantCamposTabla, campos, filtro, camposFaltantesTabla, " ");
             form.TopLevel = true;
             form.ShowDialog();
         };
@@ -417,7 +408,6 @@ internal class Viaje : Home
         card.Controls.Add(remove);
         cardsContainerFL.Controls.Add(card);
 
-
         // Evento para eliminar la card
         remove.Click += async (s, e) =>
         {
@@ -457,7 +447,7 @@ internal class Viaje : Home
         card.Click += (s, e) =>
         {
             this.Hide();
-            ViajeFiltro form = new ViajeFiltro(item.Nombre, cantCamposTabla, campos, filtro, camposFaltantesTabla);
+            ViajeFiltro form = new ViajeFiltro(item.Nombre, cantCamposTabla, campos, filtro, camposFaltantesTabla, " ");
             form.TopLevel = true;
             form.ShowDialog();
         };
@@ -516,8 +506,6 @@ internal class Viaje : Home
         card.Controls.Add(remove);
         cardsContainerFL.Controls.Add(card);
 
-
-
         // Evento para eliminar la card
         remove.Click += async (s, e) =>
         {
@@ -557,7 +545,7 @@ internal class Viaje : Home
         card.Click += (s, e) =>
         {
             this.Hide();
-            ViajeFiltro form = new ViajeFiltro(item.Patente, cantCamposTabla, campos, filtro, camposFaltantesTabla);
+            ViajeFiltro form = new ViajeFiltro(item.Patente, cantCamposTabla, campos, filtro, camposFaltantesTabla, item.Nombre_Chofer);
             form.TopLevel = true;
             form.ShowDialog();
         };
@@ -566,6 +554,7 @@ internal class Viaje : Home
 
     private void buttonsVisibleOrInvisible(string filtro)
     {
+        buttonBack.Click -= (s, e) => ButtonNewAddProperties(filtro);
         buttonBack.Click += (s, e) => ButtonNewAddProperties(filtro);
         buttonBack.Visible = true;
         buttonAddNew.Visible = false;
@@ -577,23 +566,19 @@ internal class Viaje : Home
     //AGREGAR CARD
     public async void GetFilterInfoAsync(string filtro, string info, string text)
     {
-        int i = 0;
-        MessageBox.Show(info + " " + text);
-
         if (!string.IsNullOrWhiteSpace(info))
         {
-
             if (filtro == "Camion")
             {
                 var idCamion = await cvm.InsertarAsync(info, text);
 
-                if (idCamion.IsSuccess && i == 0)
+                if (idCamion.IsSuccess)
                 {
                     var resultado = await cvm.ObtenerPorId(idCamion.Value);
 
-                    if (resultado.IsSuccess && i == 0)
+                    if (resultado.IsSuccess)
                     {
-                        i = 1;
+                        ObtenerTodosSegunFiltro(filtro);
                     }
                     else
                     {
@@ -606,7 +591,6 @@ internal class Viaje : Home
                             CartelAviso(resultado.Error);
                         }
                     }
-
                 }
                 else
                 {
@@ -619,22 +603,20 @@ internal class Viaje : Home
                         CartelAviso(idCamion.Error);
                     }
                 }
-
             }
             else if (filtro == "Cliente")
             {
-
                 ClienteViewModel cmv = new ClienteViewModel();
                 var idCliente = await cmv.InsertarCliente(info);
 
-                if (idCliente.IsSuccess && i == 0)
+                if (idCliente.IsSuccess)
                 {
 
                     var resultado = await cmv.ObtenerById(idCliente.Value);
 
-                    if (resultado.IsSuccess && i == 0)
+                    if (resultado.IsSuccess)
                     {
-                        i = 1;
+                        ObtenerTodosSegunFiltro(filtro);
                     }
                     else
                     {
@@ -664,13 +646,13 @@ internal class Viaje : Home
             {
                 FleteViewModel fvm = new FleteViewModel();
                 var response = await fvm.InsertarAsync(info);
-                if (response.IsSuccess && i == 0)
+                if (response.IsSuccess)
                 {
                     int idfletero = response.Value;
                     var fletero = await fvm.ObtenerPorIdAsync(idfletero);
-                    if (fletero.IsSuccess && i == 0)
+                    if (fletero.IsSuccess)
                     {
-                        i = 1;
+                        ObtenerTodosSegunFiltro(filtro);
                     }
                     else
                     {
@@ -697,7 +679,6 @@ internal class Viaje : Home
                 }
             }
         }
-        ObtenerTodosSegunFiltro(filtro);
         // Retornar la lista correspondiente
     }
 
@@ -745,6 +726,11 @@ internal class Viaje : Home
                 btn.Text = buttonsNameFilter[j].ToString().ToUpper();
                 j++;
             }
+
+            btn.Click -= (s, e) =>
+            {
+                ObtenerTodosSegunFiltro(btn.Text);
+            };
 
             btn.Click += (s, e) =>
             {
@@ -798,6 +784,7 @@ internal class Viaje : Home
 
         AddButtonNewAdd();
 
+        buttonAddNew.Click -= (s, e) => FormAddNew(s, e, filtro);
         buttonAddNew.Click += (s, e) => FormAddNew(s, e, filtro);
     }
 
@@ -813,7 +800,6 @@ internal class Viaje : Home
         TextBoxProperties();
         ComboBoxProperties();
         ButtonAceptProperties();
-        //select.SelectedIndexChanged += Select_SelectedIndexChanged();
     }
 
     private void FormProperties()
@@ -967,6 +953,7 @@ internal class Viaje : Home
         buttonAcept.ForeColor = System.Drawing.Color.FromArgb(32, 32, 32);
         buttonAcept.Font = new Font("Nunito", 12, FontStyle.Bold);
 
+        buttonAcept.Click -= (s, e) => ButtonAcept_Click1(s, e);
         buttonAcept.Click += (s, e) => ButtonAcept_Click1(s, e);
 
         CenterButtonFormSection(); // Para posicionar correctamente al inicio
@@ -1011,13 +998,19 @@ internal class Viaje : Home
         ll.Text = mensaje;
         ll.Font = new Font("Nunito", 14, FontStyle.Regular);
         ll.ForeColor = System.Drawing.Color.FromArgb(218, 218, 28);
-        ll.AutoSize = true;
+        ll.AutoSize = false; // permite controlar el tamaño manualmente
+        ll.Width = 300; // ajustá el ancho según el diseño
+        ll.Height = 100; // ajustá la altura
+        ll.TextAlign = ContentAlignment.MiddleCenter;
+        ll.MaximumSize = new Size(300, 0); // límite de ancho, altura auto
+        ll.AutoSize = true; // activa ajuste automático de altura
+
 
         // Centrar el label dentro del panel
         ll.Resize += (s, e) =>
         {
             ll.Location = new Point(
-            (avisoPanel.Width - ll.Width) / 2, 50);
+            (avisoPanel.Width - ll.Width) / 2, 25);
         };
 
         avisoPanel.BringToFront();  // Traer al frente
@@ -1025,7 +1018,7 @@ internal class Viaje : Home
 
 
         avisoPanel.Size = new Size(300, 150);
-        avisoPanel.BackColor = System.Drawing.Color.FromArgb(48, 48, 48);
+        avisoPanel.BackColor =  System.Drawing.Color.FromArgb(32, 32, 32);
 
         avisoPanel.Controls.Add(ll);
         avisoPanel.Controls.Add(btnAceptarAviso);

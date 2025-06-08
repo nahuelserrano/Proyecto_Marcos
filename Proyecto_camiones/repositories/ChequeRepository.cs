@@ -7,6 +7,7 @@ using MySqlX.XDevAPI.Common;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Utils;
+using Proyecto_camiones.ViewModels;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace Proyecto_camiones.Presentacion.Repositories
@@ -14,7 +15,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
     public class ChequeRepository
     {
-        private readonly ApplicationDbContext _context;
+        private ApplicationDbContext _context;
 
 
         public ChequeRepository(ApplicationDbContext context)
@@ -26,6 +27,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 // Intentar comprobar si la conexión a la base de datos es exitosa
                 bool puedeConectar = await _context.Database.CanConnectAsync();
                 if (puedeConectar)
@@ -55,10 +57,12 @@ namespace Proyecto_camiones.Presentacion.Repositories
             DateOnly fechaCobro,
             string nombre = "",
             int? numeroPersonalizado = null,
-            DateOnly? fechaVencimiento = null)
+            DateOnly? fechaVencimiento = null,
+            string entregadoA = "") // NUEVO PARÁMETRO - Más importante que saber el verdadero nombre de McLovin
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 if (!await _context.Database.CanConnectAsync())
                 {
                     Console.WriteLine("No se puede conectar a la base de datos");
@@ -74,7 +78,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     FechaCobro = fechaCobro,
                     Nombre = nombre,
                     NumeroPersonalizado = numeroPersonalizado,
-                    FechaVencimiento = fechaVencimiento ?? fechaCobro // Si no se proporciona, usar la fecha de cobro
+                    FechaVencimiento = fechaVencimiento,
+                    EntregadoA = entregadoA // ASIGNAR NUEVO CAMPO
                 };
 
                 _context.Cheques.Add(cheque);
@@ -95,7 +100,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 {
                     Console.WriteLine($"Error interno: {ex.InnerException.Message}");
                 }
-
                 Console.WriteLine($"Stack trace: {ex.StackTrace}");
                 return -1;
             }
@@ -120,10 +124,10 @@ namespace Proyecto_camiones.Presentacion.Repositories
                         FechaCobro = cheque.FechaCobro,
                         Nombre = cheque.Nombre,
                         NumeroPersonalizado = cheque.NumeroPersonalizado,
+                        EntregadoA = cheque.EntregadoA // MAPEAR NUEVO CAMPO
                     };
                     return nuevo;
                 }
-
                 return null;
             }
             catch (Exception ex)
@@ -147,6 +151,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     FechaCobro = c.FechaCobro,
                     Nombre = c.Nombre,
                     NumeroPersonalizado = c.NumeroPersonalizado,
+                    EntregadoA = c.EntregadoA // MAPEAR NUEVO CAMPO
                 }).ToListAsync();
 
                 return cheques;
@@ -167,10 +172,12 @@ namespace Proyecto_camiones.Presentacion.Repositories
             DateOnly? fechaCobro = null,
             string? nombre = null,
             int? numeroPersonalizado = null,
-            DateOnly? fechaVencimiento = null)
+            DateOnly? fechaVencimiento = null,
+            string? entregadoA = null) // NUEVO PARÁMETRO
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 var cheque = await _context.Cheques.FindAsync(id);
 
                 if (cheque == null)
@@ -204,6 +211,9 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 if (fechaVencimiento.HasValue)
                     cheque.FechaVencimiento = fechaVencimiento.Value;
 
+                if (entregadoA != null) // ACTUALIZAR NUEVO CAMPO
+                    cheque.EntregadoA = entregadoA;
+
                 await _context.SaveChangesAsync();
                 return true;
             }
@@ -234,10 +244,10 @@ namespace Proyecto_camiones.Presentacion.Repositories
                         FechaCobro = cheque.FechaCobro,
                         Nombre = cheque.Nombre,
                         NumeroPersonalizado = cheque.NumeroPersonalizado,
+                        EntregadoA = cheque.EntregadoA // MAPEAR NUEVO CAMPO
                     };
                     return nuevo;
                 }
-
                 return null;
             }
             catch (Exception ex)
@@ -252,6 +262,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 Cheque? cheque = await _context.Cheques.FindAsync(id);
 
                 if (cheque == null)

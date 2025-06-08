@@ -119,7 +119,7 @@ namespace Proyecto_camiones.Presentacion.Utils
             if (string.IsNullOrWhiteSpace(_cliente))
                 _errores.Add("El campo de cliente esta vacio");
 
-            if ( 0 > _porcentajeChofer || _porcentajeChofer  > 1)
+            if ( 0 > _porcentajeChofer || _porcentajeChofer  > 100)
                 _errores.Add("El porcentaje del chofer no es valido, debe ser entre 0% y 100%");
 
             return this;

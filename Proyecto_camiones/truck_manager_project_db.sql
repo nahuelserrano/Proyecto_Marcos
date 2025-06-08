@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `camion` (
   `idcamion` int(11) NOT NULL,
-  `patente` varchar(45) NOT NULL,
+  `patente` varchar(45) NOT NULL UNIQUE,
   `nombre_chofer` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -37,20 +37,13 @@ CREATE TABLE `camion` (
 -- Volcado de datos para la tabla `camion`
 --
 
-INSERT INTO `camion` (`idcamion`, `patente`, `nombre_chofer`) VALUES
-(2, 'HIJ429', 'x'),
-(3, 'WWW123', 'juan'),
-(4, 'WWW123', 'juan'),
-(5, 'WWW123', 'carlos'),
-(6, 'WWW123', 'mili'),
-(7, 'WWW123', 'tobias'),
-(10, 'HJK092', 'lauti'),
-(11, 'PUC111', 'JUAN'),
-(12, 'MLA126', 'Pepito'),
-(13, 'MLA126', 'Pepito'),
-(14, 'NCS234', 'Mili'),
-(15, 'NCS234', 'Mili'),
-(16, 'NCS234', 'Mili');
+INSERT INTO camion (idcamion, patente, nombre_chofer) VALUES
+(17, 'AAA111', 'Juan Pérez'),
+(18, 'BBB222', 'Carlos Gómez'),
+(19, 'CCC333', 'Luis Martínez'),
+(20, 'DDD444', 'Pedro Sánchez'),
+(21, 'EEE555', 'Roberto Díaz');
+
 
 -- --------------------------------------------------------
 
@@ -61,22 +54,23 @@ INSERT INTO `camion` (`idcamion`, `patente`, `nombre_chofer`) VALUES
 CREATE TABLE `cheque` (
   `idcheque` int(11) NOT NULL,
   `fecha_ingreso` date NOT NULL,
-  `nro_cheque` int(11) NOT NULL,
+  `nro_cheque` int(11) NOT NULL UNIQUE,
   `monto` float NOT NULL,
   `banco` varchar(45) NOT NULL,
   `fecha_cobro` date NOT NULL,
   `nombre` varchar(45) NOT NULL,
   `numero_personalizado` int(11) DEFAULT NULL,
-  `fecha_vencimieto` date NOT NULL
+  `fecha_vencimieto` date NULL,
+  `entregado_a` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `cheque`
 --
 
-INSERT INTO `cheque` (`idcheque`, `fecha_ingreso`, `nro_cheque`, `monto`, `banco`, `fecha_cobro`, `nombre`, `numero_personalizado`, `fecha_vencimieto`) VALUES
-(1, '2025-05-19', 54321, 2000, 'Banco Control', '2025-06-18', '', NULL, '2025-06-18'),
-(2, '2025-05-19', 12345, 6000, 'Banco Nación', '2025-06-18', '', NULL, '2025-06-18');
+INSERT INTO `cheque` (`idcheque`, `fecha_ingreso`, `nro_cheque`, `monto`, `banco`, `fecha_cobro`, `nombre`, `numero_personalizado`, `fecha_vencimieto`, `entregado_a`) VALUES
+(1, '2025-05-19', 54321, 2000, 'Banco Control', '2025-06-18', '', NULL, '2025-06-18', NULL),
+(2, '2025-05-19', 12345, 6000, 'Banco Nación', '2025-06-18', '', NULL, '2025-06-18', NULL);
 
 -- --------------------------------------------------------
 
@@ -86,18 +80,18 @@ INSERT INTO `cheque` (`idcheque`, `fecha_ingreso`, `nro_cheque`, `monto`, `banco
 
 CREATE TABLE `chofer` (
   `idChofer` int(11) NOT NULL,
-  `nombre` varchar(50) NOT NULL
+  `nombre` varchar(50) NOT NULL UNIQUE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `chofer`
 --
-
-INSERT INTO `chofer` (`idChofer`, `nombre`) VALUES
-(1, 'Mili'),
-(2, 'Mili'),
-(3, 'Mili'),
-(4, 'nuevo chofer');
+INSERT INTO chofer (idChofer, nombre) VALUES
+(5, 'Juan Pérez'),
+(6, 'Carlos Gómez'),
+(7, 'Luis Martínez'),
+(8, 'Pedro Sánchez'),
+(9, 'Roberto Díaz');
 
 -- --------------------------------------------------------
 
@@ -107,7 +101,7 @@ INSERT INTO `chofer` (`idChofer`, `nombre`) VALUES
 
 CREATE TABLE `cliente` (
   `idCliente` int(11) NOT NULL,
-  `nombre` varchar(45) NOT NULL
+  `nombre` varchar(45) NOT NULL UNIQUE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -191,8 +185,20 @@ CREATE TABLE `pago` (
 -- Volcado de datos para la tabla `pago`
 --
 
-INSERT INTO `pago` (`idpago`, `monto`, `idChofer`, `pagado`, `idViaje`, `idSueldo`) VALUES
-(1, 0, 4, 0, 10, NULL);
+INSERT INTO pago (
+  idpago, monto, idChofer, pagado, idViaje, idSueldo
+) VALUES
+( 2, ROUND(150 * 1000 * 1.50 * 0.18, 2), 5, 0, 1, NULL),  -- 40500.00
+( 3, ROUND(200 * 1000 * 2.00 * 0.18, 2), 6, 0, 2, NULL),  -- 72000.00
+( 4, ROUND(180 * 1000 * 1.80 * 0.18, 2), 7, 0, 3, NULL),  -- 58320.00
+( 5, ROUND(220 * 1000 * 2.20 * 0.18, 2), 8, 0, 4, NULL),  -- 87120.00
+( 6, ROUND(300 * 1000 * 1.70 * 0.18, 2), 9, 0, 5, NULL),  -- 91800.00
+( 7, ROUND(100 * 1000 * 1.30 * 0.18, 2), 5, 0, 6, NULL),  -- 23400.00
+( 8, ROUND(350 * 1000 * 2.20 * 0.18, 2), 6, 0, 7, NULL),  -- 138600.00
+( 9, ROUND(500 * 1000 * 2.50 * 0.18, 2), 7, 0, 8, NULL),  -- 225000.00
+(10, ROUND(270 * 1000 * 1.90 * 0.18, 2), 8, 0, 9, NULL),  -- 92340.00
+(11, ROUND(400 * 1000 * 2.00 * 0.18, 2), 9, 0, 10, NULL);  -- 144000.00
+
 
 -- --------------------------------------------------------
 
@@ -215,13 +221,6 @@ CREATE TABLE `sueldo` (
 -- Volcado de datos para la tabla `sueldo`
 --
 
-INSERT INTO `sueldo` (`idsueldo`, `idchofer`, `fecha_desde`, `fecha_hasta`, `fecha_pago`, `monto_total`, `idCamion`, `pagado`) VALUES
-(5, 1, '2025-05-01', '2025-05-31', '2025-05-29', 22222, 2, 1),
-(6, 4, '2025-04-01', '2025-04-30', NULL, 84848, 15, 0),
-(7, 1, '2025-05-01', '2025-05-31', '2025-05-29', 23456, 2, 1),
-(8, 4, '2025-04-01', '2025-04-30', NULL, 84848, 15, 0),
-(9, 4, '2025-05-01', '2025-05-31', NULL, 45000, NULL, 0),
-(10, NULL, '2025-05-01', '2025-05-31', '2025-05-29', 100000, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -264,17 +263,21 @@ CREATE TABLE `viaje` (
 -- Volcado de datos para la tabla `viaje`
 --
 
-INSERT INTO `viaje` (`idviaje`, `partida`, `origen`, `destino`, `remito`, `kg`, `carga`, `idcliente`, `idcamion`, `km`, `tarifa`, `nombre_chofer`, `comision_chofer`) VALUES
-(1, '2025-04-05', 'Tandil', 'Buenos Aires', 10001, 5000, 'Cereales', 3, 2, 370, 25, 'x', 0.18),
-(2, '2025-04-07', 'Mar del Plata', 'Bahía Blanca', 10002, 7500, 'Frutas', 3, 3, 420, 28, 'juan', 0.1),
-(3, '2025-04-10', 'La Plata', 'Rosario', 10003, 6200, 'Muebles', 3, 4, 390, 26, 'juan', 0.18),
-(4, '2025-04-12', 'Córdoba', 'Mendoza', 10004, 8000, 'Maquinaria', 4, 5, 700, 35, 'carlos', 0.18),
-(5, '2025-04-15', 'Santa Fe', 'Tucumán', 10005, 5800, 'Alimentos', 5, 6, 780, 38, 'mili', 0.18),
-(6, '2025-04-18', 'Salta', 'Jujuy', 10006, 4500, 'Textiles', 6, 10, 150, 18, 'lauti', 0.18),
-(7, '2025-04-20', 'Buenos Aires', 'Córdoba', 10007, 9000, 'Electrónicos', 7, 11, 700, 36, 'roman', 0.18),
-(8, '2025-04-22', 'Rosario', 'Santa Fe', 10008, 6700, 'Papel', 7, 12, 160, 15, 'Pepito', 0.18),
-(9, '2025-04-28', 'Tandil', 'Azul', 123, 30, 'trigo', 2, 11, 350.5, 5000, 'JUAN', 0),
-(10, '2025-04-28', 'Tandil', 'Azul', 123, 30, 'trigo', 2, 11, 350.5, 5000, 'nuevo chofer', 0);
+INSERT INTO viaje (
+  idviaje, partida, origen, destino, remito, kg, carga,
+  idcliente, idcamion, km, tarifa, nombre_chofer, comision_chofer
+) VALUES
+(1,'2025-05-20', 'Tandil',    'Azul',         1001, 150, 'trigo', 2, 17, 120, 1.50, 'Juan Pérez',    18),
+(2, '2025-05-21', 'Azul',      'Olavarría',    1002, 200, 'soja',  3, 18, 150, 2.00, 'Carlos Gómez',  18),
+(3, '2025-05-22', 'Tandil',    'Bahía Blanca', 1003, 180, 'maíz',  4, 19, 300, 1.80, 'Luis Martínez', 18),
+(4, '2025-05-23', 'Tandil',    'Mar del Plata',1004, 220, 'trigo', 5, 20, 250, 2.20, 'Pedro Sánchez', 18),
+(5,'2025-05-24', 'Azul',      'Tandil',       1005, 300, 'soja',  6, 21, 180, 1.70, 'Roberto Díaz',  18),
+(6,'2025-05-25', 'Tandil',    'Necochea',     1006, 100, 'cebada',7, 17,  90, 1.30, 'Juan Pérez',    18),
+(7,'2025-05-26', 'Azul',      'La Plata',     1007, 350, 'maíz',  2, 18, 320, 2.20, 'Carlos Gómez',  18),
+(8,'2025-05-27', 'Tandil',    'Buenos Aires', 1008, 500, 'soja',  3, 19, 500, 2.50, 'Luis Martínez', 18),
+(9,'2025-05-28', 'Azul',      'Pergamino',    1009, 270, 'trigo', 4, 20, 280, 1.90, 'Pedro Sánchez', 18),
+(10,'2025-05-29', 'Tandil',    'Rosario',      1010, 400, 'maíz',  5, 21, 400, 2.00, 'Roberto Díaz',  18);
+
 
 -- --------------------------------------------------------
 
@@ -464,7 +467,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `viaje`
 --
 ALTER TABLE `viaje`
-  MODIFY `idviaje` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `idviaje` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- AUTO_INCREMENT de la tabla `viaje_flete`
@@ -489,7 +492,7 @@ ALTER TABLE `cuenta_corriente`
 ALTER TABLE `pago`
   ADD CONSTRAINT `fk_pago_chofer` FOREIGN KEY (`idChofer`) REFERENCES `chofer` (`idChofer`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_pago_sueldo` FOREIGN KEY (`idSueldo`) REFERENCES `sueldo` (`idsueldo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_pago_viaje` FOREIGN KEY (`idViaje`) REFERENCES `viaje` (`idviaje`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_pago_viaje` FOREIGN KEY (`idViaje`) REFERENCES `viaje` (`idviaje`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `sueldo`

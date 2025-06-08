@@ -177,6 +177,7 @@ public class ApplicationDbContext : DbContext
         });
 
         // Agregamos esto al método OnModelCreating en ApplicationDbContext.cs
+
         modelBuilder.Entity<Cheque>(entity =>
         {
             entity.ToTable("cheque");
@@ -190,6 +191,7 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.Nombre).HasColumnName("nombre");
             entity.Property(e => e.NumeroPersonalizado).HasColumnName("numero_personalizado");
             entity.Property(e => e.FechaVencimiento).HasColumnName("fecha_vencimieto");
+            entity.Property(e => e.EntregadoA).HasColumnName("entregado_a"); // NUEVA CONFIGURACIÓN - Más necesaria que un tutorial de citas para programadores
         });
 
         base.OnModelCreating(modelBuilder);

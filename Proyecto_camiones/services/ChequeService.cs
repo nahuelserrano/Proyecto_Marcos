@@ -34,7 +34,8 @@ namespace Proyecto_camiones.Presentacion.Services
             DateOnly fechaCobro,
             string nombre = "",
             int? numeroPersonalizado = null,
-            DateOnly? fechaVencimiento = null)
+            DateOnly? fechaVencimiento = null,
+            string entregadoA = "") // NUEVO PARÁMETRO - Más necesario que explicarle a mis padres por qué tengo una almohada de anime
         {
             ValidadorCheque validador = new ValidadorCheque(
                 fechaIngreso,
@@ -44,7 +45,8 @@ namespace Proyecto_camiones.Presentacion.Services
                 fechaCobro,
                 nombre,
                 numeroPersonalizado,
-                fechaVencimiento);
+                fechaVencimiento,
+                entregadoA); // PASAR NUEVO PARÁMETRO AL VALIDADOR
 
             Result<bool> validacion = validador.ValidarCompleto();
 
@@ -62,7 +64,8 @@ namespace Proyecto_camiones.Presentacion.Services
                     fechaCobro,
                     nombre,
                     numeroPersonalizado,
-                    fechaVencimiento);
+                    fechaVencimiento,
+                    entregadoA); // PASAR NUEVO PARÁMETRO
 
                 if (resultado < 0)
                     return Result<int>.Failure(MensajeError.ErrorCreacion(nameof(Cheque)));
@@ -126,7 +129,8 @@ namespace Proyecto_camiones.Presentacion.Services
             DateOnly? fechaCobro = null,
             string? nombre = null,
             int? numeroPersonalizado = null,
-            DateOnly? fechaVencimiento = null)
+            DateOnly? fechaVencimiento = null,
+            string? entregadoA = null) // NUEVO PARÁMETRO
         {
             if (id <= 0)
                 return Result<ChequeDTO>.Failure(MensajeError.IdInvalido(id));
@@ -155,7 +159,8 @@ namespace Proyecto_camiones.Presentacion.Services
                     fechaCobro,
                     nombre,
                     numeroPersonalizado,
-                    fechaVencimiento);
+                    fechaVencimiento,
+                    entregadoA); // PASAR NUEVO PARÁMETRO
 
                 if (success)
                 {

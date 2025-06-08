@@ -20,7 +20,7 @@ namespace Proyecto_camiones.ViewModels
         public CuentaCorrienteService cs;
         public CuentaCorrienteViewModel()
         {
-            var cr = new CuentaCorrienteRepository(General.obtenerInstancia());
+            var cr = new CuentaCorrienteRepository();
             this.cs = new CuentaCorrienteService(cr);
         }
 

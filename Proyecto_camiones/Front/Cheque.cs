@@ -81,16 +81,16 @@ namespace Proyecto_camiones.Front
         {
             cheq.Rows.Clear();
             ChequeViewModel cvm = new ChequeViewModel();
-            //var result = await cvm.ObtenerTodosAsync();
+            var result = await cvm.ObtenerTodosAsync();
 
-            //if (result.IsSuccess)
-            //{
-            //    foreach (var cheque in result.Value)
-            //    {
-            //        cheq.Rows.Add(cheque.FechaIngresoCheque, cheque.Banco, cheque.NumeroCheque, cheque.Monto, cheque.Nombre, cheque.NumeroPersonalizado, null, cheque.FechaCobro,  "x",cheque.Id);
-            //    }
-            //}
-            
+            if (result.IsSuccess)
+            {
+                foreach (var cheque in result.Value)
+                {
+                    cheq.Rows.Add(cheque.FechaIngresoCheque, cheque.Banco, cheque.NumeroCheque, cheque.Monto, cheque.Nombre, cheque.NumeroPersonalizado, cheque.EntregadoA, cheque.FechaCobro, cheque.FechaVencimiento, cheque.Id);
+                }
+            }
+
         }
 
         private void ConfigurarDataGridView()
@@ -177,7 +177,7 @@ namespace Proyecto_camiones.Front
             cheq.Columns.Add("banco", "Banco");
             cheq.Columns.Add("nroCheque", "Nro de cheque");
             cheq.Columns.Add("pesos", "Pesos");
-            cheq.Columns.Add("nombre", "Nombre");
+            cheq.Columns.Add("nombre", "Recibido por");
             cheq.Columns.Add("nroPersonal", "Número personal de cheque");
             cheq.Columns.Add("entregadoA", "Entregado a");
             cheq.Columns.Add("fechaRetiro", "Fecha de retiro");
@@ -228,7 +228,7 @@ namespace Proyecto_camiones.Front
         private void CargarFormularioCheque(int cant)
         {
             this.campos.Clear();
-            this.campos = new List<string> { "F. Recibido", "Banco", "Nro. Cheque", "Pesos", "Nombre", "Nro. Personal", "Entregado a", "Fecha de retiro", "F. vencimiento" };
+            this.campos = new List<string> { "F. Recibido", "Banco", "Nro. Cheque", "Pesos", "Recibido por", "Nro. Personal", "Entregado a", "Fecha de retiro", "F. vencimiento" };
 
             InitializeFormProperties(cant, campos);
         }
@@ -506,8 +506,7 @@ namespace Proyecto_camiones.Front
                             {
                                 if (textBox.Text == campo.ToString())
                                 {
-                                    MessageBox.Show("Complete todos los campos");
-                                    return;
+                                    datos.Add(" ");
                                 }
                                 if (textBox.Name == campo)
                                 {
@@ -531,19 +530,18 @@ namespace Proyecto_camiones.Front
                 }
             }
             ChequeViewModel cvm = new ChequeViewModel();
-            //var result = await cvm.CrearAsync(DateOnly.Parse(datos[0]), int.Parse(datos[2]), float.Parse(datos[3]), datos[1], DateOnly.Parse(datos[7]), datos[4], int.Parse(datos[5]), null);
+            var result = await cvm.CrearAsync(DateOnly.Parse(datos[0]), int.Parse(datos[2]), float.Parse(datos[3]), datos[1], DateOnly.Parse(datos[7]), datos[4], int.Parse(datos[5]), DateOnly.Parse(datos[8]), datos[6]);
 
-            //if (result.IsSuccess)
-            //{
-            //    MessageBox.Show("agregado correctamente");
-            //    ShowInfoTable();
-            //}
+            if (result.IsSuccess)
+            {
+                ShowInfoTable();
+            }
 
             //Verificar que los datos no estén vacíos
-            //if (datos.All(dato => !string.IsNullOrWhiteSpace(dato)))
-            //{
+            if (datos.All(dato => !string.IsNullOrWhiteSpace(dato)))
+            {
 
-            eliminar.Text = "X";
+                eliminar.Text = "X";
             eliminar.UseColumnTextForButtonValue = true;
 
             datos.Add(eliminar.Text);
@@ -572,7 +570,7 @@ namespace Proyecto_camiones.Front
                         }
                     }
                 }
-            //}
+            }
         }
 
         private async Task eliminarFila(object sender, DataGridViewCellEventArgs e)
@@ -586,19 +584,18 @@ namespace Proyecto_camiones.Front
                 {
                     string id = cheq.Rows[e.RowIndex].Cells["id"].Value.ToString();
                     ChequeViewModel cvm = new ChequeViewModel();
-                    //var result = await cvm.EliminarAsync(int.Parse(id));
+                    var result = await cvm.EliminarAsync(int.Parse(id));
 
-                    //if (result.IsSuccess)
-                    //{
-                    //    MessageBox.Show("eliminado");
-                    //    ShowInfoTable();
-                    //}
-                    //else
-                    //{
-                    //    MessageBox.Show(result.Error);
-                    //}
+                    if (result.IsSuccess)
+                    {
+                        MessageBox.Show("eliminado");
+                        ShowInfoTable();
+                    }
+                    else
+                    {
+                        MessageBox.Show(result.Error);
+                    }
                 }
-
             }
         }
 
@@ -612,27 +609,47 @@ namespace Proyecto_camiones.Front
                 if (resultado == DialogResult.Yes)
                 {
 
-                    string id = cheq.Rows[e.RowIndex].Cells["id"].Value.ToString();
-                    string fechaRecibido = cheq.Rows[e.RowIndex].Cells["fRecibido"].Value.ToString();
-                    string monto = cheq.Rows[e.RowIndex].Cells["pesos"].Value.ToString();
-                    string banco = cheq.Rows[e.RowIndex].Cells["banco"].Value.ToString();
-                    string nroCheque = cheq.Rows[e.RowIndex].Cells["nroCheque"].Value.ToString();
-                    string nroPersonal = cheq.Rows[e.RowIndex].Cells["nroPersonal"].Value.ToString();
-                    string fechaRetiro = cheq.Rows[e.RowIndex].Cells["fechaRetiro"].Value.ToString();
-                    //string entregadoA = cheq.Rows[e.RowIndex].Cells["entregadoA"].Value.ToString();
-                    string entrego = cheq.Rows[e.RowIndex].Cells["nombre"].Value.ToString();
+                    var idValue = cheq.Rows[e.RowIndex].Cells["id"].Value;
+                    string id = idValue != null ? idValue.ToString() : string.Empty;
+
+                    var recibidoValue = cheq.Rows[e.RowIndex].Cells["fRecibido"].Value;
+                    string fechaRecibido = recibidoValue != null ? recibidoValue.ToString() : string.Empty;
+
+                    var pesosValue = cheq.Rows[e.RowIndex].Cells["pesos"].Value;
+                    string monto = pesosValue != null ? pesosValue.ToString() : string.Empty;
+
+                    var bancoValue = cheq.Rows[e.RowIndex].Cells["banco"].Value;
+                    string banco = bancoValue != null ? bancoValue.ToString() : string.Empty;
+
+                    var chequeValue = cheq.Rows[e.RowIndex].Cells["nroCheque"].Value;
+                    string nroCheque = chequeValue != null ? chequeValue.ToString() : string.Empty;
+
+                    var personalValue = cheq.Rows[e.RowIndex].Cells["nroPersonal"].Value;
+                    string nroPersonal = personalValue != null ? personalValue.ToString() : string.Empty;
+
+                    var retiroValue = cheq.Rows[e.RowIndex].Cells["fechaRetiro"].Value;
+                    string fechaRetiro = retiroValue != null ? retiroValue.ToString() : string.Empty;
+
+                    var entragadoValue = cheq.Rows[e.RowIndex].Cells["entregadoA"].Value;
+                    string entregadoA = entragadoValue != null ? entragadoValue.ToString() : string.Empty;
+
+                    var nombreValue = cheq.Rows[e.RowIndex].Cells["nombre"].Value;
+                    string entragadoPor = nombreValue != null ? nombreValue.ToString() : string.Empty;
+                    
+                    var vencimiento = cheq.Rows[e.RowIndex].Cells["fechaVencimiento"].Value;
+                    string fechaVencimiento = nombreValue != null ? nombreValue.ToString() : string.Empty;
 
                     ChequeViewModel cvm = new ChequeViewModel();
-                    //var result = await cvm.ActualizarAsync(int.Parse(id), DateOnly.Parse(fechaRecibido), int.Parse(nroCheque), float.Parse(monto), banco, DateOnly.Parse(fechaRetiro), entrego, int.Parse(nroPersonal), null);
+                    var result = await cvm.ActualizarAsync(int.Parse(id), DateOnly.Parse(fechaRecibido), int.Parse(nroCheque), float.Parse(monto), banco, DateOnly.Parse(fechaRetiro), entragadoPor, int.Parse(nroPersonal), DateOnly.Parse(fechaVencimiento), entregadoA);
 
-                    //if (result.IsSuccess)
-                    //{
-                    //    ShowInfoTable();
-                    //}
-                    //else
-                    //{
-                    //    MessageBox.Show(result.Error);
-                    //}
+                    if (result.IsSuccess)
+                    {
+                        ShowInfoTable();
+                    }
+                    else
+                    {
+                        MessageBox.Show(result.Error);
+                    }
                 }
             }
         }

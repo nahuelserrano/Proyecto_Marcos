@@ -8,8 +8,8 @@ internal class SueldoMensual : FormRegistro
 {
     private RoundButton btnVolver = new RoundButton();
 
-    public SueldoMensual(string dato, string filtro)
-        : base(new List<string> { "Fecha inicial", "Fecha final" }, 2, dato, "sueldo", new List<string> { "Mes", "Chofer", "Sueldo" })
+    public SueldoMensual(string dato, string filtro, string nombreChofer)
+        : base(new List<string> { "Fecha inicial", "Fecha final", "Chofer" }, 3, dato, "sueldo", new List<string> { "Rango fechas", "Chofer", "Sueldo" }, nombreChofer)
     {
         InitializeUI(dato, filtro);
     }
@@ -41,7 +41,7 @@ internal class SueldoMensual : FormRegistro
 
             List<string> camposFaltantesTabla = new List<string> { "Total", "Monto chofer" };
 
-            ViajeFiltro form = new ViajeFiltro(dato, cantCamposTabla, campos, filtro, camposFaltantesTabla);
+            ViajeFiltro form = new ViajeFiltro(dato, cantCamposTabla, campos, filtro, camposFaltantesTabla, null);
         };  
     }
 }
