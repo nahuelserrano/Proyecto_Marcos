@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Proyecto_camiones.Presentacion;
-using Proyecto_camiones.Presentacion.Utils;
 using Proyecto_camiones.Models;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using Proyecto_camiones.DTOs;
 using Microsoft.EntityFrameworkCore;
-using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.ViewModels;
 using System.Windows.Forms;
 

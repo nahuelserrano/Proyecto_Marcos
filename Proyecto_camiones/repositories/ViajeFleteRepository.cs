@@ -2,13 +2,10 @@
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Models;
 using Proyecto_camiones.Presentacion;
-using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.ViewModels;
-using SixLabors.ImageSharp.Formats.Jpeg;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 

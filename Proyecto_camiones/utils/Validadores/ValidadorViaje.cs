@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Proyecto_camiones.Presentacion.Models;
 
 namespace Proyecto_camiones.Presentacion.Utils
 {

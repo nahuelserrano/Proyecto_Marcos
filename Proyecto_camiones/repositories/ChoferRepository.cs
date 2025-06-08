@@ -116,19 +116,10 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-
-                if (string.IsNullOrEmpty(nombre))
-                {
-                    return null;
-                }
-
                 var chofer = await _context.Choferes.FirstOrDefaultAsync(c => c.Nombre == nombre);
 
                 if (chofer == null)
                 {
-
-                    return null;
-
                     var match = await ObtenerPorSimilitudAsync(nombre);
 
                     chofer = match.Value.chofer;
@@ -140,7 +131,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
                         return null;
                     }
                     Console.WriteLine($"Chofer con nombre {nombre} no encontrado, Match {chofer.Nombre} con una similitud de {similitud}");
-
                 }
 
                 return chofer;

@@ -4,7 +4,6 @@ using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Utils;
 using Proyecto_camiones.DTOs;
-using NPOI.POIFS.Properties;
 using System.Collections.Generic;
 
 namespace Proyecto_camiones.Presentacion.Services

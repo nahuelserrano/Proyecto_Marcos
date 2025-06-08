@@ -1,16 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MySqlX.XDevAPI.Common;
-using Org.BouncyCastle.Asn1.Ocsp;
-using Proyecto_camiones.DTOs;
+﻿using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Services;
 using Proyecto_camiones.Presentacion.Utils;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Proyecto_camiones.ViewModels
 {

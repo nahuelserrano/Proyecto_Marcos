@@ -1,10 +1,6 @@
 ﻿
-using Proyecto_camiones.Presentacion.Utils;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Proyecto_camiones.Presentacion.Models
 {

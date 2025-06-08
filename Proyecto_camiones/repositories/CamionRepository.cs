@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Windows.Forms;
 using Proyecto_camiones.ViewModels;
 
 namespace Proyecto_camiones.Presentacion.Repositories

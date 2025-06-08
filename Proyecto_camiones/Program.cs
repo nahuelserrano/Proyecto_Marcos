@@ -1,26 +1,7 @@
-﻿using Proyecto_camiones.Presentacion.Repositories;
-using Proyecto_camiones.Presentacion.Services;
+﻿using Proyecto_camiones.ViewModels;
 using System;
-using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Microsoft.Extensions.DependencyInjection;
-using Proyecto_camiones.DTOs;
-using Proyecto_camiones.ViewModels;
-using Proyecto_camiones.Presentacion.Utils;
-using Proyecto_camiones.Models;
-using MathNet.Numerics.LinearAlgebra.Factorization;
-using System.Runtime.CompilerServices;
-using MySqlX.XDevAPI.Common;
-using System.Data;
-using MySql.Data.MySqlClient;
-using Proyecto_camiones.Presentacion.Models;
-using System.Collections.Generic;
-using Proyecto_camiones.Tests;
-using System.Collections.Generic;
-using System.Linq;
-using Proyecto_camiones.Front;
-using Mysqlx.Cursor;
 
 namespace Proyecto_camiones
 {
@@ -39,9 +20,9 @@ namespace Proyecto_camiones
 
         {
             // Llamada a Windows Forms para inicializar la aplicación
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
 
 
             //PagoViewModel pw = new PagoViewModel();
@@ -383,26 +364,26 @@ namespace Proyecto_camiones
             //    //await ChoferTests.ProbarEliminarChofer(2);
 
             //    // VIAJE
-            DateOnly fecha = new DateOnly(2025, 4, 28);
-                //int idViaje = await ViajeTest.ProbarInsertarViaje(fecha, "Tandil", "Buenos Aires", 123, 1000.5f, "Trigo", "Cliente1", "PUC111", 350.5f, 5000.0f,null, 15F);
-                ViajeViewModel vvm = new ViajeViewModel();
-                float f = 0.0F;
-                //Result<int> viaje = await vvm.CrearAsync(fecha, "Tandil", "Azul", 123, "trigo", 30.0F, "Cliente1", "PUC111", 350.5F, 5000.0F, "nuevo chofer", f);
+            //DateOnly fecha = new DateOnly(2025, 4, 28);
+            //    //int idViaje = await ViajeTest.ProbarInsertarViaje(fecha, "Tandil", "Buenos Aires", 123, 1000.5f, "Trigo", "Cliente1", "PUC111", 350.5f, 5000.0f,null, 15F);
+            //    ViajeViewModel vvm = new ViajeViewModel();
+            //    float f = 0.0F;
+            //    //Result<int> viaje = await vvm.CrearAsync(fecha, "Tandil", "Azul", 123, "trigo", 30.0F, "Cliente1", "PUC111", 350.5F, 5000.0F, "nuevo chofer", f);
 
-                await ViajeTest.ProbarActualizarViaje(
-                    id: 1,
-                    fechaInicio: new DateOnly(2025, 5, 10),
-                    lugarPartida: "Rosario",
-                    destino: "Córdoba",
-                    remito: 12345,
-                    carga: "Soja",
-                    kg: 25000.5f,
-                    cliente: "COOPERATIVA",
-                    camion: "HIJ429",
-                    km: 400.0f,
-                    tarifa: 75000.0f,
-                    nombreChofer: "Mili"
-                );
+            //    await ViajeTest.ProbarActualizarViaje(
+            //        id: 1,
+            //        fechaInicio: new DateOnly(2025, 5, 10),
+            //        lugarPartida: "Rosario",
+            //        destino: "Córdoba",
+            //        remito: 12345,
+            //        carga: "Soja",
+            //        kg: 25000.5f,
+            //        cliente: "Cliente A",
+            //        camion: "EEE555",
+            //        km: 400.0f,
+            //        tarifa: 75000.0f,
+            //        nombreChofer: "Carlos Gómez"
+            //    );
 
                 //await ViajeTest.ProbarObtenerViajePorId(4);
                 //await ViajeTest.ProbarObtenerViajesPorCliente(3);

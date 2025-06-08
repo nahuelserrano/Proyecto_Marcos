@@ -1,15 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NPOI.XSSF.UserModel;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Models;
 using Proyecto_camiones.Presentacion;
-using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 

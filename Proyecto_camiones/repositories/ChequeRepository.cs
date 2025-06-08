@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using MySqlX.XDevAPI.Common;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Models;
-using Proyecto_camiones.Presentacion.Utils;
 using Proyecto_camiones.ViewModels;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace Proyecto_camiones.Presentacion.Repositories
 {

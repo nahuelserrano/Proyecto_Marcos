@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Proyecto_camiones.DTOs;
-using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Repositories;
-using Proyecto_camiones.Presentacion.Utils;
 using Proyecto_camiones.ViewModels;
 
 namespace Proyecto_camiones.Tests
@@ -276,8 +273,8 @@ namespace Proyecto_camiones.Tests
             try
             {
                 var resultado = await vvm.ActualizarAsync(
-                    id, fechaInicio, lugarPartida, destino,
-                    remito, carga, kg, cliente, camion, km, tarifa);
+                    id, fechaInicio, lugarPartida, destino, remito,
+                    carga, kg, cliente, camion, km, tarifa, nombreChofer);
 
                 if (resultado.IsSuccess)
                 {

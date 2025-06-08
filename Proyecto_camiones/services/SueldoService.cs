@@ -6,11 +6,6 @@ using Proyecto_camiones.Services;
 using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Utils;
-using Proyecto_camiones.Repositories;
-using Proyecto_camiones.Models;
-using Proyecto_camiones.ViewModels;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
-using System.Windows.Forms;
 
 namespace Proyecto_camiones.Presentacion.Services
 {
