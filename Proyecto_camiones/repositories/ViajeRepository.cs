@@ -29,13 +29,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
             try
             {
                 var puedeConectar = await _context.Database.CanConnectAsync();
-
-                if (puedeConectar)
-                    Console.WriteLine("Conexión exitosa a la base de datos.");
-                else
-                    Console.WriteLine(MensajeError.ErrorBaseDatos("No se pudo establecer conexión"));
-
-
                 return puedeConectar;
             }
             catch (Exception ex)

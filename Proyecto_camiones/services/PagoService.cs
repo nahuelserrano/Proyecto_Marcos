@@ -35,10 +35,7 @@ namespace Proyecto_camiones.Services
                 {
                     return idPago;
                 }
-                else
-                {
-                    return -2;
-                }
+                return -2;
             }
             catch
             {
