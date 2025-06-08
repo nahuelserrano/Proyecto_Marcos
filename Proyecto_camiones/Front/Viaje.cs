@@ -301,6 +301,21 @@ internal class Viaje : Home
         buttonsVisibleOrInvisible(filtro);
     }
 
+    private void panel1_Paint(object sender, PaintEventArgs e)
+    {
+        Panel panel = sender as Panel;
+
+        if (panel != null)
+        {
+            ControlPaint.DrawBorder(
+                e.Graphics,
+                panel.ClientRectangle,
+                Color.FromArgb(103, 229, 109), // el color que quieras
+                ButtonBorderStyle.Solid
+            );
+        }
+
+    }
 
     //GENERADOR DE CARDS
 
@@ -309,35 +324,38 @@ internal class Viaje : Home
         Panel card = new Panel
         {
             Size = new Size(200, 100),
-            BackColor = System.Drawing.Color.FromArgb(48, 48, 48),
+            BackColor = System.Drawing.Color.FromArgb(34, 34, 30),
             Margin = new Padding(10),
             Font = new Font("Nunito", 16, FontStyle.Regular),
+            BorderStyle = BorderStyle.FixedSingle,
+            Cursor = Cursors.Hand,
         };
 
         Label label = new Label
         {
 
             Text = item.nombre,
-            ForeColor = System.Drawing.Color.FromArgb(218, 218, 28),
+            ForeColor = System.Drawing.Color.FromArgb(223, 237, 224),
             AutoSize = true,
             TextAlign = ContentAlignment.TopCenter,
             Location = new Point(10, 10),
-            BackColor = Color.Transparent
+            BackColor = Color.Transparent,
         };
 
         RoundButton remove = new RoundButton
         {
             Text = "🗑",
-            BackColor = System.Drawing.Color.FromArgb(48, 48, 48),
-            ForeColor = System.Drawing.Color.FromArgb(218, 218, 28),
+            BackColor = Color.Transparent,
             Size = new Size(30, 40),
             Location = new Point(170, 60),
-
+            ForeColor = System.Drawing.Color.FromArgb(218, 28, 28),
             FlatStyle = FlatStyle.Flat,
+            Cursor = Cursors.Hand
         };
 
-        remove.FlatAppearance.BorderColor = Color.FromArgb(48, 48, 48);
-        remove.FlatAppearance.BorderSize = 1;
+        card.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+
+        remove.FlatAppearance.BorderSize = 0;
 
         card.Controls.Add(label);
         card.Controls.Add(remove);
@@ -393,16 +411,18 @@ internal class Viaje : Home
         Panel card = new Panel
         {
             Size = new Size(200, 100),
-            BackColor = System.Drawing.Color.FromArgb(48, 48, 48),
+            BackColor = System.Drawing.Color.FromArgb(34, 34, 30),
             Margin = new Padding(10),
             Font = new Font("Nunito", 16, FontStyle.Regular),
+            BorderStyle = BorderStyle.FixedSingle,
+            Cursor = Cursors.Hand,
         };
 
         Label label = new Label
         {
 
             Text = item.Nombre,
-            ForeColor = System.Drawing.Color.FromArgb(218, 218, 28),
+            ForeColor = System.Drawing.Color.FromArgb(223, 237, 224),
             AutoSize = true,
             TextAlign = ContentAlignment.TopCenter,
             Location = new Point(10, 10),
@@ -412,17 +432,17 @@ internal class Viaje : Home
         RoundButton remove = new RoundButton
         {
             Text = "🗑",
-            BackColor = System.Drawing.Color.FromArgb(48, 48, 48),
-            ForeColor = System.Drawing.Color.FromArgb(218, 218, 28),
+            BackColor = Color.Transparent,
             Size = new Size(30, 40),
             Location = new Point(170, 60),
-
+            ForeColor = System.Drawing.Color.FromArgb(218, 28, 28),
             FlatStyle = FlatStyle.Flat,
+            Cursor = Cursors.Hand
         };
 
+        remove.FlatAppearance.BorderSize = 0;
+
         label.Text = label.Text.ToUpper();
-        remove.FlatAppearance.BorderColor = Color.FromArgb(48, 48, 48);
-        remove.FlatAppearance.BorderSize = 1;
 
         card.Controls.Add(label);
         card.Controls.Add(remove);
@@ -454,6 +474,7 @@ internal class Viaje : Home
 
             }
         };
+        card.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
 
         campos.Clear();
         camposFaltantesTabla.Clear();
@@ -478,15 +499,18 @@ internal class Viaje : Home
         Panel card = new Panel
         {
             Size = new Size(200, 100),
-            BackColor = System.Drawing.Color.FromArgb(48, 48, 48),
+            BackColor = System.Drawing.Color.FromArgb(34, 34, 30),
             Margin = new Padding(10),
             Font = new Font("Nunito", 16, FontStyle.Regular),
+            BorderStyle = BorderStyle.FixedSingle,
+            Cursor = Cursors.Hand,
+
         };
 
         Label labelPatente = new Label
         {
             Text = item.Patente,
-            ForeColor = System.Drawing.Color.FromArgb(218, 218, 28),
+            ForeColor = System.Drawing.Color.FromArgb(223, 237, 224),
             AutoSize = true,
             TextAlign = ContentAlignment.TopCenter,
             Location = new Point(10, 10),
@@ -497,12 +521,13 @@ internal class Viaje : Home
         {
             Text = item.Nombre_Chofer,
             Font = new Font("Nunito", 10, FontStyle.Regular),
-            ForeColor = System.Drawing.Color.FromArgb(218, 218, 28),
+            ForeColor = System.Drawing.Color.FromArgb(103, 229, 109),
             AutoSize = true,
             TextAlign = ContentAlignment.TopCenter,
             Location = new Point(10, 40),
             BackColor = Color.Transparent
         };
+        card.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
 
         labelPatente.Text = labelPatente.Text.ToUpper();
         labelChofer.Text = labelChofer.Text.ToUpper();
@@ -510,16 +535,14 @@ internal class Viaje : Home
         RoundButton remove = new RoundButton
         {
             Text = "🗑",
-            BackColor = System.Drawing.Color.FromArgb(48, 48, 48),
-            ForeColor = System.Drawing.Color.FromArgb(218, 218, 28),
+            BackColor = Color.Transparent,
+            ForeColor = System.Drawing.Color.FromArgb(218, 28, 28),
             Size = new Size(30, 40),
             Location = new Point(170, 60),
-
             FlatStyle = FlatStyle.Flat,
+            Cursor = Cursors.Hand,
         };
-
-        remove.FlatAppearance.BorderColor = Color.FromArgb(48, 48, 48);
-        remove.FlatAppearance.BorderSize = 1;
+        remove.FlatAppearance.BorderSize = 0;
 
         card.Controls.Add(labelPatente);
         card.Controls.Add(labelChofer);

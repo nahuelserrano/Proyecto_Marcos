@@ -420,39 +420,36 @@ public class FormRegistro : Home
     }
 
     //FormProperties
+
     private void FormProperties(int cant)
     {
         if (cant > 8)
         {
-            formPanel.Size = new Size(this.Width - btnVolver.Width - btnCargar.Width - 120, 80);
-            formPanel.AutoScroll = true;
-            formPanel.HorizontalScroll.Enabled = true;
-            formPanel.HorizontalScroll.Visible = true;
-            formPanel.VerticalScroll.Enabled = false;
-            formPanel.VerticalScroll.Visible = false;
+            formPanel.Size = new Size(this.Width - btnVolver.Width - btnCargar.Width - 120, 70);
         }
         else
         {
-            formPanel.AutoScroll = false;
-            formPanel.Size = new Size(110 * cant, 80);
+            formPanel.Size = new Size(100 * cant, 70);
+        
         }
+        formPanel.BackColor = Color.FromArgb(45, 45, 48); // Gris oscuro moderno
+
         this.Resize += (s, e) =>
         {
-            formPanel.Location = new Point((this.Width - formPanel.Width) / 2 + 25, 100);
+            formPanel.Location = new Point((this.Width - formPanel.Width + 15) / 2, 115);
         };
-        formPanel.BackColor = System.Drawing.Color.FromArgb(200, Color.Black);
-
     }
     private void LayoutFormProperties(int cant)
     {
-        formFLTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
         formFLTextBox = PropertiesLayoutForm();
         formFLLabel = PropertiesLayoutForm();
 
-        formFLTextBox.Size = new Size(formPanel.Width, 50);
+        formFLTextBox.Size = new Size(formPanel.Width - 10, 55);
+        formFLTextBox.BackColor = Color.Transparent;
         formFLTextBox.Dock = DockStyle.Bottom;
 
-        formFLLabel.Size = new Size(formPanel.Width, 25);
+        formFLLabel.Size = new Size(formPanel.Width - 10, 30);
+        formFLLabel.Dock = DockStyle.Top;
 
         formPanel.Controls.Add(formFLLabel);
         formPanel.Controls.Add(formFLTextBox);
@@ -461,13 +458,10 @@ public class FormRegistro : Home
     private FlowLayoutPanel PropertiesLayoutForm()
     {
         FlowLayoutPanel formFL = new FlowLayoutPanel();
-
-        formFL.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-
         formFL.FlowDirection = FlowDirection.LeftToRight;
         formFL.WrapContents = false;
         formFL.BackColor = Color.Transparent;
-
+        formFL.AutoScroll = true;
         return formFL;
     }
 
@@ -476,10 +470,9 @@ public class FormRegistro : Home
     {
         foreach (string campo in campos)
         {
-            Panel campoPanel = PropertiesFormPanel();
-
-            TextBox textBoxForm = CreateTextBoxAndProperties(campo, cant);
-            Label labelForm = CreateLabelAndProperties(campo, cant);
+            FlowLayoutPanel campoPanel = PropertiesFormPanel();
+            TextBox textBoxForm = CreateTextBoxAndProperties(campo);
+            Label labelForm = CreateLabelAndProperties(campo);
 
             formFLLabel.Controls.Add(labelForm);
 
@@ -488,55 +481,60 @@ public class FormRegistro : Home
         }
     }
 
-    private Panel PropertiesFormPanel()
+    private FlowLayoutPanel PropertiesFormPanel()
     {
-        Panel campoTextBox = new Panel();
-        campoTextBox.AutoSize = true;
-        campoTextBox.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+        FlowLayoutPanel campoTextBox = new FlowLayoutPanel();
+        campoTextBox.Size = new Size(105, 40);
+        campoTextBox.Margin = new Padding(2, 0, 2, 0);
+        campoTextBox.BackColor = Color.Transparent;
 
         return campoTextBox;
     }
 
-    private Label CreateLabelAndProperties(object campo, int cant)
+    private Label CreateLabelAndProperties(object campo)
     {
         Label ll = new Label();
-
         ll.Text = campo.ToString();
-        ll.Font = new Font("Nunito", 12, FontStyle.Regular);
-        ll.ForeColor = System.Drawing.Color.FromArgb(224, 224, 224);
+        ll.Font = new Font("Segoe UI", 10, FontStyle.Regular);
+        ll.ForeColor = Color.FromArgb(220, 220, 220);
         ll.BackColor = Color.Transparent;
-        ll.TextAlign = ContentAlignment.MiddleLeft;
+        ll.Size = new Size(105, 25);
+        ll.TextAlign = ContentAlignment.MiddleCenter;
+        ll.Margin = new Padding(2, 0, 2, 0);
 
-        ll.AutoSize = false; // Muy importante: si no, el Size no se aplica
-        ll.Size = new Size((formPanel.Width / cant) - 10, 20); // Ajustá el tamaño como quieras
+        // Efecto de sombra del texto
+        ll.FlatStyle = FlatStyle.Flat;
 
         return ll;
     }
-    private TextBox CreateTextBoxAndProperties(object campo, int cant)
+    private TextBox CreateTextBoxAndProperties(object campo)
     {
         TextBox textBoxCampo = new TextBox();
-        textBoxCampo.Font = new Font("Nunito", 12, FontStyle.Regular);
-        textBoxCampo.BackColor = System.Drawing.Color.FromArgb(153, 145, 145);
-        textBoxCampo.Multiline = true;
-        textBoxCampo.Width = (formPanel.Width / cant) - 10;
-        textBoxCampo.Height = 30;
-        textBoxCampo.BorderStyle = BorderStyle.FixedSingle;
-        textBoxCampo.TextAlign = HorizontalAlignment.Left;
-        textBoxCampo.ForeColor = System.Drawing.Color.FromArgb(81, 77, 77);
 
-        string placeholderDefault = !string.IsNullOrWhiteSpace(campo?.ToString()) ? campo.ToString() : "Placeholder";
+        // Estilo base
+        textBoxCampo.Font = new Font("Segoe UI", 9, FontStyle.Regular);
+        textBoxCampo.BackColor = Color.FromArgb(60, 60, 65);
+        textBoxCampo.ForeColor = Color.FromArgb(220, 220, 220);
+        textBoxCampo.Margin = new Padding(0, 18, 0, 0);
+        textBoxCampo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+        textBoxCampo.Dock = DockStyle.None;
+        textBoxCampo.Anchor = AnchorStyles.None; // o la configuración que necesites
 
+        // Placeholder mejorado
         string placeholderText = campo.ToString();
-        textBoxCampo.Name = placeholderText;
         textBoxCampo.Text = placeholderText;
+        textBoxCampo.ForeColor = Color.FromArgb(150, 150, 150);
 
+        // Eventos mejorados
         textBoxCampo.GotFocus += (s, e) =>
         {
             if (textBoxCampo.Text == placeholderText)
             {
                 textBoxCampo.Text = "";
-                textBoxCampo.ForeColor = Color.Black;
+                textBoxCampo.ForeColor = Color.FromArgb(220, 220, 220);
             }
+            // Efecto de foco
+            textBoxCampo.BackColor = Color.FromArgb(70, 70, 75);
         };
 
         textBoxCampo.LostFocus += (s, e) =>
@@ -544,14 +542,14 @@ public class FormRegistro : Home
             if (string.IsNullOrWhiteSpace(textBoxCampo.Text))
             {
                 textBoxCampo.Text = placeholderText;
-                textBoxCampo.ForeColor = System.Drawing.Color.FromArgb(81, 77, 77);
+                textBoxCampo.ForeColor = Color.FromArgb(150, 150, 150);
             }
+            // Restaurar color
+            textBoxCampo.BackColor = Color.FromArgb(60, 60, 65);
         };
-
         return textBoxCampo;
     }
-
-
+   
 
     //GridProperties
     private void GridChequesProperties()
@@ -698,102 +696,110 @@ public class FormRegistro : Home
             }
         }
 
-        if (filtro == "Camion")
+        if (datos != null)
         {
-            ViajeViewModel viajeViewModel = new ViajeViewModel();
-            var resultado = await viajeViewModel.CrearAsync(DateOnly.Parse(datos[0]), datos[1], datos[2], int.Parse(datos[3]), datos[4], float.Parse(datos[6]), datos[9], dato, float.Parse(datos[5]), float.Parse(datos[7]), null, float.Parse(datos[8]));
 
-            if (resultado.IsSuccess)
+            if (filtro == "Camion")
             {
-                ShowInfoTable(filtro, dato, " ");
-            }
-            else
-            {
-                if (this.InvokeRequired)
+                ViajeViewModel viajeViewModel = new ViajeViewModel();
+                if (datos[10] == "Chofer")
                 {
-                    this.Invoke(new Action(() => CartelAviso(resultado.Error)));
+                    datos[10] = null;
+                }
+                var resultado = await viajeViewModel.CrearAsync(DateOnly.Parse(datos[0]), datos[1], datos[2], int.Parse(datos[3]), datos[4], float.Parse(datos[6]), datos[9], dato, float.Parse(datos[5]), float.Parse(datos[7]), datos[10], float.Parse(datos[8]));
+
+                if (resultado.IsSuccess)
+                {
+                    ShowInfoTable(filtro, dato, " ");
                 }
                 else
                 {
-                    CartelAviso(resultado.Error);
-                }
-            }
-        }
-        else if (filtro == "cuenta corriente")
-        {
-            CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
-            var resultado = await ccvm.InsertarAsync(dato, null, DateOnly.Parse(datos[0]), int.Parse(datos[1]), float.Parse(datos[3]), float.Parse(datos[2]));
-
-            if (resultado.IsSuccess)
-            {
-                ShowInfoTable(filtro, dato, " ");
-            }
-            else
-            {
-                if (this.InvokeRequired)
-                {
-                    this.Invoke(new Action(() => CartelAviso(resultado.Error)));
-                }
-                else
-                {
-                    CartelAviso(resultado.Error);
-                }
-            }
-        }
-        else if (filtro == "Flete")
-        {
-            ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
-            var resultado = await vfvm.InsertarAsync(datos[1], datos[2], float.Parse(datos[3]), datos[4], float.Parse(datos[5]), float.Parse(datos[6]), float.Parse(datos[7]), int.Parse(datos[8]), datos[10], dato, datos[11], float.Parse(datos[9]), DateOnly.Parse(datos[0]));
-
-            if (resultado.IsSuccess)
-            {
-                ShowInfoTable(filtro, dato, " ");
-            }
-            else
-            {
-                if (this.InvokeRequired)
-                {
-                    this.Invoke(new Action(() => CartelAviso(resultado.Error)));
-                }
-                else
-                {
-                    CartelAviso(resultado.Error);
-                }
-            }
-        }
-        else if (filtro == "sueldo")
-        {
-            SueldoViewModel svm = new SueldoViewModel();
-            var resultado = await svm.CrearAsync(datos[2], DateOnly.Parse(datos[0]), DateOnly.Parse(datos[1]), null, dato);
-            if (resultado.IsSuccess)
-            {
-                ShowInfoTable(filtro, dato, datos[2]);
-            }
-            else
-            {
-                if (this.InvokeRequired)
-                {
-                    this.Invoke(new Action(() => CartelAviso(resultado.Error)));
-                }
-                else
-                {
-                    CartelAviso(resultado.Error);
-                }
-            }
-        }
-
-        foreach (Control control in formFLTextBox.Controls)
-        {
-            if (control is Panel panel)
-            {
-                foreach (Control child in panel.Controls)
-                {
-                    if (child is TextBox textBox)
+                    if (this.InvokeRequired)
                     {
-                        string placeholderText = textBox.Text;
-                        textBox.Clear();
-                        textBox.Text = placeholderText; // Restaurar el placeholder??????????
-                        textBox.ForeColor = Color.Black;
+                        this.Invoke(new Action(() => CartelAviso(resultado.Error)));
+                    }
+                    else
+                    {
+                        CartelAviso(resultado.Error);
+                    }
+                }
+            }
+            else if (filtro == "cuenta corriente")
+            {
+                CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
+                var resultado = await ccvm.InsertarAsync(dato, null, DateOnly.Parse(datos[0]), int.Parse(datos[1]), float.Parse(datos[3]), float.Parse(datos[2]));
+
+                if (resultado.IsSuccess)
+                {
+                    ShowInfoTable(filtro, dato, " ");
+                }
+                else
+                {
+                    if (this.InvokeRequired)
+                    {
+                        this.Invoke(new Action(() => CartelAviso(resultado.Error)));
+                    }
+                    else
+                    {
+                        CartelAviso(resultado.Error);
+                    }
+                }
+            }
+            else if (filtro == "Flete")
+            {
+                ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
+                var resultado = await vfvm.InsertarAsync(datos[1], datos[2], float.Parse(datos[3]), datos[4], float.Parse(datos[5]), float.Parse(datos[6]), float.Parse(datos[7]), int.Parse(datos[8]), datos[10], dato, datos[11], float.Parse(datos[9]), DateOnly.Parse(datos[0]));
+
+                if (resultado.IsSuccess)
+                {
+                    ShowInfoTable(filtro, dato, " ");
+                }
+                else
+                {
+                    if (this.InvokeRequired)
+                    {
+                        this.Invoke(new Action(() => CartelAviso(resultado.Error)));
+                    }
+                    else
+                    {
+                        CartelAviso(resultado.Error);
+                    }
+                }
+            }
+            else if (filtro == "sueldo")
+            {
+                SueldoViewModel svm = new SueldoViewModel();
+                var resultado = await svm.CrearAsync(datos[2], DateOnly.Parse(datos[0]), DateOnly.Parse(datos[1]), null, dato);
+                if (resultado.IsSuccess)
+                {
+                    ShowInfoTable(filtro, dato, datos[2]);
+                }
+                else
+                {
+                    if (this.InvokeRequired)
+                    {
+                        this.Invoke(new Action(() => CartelAviso(resultado.Error)));
+                    }
+                    else
+                    {
+                        CartelAviso(resultado.Error);
+                    }
+                }
+            }
+
+            foreach (Control control in formFLTextBox.Controls)
+            {
+                if (control is Panel panel)
+                {
+                    foreach (Control child in panel.Controls)
+                    {
+                        if (child is TextBox textBox)
+                        {
+                            string placeholderText = textBox.Text;
+                            textBox.Clear();
+                            textBox.Text = placeholderText; // Restaurar el placeholder??????????
+                            textBox.ForeColor = Color.Black;
+                        }
                     }
                 }
             }
@@ -1086,13 +1092,14 @@ public class FormRegistro : Home
         if (filtro != "cuenta corriente" && filtro != "sueldo")
         {
             btnVolver.Text = "Volver";
-            btnVolver.Size = new Size(140, 40);
+            btnVolver.Size = new Size(130, 40);
             btnVolver.FlatAppearance.BorderSize = 0;
             btnVolver.FlatStyle = FlatStyle.Flat;
             btnVolver.Location = new Point(20, 120);
             btnVolver.Font = new Font("Nunito", 16, FontStyle.Regular);
-            btnVolver.BackColor = System.Drawing.Color.FromArgb(48, 48, 48);
-            btnVolver.ForeColor = System.Drawing.Color.FromArgb(218, 218, 28);
+            btnVolver.BackColor = System.Drawing.Color.FromArgb(218, 218, 28);
+            btnVolver.ForeColor = Color.Black;
+            btnVolver.Cursor = Cursors.Hand;
 
             btnVolver.Click += (s, e) =>
             {
@@ -1131,6 +1138,7 @@ public class FormRegistro : Home
             btnCuentaCorriente.Font = new Font("Nunito", 16, FontStyle.Regular);
             btnCuentaCorriente.BackColor = System.Drawing.Color.FromArgb(48, 48, 48);
             btnCuentaCorriente.ForeColor = System.Drawing.Color.FromArgb(218, 218, 28);
+            btnCuentaCorriente.Cursor = Cursors.Hand;
 
             btnCuentaCorriente.Click += (s, e) =>
             {
@@ -1156,6 +1164,7 @@ public class FormRegistro : Home
             btnSueldoMensual.Font = new Font("Nunito", 16, FontStyle.Regular);
             btnSueldoMensual.BackColor = System.Drawing.Color.FromArgb(48, 48, 48);
             btnSueldoMensual.ForeColor = System.Drawing.Color.FromArgb(218, 218, 28);
+            btnSueldoMensual.Cursor = Cursors.Hand;
             btnSueldoMensual.Click += (s, e) =>
             {
                 this.Hide();
@@ -1171,16 +1180,14 @@ public class FormRegistro : Home
     private void ButtonsPropertiesForm(string filtro)
     {
         btnCargar.Anchor = AnchorStyles.Right | AnchorStyles.Top;
-
-
-        btnCargar.BackColor = System.Drawing.Color.FromArgb(218, 218, 28);
+        btnCargar.BackColor = System.Drawing.Color.FromArgb(76, 175, 80);
         btnCargar.Size = new Size(110, 30);
-
         btnCargar.Text = "Cargar";
         btnCargar.FlatStyle = FlatStyle.Flat;
         btnCargar.FlatAppearance.BorderSize = 0;
-        btnCargar.ForeColor = Color.Black;
+        btnCargar.ForeColor = Color.White;
         btnCargar.Font = new Font("Nunito", 12, FontStyle.Bold);
+        btnCargar.Cursor = Cursors.Hand;
 
         int marginRight = 20;
 
@@ -1264,6 +1271,7 @@ public class FormRegistro : Home
         btnAceptarAviso.FlatStyle = FlatStyle.Flat;
         btnAceptarAviso.FlatAppearance.BorderSize = 0;
         btnAceptarAviso.Font = new Font("Nunito", 12, FontStyle.Bold);
+        btnAceptarAviso.Cursor = Cursors.Hand;
 
         //btnAceptarAviso.Resize += (s, e) =>
         //{

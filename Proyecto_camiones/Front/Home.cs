@@ -34,8 +34,8 @@ public class Home : Form
         // Cierra el formulario activo si existe
         if (activeForm != null)
         {
-            activeForm.Close();
             activeForm = null;
+            activeForm.Close();
         }
 
         // Abre el nuevo formulario

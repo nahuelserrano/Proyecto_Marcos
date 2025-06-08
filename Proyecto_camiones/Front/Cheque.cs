@@ -23,7 +23,7 @@ namespace Proyecto_camiones.Front
     public partial class Cheque : Home
     {
         //Form
-        private Panel formPanel = new Panel();
+        private NewRoundPanel formPanel = new NewRoundPanel(10);
         private FlowLayoutPanel formFLTextBox = new FlowLayoutPanel();
         private FlowLayoutPanel formFLLabel = new FlowLayoutPanel();
 
@@ -120,7 +120,6 @@ namespace Proyecto_camiones.Front
                 btnEliminar.HeaderText = "Eliminar";  // Puedes dejarlo vacío si prefieres
                 btnEliminar.Text = "🗑️"; // Ícono de eliminar
                 btnEliminar.UseColumnTextForButtonValue = true; // Hace que todas las celdas muestren "❌"
-                btnEliminar.Width = 40; // Ajustar tamaño
                 cheq.Columns.Add(btnEliminar);
             }
 
@@ -131,7 +130,6 @@ namespace Proyecto_camiones.Front
                 btnModificar.HeaderText = "Modificar";  // Puedes dejarlo vacío si prefieres
                 btnModificar.Text = "✏️"; // Ícono de modificar
                 btnModificar.UseColumnTextForButtonValue = true; // Hace que todas las celdas muestren "M"
-                btnModificar.Width = 40; // Ajustar tamaño
                 cheq.Columns.Add(btnModificar);
             }
         }
@@ -273,7 +271,7 @@ namespace Proyecto_camiones.Front
             filterTextBox.Margin = new Padding(5, 10, 5, 10);
 
             filterBtn.Text = "🔍";
-            filterBtn.ForeColor = System.Drawing.Color.FromArgb(218, 218, 28);
+            filterBtn.ForeColor = System.Drawing.Color.FromArgb(201, 227, 247);
             filterBtn.BackColor = System.Drawing.Color.FromArgb(48, 48, 48);
             filterBtn.Size = new Size(30, 25);
             filterBtn.Margin = new Padding(0, 10, 5, 10);
@@ -309,7 +307,7 @@ namespace Proyecto_camiones.Front
         //FormProperties
         private void FormProperties(int cant)
         {
-            formPanel.Size = new Size(100 * cant, 80);
+            formPanel.Size = new Size(100 * cant, 70);
             formPanel.BackColor = Color.FromArgb(45, 45, 48); // Gris oscuro moderno
             formPanel.BorderStyle = System.Windows.Forms.BorderStyle.None;
 
@@ -325,11 +323,9 @@ namespace Proyecto_camiones.Front
 
             formFLTextBox.Size = new Size(formPanel.Width - 10, 55);
             formFLTextBox.Dock = DockStyle.Bottom;
-            formFLTextBox.Margin = new Padding(5);
 
             formFLLabel.Size = new Size(formPanel.Width - 10, 30);
             formFLLabel.Dock = DockStyle.Top;
-            formFLLabel.Margin = new Padding(5);
 
             formPanel.Controls.Add(formFLLabel);
             formPanel.Controls.Add(formFLTextBox);
@@ -347,16 +343,13 @@ namespace Proyecto_camiones.Front
         }
 
         //TextBoxProperties
-
-        //TextBoxProperties
         private void TextoBoxAndLabelProperties(int cant, List<string> campos)
         {
             foreach (string campo in campos)
             {
-                Panel campoPanel = PropertiesFormPanel();
+                FlowLayoutPanel campoPanel = PropertiesFormPanel();
                 TextBox textBoxForm = CreateTextBoxAndProperties(campo);
                 Label labelForm = CreateLabelAndProperties(campo);
-
 
                 formFLLabel.Controls.Add(labelForm);
 
@@ -365,9 +358,9 @@ namespace Proyecto_camiones.Front
             }
         }
 
-        private Panel PropertiesFormPanel()
+        private FlowLayoutPanel PropertiesFormPanel()
         {
-            Panel campoTextBox = new Panel();
+            FlowLayoutPanel campoTextBox = new FlowLayoutPanel();
             campoTextBox.Size = new Size(105, 40);
             campoTextBox.Margin = new Padding(2, 0, 2, 0);
             campoTextBox.BackColor = Color.Transparent;
@@ -399,8 +392,7 @@ namespace Proyecto_camiones.Front
             textBoxCampo.Font = new Font("Segoe UI", 9, FontStyle.Regular);
             textBoxCampo.BackColor = Color.FromArgb(60, 60, 65);
             textBoxCampo.ForeColor = Color.FromArgb(220, 220, 220);
-            textBoxCampo.Size = new Size(110, 35);
-            textBoxCampo.Margin = new Padding(0, 80, 0, 0);
+            textBoxCampo.Margin = new Padding(0, 18, 0, 0);
             textBoxCampo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             textBoxCampo.Dock = DockStyle.None;
             textBoxCampo.Anchor = AnchorStyles.None; // o la configuración que necesites
@@ -435,13 +427,12 @@ namespace Proyecto_camiones.Front
             return textBoxCampo;
         }
 
-
         //ButtonProperties
         private void PanelButtonProperties()
         {
             this.Resize += (s, e) =>
             {
-                btnPanel.Location = new Point((this.Width - btnPanel.Width) - 50, 110);
+                btnPanel.Location = new Point((this.Width - btnPanel.Width) - 120, 115);
 
                 PositionGrid();
             };
@@ -452,12 +443,12 @@ namespace Proyecto_camiones.Front
         }
         private void ButtonsPropertiesForm()
         {
-            btnCargar.BackColor = System.Drawing.Color.FromArgb(218, 218, 28);
+            btnCargar.BackColor = System.Drawing.Color.FromArgb(76, 175, 80);
             btnCargar.Size = new Size(110, 30);
             btnCargar.Text = "Cargar";
             btnCargar.FlatStyle = FlatStyle.Flat;
             btnCargar.FlatAppearance.BorderSize = 0;
-            btnCargar.ForeColor = Color.Black;
+            btnCargar.ForeColor = Color.White;
             btnCargar.Font = new Font("Nunito", 12, FontStyle.Bold);
 
             if (!btnPanel.Controls.Contains(btnCargar))
@@ -471,9 +462,8 @@ namespace Proyecto_camiones.Front
 
                 PositionGrid();
             };
+            btnCargar.Cursor = Cursors.Hand;
         }
-
-
 
         //GridProperties
         private void GridChequesProperties()
@@ -562,31 +552,14 @@ namespace Proyecto_camiones.Front
             {
 
                 eliminar.Text = "X";
-            eliminar.UseColumnTextForButtonValue = true;
+                eliminar.UseColumnTextForButtonValue = true;
 
-            datos.Add(eliminar.Text);
+                datos.Add(eliminar.Text);
 
-            modificar.Text = "M";
-            modificar.UseColumnTextForButtonValue = true;
+                modificar.Text = "M";
+                modificar.UseColumnTextForButtonValue = true;
 
-            datos.Add(modificar.Text);
-
-            foreach (Control control in formFLTextBox.Controls)
-                {
-                    if (control is Panel panel)
-                    {
-                        foreach (Control child in panel.Controls)
-                        {
-                            if (child is TextBox textBox)
-                            {
-                                string placeholderText = textBox.Text;
-                                textBox.Clear();
-                                textBox.Text = placeholderText; // Restaurar el placeholder??????????
-                                textBox.ForeColor = Color.Black;
-                            }
-                        }
-                    }
-                }
+                datos.Add(modificar.Text);
             }
         }
 
@@ -665,7 +638,7 @@ namespace Proyecto_camiones.Front
                     string entragadoPor = nombreValue != null ? nombreValue.ToString() : string.Empty;
                     
                     var vencimiento = cheq.Rows[e.RowIndex].Cells["fechaVencimiento"].Value;
-                    string fechaVencimiento = nombreValue != null ? nombreValue.ToString() : string.Empty;
+                    string fechaVencimiento = vencimiento != null ? vencimiento.ToString() : string.Empty;
 
                     ChequeViewModel cvm = new ChequeViewModel();
                     var result = await cvm.ActualizarAsync(int.Parse(id), DateOnly.Parse(fechaRecibido), int.Parse(nroCheque), float.Parse(monto), banco, DateOnly.Parse(fechaRetiro), entragadoPor, int.Parse(nroPersonal), DateOnly.Parse(fechaVencimiento), entregadoA);
