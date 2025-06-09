@@ -145,19 +145,10 @@ namespace Proyecto_camiones.Presentacion.Services
                 if (ch != null)
                     await this._choferRepository.EliminarAsync(ch.Id);
                 
-                bool success = await this._camionRepository.EliminarAsync(id);
-
-                if (!success)
-                {
-                    Console.WriteLine("holu ya se eliminó el camión");
-                    return Result<string>.Failure("No se pudo eliminar el camión");
-                }
-
                 var  viajesDelCamion = await _viajeRepo.ObtenerPorCamionAsync(id, c.Patente);
 
                 if (viajesDelCamion == null)
                     return Result<string>.Failure(MensajeError.ErrorEliminacion("viaje"));
-                
 
                 foreach (ViajeDTO viaje in viajesDelCamion)
                 {
@@ -171,17 +162,13 @@ namespace Proyecto_camiones.Presentacion.Services
                     // Si el pago no está pagado, no se puede eliminar el viaje
                     if (!p.Pagado)
                         return Result<string>.Failure("El chofer asociado al camión tiene viajes pendientes a cobrar");
-
-                    bool eliminado = await _viajeRepo.EliminarAsync(viaje.Id);
-
-                    if (!eliminado)
-                        return Result<string>.Failure(MensajeError.ErrorEliminacion("viaje"));
                 }
+
+                await this._camionRepository.EliminarAsync(id);
 
                 scope.Complete();
                 return Result<string>.Success(MensajeError.EliminacionExitosa("camión"));
             }
-                
         }
 
         internal async Task<Result<String>> ObtenerChofer(string patente)
