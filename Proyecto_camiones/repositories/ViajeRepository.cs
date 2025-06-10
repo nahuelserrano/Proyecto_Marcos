@@ -225,6 +225,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 if (viaje == null)
                     return false;
 
+                Console.WriteLine("VIAJE ES DISTINTO DE NULL");
                 // Actualizar sólo los campos proporcionados
                 if (fechaInicio.HasValue)
                     viaje.FechaInicio = fechaInicio.Value;
@@ -362,6 +363,41 @@ namespace Proyecto_camiones.Presentacion.Repositories
                         Km = v.Km,
                         Tarifa = v.Tarifa,
                         Camion = v.CamionNavigation.Patente
+                    })
+                    .ToListAsync();
+
+                return viajes;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        // Obtener viajes por cliente
+        public async Task<List<ViajeDTO>?> ObtenerViajePorClienteAsync(int clienteId)
+        {
+            try
+            {
+                var viajes = await _context.Viajes
+                    .AsNoTracking()
+                    .Include(v => v.ClienteNavigation)
+                    .Include(v => v.CamionNavigation)
+                    .Where(v => v.Cliente == clienteId)
+                    .OrderByDescending(v => v.Id)
+                    .Select(v => new ViajeDTO
+                    {
+                        Id = v.Id,
+                        FechaInicio = v.FechaInicio,
+                        LugarPartida = v.LugarPartida,
+                        Destino = v.Destino,
+                        Remito = v.Remito,
+                        Kg = v.Kg,
+                        Carga = v.Carga,
+                        NombreCliente = v.ClienteNavigation.Nombre,
+                        NombreChofer = v.NombreChofer,
+                        Km = v.Km,
+                        Tarifa = v.Tarifa,
                     })
                     .ToListAsync();
 
