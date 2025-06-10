@@ -6,6 +6,7 @@ using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Utils;
 using Proyecto_camiones.Repositories;
+using Proyecto_camiones.Services;
 
 
 namespace Proyecto_camiones.Presentacion.Services
@@ -58,7 +59,15 @@ namespace Proyecto_camiones.Presentacion.Services
 
                 foreach (var viaje in listaViajes)
                 {
-                    if()
+                    bool pagado = await _viajeRepository.PagoPagado(viaje.Id);
+
+                    if (!pagado)
+                    {
+                        return Result<bool>.Failure(
+                            "Los viajes asociados al cliente no se pueden eliminar, " +
+                            "chofer/es tienen viajes pendientes por cobrar"
+                        );
+                    }
                 }
 
                 bool result = await this._clienteRepository.EliminarAsync(clienteId);

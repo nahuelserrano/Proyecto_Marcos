@@ -432,7 +432,12 @@ namespace Proyecto_camiones.Presentacion.Services
 
         public async Task<bool> TienePagoPendiente(int id)
         {
+            var result = await _pagoService.ObtenerPorIdViajeAsync(id);
+
+            if (result.IsSuccess)
+                return !result.Value.Pagado;
             
+            return false;
         }
     }
 }

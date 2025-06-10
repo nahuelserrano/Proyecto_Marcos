@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_camiones.DTOs;
+using Proyecto_camiones.Models;
 using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.ViewModels;
 
@@ -445,6 +446,23 @@ namespace Proyecto_camiones.Presentacion.Repositories
             catch (Exception ex)
             {
                 return null;
+            }
+        }
+
+        public async Task<bool> PagoPagado(int id)
+        {
+            try
+            {
+                var p = this._context.Pagos.FirstOrDefault(p => p.Id_Viaje == id);
+
+                if (p == null) throw new Exception($"Error el pago asociado al viaje con ID: {id}, no existe");
+
+                return p.Pagado;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
             }
         }
     }
