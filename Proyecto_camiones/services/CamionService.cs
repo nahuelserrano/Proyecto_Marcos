@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Transactions;
 using Proyecto_camiones.DTOs;
+using Proyecto_camiones.Models;
 using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Utils;
+using Proyecto_camiones.Repositories;
+using Proyecto_camiones.Services;
 
 namespace Proyecto_camiones.Presentacion.Services
 {
@@ -13,6 +17,7 @@ namespace Proyecto_camiones.Presentacion.Services
         private CamionRepository _camionRepository;
         private ChoferRepository _choferRepository;
         private ViajeRepository _viajeRepo;
+        private PagoService _pagoService;
 
 
         public CamionService(CamionRepository camionR)
@@ -20,6 +25,7 @@ namespace Proyecto_camiones.Presentacion.Services
             this._camionRepository = camionR ?? throw new ArgumentNullException(nameof(camionR));
             this._choferRepository = new ChoferRepository();
             this._viajeRepo = new ViajeRepository();
+            this._pagoService = new PagoService(new PagoRepository());
         }
 
         //PROBAR CONEXION
@@ -112,7 +118,7 @@ namespace Proyecto_camiones.Presentacion.Services
             var camionExistente = await _camionRepository.ObtenerPorIdAsync(id);
 
             if (camionExistente == null) { 
-            return Result<CamionDTO>.Failure(MensajeError.objetoNulo(nameof(camionExistente)));
+                return Result<CamionDTO>.Failure(MensajeError.objetoNulo(nameof(camionExistente)));
             }
 
             bool success = await this._camionRepository.ActualizarAsync(id, patente, nombre);
@@ -133,20 +139,36 @@ namespace Proyecto_camiones.Presentacion.Services
             }
 
             Chofer? ch = await this._choferRepository.ObtenerPorNombreAsync(c.Nombre_Chofer);
-            if(ch != null)
-            {
-                await this._choferRepository.EliminarAsync(ch.Id);
-            }
 
-            bool success = await this._camionRepository.EliminarAsync(id);
-            
-            Console.WriteLine("rompimos acá?");
-            if (success)
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                Console.WriteLine("holu ya se eliminó el camión");
-                return Result<string>.Success("el camion con el id " + id + " fue eliminado correctamente");
+                if (ch != null)
+                    await this._choferRepository.EliminarAsync(ch.Id);
+                
+                var  viajesDelCamion = await _viajeRepo.ObtenerPorCamionAsync(id, c.Patente);
+
+                if (viajesDelCamion == null)
+                    return Result<string>.Failure(MensajeError.ErrorEliminacion("viaje"));
+
+                foreach (ViajeDTO viaje in viajesDelCamion)
+                {
+                    Result<Pago> pResult = await _pagoService.ObtenerPorIdViajeAsync(viaje.Id);
+
+                    if(!pResult.IsSuccess)
+                        return Result<string>.Failure(MensajeError.EntidadNoEncontrada("pago", viaje.Id));
+
+                    Pago p = pResult.Value;
+
+                    // Si el pago no está pagado, no se puede eliminar el viaje
+                    if (!p.Pagado)
+                        return Result<string>.Failure("El chofer asociado al camión tiene viajes pendientes a cobrar");
+                }
+
+                await this._camionRepository.EliminarAsync(id);
+
+                scope.Complete();
+                return Result<string>.Success(MensajeError.EliminacionExitosa("camión"));
             }
-            return Result<string>.Failure("el camion con el id " + id + " no pudo ser eliminado");
         }
 
         internal async Task<Result<String>> ObtenerChofer(string patente)

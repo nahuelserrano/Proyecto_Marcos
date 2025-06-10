@@ -86,12 +86,10 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 if (sueldo == null)
                     return null;
                 sueldo.Pagado = true;
-                MessageBox.Show("pagado");
                     int registrosAfectados = await _context.SaveChangesAsync();
 
                 if (registrosAfectados > 0)
                 {
-                    Console.WriteLine("sueldo pagado");
                     return new SueldoDTO(sueldo.Id, sueldo.Monto, sueldo.Id_Chofer, sueldo.pagadoDesde, sueldo.pagadoHasta, sueldo.FechaPago, sueldo.Pagado, sueldo.IdCamion, null);
                 }
                 return null;

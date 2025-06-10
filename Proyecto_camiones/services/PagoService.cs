@@ -21,6 +21,24 @@ namespace Proyecto_camiones.Services
             bool result = await _pagoRepository.ProbarConexionAsync();
             return result;
         }
+
+        public async Task<Result<Pago>> ObtenerPorIdViajeAsync(int idViaje)
+        {
+            try
+            {
+                Pago? pago = await _pagoRepository.ObtenerPagoPorIdViajeAsync(idViaje);
+
+                if (pago == null)
+                    return Result<Pago>.Failure($"No se encontró un pago para el viaje con ID: {idViaje}");
+
+                return Result<Pago>.Success(pago);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al obtener los pagos: {ex.Message}");
+                return Result<Pago>.Failure($"Error al obtener los pagos: {ex.Message}");
+            }
+        }
         public async Task<int> CrearAsync(int id_chofer, int id_viaje, float monto_pagado)
         {
             try

@@ -308,7 +308,6 @@ public class FormRegistro : Home
         else if (filtro == "sueldo")
         {
             SueldoViewModel svm = new SueldoViewModel();
-            SueldoDTO sdto = new SueldoDTO();
             var resultSueldo = await svm.ObtenerTodosAsync(dato, choferCamion);
 
             if (resultSueldo.IsSuccess)
@@ -338,15 +337,12 @@ public class FormRegistro : Home
 
                     // Agregar la fila con el valor decimal
                     int rowIndex = cheq.Rows.Add(fechas, sueldo.chofer, montoDecimal, sueldo.idSueldo);
-
-                    // Aplicar color si está pagado
-                    if (sdto.Pagado)  // Asumo que quieres usar alguna propiedad del sueldo actual
+                    if (sueldo.Pagado)
                     {
                         cheq.Rows[rowIndex].DefaultCellStyle.BackColor = Color.Green;
                     }
                 }
             }
-
             else
             {
                 CartelAviso(resultSueldo.Error);
@@ -430,7 +426,7 @@ public class FormRegistro : Home
         }
         else
         {
-            formPanel.Size = new Size(100 * cant, 70);
+            formPanel.Size = new Size(120 * cant, 70);
         
         }
         formPanel.BackColor = Color.FromArgb(45, 45, 48); // Gris oscuro moderno
@@ -445,11 +441,13 @@ public class FormRegistro : Home
         formFLTextBox = PropertiesLayoutForm();
         formFLLabel = PropertiesLayoutForm();
 
-        formFLTextBox.Size = new Size(formPanel.Width - 10, 55);
+        formFLTextBox.Height = 55;
+        
+        formFLTextBox.Location = new Point(20, 15);
+        
         formFLTextBox.BackColor = Color.Transparent;
-        formFLTextBox.Dock = DockStyle.Bottom;
 
-        formFLLabel.Size = new Size(formPanel.Width - 10, 30);
+        formFLLabel.Height = 30;
         formFLLabel.Dock = DockStyle.Top;
 
         formPanel.Controls.Add(formFLLabel);
@@ -460,9 +458,10 @@ public class FormRegistro : Home
     {
         FlowLayoutPanel formFL = new FlowLayoutPanel();
         formFL.FlowDirection = FlowDirection.LeftToRight;
+        formFL.Width = formPanel.Width - 10;
         formFL.WrapContents = false;
         formFL.BackColor = Color.Transparent;
-        formFL.AutoScroll = true;
+        formFL.AutoScroll = false;
         return formFL;
     }
 
@@ -586,7 +585,6 @@ public class FormRegistro : Home
 
     //Otros
     //CargaDeDatos
-
     private void ConfigurarDataGridView(string filtro)
     {
         if (filtro == "sueldo")
@@ -910,7 +908,6 @@ public class FormRegistro : Home
                 {
                     string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
                     var result = await svm.EliminarAsync(int.Parse(id));
-                    MessageBox.Show(id);
 
                     if (result.IsSuccess)
                     {
@@ -1209,7 +1206,7 @@ public class FormRegistro : Home
         {
             this.Resize += (s, e) =>
             {
-                btnCargar.Location = new Point(this.ClientSize.Width - btnCargar.Width - marginRight, 125);
+                btnCargar.Location = new Point(this.ClientSize.Width - btnCargar.Width - marginRight, 130);
             };
         }
     }
