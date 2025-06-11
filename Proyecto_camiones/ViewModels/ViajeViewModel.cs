@@ -7,32 +7,17 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Proyecto_camiones.Repositories;
 using Proyecto_camiones.Services;
+using Proyecto_camiones.Core.Services;
 
 namespace Proyecto_camiones.ViewModels
 {
     public class ViajeViewModel
     {
-        private readonly ViajeService _viajeService;
+        private readonly IViajeService _viajeService;
 
-        public ViajeViewModel()
-        { 
-            // Obtenemos la instancia de la base de datos
-            // Creamos las dependencias necesarias
-            var viajeRepository = new ViajeRepository();
-            var camionRepository = new CamionRepository();
-            var clienteRepository = new ClienteRepository();
-            var choferRepository = new ChoferRepository();
-            var pagoRepository = new PagoRepository();
-
-            // Creamos los servicios que ViajeService necesita
-            var camionService = new CamionService(camionRepository);
-            var clienteService = new ClienteService(clienteRepository);
-            var choferService = new ChoferService(choferRepository);
-            var pagoService = new PagoService(pagoRepository);
-
-
-            // Finalmente creamos el servicio de viajes con todas sus dependencias
-            _viajeService = new ViajeService(viajeRepository, camionService, clienteService, choferService, pagoService);
+        public ViajeViewModel(IViajeService viajeService)
+        {
+            _viajeService = viajeService ?? throw new ArgumentNullException(nameof(viajeService));
         }
 
         // Método para probar la conexión

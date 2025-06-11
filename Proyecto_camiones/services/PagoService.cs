@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Proyecto_camiones.Core.Services;
 using Proyecto_camiones.Models;
 using Proyecto_camiones.Presentacion.Utils;
 using Proyecto_camiones.Repositories;
@@ -8,7 +9,7 @@ using Proyecto_camiones.Repositories;
 
 namespace Proyecto_camiones.Services
 {
-    public class PagoService
+    public class PagoService : IPagoService
     {
         private PagoRepository _pagoRepository;
         public PagoService(PagoRepository pagoRepository)

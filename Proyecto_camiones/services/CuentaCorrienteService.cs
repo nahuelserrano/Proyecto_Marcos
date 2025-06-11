@@ -9,10 +9,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Proyecto_camiones.Core.Services;
 
 namespace Proyecto_camiones.Services
 {
-    public class CuentaCorrienteService
+    public class CuentaCorrienteService : ICuentaCorrienteService
     {
         private CuentaCorrienteRepository ccRepository;
         private ClienteRepository clienteRepository;
@@ -115,7 +116,7 @@ namespace Proyecto_camiones.Services
             return -1;
         }
 
-        internal async Task<Result<bool>> EliminarAsync(int id)
+        public async Task<Result<bool>> EliminarAsync(int id)
         {
             bool response = await this.ccRepository.EliminarAsync(id);
             if (response)
@@ -125,7 +126,7 @@ namespace Proyecto_camiones.Services
             return Result<bool>.Failure("No se pudo eliminar");
         }
 
-        internal async Task<Result<CuentaCorrienteDTO>> ActualizarAsync(int id, DateOnly? fecha, int? nroFactura, float? adeuda, float? importe, string? cliente, string? fletero)
+        public async Task<Result<CuentaCorrienteDTO>> ActualizarAsync(int id, DateOnly? fecha, int? nroFactura, float? adeuda, float? importe, string? cliente, string? fletero)
         {
             if(cliente != null && fletero != null)
             {

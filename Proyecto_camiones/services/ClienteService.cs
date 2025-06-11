@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Proyecto_camiones.Core.Services;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Repositories;
@@ -11,7 +12,7 @@ using Proyecto_camiones.Services;
 
 namespace Proyecto_camiones.Presentacion.Services
 {
-    public class ClienteService
+    public class ClienteService : IClienteService
     {
         private ClienteRepository _clienteRepository;
         private ViajeFleteRepository _viajeFleteRepository;
@@ -112,7 +113,7 @@ namespace Proyecto_camiones.Presentacion.Services
         }
 
         
-        internal async Task<Result<List<ViajeMixtoDTO>>> ObtenerViajesDeUnClienteAsync(string cliente)
+        public async Task<Result<List<ViajeMixtoDTO>>> ObtenerViajesDeUnClienteAsync(string cliente)
         {
             Cliente? c = await _clienteRepository.ObtenerPorNombreAsync(cliente);
             if (c != null)

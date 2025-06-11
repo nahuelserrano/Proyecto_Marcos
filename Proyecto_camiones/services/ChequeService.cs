@@ -5,10 +5,11 @@ using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Utils;
 using Proyecto_camiones.DTOs;
 using System.Collections.Generic;
+using Proyecto_camiones.Core.Services;
 
 namespace Proyecto_camiones.Presentacion.Services
 {
-    class ChequeService
+    class ChequeService : IChequeService
     {
         private readonly ChequeRepository _chequeRepository;
         private readonly ClienteService _clienteService;

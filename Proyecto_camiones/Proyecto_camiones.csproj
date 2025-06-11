@@ -19,6 +19,29 @@
     <Compile Update="RoundButton.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Core\Infrastructure\DependencyInjection\ServiceLocator.cs" />
+    <Compile Include="Core\Infrastructure\IDbContext.cs" />
+    <Compile Include="Core\Infrastructure\Repositories\ICamionRepository.cs" />
+    <Compile Include="Core\Infrastructure\Repositories\IChequeRepository.cs" />
+    <Compile Include="Core\Infrastructure\Repositories\IChoferRepository.cs" />
+    <Compile Include="Core\Infrastructure\Repositories\IClienteRepository.cs" />
+    <Compile Include="Core\Infrastructure\Repositories\ICuentaCorrienteRepository.cs" />
+    <Compile Include="Core\Infrastructure\Repositories\IFleteRepository.cs" />
+    <Compile Include="Core\Infrastructure\Repositories\IGenericRepository.cs" />
+    <Compile Include="Core\Infrastructure\Repositories\IPagoRepository.cs" />
+    <Compile Include="Core\Infrastructure\Repositories\ISueldoRepository.cs" />
+    <Compile Include="Core\Infrastructure\Repositories\IViajeFleteRepository.cs" />
+    <Compile Include="Core\Infrastructure\Repositories\IViajeRepository.cs" />
+    <Compile Include="Core\Services\ICamionService.cs" />
+    <Compile Include="Core\Services\IChequeService.cs" />
+    <Compile Include="Core\Services\IChoferService.cs" />
+    <Compile Include="Core\Services\IClienteService.cs" />
+    <Compile Include="Core\Services\ICuentaCorrienteService.cs" />
+    <Compile Include="Core\Services\IFleteService.cs" />
+    <Compile Include="Core\Services\IPagoService.cs" />
+    <Compile Include="Core\Services\ISueldoService.cs" />
+    <Compile Include="Core\Services\IViajeFleteService.cs" />
+    <Compile Include="Core\Services\IViajeService.cs" />
 
 
     <!-- Archivos DTOs -->
@@ -32,6 +55,7 @@
     <Compile Include="DTOs\ViajeDTO.cs" />
     <Compile Include="DTOs\ViajeFleteDTO.cs" />
     <Compile Include="DTOs\ViajeMixtoDTO.cs" />
+    <Compile Include="Core\Infrastructure\DependencyInjection\DependencyContainer.cs" />
 
     <!-- Modelos -->
     <Compile Include="Models\Camion.cs" />
@@ -118,18 +142,25 @@
     <Compile Include="Tests\ClienteTest.cs" />
 
   </ItemGroup>
-
   <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
-    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.13.9" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.3" />
-    <PackageReference Include="MySql.Data" Version="8.0.32" />
-    <PackageReference Include="NPOI" Version="2.7.3" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0-preview.3.efcore.9.0.0" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
-    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.6.2" />
+	  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+	  <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
+	  <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+	  <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
+	  <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+	  <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
+	  <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+	  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+	  <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+	  <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+	  <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
+	  <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.13.9" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.3" />
+	  <PackageReference Include="MySql.Data" Version="8.0.32" />
+	  <PackageReference Include="NPOI" Version="2.7.3" />
+	  <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0-preview.3.efcore.9.0.0" />
+	  <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
+	  <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.6.2" />
   </ItemGroup>
 
 </Project>

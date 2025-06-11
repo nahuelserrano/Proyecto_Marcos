@@ -5,23 +5,24 @@ using Proyecto_camiones.Repositories;
 using Proyecto_camiones.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Proyecto_camiones.Core.Services;
+using System;
 
 namespace Proyecto_camiones.ViewModels
 {
     public class FleteViewModel
     {
 
-        public FleteService fleteService;
+        private readonly IFleteService _fleteService;
 
-        public FleteViewModel()
+        public FleteViewModel(IFleteService fleteService)
         {
-            var repo = new FleteRepository();
-            fleteService = new FleteService(repo);
+            _fleteService = fleteService ?? throw new ArgumentNullException(nameof(fleteService));
         }
 
         public async Task<bool> TestearConexion()
         {
-            return await this.fleteService.TestearConexion();
+            return await this._fleteService.TestearConexion();
         }
 
         public async Task<Result<int>> InsertarAsync(string nombre)
@@ -29,7 +30,7 @@ namespace Proyecto_camiones.ViewModels
             bool conexion = await this.TestearConexion();
             if (conexion)
             {
-                return await this.fleteService.InsertarFletero(nombre);
+                return await this._fleteService.InsertarFletero(nombre);
             }
             return Result<int>.Failure("No se pudo establecer la conexion con la base de datos");
         }
@@ -39,7 +40,7 @@ namespace Proyecto_camiones.ViewModels
             bool conexion = await this.TestearConexion();
             if (conexion)
             {
-                return await this.fleteService.ObtenerPorNombreAsync(nombre);
+                return await this._fleteService.ObtenerPorNombreAsync(nombre);
             }
             return Result<Flete>.Failure("No se pudo establecer la conexion con la base de datos");
         }
@@ -49,7 +50,7 @@ namespace Proyecto_camiones.ViewModels
             bool conexion = await this.TestearConexion();
             if (conexion)
             {
-                return await this.fleteService.ObtenerTodosAsync();
+                return await this._fleteService.ObtenerTodosAsync();
             }
             return Result<List<Flete>>.Failure("No se pudo establecer la conexión con la base de datos");
         }
@@ -59,7 +60,7 @@ namespace Proyecto_camiones.ViewModels
             bool conexion = await this.TestearConexion();
             if (conexion)
             {
-                return await this.fleteService.ObtenerPorIdAsync(id);
+                return await this._fleteService.ObtenerPorIdAsync(id);
             }
             return Result<Flete>.Failure("No se pudo establecer la conexión con la base de datos");
         }
@@ -69,7 +70,7 @@ namespace Proyecto_camiones.ViewModels
             bool conexion = await this.TestearConexion();
             if (conexion)
             {
-                return await this.fleteService.EliminarAsync(id);
+                return await this._fleteService.EliminarAsync(id);
             }
             return Result<bool>.Failure("No se pudo establecer la conexión con la base de datos");
         }
@@ -79,7 +80,7 @@ namespace Proyecto_camiones.ViewModels
             bool conexion = await this.TestearConexion();
             if (conexion)
             {
-                return await this.fleteService.ActualizarAsync(id, nombre);
+                return await this._fleteService.ActualizarAsync(id, nombre);
             }
             return Result<Flete>.Failure("No se pudo establecer la conexión con la base de datos");
         }

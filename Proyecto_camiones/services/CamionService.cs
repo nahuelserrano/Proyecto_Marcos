@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Transactions;
+using Proyecto_camiones.Core.Services;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Models;
 using Proyecto_camiones.Presentacion.Models;
@@ -12,7 +13,7 @@ using Proyecto_camiones.Services;
 
 namespace Proyecto_camiones.Presentacion.Services
 {
-    public class CamionService
+    public class CamionService : ICamionService
     {
         private CamionRepository _camionRepository;
         private ChoferRepository _choferRepository;
@@ -109,7 +110,7 @@ namespace Proyecto_camiones.Presentacion.Services
             }
         }
 
-        internal async Task<Result<CamionDTO>> ActualizarAsync(int id,  string? patente, string? nombre)
+        public async Task<Result<CamionDTO>> ActualizarAsync(int id,  string? patente, string? nombre)
         {
             if (id <= 0)
                 return Result<CamionDTO>.Failure(MensajeError.IdInvalido(id));
@@ -171,7 +172,7 @@ namespace Proyecto_camiones.Presentacion.Services
             }
         }
 
-        internal async Task<Result<String>> ObtenerChofer(string patente)
+        public async Task<Result<String>> ObtenerChofer(string patente)
         {
             Camion camion = await this._camionRepository.ObtenerPorPatenteAsync(patente);
             if(camion != null)

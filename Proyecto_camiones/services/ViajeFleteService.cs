@@ -7,10 +7,11 @@ using Proyecto_camiones.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Proyecto_camiones.Core.Services;
 
 namespace Proyecto_camiones.Services
 {
-    public class ViajeFleteService
+    public class ViajeFleteService : IViajeFleteService
     {
         private ViajeFleteRepository ViajeFleteRepository;
         private ClienteRepository clienteRepository;
@@ -29,7 +30,7 @@ namespace Proyecto_camiones.Services
             return result;
         }
 
-        internal async Task<Result<ViajeFlete>> ActualizarAsync(int id, string? origen, string? destino, float? remito, string? carga, float? km, float? kg, float? tarifa, int? factura, string? cliente, string? nombre_chofer, float? comision, DateOnly? fecha_salida)
+        public async Task<Result<ViajeFlete>> ActualizarAsync(int id, string? origen, string? destino, float? remito, string? carga, float? km, float? kg, float? tarifa, int? factura, string? cliente, string? nombre_chofer, float? comision, DateOnly? fecha_salida)
         {
             int idCliente = -1;
             if (cliente != null)
@@ -56,7 +57,7 @@ namespace Proyecto_camiones.Services
             return Result<ViajeFlete>.Failure("Hubo un problema al actualizar el viaje");
         }
 
-        internal async Task<Result<bool>> EliminarAsync(int id)
+        public async Task<Result<bool>> EliminarAsync(int id)
         {
             bool result = await this.ViajeFleteRepository.EliminarAsync(id);
             if (result)
@@ -66,7 +67,7 @@ namespace Proyecto_camiones.Services
             return Result<bool>.Failure("El viaje no pudo ser eliminado, error interno de la base de datos");
         }
 
-        internal async Task<Result<int>> InsertarAsync(string? origen, string destino, float remito, string carga, float km, float kg, float tarifa, int factura, string nombre_cliente, string nombre_fletero, string? nombre_chofer, float comision, DateOnly fecha_salida)
+        public async Task<Result<int>> InsertarAsync(string? origen, string destino, float remito, string carga, float km, float kg, float tarifa, int factura, string nombre_cliente, string nombre_fletero, string? nombre_chofer, float comision, DateOnly fecha_salida)
         {
             Cliente cliente = await this.clienteRepository.ObtenerPorNombreAsync(nombre_cliente);
             Flete fletero = await this.fleteRepository.ObtenerPorNombreAsync(nombre_fletero);
@@ -86,7 +87,7 @@ namespace Proyecto_camiones.Services
             return Result<int>.Failure("No se puede insertar el viaje, el cliente o el fletero con ese nombre no existe");
         }
 
-        internal async Task<Result<List<ViajeMixtoDTO>>> ObtenerViajesDeUnClienteAsync(int id)
+        public async Task<Result<List<ViajeMixtoDTO>>> ObtenerViajesDeUnClienteAsync(int id)
         {
             Cliente? cliente = await this.clienteRepository.ObtenerPorIdAsync(id);
             if(cliente!= null)
@@ -101,7 +102,7 @@ namespace Proyecto_camiones.Services
             return Result<List<ViajeMixtoDTO>>.Failure("No existe el cliente con ese id");
         }
 
-        internal async Task<Result<List<ViajeFleteDTO>>> ObtenerViajesDeUnFleteroAsync(string fletero)
+        public async Task<Result<List<ViajeFleteDTO>>> ObtenerViajesDeUnFleteroAsync(string fletero)
         {
             Flete flete = await this.fleteRepository.ObtenerPorNombreAsync(fletero);
             if(flete != null)

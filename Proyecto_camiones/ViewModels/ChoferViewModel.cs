@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Proyecto_camiones.Core.Services;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Repositories;
@@ -8,20 +10,18 @@ using Proyecto_camiones.Presentacion.Utils;
 
 namespace Proyecto_camiones.ViewModels
 {
-    class ChoferViewModel
+    public class ChoferViewModel
     {
-        private ChoferRepository _choferRepository;
-        private ChoferService _choferService;
+        private readonly IChoferService _choferService;
 
-        public ChoferViewModel()
+        public ChoferViewModel(IChoferService choferService)
         {
-            this._choferRepository = new ChoferRepository();
-            this._choferService = new ChoferService(_choferRepository);
+            _choferService = choferService ?? throw new ArgumentNullException(nameof(choferService));
         }
 
         public async Task<bool> ProbarConexionAsync()
         {
-            bool result = await this._choferRepository.ProbarConexionAsync();
+            bool result = await this._choferService.ProbarConexionAsync();
             return result;
         }
 

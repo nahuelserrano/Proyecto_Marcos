@@ -5,10 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Proyecto_camiones.Core.Services;
 
 namespace Proyecto_camiones.Services
 {
-    public class FleteService
+    public class FleteService : IFleteService
     {
 
         public readonly FleteRepository fleteRepository;
@@ -40,7 +41,7 @@ namespace Proyecto_camiones.Services
             return Result<int>.Failure("El campo nombre no puede ser nulo");
         }
 
-        internal async Task<Result<Flete>> ObtenerPorNombreAsync(string nombre)
+        public async Task<Result<Flete>> ObtenerPorNombreAsync(string nombre)
         {
             if (nombre != null)
             {
@@ -55,7 +56,7 @@ namespace Proyecto_camiones.Services
             return Result<Flete>.Failure(MensajeError.atributoRequerido("nombre del fletero"));
         }
 
-        internal async Task<Result<List<Flete>>> ObtenerTodosAsync()
+        public async Task<Result<List<Flete>>> ObtenerTodosAsync()
         {
             List<Flete> fleteros = await this.fleteRepository.ObtenerTodosAsync();
             if (fleteros != null)
@@ -65,7 +66,7 @@ namespace Proyecto_camiones.Services
             return Result<List<Flete>>.Failure("Hubo un error al conectar con la base de datos");
         }
 
-        internal async Task<Result<Flete>> ObtenerPorIdAsync(int id)
+        public async Task<Result<Flete>> ObtenerPorIdAsync(int id)
         {
             if (id < 0)
             {
@@ -79,7 +80,7 @@ namespace Proyecto_camiones.Services
             return Result<Flete>.Failure("No existe un fletero con ese id");
         }
 
-        internal async Task<Result<bool>> EliminarAsync(int id)
+        public async Task<Result<bool>> EliminarAsync(int id)
         {
             if (id < 0)
             {
@@ -96,7 +97,7 @@ namespace Proyecto_camiones.Services
             return Result<bool>.Failure("No se pudo eliminar el fletero, error interno en la base de datos");
         }
 
-        internal async Task<Result<Flete>> ActualizarAsync(int id, string? nombre)
+        public async Task<Result<Flete>> ActualizarAsync(int id, string? nombre)
         {
             if(nombre == null)
             {

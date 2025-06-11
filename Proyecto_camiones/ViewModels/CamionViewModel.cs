@@ -4,17 +4,18 @@ using Proyecto_camiones.Presentacion.Services;
 using Proyecto_camiones.Presentacion.Utils;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Proyecto_camiones.Core.Services;
+using System;
 
 namespace Proyecto_camiones.ViewModels
 {
     public class CamionViewModel
     {
-        private CamionService _camionService;
+        private readonly ICamionService _camionService;
 
-        public CamionViewModel()
+        public CamionViewModel(ICamionService camionService)
         {
-            var camionRepository = new CamionRepository();
-            this._camionService = new CamionService(camionRepository);
+            _camionService = camionService ?? throw new ArgumentNullException(nameof(camionService));
         }
 
         public async Task<bool> testearConexion()

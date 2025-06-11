@@ -1,35 +1,33 @@
 ﻿using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Models;
 using Proyecto_camiones.Presentacion.Utils;
-using Proyecto_camiones.Repositories;
-using Proyecto_camiones.Services;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Proyecto_camiones.Core.Services;
+using Proyecto_camiones.Services;
 
 namespace Proyecto_camiones.ViewModels
 {
     public class CuentaCorrienteViewModel
     {
-        public CuentaCorrienteService cs;
-        public CuentaCorrienteViewModel()
+        private readonly ICuentaCorrienteService _cuentaCorrienteService;
+        public CuentaCorrienteViewModel(ICuentaCorrienteService cuentaCorrienteService)
         {
-            var cr = new CuentaCorrienteRepository();
-            this.cs = new CuentaCorrienteService(cr);
+            _cuentaCorrienteService = cuentaCorrienteService ?? throw new ArgumentNullException(nameof(cuentaCorrienteService));
         }
 
         public async Task<bool> testearConexion()
         {
-            return await this.cs.ProbarConexionAsync();
+            return await this._cuentaCorrienteService.ProbarConexionAsync();
         }
 
         public async Task<Result<int>> InsertarAsync(string? cliente, string? fletero, DateOnly fecha, int nro, float adeuda, float pagado)
         {
             if (await this.testearConexion())
             {
-                MessageBox.Show("hay conexión");
-                int id = await cs.Insertar(cliente, fletero, fecha, nro, adeuda, pagado);
+                int id = await _cuentaCorrienteService.Insertar(cliente, fletero, fecha, nro, adeuda, pagado);
                 if (id > -1) return Result<int>.Success(id);
                 return Result<int>.Failure("No se pudo crear el nuevo registro");
             }
@@ -40,7 +38,7 @@ namespace Proyecto_camiones.ViewModels
         {
             if (this.testearConexion().Result)
             {
-                CuentaCorrienteDTO c = await this.cs.ObtenerCuentaMasRecienteByClientId(idCliente);
+                CuentaCorrienteDTO c = await this._cuentaCorrienteService.ObtenerCuentaMasRecienteByClientId(idCliente);
                 if(c != null)
                 {
                     return Result<CuentaCorrienteDTO>.Success(c);
@@ -54,7 +52,7 @@ namespace Proyecto_camiones.ViewModels
         {
             if (this.testearConexion().Result)
             {
-                List<CuentaCorriente> cuentas = await this.cs.ObtenerTodosAsync();
+                List<CuentaCorriente> cuentas = await this._cuentaCorrienteService.ObtenerTodosAsync();
                 if (cuentas != null)
                 {
                     return Result<List<CuentaCorriente>>.Success(cuentas);
@@ -68,7 +66,7 @@ namespace Proyecto_camiones.ViewModels
         {
             if (await this.testearConexion())
             {
-                return await this.cs.ObtenerCuentasByIdClienteAsync(cliente);
+                return await this._cuentaCorrienteService.ObtenerCuentasByIdClienteAsync(cliente);
             }
             return Result<List<CuentaCorrienteDTO>>.Failure("No se pudo establecer la conexion");
         }
@@ -77,7 +75,7 @@ namespace Proyecto_camiones.ViewModels
         {
             if (this.testearConexion().Result)
             {
-                return await this.cs.ObtenerCuentasDeUnFletero(fletero);
+                return await this._cuentaCorrienteService.ObtenerCuentasDeUnFletero(fletero);
             }
             return Result<List<CuentaCorrienteDTO>>.Failure("No se pudo establecer la conexion");
         }
@@ -86,7 +84,7 @@ namespace Proyecto_camiones.ViewModels
         {
             if (await this.testearConexion())
             {
-                return await this.cs.EliminarAsync(id);
+                return await this._cuentaCorrienteService.EliminarAsync(id);
             }
             return Result<bool>.Failure("No se pudo establecer la conexion");
         }
@@ -95,7 +93,7 @@ namespace Proyecto_camiones.ViewModels
         {
             if (await this.testearConexion())
             {
-                return await this.cs.ActualizarAsync(id, fecha, nroFactura, adeuda, importe, cliente, fletero);
+                return await this._cuentaCorrienteService.ActualizarAsync(id, fecha, nroFactura, adeuda, importe, cliente, fletero);
             }
             return Result<CuentaCorrienteDTO>.Failure("No se pudo establecer la conexión");
         }

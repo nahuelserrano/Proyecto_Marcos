@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Proyecto_camiones.Core.Services;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Services;
 using Proyecto_camiones.Presentacion.Models;
@@ -9,7 +10,7 @@ using Proyecto_camiones.Presentacion.Utils;
 
 namespace Proyecto_camiones.Presentacion.Services
 {
-    class SueldoService
+    class SueldoService : ISueldoService
     {
         private SueldoRepository _sueldoRepository;
         private PagoService _pagoService;
@@ -73,7 +74,7 @@ namespace Proyecto_camiones.Presentacion.Services
             return Result<List<SueldoDTO>>.Failure("Hubo un problema al obtener los sueldos");
         }
 
-        internal async Task<Result<bool>> EliminarAsync(int sueldoId)
+        public async Task<Result<bool>> EliminarAsync(int sueldoId)
         {
             if (sueldoId < 0) return Result<bool>.Failure(MensajeError.IdInvalido(sueldoId));
 

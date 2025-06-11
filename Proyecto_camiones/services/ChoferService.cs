@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Proyecto_camiones.Core.Services;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Repositories;
@@ -9,7 +10,7 @@ using Proyecto_camiones.Presentacion.Utils;
 
 namespace Proyecto_camiones.Presentacion.Services
 {
-    public class ChoferService
+    public class ChoferService : IChoferService
     {
         private ChoferRepository _choferRepository;
 
@@ -38,7 +39,7 @@ namespace Proyecto_camiones.Presentacion.Services
             return Result<ChoferDTO>.Success(chofer.toDTO());
         }
 
-        internal async Task<Result<bool>> EliminarAsync(int id)
+        public async Task<Result<bool>> EliminarAsync(int id)
         {
             if (id <= 0) return Result<bool>.Failure(MensajeError.IdInvalido(id));
 

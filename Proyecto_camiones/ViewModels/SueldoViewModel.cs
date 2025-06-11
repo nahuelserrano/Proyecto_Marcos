@@ -1,4 +1,5 @@
-﻿using Proyecto_camiones.DTOs;
+﻿using Proyecto_camiones.Core.Services;
+using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Services;
 using Proyecto_camiones.Presentacion.Utils;
@@ -10,23 +11,19 @@ using System.Threading.Tasks;
 
 namespace Proyecto_camiones.ViewModels
 {
-    class SueldoViewModel
+    public class SueldoViewModel
     {
 
-        private SueldoService sueldoService;
-        private PagoService pagoService;
+        private readonly ISueldoService _sueldoService;
 
-        public SueldoViewModel()
+        public SueldoViewModel(ISueldoService sueldoService)
         {
-            var sueldoRepo = new SueldoRepository();
-            var pagoRepo = new PagoRepository();
-            this.pagoService = new PagoService(pagoRepo);
-            this.sueldoService = new SueldoService(sueldoRepo,pagoService);
+            _sueldoService = sueldoService ?? throw new ArgumentNullException(nameof(sueldoService));
         }
 
         public async Task<bool> testearConexion()
         {
-            return await this.sueldoService.ProbarConexionAsync();
+            return await this._sueldoService.ProbarConexionAsync();
         }
 
         public async Task<Result<int>> CrearAsync(string nombre_chofer, DateOnly pagoDesde, DateOnly pagoHasta, DateOnly? fechaPago, string? patente_camion)

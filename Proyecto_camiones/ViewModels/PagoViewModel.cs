@@ -1,35 +1,30 @@
 ﻿using Proyecto_camiones.Presentacion.Utils;
 using System;
 using System.Threading.Tasks;
-using Proyecto_camiones.Services;
-using Proyecto_camiones.Repositories;
+using Proyecto_camiones.Core.Services;
 
 namespace Proyecto_camiones.ViewModels
 {
     class PagoViewModel
     {
-        private PagoService pagoService;
+        private readonly IPagoService _pagoService;
 
-        public PagoViewModel()
+        public PagoViewModel(IPagoService pagoService)
         {
-            var PagoRepo = new PagoRepository();
-            this.pagoService = new PagoService(PagoRepo);
+            _pagoService = pagoService ?? throw new ArgumentNullException(nameof(pagoService));
         }
 
         public async Task<bool> testearConexion()
         {
-            return await this.pagoService.ProbarConexionAsync();
+            return await this._pagoService.ProbarConexionAsync();
         }
 
         public async Task<Result<int>> CrearAsync(int id_chofer, int id_viaje, float monto_pagado)
         {
             if (this.testearConexion().Result)
             {
-                Console.WriteLine("omg entré!!");
-                var resultado = await this.pagoService.CrearAsync(id_chofer, id_viaje, monto_pagado);
+                var resultado = await this._pagoService.CrearAsync(id_chofer, id_viaje, monto_pagado);
 
-
-                Console.WriteLine(resultado + "resultado de viewmodel");
                 // Ahora puedes acceder al resultado
                 if (resultado > 0)
                 {
@@ -48,15 +43,11 @@ namespace Proyecto_camiones.ViewModels
             return Result<int>.Failure("La conexión no pude establecerse");
         }
 
-
-
-
-
         public async Task<float> ObtenerSueldoCalculado(int id_chofer, DateOnly calcularDesde, DateOnly calcularHasta)
         {
             if (await this.testearConexion())
             {
-                return await pagoService.ObtenerSueldoCalculado(id_chofer, calcularDesde, calcularHasta);
+                return await _pagoService.ObtenerSueldoCalculado(id_chofer, calcularDesde, calcularHasta);
             }
             return -1;
 

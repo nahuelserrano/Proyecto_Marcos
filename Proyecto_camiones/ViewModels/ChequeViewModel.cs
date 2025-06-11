@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Proyecto_camiones.Core.Services;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Services;
@@ -10,13 +11,11 @@ namespace Proyecto_camiones.ViewModels
 {
     public class ChequeViewModel
     {
-        private readonly ChequeService _chequeService;
+        private readonly IChequeService _chequeService;
 
-        public ChequeViewModel()
+        public ChequeViewModel(IChequeService chequeService)
         {
-            var dbContext = General.obtenerInstancia();
-            var chequeRepository = new ChequeRepository(dbContext);
-            _chequeService = new ChequeService(chequeRepository, new ClienteService(new ClienteRepository()));
+            _chequeService = chequeService ?? throw new ArgumentNullException(nameof(chequeService));
         }
 
         public async Task<bool> TestearConexionAsync()

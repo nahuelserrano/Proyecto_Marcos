@@ -1,4 +1,5 @@
-﻿using Proyecto_camiones.DTOs;
+﻿using Proyecto_camiones.Core.Services;
+using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Services;
@@ -12,12 +13,11 @@ namespace Proyecto_camiones.ViewModels
     public class ClienteViewModel
     {
 
-        private readonly ClienteService _clienteService;
+        private readonly IClienteService _clienteService;
 
-        public ClienteViewModel()
+        public ClienteViewModel(IClienteService clienteService)
         {
-            var clienteRepo = new ClienteRepository();
-            this._clienteService = new ClienteService(clienteRepo);
+            _clienteService = clienteService ?? throw new ArgumentNullException(nameof(clienteService));
         }
 
         public async Task<bool> testearConexion()

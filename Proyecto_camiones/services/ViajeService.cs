@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Transactions;
 using System.Windows.Forms;
+using Proyecto_camiones.Core.Services;
 using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Models;
 using Proyecto_camiones.Presentacion.Models;
@@ -12,7 +13,7 @@ using Proyecto_camiones.Services;
 
 namespace Proyecto_camiones.Presentacion.Services
 {
-    public class ViajeService
+    public class ViajeService : IViajeService
     {
         private readonly ViajeRepository _viajeRepository;
         private readonly CamionService _camionService;

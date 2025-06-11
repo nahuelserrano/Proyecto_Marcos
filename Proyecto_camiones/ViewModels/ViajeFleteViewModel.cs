@@ -1,4 +1,5 @@
-﻿using Proyecto_camiones.DTOs;
+﻿using Proyecto_camiones.Core.Services;
+using Proyecto_camiones.DTOs;
 using Proyecto_camiones.Models;
 using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Utils;
@@ -13,18 +14,17 @@ namespace Proyecto_camiones.ViewModels
 {
     public class ViajeFleteViewModel
     {
-        private ViajeFleteService fleteService;
+        private readonly IViajeFleteService _viajeFleteService;
 
-        public ViajeFleteViewModel()
+        public ViajeFleteViewModel(IViajeFleteService viajeFleteService)
         {
-            var repo = new ViajeFleteRepository();
-            this.fleteService = new ViajeFleteService(repo, new ClienteRepository(), new FleteRepository());
+            _viajeFleteService = viajeFleteService ?? throw new ArgumentNullException(nameof(viajeFleteService));
         }
 
 
         public async Task<bool> TestearConexion()
         {
-            return await this.fleteService.ProbarConexionAsync();
+            return await this._viajeFleteService.ProbarConexionAsync();
         }
 
         public async Task<Result<int>> InsertarAsync(string? origen, string destino, float remito, string carga, float km, float kg, float tarifa, int factura, string nombre_cliente, string nombre_fletero, string? nombre_chofer, float comision, DateOnly fecha_salida)
@@ -33,7 +33,7 @@ namespace Proyecto_camiones.ViewModels
             {
                 nombre_cliente = nombre_cliente.ToUpper();
                 nombre_fletero = nombre_fletero.ToUpper();
-                return await this.fleteService.InsertarAsync(origen, destino, remito, carga, km, kg, tarifa, factura, nombre_cliente, nombre_fletero, nombre_chofer, comision, fecha_salida);
+                return await this._viajeFleteService.InsertarAsync(origen, destino, remito, carga, km, kg, tarifa, factura, nombre_cliente, nombre_fletero, nombre_chofer, comision, fecha_salida);
             }
             return Result<int>.Failure("No se pudo establecer la conexion con la db");
 
@@ -44,7 +44,7 @@ namespace Proyecto_camiones.ViewModels
             if (await this.TestearConexion())
             {
                 fletero = fletero.ToUpper();
-                return await this.fleteService.ObtenerViajesDeUnFleteroAsync(fletero);
+                return await this._viajeFleteService.ObtenerViajesDeUnFleteroAsync(fletero);
             }
             return Result<List<ViajeFleteDTO>>.Failure("No se pudo acceder a la base de datos");
         }
@@ -53,7 +53,7 @@ namespace Proyecto_camiones.ViewModels
         {
             if (await this.TestearConexion())
             {
-                return await this.fleteService.EliminarAsync(id);
+                return await this._viajeFleteService.EliminarAsync(id);
             }
             return Result<bool>.Failure("No se pudo acceder a la base de datos");
         }
@@ -62,7 +62,7 @@ namespace Proyecto_camiones.ViewModels
         {
             if (await this.TestearConexion())
             {
-                return await this.fleteService.ObtenerViajesDeUnClienteAsync(id);
+                return await this._viajeFleteService.ObtenerViajesDeUnClienteAsync(id);
             }
             return Result<List<ViajeMixtoDTO>>.Failure("No se pudo acceder a la base de datos");
         }
@@ -73,7 +73,7 @@ namespace Proyecto_camiones.ViewModels
             if (await this.TestearConexion())
             {
                 MessageBox.Show("conexión testeada");
-                return await this.fleteService.ActualizarAsync(id, origen, destino, remito, carga, km, kg, tarifa, factura, cliente, nombre_chofer, comision, fecha_salida);
+                return await this._viajeFleteService.ActualizarAsync(id, origen, destino, remito, carga, km, kg, tarifa, factura, cliente, nombre_chofer, comision, fecha_salida);
             }
             return Result<ViajeFlete>.Failure("No se pudo acceder a la base de datos");
         }
