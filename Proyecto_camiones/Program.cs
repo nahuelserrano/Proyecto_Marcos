@@ -105,6 +105,26 @@ namespace Proyecto_camiones
             return ServiceLocator.GetRequiredService<ChequeViewModel>();
         }
 
+        public static SueldoViewModel CreateSueldoViewModel()
+        {
+            return ServiceLocator.GetRequiredService<SueldoViewModel>();
+        }
+
+        public static ViajeFleteViewModel CreateViajeFleteViewModel()
+        {
+            return ServiceLocator.GetRequiredService<ViajeFleteViewModel>();
+        }
+
+        public static FleteViewModel CreateFleteViewModel()
+        {
+            return ServiceLocator.GetRequiredService<FleteViewModel>();
+        }
+
+        public static CuentaCorrienteViewModel CreateCuentaCorrienteViewModel()
+        {
+            return ServiceLocator.GetRequiredService<CuentaCorrienteViewModel>();
+        }
+
         /// <summary>
         /// Obtiene una instancia de cualquier ViewModel genérico
         /// </summary>

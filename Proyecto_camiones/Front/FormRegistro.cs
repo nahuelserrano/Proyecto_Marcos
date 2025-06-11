@@ -56,10 +56,24 @@ public class FormRegistro : Home
     private NewRoundPanel avisoPanel = new NewRoundPanel(20);
     private Button btnAceptarAviso = new Button();
 
+    private readonly ViajeViewModel _viajeViewModel;
+    private readonly ViajeFleteViewModel _vijeFleteViewModel;
+    private readonly FleteViewModel _fleteViewModel;
+    private readonly ClienteViewModel _clienteViewModel;
+    private readonly CuentaCorrienteViewModel _cuentaCorrienteViewModel;
+    private readonly SueldoViewModel _sueldoViewModel;
+
 
     //Constructor
     public FormRegistro(List<string> camposForm, int cant, string dato, string filtro, List<string> camposFaltantesTablas, string choferCamion)
     {
+        _viajeViewModel = ViewModelFactory.CreateViajeViewModel();
+        _vijeFleteViewModel = ViewModelFactory.CreateViajeFleteViewModel();
+        _fleteViewModel = ViewModelFactory.CreateFleteViewModel();
+        _clienteViewModel = ViewModelFactory.CreateClienteViewModel();
+        _cuentaCorrienteViewModel = ViewModelFactory.CreateCuentaCorrienteViewModel();
+        _sueldoViewModel = ViewModelFactory.CreateSueldoViewModel();
+
         InitializeUI(camposForm, cant, filtro, camposFaltantesTablas, dato, choferCamion);
 
         //ShowForm
@@ -123,8 +137,7 @@ public class FormRegistro : Home
 
         if (filtro == "Camion")
         {
-            ViajeViewModel vvm = new ViajeViewModel();
-            var result = await vvm.ObtenerPorCamionAsync(dato);
+            var result = await _viajeViewModel.ObtenerPorCamionAsync(dato);
 
             if (result.IsSuccess)
             {
@@ -170,8 +183,7 @@ public class FormRegistro : Home
         }
         else if (filtro == "Cliente")
         {
-            ClienteViewModel cvm = new ClienteViewModel();
-            var resultClient = await cvm.ObtenerViajesDeUnCliente(dato);
+            var resultClient = await _clienteViewModel.ObtenerViajesDeUnCliente(dato);
 
             if (resultClient.IsSuccess)
             {
@@ -214,8 +226,7 @@ public class FormRegistro : Home
         }
         else if (filtro == "Flete")
         {
-            ViajeFleteViewModel fvm = new ViajeFleteViewModel();
-            var resultFlete = await fvm.ObtenerViajesDeUnFleteroAsync(dato);
+            var resultFlete = await _vijeFleteViewModel.ObtenerViajesDeUnFleteroAsync(dato);
 
             if (resultFlete.IsSuccess)
             {
@@ -259,8 +270,7 @@ public class FormRegistro : Home
         }
         else if (filtro == "cuenta corriente")
         {
-            CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
-            var resultCuentaCorriente = await ccvm.ObtenerCuentasByClienteAsync(dato);
+            var resultCuentaCorriente = await _cuentaCorrienteViewModel.ObtenerCuentasByClienteAsync(dato);
 
             if (resultCuentaCorriente.IsSuccess)
             {
@@ -307,9 +317,8 @@ public class FormRegistro : Home
         }
         else if (filtro == "sueldo")
         {
-            SueldoViewModel svm = new SueldoViewModel();
             SueldoDTO sdto = new SueldoDTO();
-            var resultSueldo = await svm.ObtenerTodosAsync(dato, choferCamion);
+            var resultSueldo = await _sueldoViewModel.ObtenerTodosAsync(dato, choferCamion);
 
             if (resultSueldo.IsSuccess)
             {
@@ -702,12 +711,11 @@ public class FormRegistro : Home
 
             if (filtro == "Camion")
             {
-                ViajeViewModel viajeViewModel = new ViajeViewModel();
                 if (datos[10] == "Chofer")
                 {
                     datos[10] = null;
                 }
-                var resultado = await viajeViewModel.CrearAsync(DateOnly.Parse(datos[0]), datos[1], datos[2], int.Parse(datos[3]), datos[4], float.Parse(datos[6]), datos[9], dato, float.Parse(datos[5]), float.Parse(datos[7]), datos[10], float.Parse(datos[8]));
+                var resultado = await _viajeViewModel.CrearAsync(DateOnly.Parse(datos[0]), datos[1], datos[2], int.Parse(datos[3]), datos[4], float.Parse(datos[6]), datos[9], dato, float.Parse(datos[5]), float.Parse(datos[7]), datos[10], float.Parse(datos[8]));
 
                 if (resultado.IsSuccess)
                 {
@@ -727,8 +735,7 @@ public class FormRegistro : Home
             }
             else if (filtro == "cuenta corriente")
             {
-                CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
-                var resultado = await ccvm.InsertarAsync(dato, null, DateOnly.Parse(datos[0]), int.Parse(datos[1]), float.Parse(datos[3]), float.Parse(datos[2]));
+                var resultado = await _cuentaCorrienteViewModel.InsertarAsync(dato, null, DateOnly.Parse(datos[0]), int.Parse(datos[1]), float.Parse(datos[3]), float.Parse(datos[2]));
 
                 if (resultado.IsSuccess)
                 {
@@ -748,8 +755,7 @@ public class FormRegistro : Home
             }
             else if (filtro == "Flete")
             {
-                ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
-                var resultado = await vfvm.InsertarAsync(datos[1], datos[2], float.Parse(datos[3]), datos[4], float.Parse(datos[5]), float.Parse(datos[6]), float.Parse(datos[7]), int.Parse(datos[8]), datos[10], dato, datos[11], float.Parse(datos[9]), DateOnly.Parse(datos[0]));
+                var resultado = await _vijeFleteViewModel.InsertarAsync(datos[1], datos[2], float.Parse(datos[3]), datos[4], float.Parse(datos[5]), float.Parse(datos[6]), float.Parse(datos[7]), int.Parse(datos[8]), datos[10], dato, datos[11], float.Parse(datos[9]), DateOnly.Parse(datos[0]));
 
                 if (resultado.IsSuccess)
                 {
@@ -769,8 +775,7 @@ public class FormRegistro : Home
             }
             else if (filtro == "sueldo")
             {
-                SueldoViewModel svm = new SueldoViewModel();
-                var resultado = await svm.CrearAsync(datos[2], DateOnly.Parse(datos[0]), DateOnly.Parse(datos[1]), null, dato);
+                var resultado = await _sueldoViewModel.CrearAsync(datos[2], DateOnly.Parse(datos[0]), DateOnly.Parse(datos[1]), null, dato);
                 if (resultado.IsSuccess)
                 {
                     ShowInfoTable(filtro, dato, datos[2]);
@@ -809,10 +814,6 @@ public class FormRegistro : Home
 
     private async void EliminarFila(object sender, DataGridViewCellEventArgs e, string filtro, string dato)
     {
-        ViajeViewModel vvm = new ViajeViewModel();
-        ViajeFleteViewModel vfvm = new ViajeFleteViewModel();
-        CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
-        SueldoViewModel svm = new SueldoViewModel();
 
         // Verificar si la celda clickeada pertenece a la columna "Eliminar"
         if (e.ColumnIndex == cheq.Columns["Eliminar"]?.Index && e.RowIndex >= 0)
@@ -824,7 +825,7 @@ public class FormRegistro : Home
                 if (filtro == "Camion")
                 {
                     string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
-                    var result = await vvm.EliminarAsync(int.Parse(id));
+                    var result = await _viajeViewModel.EliminarAsync(int.Parse(id));
 
                     if (result.IsSuccess)
                     {
@@ -845,7 +846,7 @@ public class FormRegistro : Home
                 else if (filtro == "Cliente")
                 {
                     string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
-                    var result = await vvm.EliminarAsync(int.Parse(id));
+                    var result = await _viajeViewModel.EliminarAsync(int.Parse(id));
 
                     if (result.IsSuccess)
                     {
@@ -866,7 +867,7 @@ public class FormRegistro : Home
                 else if (filtro == "Flete")
                 {
                     string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
-                    var result = await vfvm.EliminarAsync(int.Parse(id));
+                    var result = await _vijeFleteViewModel.EliminarAsync(int.Parse(id));
 
                     if (result.IsSuccess)
                     {
@@ -888,7 +889,7 @@ public class FormRegistro : Home
                 {
                     //COMPARA CON UN CLIENTE
                     string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
-                    var result = await ccvm.EliminarAsync(int.Parse(id));
+                    var result = await _cuentaCorrienteViewModel.EliminarAsync(int.Parse(id));
 
                     if (result.IsSuccess)
                     {
@@ -909,7 +910,7 @@ public class FormRegistro : Home
                 else if (filtro == "sueldo")
                 {
                     string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
-                    var result = await svm.EliminarAsync(int.Parse(id));
+                    var result = await _sueldoViewModel.EliminarAsync(int.Parse(id));
                     MessageBox.Show(id);
 
                     if (result.IsSuccess)
@@ -935,11 +936,6 @@ public class FormRegistro : Home
     {
         if (filtro != "sueldo")
         {
-            ViajeViewModel vvm = new ViajeViewModel();
-            CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
-            ViajeFleteViewModel fvm = new ViajeFleteViewModel();
-            SueldoViewModel svm = new SueldoViewModel();
-
             // Verificar si la celda clickeada pertenece a la columna "Modificar"
             if (e.ColumnIndex == cheq.Columns["Modificar"].Index && e.RowIndex >= 0)
             {
@@ -963,7 +959,7 @@ public class FormRegistro : Home
                         string porcentaje = cheq.Rows[e.RowIndex].Cells["Porcentaje"].Value.ToString();
                         string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
 
-                        var result = await vvm.ActualizarAsync(int.Parse(id), DateOnly.Parse(fecha), origen, destino, int.Parse(remito), carga, int.Parse(kg), null, dato, float.Parse(km), float.Parse(tarifa), chofer, float.Parse(porcentaje));
+                        var result = await _viajeViewModel.ActualizarAsync(int.Parse(id), DateOnly.Parse(fecha), origen, destino, int.Parse(remito), carga, int.Parse(kg), null, dato, float.Parse(km), float.Parse(tarifa), chofer, float.Parse(porcentaje));
 
                         if (result.IsSuccess)
                         {
@@ -989,7 +985,7 @@ public class FormRegistro : Home
                         string adeuda = cheq.Rows[e.RowIndex].Cells["Adeuda"].Value.ToString();
                         string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
 
-                        var result = await ccvm.ActualizarAsync(int.Parse(id), DateOnly.Parse(fecha), int.Parse(factura), float.Parse(adeuda), float.Parse(pagado), dato, null);
+                        var result = await _cuentaCorrienteViewModel.ActualizarAsync(int.Parse(id), DateOnly.Parse(fecha), int.Parse(factura), float.Parse(adeuda), float.Parse(pagado), dato, null);
                         if (result.IsSuccess)
                         {
                             if (this.InvokeRequired)
@@ -1033,7 +1029,7 @@ public class FormRegistro : Home
                         string comision = cheq.Rows[e.RowIndex].Cells["Comisión"].Value.ToString();
                         string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
 
-                        var result = await fvm.ActualizarAsync(int.Parse(id), origen, destino, float.Parse(remito), carga, float.Parse(km), float.Parse(kg), float.Parse(tarifa), int.Parse(factura), cliente, chofer, float.Parse(comision), DateOnly.Parse(fecha));
+                        var result = await _vijeFleteViewModel.ActualizarAsync(int.Parse(id), origen, destino, float.Parse(remito), carga, float.Parse(km), float.Parse(kg), float.Parse(tarifa), int.Parse(factura), cliente, chofer, float.Parse(comision), DateOnly.Parse(fecha));
 
                         if (result.IsSuccess)
                         {
@@ -1058,7 +1054,6 @@ public class FormRegistro : Home
 
     private async void MarcarComoPagado(object sender, DataGridViewCellEventArgs e)
     {
-        SueldoViewModel svm = new SueldoViewModel();
         var cellValue = cheq.Rows[e.RowIndex].Cells["Id"].Value;
         string id = cellValue != null ? cellValue.ToString() : string.Empty;
 
@@ -1068,7 +1063,7 @@ public class FormRegistro : Home
             DialogResult resultado = MessageBox.Show("¿Desea marcar cómo pagado este sueldo?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (resultado == DialogResult.Yes)
             {
-                var result = await svm.marcarPago(int.Parse(id));
+                var result = await _sueldoViewModel.marcarPago(int.Parse(id));
                 if (result.IsSuccess)
                 {
                     cheq.CurrentRow.DefaultCellStyle.BackColor = Color.Green;

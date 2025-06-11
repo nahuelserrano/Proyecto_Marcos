@@ -31,7 +31,7 @@ namespace Proyecto_camiones.ViewModels
             if (await this.testearConexion())
             {
                 Console.WriteLine("hola view model hay conexion");
-                return await this.sueldoService.CrearAsync(nombre_chofer, pagoDesde, pagoHasta,fechaPago, patente_camion);
+                return await this._sueldoService.CrearAsync(nombre_chofer, pagoDesde, pagoHasta,fechaPago, patente_camion);
 
             }
             return Result<int>.Failure("La conexión no pude establecerse");
@@ -41,14 +41,14 @@ namespace Proyecto_camiones.ViewModels
         {
             if (await this.testearConexion())
             {
-                return await this.sueldoService.marcarPagado(idSueldo);
+                return await this._sueldoService.marcarPagado(idSueldo);
             }
             return Result<SueldoDTO>.Failure("No se pudo establecer la conexión");
         }
         public async Task<Result<List<SueldoDTO>>> ObtenerTodosAsync(string? patente,string? nombreChofer) {
             if (await this.testearConexion())
             {
-                Result<List<SueldoDTO>> sueldos = await this.sueldoService.ObtenerTodosAsync(patente, nombreChofer);
+                Result<List<SueldoDTO>> sueldos = await this._sueldoService.ObtenerTodosAsync(patente, nombreChofer);
 
                 if (sueldos!=null)
                 return sueldos;
@@ -60,7 +60,7 @@ namespace Proyecto_camiones.ViewModels
         {
             if (await this.testearConexion())
             {
-                return await this.sueldoService.EliminarAsync(id);
+                return await this._sueldoService.EliminarAsync(id);
             }
             return Result<bool>.Failure("No se pudo establecer la conexión");
         }
