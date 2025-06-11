@@ -18,15 +18,19 @@ namespace Proyecto_camiones.Presentacion.Services
         private CamionRepository _camionRepository;
         private ChoferRepository _choferRepository;
         private ViajeRepository _viajeRepo;
-        private PagoService _pagoService;
+        private IPagoService _pagoService;
 
 
-        public CamionService(CamionRepository camionR)
+        public CamionService(
+            CamionRepository camionRepository,
+            ChoferRepository choferRepository,
+            ViajeRepository viajeRepository,
+            IPagoService pagoService)
         {
-            this._camionRepository = camionR ?? throw new ArgumentNullException(nameof(camionR));
-            this._choferRepository = new ChoferRepository();
-            this._viajeRepo = new ViajeRepository();
-            this._pagoService = new PagoService(new PagoRepository());
+            _camionRepository = camionRepository ?? throw new ArgumentNullException(nameof(camionRepository));
+            _choferRepository = choferRepository ?? throw new ArgumentNullException(nameof(choferRepository));
+            _viajeRepo = viajeRepository ?? throw new ArgumentNullException(nameof(viajeRepository));
+            _pagoService = pagoService ?? throw new ArgumentNullException(nameof(pagoService));
         }
 
         //PROBAR CONEXION

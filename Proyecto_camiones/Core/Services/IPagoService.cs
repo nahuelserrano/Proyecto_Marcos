@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Proyecto_camiones.Core.Services
 {
-    interface IPagoService
+    public interface IPagoService
     {
         Task<bool> ProbarConexionAsync();
         Task<Result<Pago>> ObtenerPorIdViajeAsync(int idViaje);

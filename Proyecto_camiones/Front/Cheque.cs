@@ -50,11 +50,14 @@ namespace Proyecto_camiones.Front
 
         private RoundButton btnMostrarTodos = new RoundButton();
 
-
+        // ViewModel
+        private readonly ChequeViewModel _chequeViewModel;
 
         //Constructor
         public Cheque()
         {
+            _chequeViewModel = ViewModelFactory.CreateChequeViewModel();
+
             ShowInfoTable();
             ResaltarBoton(chequesMenu);
 
@@ -81,8 +84,7 @@ namespace Proyecto_camiones.Front
         private async void ShowInfoTable()
         {
             cheq.Rows.Clear();
-            ChequeViewModel cvm = new ChequeViewModel();
-            var result = await cvm.ObtenerTodosAsync();
+            var result = await _chequeViewModel.ObtenerTodosAsync();
 
             if (result.IsSuccess)
             {
@@ -538,8 +540,7 @@ namespace Proyecto_camiones.Front
                     }
                 }
             }
-            ChequeViewModel cvm = new ChequeViewModel();
-            var result = await cvm.CrearAsync(DateOnly.Parse(datos[0]), int.Parse(datos[2]), float.Parse(datos[3]), datos[1], DateOnly.Parse(datos[7]), datos[4], int.Parse(datos[5]), DateOnly.Parse(datos[8]), datos[6]);
+            var result = await _chequeViewModel.CrearAsync(DateOnly.Parse(datos[0]), int.Parse(datos[2]), float.Parse(datos[3]), datos[1], DateOnly.Parse(datos[7]), datos[4], int.Parse(datos[5]), DateOnly.Parse(datos[8]), datos[6]);
 
             if (result.IsSuccess)
             {
@@ -585,8 +586,8 @@ namespace Proyecto_camiones.Front
                 if (resultado == DialogResult.Yes)
                 {
                     string id = cheq.Rows[e.RowIndex].Cells["id"].Value.ToString();
-                    ChequeViewModel cvm = new ChequeViewModel();
-                    var result = await cvm.EliminarAsync(int.Parse(id));
+                   
+                    var result = await _chequeViewModel.EliminarAsync(int.Parse(id));
 
                     if (result.IsSuccess)
                     {
@@ -640,8 +641,7 @@ namespace Proyecto_camiones.Front
                     var vencimiento = cheq.Rows[e.RowIndex].Cells["fechaVencimiento"].Value;
                     string fechaVencimiento = vencimiento != null ? vencimiento.ToString() : string.Empty;
 
-                    ChequeViewModel cvm = new ChequeViewModel();
-                    var result = await cvm.ActualizarAsync(int.Parse(id), DateOnly.Parse(fechaRecibido), int.Parse(nroCheque), float.Parse(monto), banco, DateOnly.Parse(fechaRetiro), entragadoPor, int.Parse(nroPersonal), DateOnly.Parse(fechaVencimiento), entregadoA);
+                    var result = await _chequeViewModel.ActualizarAsync(int.Parse(id), DateOnly.Parse(fechaRecibido), int.Parse(nroCheque), float.Parse(monto), banco, DateOnly.Parse(fechaRetiro), entragadoPor, int.Parse(nroPersonal), DateOnly.Parse(fechaVencimiento), entregadoA);
 
                     if (result.IsSuccess)
                     {

@@ -143,24 +143,42 @@
 
   </ItemGroup>
   <ItemGroup>
-	  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
-	  <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
-	  <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
-	  <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
-	  <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
-	  <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
-	  <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
-	  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+
+	  <!-- Entity Framework Core  -->
+
+	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.3" />
+	  <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0-preview.3.efcore.9.0.0" />
+
+
+	  <!-- Inyeccion de dependencias -->
+
+	  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0-3" />
+	  <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.3" />
+
+      <!-- Loggin -->
+
+	  <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.3" />
+	  <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.3" />
+
+	  <!-- Configuracion -->
+
+	  <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.3" />
+	  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.3" />
+
+      <!-- Hosting -->
+
+	  <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.3" />
+	  <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.3" />
+
+
+      <!-- Otros -->
 	  <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
 	  <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
-	  <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
-	  <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.13.9" />
-	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.3" />
-	  <PackageReference Include="MySql.Data" Version="8.0.32" />
+	  <PackageReference Include="MySql.Data" Version="9.1.0" />
 	  <PackageReference Include="NPOI" Version="2.7.3" />
-	  <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0-preview.3.efcore.9.0.0" />
 	  <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
 	  <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.6.2" />
+
   </ItemGroup>
 
 </Project>

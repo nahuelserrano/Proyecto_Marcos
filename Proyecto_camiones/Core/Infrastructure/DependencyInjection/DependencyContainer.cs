@@ -21,7 +21,6 @@ namespace Proyecto_camiones.Core.Infrastructure.DependencyInjection
             var services = new ServiceCollection();
 
             // === CONFIGURACIÓN DE BASE DE DATOS ===
-            // Como el motor de la Batimóvil, fundamental para todo
             var connectionString = "server=localhost;user=root;password=;database=truck_manager_project_db;";
 
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -32,7 +31,6 @@ namespace Proyecto_camiones.Core.Infrastructure.DependencyInjection
             });
 
             // === REPOSITORIOS ===
-            // Los soldados rasos que hacen el trabajo sucio con la base de datos
             services.AddScoped<CamionRepository>();
             services.AddScoped<ChoferRepository>();
             services.AddScoped<ClienteRepository>();
@@ -45,8 +43,7 @@ namespace Proyecto_camiones.Core.Infrastructure.DependencyInjection
             services.AddScoped<ViajeFleteRepository>();
 
             // === SERVICIOS ===
-            // Los verdaderos héroes que manejan la lógica de negocio
-            // Como los Avengers, cada uno tiene su poder especial
+            // Los verdaderos héroes que manejan la lógica de negocios
             services.AddScoped<ICamionService, CamionService>();
             services.AddScoped<IChoferService, ChoferService>();
             services.AddScoped<IClienteService, ClienteService>();
@@ -59,8 +56,7 @@ namespace Proyecto_camiones.Core.Infrastructure.DependencyInjection
             services.AddScoped<IViajeFleteService, ViajeFleteService>();
 
             // === VIEWMODELS ===
-            // Los intermediarios elegantes que manejan la UI
-            // Como Alfred, siempre listos para servir
+            // Los intermediarios que manejan la UI
             services.AddTransient<CamionViewModel>();
             services.AddTransient<ChoferViewModel>();
             services.AddTransient<ClienteViewModel>();

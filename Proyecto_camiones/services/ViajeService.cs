@@ -16,19 +16,17 @@ namespace Proyecto_camiones.Presentacion.Services
     public class ViajeService : IViajeService
     {
         private readonly ViajeRepository _viajeRepository;
-        private readonly CamionService _camionService;
-        private readonly ClienteService _clienteService;
-        private readonly ChoferService _choferService;
-        private readonly PagoService _pagoService;
-        //private int Porcentaje = 100;
-        //private int Tonelada = 1000;
+        private readonly ICamionService _camionService;
+        private readonly IClienteService _clienteService;  
+        private readonly IChoferService _choferService; 
+        private readonly IPagoService _pagoService; 
 
         public ViajeService(
             ViajeRepository viajeRepository,
-            CamionService camionService,
-            ClienteService clienteService,
-            ChoferService choferService,
-            PagoService pagoService)
+            ICamionService camionService,    
+            IClienteService clienteService,  
+            IChoferService choferService,
+            IPagoService pagoService)
         {
             _viajeRepository = viajeRepository ?? throw new ArgumentNullException(nameof(viajeRepository));
             _camionService = camionService ?? throw new ArgumentNullException(nameof(camionService));

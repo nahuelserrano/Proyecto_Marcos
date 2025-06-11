@@ -28,12 +28,22 @@ namespace Proyecto_camiones
 
             try
             {
-                // === INICIALIZACIÓN DEL CONTENEDOR DE DEPENDENCIAS ===
-                // Aquí es donde la magia sucede, como cuando Dumbledore abre Hogwarts
-                Console.WriteLine("Inicializando el contenedor de dependencias...");
+                // === INICIALIZACIÓN CORRECTA ===
+                Console.WriteLine("🚀 Inicializando el contenedor de dependencias...");
 
                 var serviceProvider = DependencyContainer.ConfigureServices();
                 ServiceLocator.Initialize(serviceProvider);
+
+                // === CONFIGURAR WINFORMS ===
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+
+                // === CREAR FORMULARIO PRINCIPAL CON DEPENDENCIAS ===
+                // Aquí puedes crear tu formulario principal usando el ViewModelFactory
+                var mainForm = new Front.Viaje(); // O el formulario que quieras como principal
+
+                Console.WriteLine("✅ Aplicación inicializada correctamente");
+                Application.Run(mainForm);
 
             }
             catch (Exception ex)

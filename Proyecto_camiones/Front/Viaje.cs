@@ -73,7 +73,10 @@ internal class Viaje : Home
     private Panel cardsContainer = new Panel();
     private FlowLayoutPanel cardsContainerFL = new FlowLayoutPanel();
 
-    private CamionViewModel cvm = new CamionViewModel();
+    private readonly CamionViewModel _camionViewModel;
+    private readonly ClienteViewModel _clienteViewModel;
+    private readonly FleteViewModel _fleteViewModel;
+
     private bool yaCorrido = false;
 
 
@@ -81,6 +84,9 @@ internal class Viaje : Home
     //ConstructortenerTodos
     public Viaje()
     {
+        _camionViewModel = ViewModelFactory.CreateCamionViewModel();
+        _clienteViewModel = ViewModelFactory.CreateClienteViewModel();
+
         InitializeFilterCards(" ");
         ResaltarBoton(viajesMenu);
 
@@ -204,7 +210,7 @@ internal class Viaje : Home
     {
         if (filtro == "Camion")
         {
-            var resultado = await cvm.ObtenerTodosAsync();
+            var resultado = await _camionViewModel.ObtenerTodosAsync();
             if (resultado.IsSuccess)
             {
                 camionFilter.ForeColor = Color.Yellow;
@@ -225,8 +231,7 @@ internal class Viaje : Home
         }
         else if (filtro == "Cliente")
         {
-            ClienteViewModel cvm = new ClienteViewModel();
-            var resultado = await cvm.ObtenerTodosAsync();
+            var resultado = await _clienteViewModel.ObtenerTodosAsync();
 
             if (resultado.IsSuccess)
             {
@@ -248,8 +253,7 @@ internal class Viaje : Home
         }
         else if (filtro == "Flete")
         {
-            FleteViewModel fvm = new FleteViewModel();
-            var resultado = await fvm.ObtenerTodosAsync();
+            var resultado = await _fleteViewModel.ObtenerTodosAsync();
             if (resultado.IsSuccess)
             {
                 fleteFilter.ForeColor = Color.Yellow;
@@ -369,8 +373,7 @@ internal class Viaje : Home
             {
                 if (resultado == DialogResult.Yes)
                 {
-                    FleteViewModel fvm = new FleteViewModel();
-                    var response = await fvm.EliminarAsync(item.Id);
+                    var response = await _fleteViewModel.EliminarAsync(item.Id);
                     if (response.IsSuccess)
                     {
                         ObtenerTodosSegunFiltro(filtro);
@@ -454,8 +457,7 @@ internal class Viaje : Home
             DialogResult resultado = MessageBox.Show("Si elimina este cliente todo lo relacionado también se eliminará. ¿Desea eliminarlo de todas formas?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (resultado == DialogResult.Yes)
             {
-                ClienteViewModel cvm = new ClienteViewModel();
-                var response = await cvm.Eliminar(item.Id);
+                var response = await _clienteViewModel.Eliminar(item.Id);
                 if (response.IsSuccess)
                 {
                     ObtenerTodosSegunFiltro(filtro);
@@ -555,8 +557,7 @@ internal class Viaje : Home
             DialogResult resultado = MessageBox.Show("Si elimina este camión todo lo relacionado también se eliminará. ¿Desea eliminarlo de todas formas?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (resultado == DialogResult.Yes)
             {
-                CamionViewModel cvm = new CamionViewModel();
-                var response = await cvm.EliminarAsync(item.Id);
+                var response = await _camionViewModel.EliminarAsync(item.Id);
                 if (response.IsSuccess)
                 {
                     ObtenerTodosSegunFiltro(filtro);
@@ -611,11 +612,11 @@ internal class Viaje : Home
         {
             if (filtro == "Camión")
             {
-                var idCamion = await cvm.InsertarAsync(info, text);
+                var idCamion = await _camionViewModel.InsertarAsync(info, text);
 
                 if (idCamion.IsSuccess)
                 {
-                    var resultado = await cvm.ObtenerPorId(idCamion.Value);
+                    var resultado = await _camionViewModel.ObtenerPorId(idCamion.Value);
 
                     if (resultado.IsSuccess)
                     {
@@ -648,13 +649,12 @@ internal class Viaje : Home
             }
             else if (filtro == "Cliente")
             {
-                ClienteViewModel cmv = new ClienteViewModel();
-                var idCliente = await cmv.InsertarCliente(info);
+                var idCliente = await _clienteViewModel.InsertarCliente(info);
 
                 if (idCliente.IsSuccess)
                 {
 
-                    var resultado = await cmv.ObtenerById(idCliente.Value);
+                    var resultado = await _clienteViewModel.ObtenerById(idCliente.Value);
 
                     if (resultado.IsSuccess)
                     {
@@ -687,12 +687,11 @@ internal class Viaje : Home
             }
             else if (filtro == "Flete")
             {
-                FleteViewModel fvm = new FleteViewModel();
-                var response = await fvm.InsertarAsync(info);
+                var response = await _fleteViewModel.InsertarAsync(info);
                 if (response.IsSuccess)
                 {
                     int idfletero = response.Value;
-                    var fletero = await fvm.ObtenerPorIdAsync(idfletero);
+                    var fletero = await _fleteViewModel.ObtenerPorIdAsync(idfletero);
                     if (fletero.IsSuccess)
                     {
                         cardsContainerFL.Controls.Clear();
