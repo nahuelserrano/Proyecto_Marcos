@@ -6,6 +6,7 @@ using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Utils;
 using Proyecto_camiones.Repositories;
+using Proyecto_camiones.Services;
 
 
 namespace Proyecto_camiones.Presentacion.Services
@@ -48,13 +49,32 @@ namespace Proyecto_camiones.Presentacion.Services
         public async Task<Result<bool>> EliminarAsync(int clienteId)
         {
             if (clienteId <= 0) return Result<bool>.Failure(MensajeError.IdInvalido(clienteId));
-            Cliente cliente = await this._clienteRepository.ObtenerPorIdAsync(clienteId);
+
+            var cliente = await this._clienteRepository.ObtenerPorIdAsync(clienteId);
+
+
             if(cliente != null)
             {
+                var listaViajes = await _viajeRepository.ObtenerViajePorClienteAsync(clienteId);
+
+                foreach (var viaje in listaViajes)
+                {
+                    bool pagado = await _viajeRepository.PagoPagado(viaje.Id);
+
+                    if (!pagado)
+                    {
+                        return Result<bool>.Failure(
+                            "Los viajes asociados al cliente no se pueden eliminar, " +
+                            "chofer/es tienen viajes pendientes por cobrar"
+                        );
+                    }
+                }
+
                 bool result = await this._clienteRepository.EliminarAsync(clienteId);
                 if (result) return Result<bool>.Success(true);
                 return Result<bool>.Failure("No se pudo eliminar el cliente, error interno en la base de datos");
             }
+
             return Result<bool>.Failure("No existe un cliente con ese id");
         }
 

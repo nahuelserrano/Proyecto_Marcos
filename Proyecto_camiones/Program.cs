@@ -26,6 +26,9 @@ namespace Proyecto_camiones
             Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
 
             //await CamionTest.ProbarEliminacionCamionConPagosPendientes();
+            //await CamionTest.EjecutarPruebasEliminacionConPagos();
+            //await ViajeTest.ProbarFuzzyMatchingClientes();
+            //await ClienteTests.ProbarEliminarCliente(7);
         }
     }
 }

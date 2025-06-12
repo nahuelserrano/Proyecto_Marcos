@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_camiones.DTOs;
+using Proyecto_camiones.Models;
 using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.ViewModels;
 
@@ -225,6 +226,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 if (viaje == null)
                     return false;
 
+                Console.WriteLine("VIAJE ES DISTINTO DE NULL");
                 // Actualizar sólo los campos proporcionados
                 if (fechaInicio.HasValue)
                     viaje.FechaInicio = fechaInicio.Value;
@@ -373,6 +375,41 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
         }
 
+        // Obtener viajes por cliente
+        public async Task<List<ViajeDTO>?> ObtenerViajePorClienteAsync(int clienteId)
+        {
+            try
+            {
+                var viajes = await _context.Viajes
+                    .AsNoTracking()
+                    .Include(v => v.ClienteNavigation)
+                    .Include(v => v.CamionNavigation)
+                    .Where(v => v.Cliente == clienteId)
+                    .OrderByDescending(v => v.Id)
+                    .Select(v => new ViajeDTO
+                    {
+                        Id = v.Id,
+                        FechaInicio = v.FechaInicio,
+                        LugarPartida = v.LugarPartida,
+                        Destino = v.Destino,
+                        Remito = v.Remito,
+                        Kg = v.Kg,
+                        Carga = v.Carga,
+                        NombreCliente = v.ClienteNavigation.Nombre,
+                        NombreChofer = v.NombreChofer,
+                        Km = v.Km,
+                        Tarifa = v.Tarifa,
+                    })
+                    .ToListAsync();
+
+                return viajes;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
         public async Task<List<ViajeDTO>?> ObtenerPorChoferAsync(string chofer)
         {
             try
@@ -409,6 +446,23 @@ namespace Proyecto_camiones.Presentacion.Repositories
             catch (Exception ex)
             {
                 return null;
+            }
+        }
+
+        public async Task<bool> PagoPagado(int id)
+        {
+            try
+            {
+                var p = this._context.Pagos.FirstOrDefault(p => p.Id_Viaje == id);
+
+                if (p == null) throw new Exception($"Error el pago asociado al viaje con ID: {id}, no existe");
+
+                return p.Pagado;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
             }
         }
     }

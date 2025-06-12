@@ -213,8 +213,8 @@ namespace Proyecto_camiones.Presentacion.Services
                 if (viajeActual == null)
                     return Result<bool>.Failure(MensajeError.EntidadNoEncontrada(nameof(Viaje), id));
 
-                int? idCliente = null, idCamion = null;
-                int idChofer = -1;
+                int? idCliente = null, idCamion = null, idChofer = null;
+                
 
                 // Verificar que el cliente existe usando el servicio
                 if (nombreCliente != null)
@@ -253,6 +253,15 @@ namespace Proyecto_camiones.Presentacion.Services
                     Console.WriteLine($"Nombre obtenido por busqueda: {chofer}");
 
                 }
+                else
+                {
+                    var choferActual = await _choferService.ObtenerPorNombreAsync(viajeActual.NombreChofer) ;
+
+                    if(choferActual.IsSuccess)
+                        idChofer = choferActual.Value.Id;
+                    else
+                        return Result<bool>.Failure(MensajeError.EntidadNoEncontrada(nameof(Chofer), id));
+                }
 
                 Console.WriteLine($"ID Chofer: {idChofer} - ViajeService.ActualizarAsync");
 
@@ -263,7 +272,7 @@ namespace Proyecto_camiones.Presentacion.Services
                         carga, kg, idCliente, idCamion, tarifa, km, chofer, porcentaje);
 
                     if (!resultado)
-                        return Result<bool>.Failure(MensajeError.ErrorActualizacion(nameof(Viaje)));
+                        return Result<bool>.Failure(MensajeError.ErrorActualizacion(nameof(Viaje)) + " no hubo actualización desde el repository");
 
                     float tarifaActualizada = 0f, kgActualizado = 0f, porcentajeActualizado = 0f;
 
@@ -277,7 +286,7 @@ namespace Proyecto_camiones.Presentacion.Services
                         viajeActual.PorcentajeChofer = (float)porcentaje;
 
                     // Actualizar el pago asociado al viaje
-                    var pagoResult = await _pagoService.ActualizarAsync(idChofer, id,  viajeActual.GananciaChofer);
+                    var pagoResult = await _pagoService.ActualizarAsync((int)idChofer, id,  viajeActual.GananciaChofer);
 
                     if (!pagoResult.IsSuccess)
                         return Result<bool>.Failure($"No se pudo actualizar el pago asociado al viaje: {pagoResult.Error}");
@@ -305,13 +314,13 @@ namespace Proyecto_camiones.Presentacion.Services
                     return Result<bool>.Failure(MensajeError.EntidadNoEncontrada(nameof(Viaje), id));
 
 
-                //Result<Pago> pago = await _pagoService.ObtenerPorIdViaje;
+                Result<Pago> pago = await _pagoService.ObtenerPorIdViajeAsync(id);
 
-                //if (pago == null)
-                //    return Result<bool>.Failure("No se encontró el pago asociado al viaje.");
+                if (pago.Value == null)
+                    return Result<bool>.Failure("No se encontró el pago asociado al viaje.");
 
-                //if (pago.Pagado)
-                //    return Result<bool>.Failure("El pago asociado a este viaje ya esta pagado, por tanto no se puede eliiminar.");
+                if (pago.Value.Pagado)
+                    return Result<bool>.Failure("El pago asociado a este viaje ya esta pagado, por tanto no se puede eliiminar.");
 
                 bool seEliminoViaje = await _viajeRepository.EliminarAsync(id);
 
@@ -419,6 +428,16 @@ namespace Proyecto_camiones.Presentacion.Services
             {
                 return Result<List<ViajeDTO>>.Failure($"Error al obtener viajes por nombre de chofer: {ex.Message}");
             }
+        }
+
+        public async Task<bool> TienePagoPendiente(int id)
+        {
+            var result = await _pagoService.ObtenerPorIdViajeAsync(id);
+
+            if (result.IsSuccess)
+                return !result.Value.Pagado;
+            
+            return false;
         }
     }
 }

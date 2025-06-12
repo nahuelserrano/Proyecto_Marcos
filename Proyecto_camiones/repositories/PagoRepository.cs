@@ -184,7 +184,6 @@ namespace Proyecto_camiones.Repositories
                     .Where(joinResult => joinResult.Viaje.FechaInicio >= fechaDesde && joinResult.Viaje.FechaInicio <= fechaHasta)
                     .Select(joinResult => joinResult.Pago) // Seleccionamos solo los objetos Pago resultantes
                     .ToListAsync();
-                MessageBox.Show(" " + pagosPorViajeEnRango);
                 return pagosPorViajeEnRango;
             }
             catch (Exception ex)

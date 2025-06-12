@@ -1137,6 +1137,197 @@ namespace Proyecto_camiones.Tests
 
         #endregion
 
+        // AGREGAR estos métodos de prueba a ViajeTest.cs
 
+        #region Pruebas Fuzzy Matching para Clientes
+
+        /// <summary>
+        /// Prueba fuzzy matching para clientes en actualización de viajes
+        /// </summary>
+        public static async Task ProbarFuzzyMatchingClientes()
+        {
+            Console.WriteLine("\n======= PRUEBAS FUZZY MATCHING - CLIENTES =======\n");
+
+            await ProbarActualizarViajeConTypoCliente();
+            await ProbarMetodosFuzzyRepositoryClientes();
+
+            Console.WriteLine("\n======= FIN PRUEBAS FUZZY CLIENTES =======\n");
+        }
+
+        /// <summary>
+        /// Prueba actualizar viajes con diferentes tipos de errores en nombres de clientes
+        /// </summary>
+        public static async Task ProbarActualizarViajeConTypoCliente()
+        {
+            Console.WriteLine("\n=== PRUEBA: ACTUALIZAR VIAJE CON TYPOS EN CLIENTE ===");
+            ViajeViewModel vvm = new ViajeViewModel();
+
+            // Casos de prueba basados en clientes que existen en tu BD
+            var casosTypoCliente = new List<(string typo, string esperado, string descripcion)>
+            {
+                ("cliente a", "Cliente A", "Minúsculas"),
+                ("CLIENTE A", "Cliente A", "Mayúsculas"),
+                ("Clente A", "Cliente A", "Eliminación de carácter"),
+                ("Clieente B", "Cliente B", "Inserción de carácter"),
+                ("ClieNte C", "Cliente C", "Sustitución de mayúscula/minúscula"),
+                ("Cliente DDD", "Cliente D", "Repetición de carácter"),
+                ("Cliete E", "Cliente E", "Error de tecleo"),
+                ("Clinte F", "Cliente F", "Transposición de letras")
+            };
+
+            foreach (var (typo, esperado, descripcion) in casosTypoCliente)
+            {
+                try
+                {
+                    Console.WriteLine($"\n--- Probando: {descripcion} ('{typo}' → '{esperado}') ---");
+
+                    // Usar un viaje existente de tu BD
+                    var resultadoActualizacion = await vvm.ActualizarAsync(
+                        id: 1, // Viaje que ya existe en tu BD
+                        nombreCliente: typo
+                    );
+
+                    if (resultadoActualizacion.IsSuccess)
+                    {
+                        // Verificar que el fuzzy matching funcionó
+                        var viajeVerificacion = await vvm.ObtenerPorIdAsync(1);
+                        if (viajeVerificacion.IsSuccess)
+                        {
+                            string clienteFinal = viajeVerificacion.Value.NombreCliente;
+                            bool fuzzyFunciono = clienteFinal == esperado;
+
+                            if (fuzzyFunciono)
+                            {
+                                Console.WriteLine($"[✅ FUZZY] {descripcion}: '{typo}' → '{clienteFinal}' ✓");
+                            }
+                            else
+                            {
+                                Console.WriteLine($"[❌ FALLÓ] {descripcion}: '{typo}' → '{clienteFinal}' (esperado: '{esperado}')");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine($"[❌ ERROR] No se pudo verificar el viaje: {viajeVerificacion.Error}");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"[❌ ERROR] Actualización falló: {resultadoActualizacion.Error}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[❌ EXCEPCIÓN] {descripcion}: {ex.Message}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Prueba directa de los métodos fuzzy del ClienteRepository
+        /// </summary>
+        public static async Task ProbarMetodosFuzzyRepositoryClientes()
+        {
+            Console.WriteLine("\n======= PRUEBAS DIRECTAS DE CLIENTE REPOSITORY =======\n");
+
+            try
+            {
+                var clienteRepo = new ClienteRepository();
+
+                // Casos de prueba basados en clientes que existen en tu BD
+                var busquedasTest = new List<(string busqueda, string esperado, string descripcion)>
+                {
+                    ("cliente a", "Cliente A", "Minúsculas"),
+                    ("CLIENte B", "Cliente B", "Mayúsculas y minúsculas mezcladas"),
+                    ("Clinte C", "Cliente C", "Transposición de letras"),
+                    ("Cliente DDD", "Cliente D", "Repetición de carácter"),
+                    ("Clente E", "Cliente E", "Eliminación de carácter"),
+                    ("Clieente F", "Cliente F", "Inserción de carácter"),
+                    ("ClieNte G", "Cliente G", "Sustitución de mayúscula"),
+                    ("Cliete H", "Cliente H", "Error de tecleo"),
+                    ("Clnte I", "Cliente I", "Eliminación de vocal")
+                };
+
+                Console.WriteLine("=== BÚSQUEDA CON LIKE (CLIENTES) ===");
+                foreach (var (busqueda, esperado, descripcion) in busquedasTest)
+                {
+                    try
+                    {
+                        var resultadosLike = await clienteRepo.BuscarClienteConLikeAsync(busqueda);
+                        Console.WriteLine($"[LIKE] {descripcion}: '{busqueda}' → {resultadosLike.Count} resultados");
+
+                        foreach (var cliente in resultadosLike.Take(3)) // Solo primeros 3
+                        {
+                            Console.WriteLine($"    - {cliente.Nombre}");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"[✗] Error LIKE '{busqueda}': {ex.Message}");
+                    }
+                }
+
+                Console.WriteLine("\n=== BÚSQUEDA HÍBRIDA (CLIENTES) ===");
+                foreach (var (busqueda, esperado, descripcion) in busquedasTest)
+                {
+                    try
+                    {
+                        var resultadoHibrido = await clienteRepo.ObtenerPorSimilitudAsync(busqueda, 60.0); // Umbral más bajo
+
+                        if (resultadoHibrido.HasValue)
+                        {
+                            bool coincideEsperado = resultadoHibrido.Value.cliente.Nombre == esperado;
+                            string status = coincideEsperado ? "✅" : "⚠️";
+                            Console.WriteLine($"[{status}] {descripcion}: '{busqueda}' → '{resultadoHibrido.Value.cliente.Nombre}' ({resultadoHibrido.Value.similitud:F1}%)");
+
+                            if (!coincideEsperado)
+                            {
+                                Console.WriteLine($"    (Esperado: '{esperado}')");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine($"[✗] {descripcion}: '{busqueda}' → Sin coincidencias");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"[✗] Error HÍBRIDO '{busqueda}': {ex.Message}");
+                    }
+                }
+
+                Console.WriteLine("\n=== PRUEBA DE RENDIMIENTO (CLIENTES) ===");
+                var inicio = DateTime.Now;
+                int busquedasRealizadas = 0;
+                int busquedasExitosas = 0;
+
+                foreach (var (busqueda, _, _) in busquedasTest)
+                {
+                    try
+                    {
+                        var resultado = await clienteRepo.ObtenerPorSimilitudAsync(busqueda, 60.0);
+                        busquedasRealizadas++;
+
+                        if (resultado.HasValue)
+                            busquedasExitosas++;
+                    }
+                    catch
+                    {
+                        busquedasRealizadas++;
+                    }
+                }
+
+                var tiempoTotal = DateTime.Now - inicio;
+                Console.WriteLine($"📊 Búsquedas: {busquedasRealizadas}, Exitosas: {busquedasExitosas}");
+                Console.WriteLine($"📊 Tiempo total: {tiempoTotal.TotalMilliseconds:F2} ms");
+                Console.WriteLine($"📊 Promedio: {tiempoTotal.TotalMilliseconds / busquedasRealizadas:F2} ms/búsqueda");
+                Console.WriteLine($"📊 Tasa de éxito: {(double)busquedasExitosas / busquedasRealizadas * 100:F1}%");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[✗] ERROR GENERAL: {ex.Message}");
+            }
+        }
+
+        #endregion
     }
 }
