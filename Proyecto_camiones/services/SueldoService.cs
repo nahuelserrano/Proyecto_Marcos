@@ -99,6 +99,7 @@ namespace Proyecto_camiones.Presentacion.Services
         public async Task<Result<int>> CrearAsync(string nombre_chofer, DateOnly pagoDesde, DateOnly pagoHasta, DateOnly? fecha_pagado, string patenteCamion)
         {
             Result<Chofer?> c = await this._choferService.ObtenerPorNombreAsync(nombre_chofer);
+
             if (!c.IsSuccess)
             {
                 return Result<int>.Failure("Hubo un problema al obtener el chofer con ese nombre, chequee los datos ingresados");
@@ -122,24 +123,22 @@ namespace Proyecto_camiones.Presentacion.Services
             if (!resultadoValidacion.IsSuccess)
                 return Result<int>.Failure(resultadoValidacion.Error);
 
-           
+            Result<Camion> ca = await this._camionService.ObtenerPorPatenteAsync(patenteCamion);
 
-          
-                Result<Camion> ca = await this._camionService.ObtenerPorPatenteAsync(patenteCamion);
-                if (!ca.IsSuccess)
-                {
+            if (!ca.IsSuccess)
                     return Result<int>.Failure("No existe camión con esa patente, revise los datos ingresados");
-                }
-                int idCamion = ca.Value.Id;
             
+            int idCamion = ca.Value.Id;
 
             try
             {
-
                 int idSueldo = await _sueldoRepository.InsertarAsync(monto, c.Value.Id, pagoDesde, pagoHasta, fecha_pagado, idCamion);
+
                 if (idSueldo < 0)
                     return Result<int>.Failure("No se pudo crear el sueldo en services");
+
                 await _pagoService.ModificarEstado(c.Value.Id, pagoDesde, pagoHasta, idSueldo);
+
                 return Result<int>.Success(idSueldo);
             }
             catch (Exception ex)

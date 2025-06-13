@@ -42,19 +42,18 @@ namespace Proyecto_camiones.Repositories
             }
         }
 
-        public async Task<Pago?> ObtenerPagoPorIdViajeAsync(int idViaje)
+        public async Task<Pago?> ObtenerPorIdViajeAsync(int idViaje)
         {
             try
             {
                 this._context = General.obtenerInstancia();
+
                 var pago = await _context.Pagos
                     .Where(p => p.Id_Viaje == idViaje)
                     .FirstOrDefaultAsync();
+
                 if (pago != null)
-                {
-                    Console.WriteLine($"📊 Pago encontrado - ID: {pago.Id}, Chofer: {pago.Id_Chofer}, Pagado: {pago.Pagado}");
                     return pago;
-                }
                 
                 Console.WriteLine($"No se encontró un pago para el viaje con ID: {idViaje}"); 
                 return null;
