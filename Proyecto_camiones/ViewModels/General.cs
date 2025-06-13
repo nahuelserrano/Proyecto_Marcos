@@ -8,7 +8,7 @@ namespace Proyecto_camiones.ViewModels
 
         public static ApplicationDbContext obtenerInstancia()
         {
-            var connectionString = "server=localhost;user=root;password=;database=truck_manager_project_db;";
+            var connectionString = "server=metro.proxy.rlwy.net;port=11105;database=railway;user=root;password=OiFfLgfCAGtvTcAhfckpmJlSlJsEIvZY;";
 
             // Crear la configuración del DbContext
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
