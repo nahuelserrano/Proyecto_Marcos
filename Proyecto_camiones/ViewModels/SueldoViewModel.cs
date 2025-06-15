@@ -33,7 +33,6 @@ namespace Proyecto_camiones.ViewModels
         {
             if (await this.testearConexion())
             {
-                Console.WriteLine("hola view model hay conexion");
                 return await this.sueldoService.CrearAsync(nombre_chofer, pagoDesde, pagoHasta,fechaPago, patente_camion);
 
             }

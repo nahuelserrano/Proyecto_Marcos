@@ -6,6 +6,7 @@ using Proyecto_camiones.Services;
 using Proyecto_camiones.Presentacion.Models;
 using Proyecto_camiones.Presentacion.Repositories;
 using Proyecto_camiones.Presentacion.Utils;
+using System.Transactions;
 
 namespace Proyecto_camiones.Presentacion.Services
 {
@@ -86,19 +87,25 @@ namespace Proyecto_camiones.Presentacion.Services
             }
             int id_chofer = (int)sueldo.Id_Chofer;
 
-            await _pagoService.ModificarEstado(id_chofer, sueldo.PagadoDesde, sueldo.PagadoHasta, null, false);
-
-            bool response = await _sueldoRepository.EliminarAsync(sueldoId);
-            if (response)
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
+                await _pagoService.ModificarEstado(id_chofer, sueldo.PagadoDesde, sueldo.PagadoHasta, null, false);
+
+                bool response = await _sueldoRepository.EliminarAsync(sueldoId);
+                
+                if (!response)
+                    return Result<bool>.Failure("Hubo un problema al eliminar el sueldo");
+                    
+                scope.Complete();
                 return Result<bool>.Success(response);
             }
-            return Result<bool>.Failure("Hubo un problema al eliminar el sueldo");
+
         }
 
         public async Task<Result<int>> CrearAsync(string nombre_chofer, DateOnly pagoDesde, DateOnly pagoHasta, DateOnly? fecha_pagado, string patenteCamion)
         {
             Result<Chofer?> c = await this._choferService.ObtenerPorNombreAsync(nombre_chofer);
+
             if (!c.IsSuccess)
             {
                 return Result<int>.Failure("Hubo un problema al obtener el chofer con ese nombre, chequee los datos ingresados");
@@ -122,25 +129,27 @@ namespace Proyecto_camiones.Presentacion.Services
             if (!resultadoValidacion.IsSuccess)
                 return Result<int>.Failure(resultadoValidacion.Error);
 
-           
+            Result<Camion> ca = await this._camionService.ObtenerPorPatenteAsync(patenteCamion);
 
-          
-                Result<Camion> ca = await this._camionService.ObtenerPorPatenteAsync(patenteCamion);
-                if (!ca.IsSuccess)
-                {
+            if (!ca.IsSuccess)
                     return Result<int>.Failure("No existe camión con esa patente, revise los datos ingresados");
-                }
-                int idCamion = ca.Value.Id;
             
+            int idCamion = ca.Value.Id;
 
             try
             {
+                using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                {
+                    int idSueldo = await _sueldoRepository.InsertarAsync(monto, c.Value.Id, pagoDesde, pagoHasta, fecha_pagado, idCamion);
 
-                int idSueldo = await _sueldoRepository.InsertarAsync(monto, c.Value.Id, pagoDesde, pagoHasta, fecha_pagado, idCamion);
-                if (idSueldo < 0)
-                    return Result<int>.Failure("No se pudo crear el sueldo en services");
-                await _pagoService.ModificarEstado(c.Value.Id, pagoDesde, pagoHasta, idSueldo);
-                return Result<int>.Success(idSueldo);
+                    if (idSueldo < 0)
+                        return Result<int>.Failure("No se pudo crear el sueldo en services");
+
+                    await _pagoService.ModificarEstado(c.Value.Id, pagoDesde, pagoHasta, idSueldo);
+
+                    scope.Complete();
+                    return Result<int>.Success(idSueldo);
+                }
             }
             catch (Exception ex)
             {
@@ -193,16 +202,19 @@ namespace Proyecto_camiones.Presentacion.Services
 
             if (monto != null)
                 pagoExistente.Monto_Pagado = monto.Value;
+
             if (Id_Chofer != null)
                 pagoExistente.Id_Chofer = Id_Chofer.Value;
 
             if (pagadoDesde != null)
                 pagoExistente.PagadoDesde = pagadoDesde.Value;
+
             if (pagadoHasta != null)
                 pagoExistente.PagadoHasta = pagadoHasta.Value;
 
             if (FechaPago != null)
                 pagoExistente.FechaDePago = FechaPago.Value;
+
             bool success = await this._sueldoRepository.ActualizarAsync(id, (int)pagoExistente.Id_Chofer, pagoExistente.PagadoDesde, pagoExistente.PagadoHasta, pagoExistente.Monto_Pagado, pagoExistente.FechaDePago);
 
             if (success)

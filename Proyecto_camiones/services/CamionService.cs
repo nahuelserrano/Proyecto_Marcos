@@ -142,8 +142,6 @@ namespace Proyecto_camiones.Presentacion.Services
 
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                if (ch != null)
-                    await this._choferRepository.EliminarAsync(ch.Id);
                 
                 var  viajesDelCamion = await _viajeRepo.ObtenerPorCamionAsync(id, c.Patente);
 
@@ -155,7 +153,7 @@ namespace Proyecto_camiones.Presentacion.Services
                     Result<Pago> pResult = await _pagoService.ObtenerPorIdViajeAsync(viaje.Id);
 
                     if(!pResult.IsSuccess)
-                        return Result<string>.Failure(MensajeError.EntidadNoEncontrada("pago", viaje.Id));
+                        return Result<string>.Failure($"No se encontró el pago con idViaje: {viaje.Id}");
 
                     Pago p = pResult.Value;
 
@@ -163,6 +161,9 @@ namespace Proyecto_camiones.Presentacion.Services
                     if (!p.Pagado)
                         return Result<string>.Failure("El chofer asociado al camión tiene viajes pendientes a cobrar");
                 }
+
+                if (ch != null)
+                    await this._choferRepository.EliminarAsync(ch.Id);
 
                 await this._camionRepository.EliminarAsync(id);
 

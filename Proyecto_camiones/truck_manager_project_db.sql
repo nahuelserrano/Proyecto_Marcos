@@ -178,16 +178,16 @@ CREATE TABLE `pago` (
 INSERT INTO pago (
   idpago, monto, idChofer, pagado, idViaje, idSueldo
 ) VALUES
-( 2, ROUND(150 * 1000 * 1.50 * 0.18, 2), 5, 0, 1, NULL),  -- 40500.00
-( 3, ROUND(200 * 1000 * 2.00 * 0.18, 2), 6, 0, 2, NULL),  -- 72000.00
-( 4, ROUND(180 * 1000 * 1.80 * 0.18, 2), 7, 0, 3, NULL),  -- 58320.00
-( 5, ROUND(220 * 1000 * 2.20 * 0.18, 2), 8, 0, 4, NULL),  -- 87120.00
-( 6, ROUND(300 * 1000 * 1.70 * 0.18, 2), 9, 0, 5, NULL),  -- 91800.00
-( 7, ROUND(100 * 1000 * 1.30 * 0.18, 2), 5, 0, 6, NULL),  -- 23400.00
-( 8, ROUND(350 * 1000 * 2.20 * 0.18, 2), 6, 0, 7, NULL),  -- 138600.00
-( 9, ROUND(500 * 1000 * 2.50 * 0.18, 2), 7, 0, 8, NULL),  -- 225000.00
-(10, ROUND(270 * 1000 * 1.90 * 0.18, 2), 8, 0, 9, NULL),  -- 92340.00
-(11, ROUND(400 * 1000 * 2.00 * 0.18, 2), 9, 0, 10, NULL);  -- 144000.00
+( 1, ROUND(150 * 1000 * 1.50 * 0.18, 2), 5, 0, 1, NULL),  -- 40500.00
+( 2, ROUND(200 * 1000 * 2.00 * 0.18, 2), 6, 0, 2, NULL),  -- 72000.00
+( 3, ROUND(180 * 1000 * 1.80 * 0.18, 2), 7, 0, 3, NULL),  -- 58320.00
+( 4, ROUND(220 * 1000 * 2.20 * 0.18, 2), 8, 0, 4, NULL),  -- 87120.00
+( 5, ROUND(300 * 1000 * 1.70 * 0.18, 2), 9, 0, 5, NULL),  -- 91800.00
+( 6, ROUND(100 * 1000 * 1.30 * 0.18, 2), 5, 0, 6, NULL),  -- 23400.00
+( 7, ROUND(350 * 1000 * 2.20 * 0.18, 2), 6, 0, 7, NULL),  -- 138600.00
+( 8, ROUND(500 * 1000 * 2.50 * 0.18, 2), 7, 0, 8, NULL),  -- 225000.00
+( 9, ROUND(270 * 1000 * 1.90 * 0.18, 2), 8, 0, 9, NULL),  -- 92340.00
+( 10, ROUND(400 * 1000 * 2.00 * 0.18, 2), 9, 0, 10, NULL);  -- 144000.00
 -- --------------------------------------------------------
 
 --
@@ -435,7 +435,7 @@ ALTER TABLE `cuenta_corriente`
 --
 ALTER TABLE `pago`
   ADD CONSTRAINT `fk_pago_chofer` FOREIGN KEY (`idChofer`) REFERENCES `chofer` (`idChofer`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_pago_sueldo` FOREIGN KEY (`idSueldo`) REFERENCES `sueldo` (`idsueldo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_pago_sueldo` FOREIGN KEY (`idSueldo`) REFERENCES `sueldo` (`idsueldo`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_pago_viaje` FOREIGN KEY (`idViaje`) REFERENCES `viaje` (`idviaje`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --

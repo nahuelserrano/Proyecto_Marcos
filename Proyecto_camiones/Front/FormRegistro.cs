@@ -410,8 +410,8 @@ public class FormRegistro : Home
     private void InitializeFormProperties(int cant, List<string> campos, string filtro)
     {
         FormProperties(cant);
-        LayoutFormProperties(cant);
-        TextoBoxAndLabelProperties(cant, campos);
+        LayoutFormProperties(cant, filtro);
+        TextoBoxAndLabelProperties(cant, campos, filtro);
         ButtonsPropertiesForm(filtro);
         AddControls();
     }
@@ -427,7 +427,6 @@ public class FormRegistro : Home
         else
         {
             formPanel.Size = new Size(120 * cant, 70);
-        
         }
         formPanel.BackColor = Color.FromArgb(45, 45, 48); // Gris oscuro moderno
 
@@ -436,15 +435,15 @@ public class FormRegistro : Home
             formPanel.Location = new Point((this.Width - formPanel.Width + 15) / 2, 115);
         };
     }
-    private void LayoutFormProperties(int cant)
+    private void LayoutFormProperties(int cant, string filtro)
     {
         formFLTextBox = PropertiesLayoutForm();
         formFLLabel = PropertiesLayoutForm();
 
         formFLTextBox.Height = 55;
-        
-        formFLTextBox.Location = new Point(20, 15);
-        
+
+        formFLTextBox.Location = new Point(10, 15);
+
         formFLTextBox.BackColor = Color.Transparent;
 
         formFLLabel.Height = 30;
@@ -466,13 +465,13 @@ public class FormRegistro : Home
     }
 
     //TextBoxProperties
-    private void TextoBoxAndLabelProperties(int cant, List<string> campos)
+    private void TextoBoxAndLabelProperties(int cant, List<string> campos, string filtro)
     {
         foreach (string campo in campos)
         {
-            FlowLayoutPanel campoPanel = PropertiesFormPanel();
+            FlowLayoutPanel campoPanel = PropertiesFormPanel(filtro);
             TextBox textBoxForm = CreateTextBoxAndProperties(campo);
-            Label labelForm = CreateLabelAndProperties(campo);
+            Label labelForm = CreateLabelAndProperties(campo, filtro);
 
             formFLLabel.Controls.Add(labelForm);
 
@@ -481,26 +480,37 @@ public class FormRegistro : Home
         }
     }
 
-    private FlowLayoutPanel PropertiesFormPanel()
+    private FlowLayoutPanel PropertiesFormPanel(string filtro)
     {
         FlowLayoutPanel campoTextBox = new FlowLayoutPanel();
-        campoTextBox.Size = new Size(105, 40);
-        campoTextBox.Margin = new Padding(2, 0, 2, 0);
+        if (filtro == "Flete")
+        {
+            campoTextBox.Size = new Size(95, 40);
+        } else
+        {
+            campoTextBox.Size = new Size(105, 40);
+        }
         campoTextBox.BackColor = Color.Transparent;
 
         return campoTextBox;
     }
 
-    private Label CreateLabelAndProperties(object campo)
+    private Label CreateLabelAndProperties(object campo ,string filtro)
     {
         Label ll = new Label();
         ll.Text = campo.ToString();
         ll.Font = new Font("Segoe UI", 10, FontStyle.Regular);
         ll.ForeColor = Color.FromArgb(220, 220, 220);
         ll.BackColor = Color.Transparent;
-        ll.Size = new Size(105, 25);
+        if (filtro == "Flete")
+        {
+            ll.Size = new Size(95, 25);
+        }
+        else
+        {
+            ll.Size = new Size(105, 25);
+        }
         ll.TextAlign = ContentAlignment.MiddleCenter;
-        ll.Margin = new Padding(2, 0, 2, 0);
 
         // Efecto de sombra del texto
         ll.FlatStyle = FlatStyle.Flat;

@@ -23,15 +23,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
             {
                 // Intentar comprobar si la conexión a la base de datos es exitosa
                 bool puedeConectar = await _context.Database.CanConnectAsync();
-                if (puedeConectar)
-                {
-                    Console.WriteLine("Conexión exitosa a la base de datos.");
-                }
-                else
-                {
-                    Console.WriteLine("No se puede conectar a la base de datos.");
-                }
-
                 return puedeConectar;
             }
             catch (Exception ex)
@@ -60,10 +51,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 int registrosAfectados = await _context.SaveChangesAsync();
 
                 if (registrosAfectados > 0)
-                {
-                    Console.WriteLine("se insertó el registro correctamente");
                     return sueldo.Id;
-                }
+                
                 Console.WriteLine("No se insertó ningún registro");
                 return -1;
 
@@ -139,7 +128,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 }
                 List<SueldoDTO> sueldos = new List<SueldoDTO>();
                 if (idChofer > -1 && idCamionParametro >-1) {
-                    Console.WriteLine("hola if de tenemos chofer y camión");
                     sueldos = await _context.Sueldos
                     .Join(_context.Choferes,
                           s => s.Id_Chofer,
@@ -162,7 +150,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     return sueldos;
             } else if(idChofer < 0 && idCamionParametro > -1)
                 {
-                    Console.WriteLine("Hola if de tenemos camion pero no chofer");
                     sueldos = await _context.Sueldos
                       .Join(_context.Choferes,
                             s => s.Id_Chofer,
@@ -209,7 +196,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     return null;
                 }
 
-                    return sueldos;
+                return sueldos;
 
         }catch (Exception e)
             {

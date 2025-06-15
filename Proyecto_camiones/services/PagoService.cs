@@ -26,7 +26,7 @@ namespace Proyecto_camiones.Services
         {
             try
             {
-                Pago? pago = await _pagoRepository.ObtenerPagoPorIdViajeAsync(idViaje);
+                Pago? pago = await _pagoRepository.ObtenerPorIdViajeAsync(idViaje);
 
                 if (pago == null)
                     return Result<Pago>.Failure($"No se encontró un pago para el viaje con ID: {idViaje}");
