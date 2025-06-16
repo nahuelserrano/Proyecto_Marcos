@@ -21,7 +21,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstancia();
                 bool puedeConectar = await _context.Database.CanConnectAsync();
 
                 if (puedeConectar)
@@ -48,7 +47,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstanciaTemporal();
                 if (!await _context.Database.CanConnectAsync())
                 {
                     return -1; // Mejor retornar un valor específico de error que null
@@ -77,7 +75,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstancia();
                 var choferes = await _context.Choferes.ToListAsync();
 
                 return choferes;
@@ -93,7 +90,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstancia();
                 if (id <= 0)
                 {
                     return null;
@@ -118,11 +114,15 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstancia();
+                if (string.IsNullOrEmpty(nombre))
+                {
+                    return null;
+                }
                 var chofer = await _context.Choferes.FirstOrDefaultAsync(c => c.Nombre == nombre);
 
                 if (chofer == null)
                 {
+                    return null;
                     var match = await ObtenerPorSimilitudAsync(nombre);
 
                     chofer = match.Value.chofer;
@@ -149,7 +149,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstanciaTemporal();
                 if (id <= 0)
                 {
                     return null;
@@ -181,7 +180,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstanciaTemporal();
                 if (id <= 0)
                 {
                     return false;

@@ -14,8 +14,7 @@ namespace Proyecto_camiones.ViewModels
 
         public ChequeViewModel()
         {
-            var dbContext = General.obtenerInstancia();
-            var chequeRepository = new ChequeRepository(dbContext);
+            var chequeRepository = new ChequeRepository();
             _chequeService = new ChequeService(chequeRepository, new ClienteService(new ClienteRepository()));
         }
 

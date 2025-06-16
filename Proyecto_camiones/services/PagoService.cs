@@ -100,7 +100,7 @@ namespace Proyecto_camiones.Services
 
             foreach (var pago in pagos)
             {
-                totalPagar += pago.Monto_Pagado * 10;
+                totalPagar += pago.Monto_Pagado;
             }
             return totalPagar;
         }

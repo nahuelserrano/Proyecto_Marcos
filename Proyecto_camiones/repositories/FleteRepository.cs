@@ -47,7 +47,6 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
-                this._context = General.obtenerInstanciaTemporal();
                 Flete nuevo = new Flete(nombre);
                 await this._context.Fletes.AddAsync(nuevo);
                 int registrosAfectados = await this._context.SaveChangesAsync();
@@ -70,7 +69,6 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
-                this._context = General.obtenerInstancia();
                 Flete flete = await _context.Fletes.Where(f => f.nombre == nombre).FirstOrDefaultAsync();
                 return flete;
             }
@@ -86,7 +84,6 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
-                this._context = General.obtenerInstancia();
                 List<Flete> fleteros = await this._context.Fletes.OrderByDescending(f=> f.Id).ToListAsync();
                 return fleteros;
             }
@@ -117,7 +114,6 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
-                this._context = General.obtenerInstanciaTemporal();
                 var fletero = await _context.Fletes.FindAsync(id);
 
                 if (fletero == null)
@@ -141,7 +137,6 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
-                this._context = General.obtenerInstanciaTemporal();
                 Flete? fletero = await this._context.Fletes.FindAsync(id);
                 if (fletero == null) return null;
                 fletero.nombre = nombre;

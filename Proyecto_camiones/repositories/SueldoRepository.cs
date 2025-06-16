@@ -38,7 +38,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstanciaTemporal();
                 var sueldo = new Sueldo(monto, Id_Chofer, pagadoDesde, pagadoHasta, idCamion);
                 if(fecha_pago != null)
                 {
@@ -70,17 +69,14 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstanciaTemporal();
                 var sueldo = await _context.Sueldos.FindAsync(id);
                 if (sueldo == null)
                     return null;
                 sueldo.Pagado = true;
-                MessageBox.Show("pagado");
                     int registrosAfectados = await _context.SaveChangesAsync();
 
                 if (registrosAfectados > 0)
                 {
-                    Console.WriteLine("sueldo pagado");
                     return new SueldoDTO(sueldo.Id, sueldo.Monto, sueldo.Id_Chofer, sueldo.pagadoDesde, sueldo.pagadoHasta, sueldo.FechaPago, sueldo.Pagado, sueldo.IdCamion, null);
                 }
                 return null;
@@ -98,7 +94,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
         public async Task<SueldoDTO?> ObtenerPorId(int id)
         {
-            this._context = General.obtenerInstancia();
             Sueldo? sueldo = await _context.Sueldos.FindAsync(id);
 
             if (sueldo == null)
@@ -125,7 +120,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
             try
             {
-                this._context = General.obtenerInstancia();
                 if (idChofer == null)
                 {
                     return null;
@@ -218,7 +212,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstanciaTemporal();
                 var pago = await _context.Sueldos.FindAsync(id);
 
                 // Actualizar solo los campos proporcionados
@@ -268,7 +261,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstanciaTemporal();
                 var pago = await _context.Sueldos.FindAsync(id);
 
                 if (pago == null)

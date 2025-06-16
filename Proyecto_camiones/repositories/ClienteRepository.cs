@@ -36,7 +36,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstancia();
                 var cliente = await _context.Clientes.FindAsync(id);
 
                 if (cliente == null)
@@ -55,7 +54,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstancia();
                 var clientes = await _context.Clientes.OrderByDescending(c => c.Id).ToListAsync();
                 return clientes;
             }
@@ -71,7 +69,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstanciaTemporal();
                 if (!await _context.Database.CanConnectAsync())
                 {
                     Console.WriteLine("No se puede conectar a la base de datos");
@@ -108,7 +105,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstanciaTemporal();
                 Cliente? cliente = await this._context.Clientes.FindAsync(id);
                 if (cliente != null)
                 {
@@ -137,7 +133,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstanciaTemporal();
                 var cliente = await _context.Clientes.FindAsync(id);
 
                 if (cliente == null)
@@ -159,7 +154,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstancia();
                 var cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Nombre == nombre_cliente);
 
                 if (cliente == null)

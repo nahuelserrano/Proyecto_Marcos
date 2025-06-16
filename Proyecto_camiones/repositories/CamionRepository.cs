@@ -23,7 +23,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
             //MessageBox.Show("testeando conexión");
             try
             {
-                this._context = General.obtenerInstancia();
                 // Intentar comprobar si la conexión a la base de datos es exitosa
                 bool puedeConectar = await _context.Database.CanConnectAsync();
                 return puedeConectar;
@@ -36,69 +35,31 @@ namespace Proyecto_camiones.Presentacion.Repositories
         }
 
         //agrego el signo de pregunta luego de Camion para decir que el result puede ser null
-        //public async Task<Camion?> InsertarAsync(string patente, string nombre)
-        //{
-        //    try
-        //    {
-        //        using var context = General.obtenerInstanciaTemporal();
-
-        //        var camion = new Camion(patente, nombre);
-        //        context.Camiones.Add(camion);
-        //        int registrosAfectados = await context.SaveChangesAsync();
-
-        //        if (registrosAfectados > 0)
-        //        {
-        //            return camion;
-        //        }
-        //        return null;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return null;
-        //    }
-        //}
-
         public async Task<Camion?> InsertarAsync(string patente, string nombre)
         {
-            var stopwatch = System.Diagnostics.Stopwatch.StartNew();
-
             try
             {
-                Console.WriteLine("Iniciando InsertarAsync...");
+            var camion = new Camion(patente, nombre);
+            this._context.Camiones.Add(camion);
+                    int registrosAfectados = await _context.SaveChangesAsync();
 
-                stopwatch.Restart();
-                using var context = General.obtenerInstanciaTemporal();
-                Console.WriteLine($"Crear contexto: {stopwatch.ElapsedMilliseconds}ms");
-
-                stopwatch.Restart();
-                var camion = new Camion(patente, nombre);
-                context.Camiones.Add(camion);
-                Console.WriteLine($"Add camion: {stopwatch.ElapsedMilliseconds}ms");
-
-                stopwatch.Restart();
-                int registrosAfectados = await context.SaveChangesAsync();
-                Console.WriteLine($"SaveChanges: {stopwatch.ElapsedMilliseconds}ms");
-
-                if (registrosAfectados > 0)
-                {
-                    return camion;
+                    if (registrosAfectados > 0)
+                    {
+                        return camion;
+                    }
+                    return null;
                 }
-                return null;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error: {ex.Message}");
-                return null;
-            }
-            finally
-            {
-                stopwatch.Stop();
-            }
+                catch (Exception ex)
+                {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.InnerException);
+                    return null;
+                }
         }
+
 
         public async Task<List<CamionDTO>?> ObtenerTodosAsync()
         {
-            this._context = General.obtenerInstancia();
             try
             {
                 var camiones = await _context.Camiones.Select(c => new CamionDTO
@@ -122,7 +83,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstanciaTemporal();
                 var camion = await _context.Camiones.FindAsync(id);
                 if (camion == null) return false;
 
@@ -153,7 +113,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstancia();
                 Camion camion = await _context.Camiones.FindAsync(id);
                 if (camion != null)
                 {
@@ -173,8 +132,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstanciaTemporal();
-                this._context = General.obtenerInstancia();
                 var camion = await _context.Camiones.FindAsync(id);
 
                 if (camion == null)
@@ -196,7 +153,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstancia();
                 var camion = await _context.Camiones.FirstOrDefaultAsync(c => c.Patente == patente);
                 return camion;
             }

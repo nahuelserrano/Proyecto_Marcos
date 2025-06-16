@@ -15,16 +15,16 @@ namespace Proyecto_camiones.Presentacion.Repositories
         private ApplicationDbContext _context;
 
 
-        public ChequeRepository(ApplicationDbContext context)
+        public ChequeRepository()
         {
-            this._context = context;
+            this._context = General.obtenerInstancia();
         }
 
         public async Task<bool> ProbarConexionAsync()
         {
             try
             {
-                this._context = General.obtenerInstancia();
+               
                 // Intentar comprobar si la conexión a la base de datos es exitosa
                 bool puedeConectar = await _context.Database.CanConnectAsync();
                 if (puedeConectar)
@@ -59,7 +59,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstanciaTemporal();
+                
                 if (!await _context.Database.CanConnectAsync())
                 {
                     Console.WriteLine("No se puede conectar a la base de datos");
@@ -106,7 +106,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstancia();
+                
                 Cheque? cheque = await _context.Cheques
                     .AsNoTracking()
                     .FirstOrDefaultAsync(c => c.Id == id);
@@ -140,7 +140,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstancia();
+              
                 var cheques = await _context.Cheques.Select(c => new ChequeDTO
                 {
                     Id = c.Id,
@@ -178,7 +178,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstanciaTemporal();
+               
                 var cheque = await _context.Cheques.FindAsync(id);
 
                 if (cheque == null)
@@ -229,7 +229,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstancia();
+               
                 Cheque? cheque = await _context.Cheques
                     .AsNoTracking()
                     .FirstOrDefaultAsync(c => c.NumeroCheque == nroCheque);
@@ -265,7 +265,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstanciaTemporal();
+               
                 Cheque? cheque = await _context.Cheques.FindAsync(id);
 
                 if (cheque == null)
