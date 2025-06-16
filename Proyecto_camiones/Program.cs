@@ -3,6 +3,8 @@ using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Proyecto_camiones.Tests;
+using MySqlX.XDevAPI.Common;
+using Proyecto_camiones.Presentacion.Utils;
 
 namespace Proyecto_camiones
 {
@@ -21,13 +23,24 @@ namespace Proyecto_camiones
 
         {
             // Llamada a Windows Forms para inicializar la aplicación
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
+            //Application.Run(new Front.Viaje()); // Ejecuta el formulario principal
 
             //await CamionTest.EjecutarPruebasEliminacionConPagos();
             //await ViajeTest.ProbarFuzzyMatchingClientes();
             //await ClienteTests.ProbarEliminarCliente(7);
+
+            CamionViewModel cmv = new CamionViewModel();
+            Result<int> id = await cmv.InsertarAsync("consola1", "consolaa");
+            if (id.IsSuccess)
+            {
+                Console.WriteLine(id.Value);
+            }
+            else
+            {
+                Console.WriteLine(id.Error);
+            }
         }
     }
 }

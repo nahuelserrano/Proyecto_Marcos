@@ -50,7 +50,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstancia();
+                this._context = General.obtenerInstanciaTemporal();
 
                 if (!await _context.Database.CanConnectAsync())
                 {
@@ -86,6 +86,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 var viajes = await _context.Viajes
                     .AsNoTracking() // Para mejorar performance en queries de solo lectura
                     .Include(v => v.ClienteNavigation)
@@ -125,6 +126,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         { 
             try
             {
+                this._context = General.obtenerInstancia();
                 var viaje = await _context.Viajes
                     .AsNoTracking()
                     .Include(v => v.ClienteNavigation)
@@ -165,6 +167,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 // Comenzamos con una consulta que incluye todos los viajes
                 var query = _context.Viajes.AsNoTracking()
                     .Include(v => v.ClienteNavigation)
@@ -220,7 +223,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstancia();
+                this._context = General.obtenerInstanciaTemporal();
                 var viaje = await _context.Viajes.FindAsync(id);
 
                 if (viaje == null)
@@ -285,7 +288,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstancia();
+                this._context = General.obtenerInstanciaTemporal();
                 var viaje = await _context.Viajes.FindAsync(id);
 
                 if (viaje == null)
@@ -309,6 +312,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 var viajes = await _context.Viajes
                     .AsNoTracking()
                     .Include(v => v.ClienteNavigation)
@@ -344,7 +348,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-
+                this._context = General.obtenerInstancia();
                 var viajes = await _context.Viajes
                     .AsNoTracking()
                     .Include(v => v.ClienteNavigation)
@@ -380,6 +384,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 var viajes = await _context.Viajes
                     .AsNoTracking()
                     .Include(v => v.ClienteNavigation)
@@ -414,6 +419,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 var viajes = await _context.Viajes
                     .AsNoTracking()
                     .Include(v => v.ClienteNavigation)
@@ -453,6 +459,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 var p = this._context.Pagos.FirstOrDefault(p => p.Id_Viaje == id);
 
                 if (p == null) throw new Exception($"Error el pago asociado al viaje con ID: {id}, no existe");

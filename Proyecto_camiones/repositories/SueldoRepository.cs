@@ -38,7 +38,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstancia();
+                this._context = General.obtenerInstanciaTemporal();
                 var sueldo = new Sueldo(monto, Id_Chofer, pagadoDesde, pagadoHasta, idCamion);
                 if(fecha_pago != null)
                 {
@@ -70,7 +70,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstancia();
+                this._context = General.obtenerInstanciaTemporal();
                 var sueldo = await _context.Sueldos.FindAsync(id);
                 if (sueldo == null)
                     return null;
@@ -98,6 +98,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
         public async Task<SueldoDTO?> ObtenerPorId(int id)
         {
+            this._context = General.obtenerInstancia();
             Sueldo? sueldo = await _context.Sueldos.FindAsync(id);
 
             if (sueldo == null)
@@ -124,7 +125,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
             try
             {
-                if(idChofer == null)
+                this._context = General.obtenerInstancia();
+                if (idChofer == null)
                 {
                     return null;
                 }
@@ -216,7 +218,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstancia();
+                this._context = General.obtenerInstanciaTemporal();
                 var pago = await _context.Sueldos.FindAsync(id);
 
                 // Actualizar solo los campos proporcionados
@@ -266,7 +268,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstancia();
+                this._context = General.obtenerInstanciaTemporal();
                 var pago = await _context.Sueldos.FindAsync(id);
 
                 if (pago == null)

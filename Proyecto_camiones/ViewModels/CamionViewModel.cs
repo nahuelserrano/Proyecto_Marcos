@@ -24,9 +24,9 @@ namespace Proyecto_camiones.ViewModels
 
         public async Task<Result<int>> InsertarAsync( string patente, string nombre)
         {
-            bool result = await this.testearConexion();
-            if (result)
-            {
+            //bool result = await this.testearConexion();
+            //if (result)
+            //{
                 var resultado = await this._camionService.CrearAsync(patente, nombre);
 
                 // Ahora puedes acceder al resultado
@@ -41,19 +41,19 @@ namespace Proyecto_camiones.ViewModels
                     // Si la operación falló, maneja el error
                     return Result<int>.Failure(resultado.Error);
                 }
-            }
-            return Result<int>.Failure("La conexión no pude establecerse");
+            //}
+                   return Result<int>.Failure("La conexión no pude establecerse");
         }
 
         public async Task<Result<List<CamionDTO>>> ObtenerTodosAsync() 
         {
-            bool result = await this.testearConexion();
-            if (result)
-            {
+            //bool result = await this.testearConexion();
+            //if (result)
+            //{
                 var camiones = await this._camionService.ObtenerTodosAsync();
                 return Result<List<CamionDTO>>.Success(camiones);
-            }
-            return Result<List<CamionDTO>>.Failure("La conexión no pudo establecerse");
+            //}
+            //return Result<List<CamionDTO>>.Failure("La conexión no pudo establecerse");
         }
 
         public async Task<Result<CamionDTO>> ActualizarAsync(int id, string? patente, string? nombre)

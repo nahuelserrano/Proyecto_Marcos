@@ -1143,4 +1143,9 @@ internal class Viaje : Home
         FormAddNew(sender, e, filtroActual);
     }
 
+    private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+    {
+        General.cerrarInstancia();
+    }
+
 }

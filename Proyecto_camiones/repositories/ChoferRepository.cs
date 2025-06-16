@@ -48,7 +48,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstancia();
+                this._context = General.obtenerInstanciaTemporal();
                 if (!await _context.Database.CanConnectAsync())
                 {
                     return -1; // Mejor retornar un valor específico de error que null
@@ -77,6 +77,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 var choferes = await _context.Choferes.ToListAsync();
 
                 return choferes;
@@ -92,6 +93,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 if (id <= 0)
                 {
                     return null;
@@ -116,6 +118,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 var chofer = await _context.Choferes.FirstOrDefaultAsync(c => c.Nombre == nombre);
 
                 if (chofer == null)
@@ -146,7 +149,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstancia();
+                this._context = General.obtenerInstanciaTemporal();
                 if (id <= 0)
                 {
                     return null;
@@ -178,7 +181,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
-                this._context = General.obtenerInstancia();
+                this._context = General.obtenerInstanciaTemporal();
                 if (id <= 0)
                 {
                     return false;
@@ -212,6 +215,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 if (string.IsNullOrWhiteSpace(nombreBuscado))
                     return null;
 

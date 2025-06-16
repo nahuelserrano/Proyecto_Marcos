@@ -51,7 +51,7 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
-                this._context = General.obtenerInstancia();
+                this._context = General.obtenerInstanciaTemporal();
                 if (!await _context.Database.CanConnectAsync())
                 {
                     MessageBox.Show("No se puede conectar a la base de datos");
@@ -112,6 +112,7 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 if (!await _context.Database.CanConnectAsync())
                 {
                     Console.WriteLine("No se puede conectar a la base de datos");
@@ -137,6 +138,7 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 if (!await _context.Database.CanConnectAsync())
                 {
                     Console.WriteLine("No se puede conectar a la base de datos");
@@ -158,6 +160,7 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 if (!await _context.Database.CanConnectAsync())
                 {
                     Console.WriteLine("No se puede conectar a la base de datos");
@@ -193,6 +196,7 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 if (!await _context.Database.CanConnectAsync())
                 {
                     Console.WriteLine("No se puede conectar a la base de datos");
@@ -228,7 +232,7 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
-                this._context = General.obtenerInstancia();
+                this._context = General.obtenerInstanciaTemporal();
                 var cuenta = await _context.Cuentas.FindAsync(id);
                 Console.WriteLine("se encontró la cuenta corriente");
 
@@ -268,7 +272,7 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
-                this._context = General.obtenerInstancia();
+                this._context = General.obtenerInstanciaTemporal();
                 CuentaCorriente? cuenta = await this._context.Cuentas.FindAsync(id);
                 if (cuenta == null)
                 {
@@ -402,6 +406,7 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 CuentaCorriente cuenta = await this._context.Cuentas.FindAsync(id);
                 return cuenta;
             } catch (Exception e)

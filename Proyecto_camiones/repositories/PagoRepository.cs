@@ -70,7 +70,7 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
-                this._context = General.obtenerInstancia();
+                this._context = General.obtenerInstanciaTemporal();
                 if (!await _context.Database.CanConnectAsync())
                 {
                     Console.WriteLine("No se puede conectar a la base de datos");
@@ -98,7 +98,7 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
-                this._context = General.obtenerInstancia();
+                this._context = General.obtenerInstanciaTemporal();
                 var pagosModificar = await _context.Pagos
                 .Where(pago => pago.Id_Chofer == idChofer && pago.Pagado  ==  !pagado) // Filtrar pagos por el Id_Viaje y ver si esta pago o no
                 .Join(
@@ -139,7 +139,7 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
-                this._context = General.obtenerInstancia();
+                this._context = General.obtenerInstanciaTemporal();
                 var pago = await _context.Pagos
                     .Where(p => p.Id_Viaje == id_viaje)
                     .FirstOrDefaultAsync();
@@ -172,6 +172,7 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 var pagosPorViajeEnRango = await _context.Pagos
                     .Where(pago => pago.Id_Chofer == idChofer && pago.Pagado == false) // Filtrar pagos por el Id_Viaje y ver si esta pago o no
                     .Join(

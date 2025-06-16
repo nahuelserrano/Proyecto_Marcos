@@ -51,7 +51,7 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
-                this._context = General.obtenerInstancia();
+                this._context = General.obtenerInstanciaTemporal();
                 var viaje = await this._context.ViajesFlete.FindAsync(id);
                 if(viaje == null)
                 {
@@ -121,7 +121,7 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
-                this._context = General.obtenerInstancia();
+                this._context = General.obtenerInstanciaTemporal();
                 var viaje = await _context.ViajesFlete.FindAsync(id);
                 Console.WriteLine("se encontró el fletero");
 
@@ -146,7 +146,7 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
-                this._context = General.obtenerInstancia();
+                this._context = General.obtenerInstanciaTemporal();
                 ViajeFlete viaje = new ViajeFlete(origen, destino, remito, carga, km, kg, tarifa, factura, idCliente, idFlete, nombre_chofer, comision, fecha_salida);
                 this._context.ViajesFlete.Add(viaje);
                 int registros_afectados = await this._context.SaveChangesAsync();
@@ -168,7 +168,7 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
-
+                this._context = General.obtenerInstancia();
                 var viajes = await (from v in this._context.ViajesFlete
                                     join f in this._context.Fletes on v.idFlete equals f.Id
                                     where v.idCliente == id
@@ -200,6 +200,7 @@ namespace Proyecto_camiones.Repositories
         {
             try
             {
+                this._context = General.obtenerInstancia();
                 var viajes = await _context.ViajesFlete
                 .Where(v => v.idFlete == idFletero)  // Filtrar por el fletero solicitado
                 .OrderByDescending(v => v.idViajeFlete)
