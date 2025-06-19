@@ -87,12 +87,12 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 if (camion == null) return false;
 
 
-                if (!string.IsNullOrEmpty(patente))  // Mejor verificación para strings
+                if (patente!= null)  // Mejor verificación para strings
                 {
                     camion.Patente = patente;
                 }
 
-                if (!string.IsNullOrEmpty(nombre))  // Mejor verificación para strings
+                if (nombre != null)  // Mejor verificación para strings
                 {
                     camion.nombre_chofer = nombre;
                 }
@@ -105,6 +105,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.InnerException);
                 return false;
             }
         }

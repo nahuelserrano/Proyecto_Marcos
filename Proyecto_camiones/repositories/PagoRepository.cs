@@ -113,8 +113,9 @@ namespace Proyecto_camiones.Repositories
                     foreach (var pago in pagosModificar)
                     {
                         pago.Pagado = pagado;
+
                         if(id_Sueldo!=null)
-                        pago.Id_sueldo = id_Sueldo;
+                            pago.Id_sueldo = id_Sueldo;
                     }
 
                 }
@@ -132,7 +133,7 @@ namespace Proyecto_camiones.Repositories
             }
         }
 
-        public async Task<bool> ActualizarAsync(int id_chofer, int id_viaje, float monto_pagado)
+        public async Task<bool> ActualizarAsync(int id_chofer, int id_viaje, float? monto_pagado)
         {
             try
             {
@@ -142,20 +143,25 @@ namespace Proyecto_camiones.Repositories
 
                 if (pago != null)
                 {
-                    if (!pago.Pagado) {
+                    Console.WriteLine($"📊 Pago encontrado - ID: {pago.Id}, Chofer actual: {pago.Id_Chofer}, Pagado: {pago.Pagado}");
 
-                        Console.WriteLine($"📊 Pago encontrado - ID: {pago.Id}, Chofer actual: {pago.Id_Chofer}, Pagado: {pago.Pagado}");
+                    // Actualizar chofer si es diferente
+                    if (pago.Id_Chofer != id_chofer)
+                        pago.Id_Chofer = id_chofer;
 
-                        if (pago.Id_Chofer != id_chofer)
-                            pago.Id_Chofer = id_chofer;
-                        
-                        if(pago.Monto_Pagado!=monto_pagado)
-                            pago.Monto_Pagado = monto_pagado;
+                    // Actualizar monto si es diferente
+                    if (monto_pagado.HasValue && pago.Monto_Pagado != monto_pagado)
+                        pago.Monto_Pagado = (float)monto_pagado;
 
-                        await _context.SaveChangesAsync();
-                        return true;
-                    }
+                    // REMOVER LA RESTRICCIÓN DE PAGADO
+                    // Permitir actualizar independientemente del estado de pago
+
+                    await _context.SaveChangesAsync();
+                    Console.WriteLine("✅ Pago actualizado exitosamente");
+                    return true;
                 }
+
+                Console.WriteLine("❌ No se encontró pago para el viaje");
                 return false;
             }
             catch (Exception e)

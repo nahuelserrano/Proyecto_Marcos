@@ -72,7 +72,7 @@ namespace Proyecto_camiones.Presentacion.Services
             float tarifa,
             string nombreChofer,
             float porcentajeChofer)
-        { 
+        {
 
             try
             {
@@ -84,10 +84,10 @@ namespace Proyecto_camiones.Presentacion.Services
 
                 if (!resultadoValidarCompleto.IsSuccess)
                     return Result<int>.Failure(resultadoValidarCompleto.Error);
-                
+
 
                 // Revisar que los metodos puedan retornar null si no esxiste el camion o cliente con ese id
-                
+
                 var clienteResult = await _clienteService.ObtenerPorNombreAsync(cliente);
                 var camionResult = await _camionService.ObtenerPorPatenteAsync(camion);
 
@@ -97,7 +97,7 @@ namespace Proyecto_camiones.Presentacion.Services
 
                 if (!resultadoValidacion.IsSuccess)
                     return Result<int>.Failure(resultadoValidacion.Error);
-                
+
                 int idCliente = clienteResult.Value.Id;
                 int idCamion = camionResult.Value.Id;
 
@@ -105,7 +105,7 @@ namespace Proyecto_camiones.Presentacion.Services
                 {
                     int idChofer = -1;
 
-                    if(nombreChofer != null)
+                    if (nombreChofer != null)
                     {
                         Result<int> crearChoferResult = await _choferService.CrearAsync(nombreChofer);
 
@@ -127,7 +127,7 @@ namespace Proyecto_camiones.Presentacion.Services
                         {
                             nombreChofer = obtenerChoferResult.Value;
                             Result<Chofer> c = await this._choferService.ObtenerPorNombreAsync(obtenerChoferResult.Value);
-                            if(c.IsSuccess)
+                            if (c.IsSuccess)
                             {
                                 idChofer = c.Value.Id;
                             }
@@ -144,7 +144,7 @@ namespace Proyecto_camiones.Presentacion.Services
 
                     // Crear el pago asociado al viaje
                     float pagoMonto = tarifa * kg * porcentajeChofer;
-                   // *Tonelada / Porcentaje
+                    // *Tonelada / Porcentaje
 
                     if (idChofer != -1)
                     {
@@ -183,25 +183,24 @@ namespace Proyecto_camiones.Presentacion.Services
         }
 
         public async Task<Result<bool>> ActualizarAsync(
-           int id,
-           DateOnly? fechaInicio = null,
-           string? lugarPartida = null,
-           string? destino = null,
-           int? remito = null,
-           float? kg = null,
-           string? carga = null,
-           string? nombreCliente = null,
-           string? patenteCamion = null,
-           float? km = null,
-           float? tarifa = null,
-           string? chofer = null,
-           float? porcentaje = null)
+            int id,
+            DateOnly? fechaInicio = null,
+            string? lugarPartida = null,
+            string? destino = null,
+            int? remito = null,
+            float? kg = null,
+            string? carga = null,
+            string? nombreCliente = null,
+            float? km = null,
+            float? tarifa = null,
+            string? chofer = null,
+            float? porcentaje = null)
         {
             if (id <= 0)
                 return Result<bool>.Failure(MensajeError.IdInvalido(id));
 
             if (fechaInicio == null && lugarPartida == null && destino == null && remito == null && kg == null && carga == null
-                 && nombreCliente == null && patenteCamion == null && km == null && tarifa == null && chofer == null && porcentaje == null)
+                 && nombreCliente == null && km == null && tarifa == null && chofer == null && porcentaje == null)
             {
                 return Result<bool>.Failure("No se ha proporcionado ningún campo para actualizar");
             }
@@ -214,7 +213,6 @@ namespace Proyecto_camiones.Presentacion.Services
                     return Result<bool>.Failure(MensajeError.EntidadNoEncontrada(nameof(Viaje), id));
 
                 int? idCliente = null, idCamion = null, idChofer = null;
-                
 
                 // Verificar que el cliente existe usando el servicio
                 if (nombreCliente != null)
@@ -227,17 +225,6 @@ namespace Proyecto_camiones.Presentacion.Services
                     idCliente = clienteResult.Value.Id;
                 }
 
-                // Verificar que el camión existe usando el servicio
-                if (patenteCamion != null)
-                {
-                    var camionResult = await _camionService.ObtenerPorPatenteAsync(patenteCamion);
-
-                    if (!camionResult.IsSuccess)
-                        return Result<bool>.Failure($"El camión especificado no existe: {camionResult}");
-
-                    idCamion = camionResult.Value.Id;
-                }
-
                 if (chofer != null)
                 {
 
@@ -248,49 +235,77 @@ namespace Proyecto_camiones.Presentacion.Services
 
                     idChofer = obtenerChoferResult.Value.Id;
                     chofer = obtenerChoferResult.Value.Nombre;
+<<<<<<< HEAD
+=======
+
+                    Console.WriteLine($"Nombre obtenido por búsqueda: {chofer}");
+>>>>>>> 247f58abec1bc998886bd4905278ad083eba908d
                 }
                 else
                 {
-                    var choferActual = await _choferService.ObtenerPorNombreAsync(viajeActual.NombreChofer) ;
+                    chofer = viajeActual.NombreChofer;
+                    var obtenerChoferResult = await _choferService.ObtenerPorNombreAsync(chofer);
 
-                    if(choferActual.IsSuccess)
-                        idChofer = choferActual.Value.Id;
-                    else
-                        return Result<bool>.Failure(MensajeError.EntidadNoEncontrada(nameof(Chofer), id));
+                    if (!obtenerChoferResult.IsSuccess)
+                        return Result<bool>.Failure(MensajeError.ErrorCreacion(nameof(Chofer)));
+
+                    idChofer = obtenerChoferResult.Value.Id;
                 }
 
                 using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
+                    Console.WriteLine("Iniciando transacción");
+
+                    // USAR PARÁMETROS NOMBRADOS para evitar confusión
                     bool resultado = await _viajeRepository.ActualizarAsync(
-                        id, fechaInicio, lugarPartida, destino, remito,
-                        carga, kg, idCliente, idCamion, tarifa, km, chofer, porcentaje);
+                        id: id,
+                        fechaInicio: fechaInicio,
+                        lugarPartida: lugarPartida,
+                        destino: destino,
+                        remito: remito,
+                        carga: carga,
+                        kg: kg,
+                        cliente: idCliente,
+                        tarifa: tarifa,
+                        km: km,
+                        nombreChofer: chofer,
+                        porcentajeChofer: porcentaje
+                    );
 
                     if (!resultado)
-                        return Result<bool>.Failure(MensajeError.ErrorActualizacion(nameof(Viaje)) + " no hubo actualización desde el repository");
+                        return Result<bool>.Failure(MensajeError.ErrorActualizacion(nameof(Viaje)) + " - No hubo actualización desde el repository");
 
-                    float tarifaActualizada = 0f, kgActualizado = 0f, porcentajeActualizado = 0f;
+                    Console.WriteLine("Viaje actualizado exitosamente");
 
-                    if (tarifa != null && tarifa > 0)
-                        viajeActual.Tarifa = (float) tarifa;
+                    // Obtener el viaje actualizado para calcular la ganancia
+                    if (HayQueModificarPago(tarifa, idChofer, kg))
+                    {
+                        var viajeActualizado = await _viajeRepository.ObtenerPorIdAsync(id);
 
-                    if (kg != null && kg > 0)
-                        viajeActual.Kg = (float)kg;
+                        if (viajeActualizado == null)
+                            return Result<bool>.Failure("No se pudo obtener el viaje actualizado");
 
-                    if (porcentaje != null && porcentaje > 0 && porcentaje < 1)
-                        viajeActual.PorcentajeChofer = (float)porcentaje;
+                        var pagoResult = await _pagoService.ActualizarAsync((int)idChofer, id, viajeActualizado.GananciaChofer);
+                        Console.WriteLine("Intentando actualizar pago");
+
+                        if (!pagoResult.IsSuccess)
+                        {
+                            Console.WriteLine($"Error al actualizar pago: {pagoResult.Error}");
+                            return Result<bool>.Failure($"No se pudo actualizar el pago asociado al viaje: {pagoResult.Error}");
+                        }
+                    }
 
                     // Actualizar el pago asociado al viaje
-                    var pagoResult = await _pagoService.ActualizarAsync((int)idChofer, id,  viajeActual.GananciaChofer);
-
-                    if (!pagoResult.IsSuccess)
-                        return Result<bool>.Failure($"No se pudo actualizar el pago asociado al viaje: {pagoResult.Error}");
 
                     scope.Complete();
+                    Console.WriteLine("Transacción completada exitosamente");
                     return Result<bool>.Success(true);
                 }
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"Error en ActualizarAsync: {ex.Message}");
+                Console.WriteLine($"Inner Exception: {ex.InnerException?.Message}");
                 return Result<bool>.Failure($"Error al actualizar el viaje: {ex.Message}");
             }
         }
@@ -357,16 +372,16 @@ namespace Proyecto_camiones.Presentacion.Services
         {
             if (idCliente < 0)
                 return Result<List<ViajeMixtoDTO>>.Failure(MensajeError.IdInvalido(idCliente));
-            
+
             try
             {
                 // Verificar que el cliente existe usando el servicio
-                
+
                 var clienteResult = await _clienteService.ObtenerPorIdAsync(idCliente);
 
                 if (!clienteResult.IsSuccess)
                     return Result<List<ViajeMixtoDTO>>.Failure($"El cliente especificado no existe: {clienteResult}");
-                
+
                 var viajes = await _viajeRepository.ObtenerViajeMixtoPorClienteAsync(idCliente);
 
                 if (viajes == null)
@@ -430,8 +445,13 @@ namespace Proyecto_camiones.Presentacion.Services
 
             if (result.IsSuccess)
                 return !result.Value.Pagado;
-            
+
             return false;
+        }
+
+        private bool HayQueModificarPago(float? tarifa, int? idChofer, float? kg)
+        {
+            return tarifa.HasValue || idChofer.HasValue || kg.HasValue;
         }
     }
 }
