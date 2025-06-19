@@ -274,7 +274,7 @@ namespace Proyecto_camiones.Tests
             {
                 var resultado = await vvm.ActualizarAsync(
                     id, fechaInicio, lugarPartida, destino, remito,
-                    carga, kg, cliente, camion, km, tarifa, nombreChofer);
+                    carga, kg, cliente, km, tarifa, nombreChofer);
 
                 if (resultado.IsSuccess)
                 {

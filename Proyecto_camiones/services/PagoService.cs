@@ -56,12 +56,20 @@ namespace Proyecto_camiones.Services
             }
         }
 
-        public async Task<Result<bool>> ActualizarAsync(int id_chofer, int id_viaje, float monto_pagado) {
-            if (id_chofer <= 0 || id_viaje <= 0) return Result<bool>.Failure(MensajeError.IdInvalido(id_chofer));
-            if (monto_pagado <= 0) return Result<bool>.Failure(MensajeError.valorInvalido(nameof(monto_pagado)));
+        public async Task<Result<bool>> ActualizarAsync(int id_chofer, int id_viaje, float? monto_pagado)
+        {
+            if (id_chofer <= 0 || id_viaje <= 0)
+                return Result<bool>.Failure(MensajeError.IdInvalido(id_chofer));
+
+            // Permitir monto_pagado null o verificar que sea mayor a 0 si tiene valor
+            if (monto_pagado.HasValue && monto_pagado <= 0)
+                return Result<bool>.Failure(MensajeError.valorInvalido(nameof(monto_pagado)));
+
             try
             {
+                // CORREGIR EL ERROR DE SINTAXIS
                 bool actualizado = await _pagoRepository.ActualizarAsync(id_chofer, id_viaje, monto_pagado);
+
                 if (actualizado)
                 {
                     return Result<bool>.Success(actualizado);

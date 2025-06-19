@@ -970,7 +970,7 @@ public class FormRegistro : Home
                         string porcentaje = cheq.Rows[e.RowIndex].Cells["Porcentaje"].Value.ToString();
                         string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
 
-                        var result = await vvm.ActualizarAsync(int.Parse(id), DateOnly.Parse(fecha), origen, destino, int.Parse(remito), carga, int.Parse(kg), null, dato, float.Parse(km), float.Parse(tarifa), chofer, float.Parse(porcentaje));
+                        var result = await vvm.ActualizarAsync(int.Parse(id), DateOnly.Parse(fecha), origen, destino, int.Parse(remito), carga, int.Parse(kg), dato, float.Parse(km), float.Parse(tarifa), chofer, float.Parse(porcentaje));
 
                         if (result.IsSuccess)
                         {

@@ -204,13 +204,12 @@ namespace Proyecto_camiones.Presentacion.Repositories
         public async Task<bool> ActualizarAsync(
             int id,
             DateOnly? fechaInicio = null,
-            string lugarPartida = null,
-            string destino = null,
+            string? lugarPartida = null,
+            string? destino = null,
             int? remito = null,
-            string carga = null,
+            string? carga = null,
             float? kg = null,
             int? cliente = null,
-            int? camion = null,
             float? tarifa = null,
             float? km = null,
             string nombreChofer = null,
@@ -219,6 +218,8 @@ namespace Proyecto_camiones.Presentacion.Repositories
         {
             try
             {
+
+                Console.WriteLine("hola viaje repo");
                 var viaje = await _context.Viajes.FindAsync(id);
 
                 if (viaje == null)
@@ -247,9 +248,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 if (cliente.HasValue)
                     viaje.Cliente = cliente.Value;
 
-                if (camion.HasValue)
-                    viaje.Camion = camion.Value;
-
                 if (km.HasValue)
                     viaje.Km = km.Value;
 
@@ -265,15 +263,12 @@ namespace Proyecto_camiones.Presentacion.Repositories
 
                 int registorsAfectados = await _context.SaveChangesAsync();
 
-                if (registorsAfectados == 0)
-                {
-                    return false;
-                }
-
-                return true;
+                return registorsAfectados > 0;
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.InnerException);
                 return false;
             }
         }
