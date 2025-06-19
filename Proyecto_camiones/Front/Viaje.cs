@@ -193,7 +193,6 @@ internal class Viaje : Home
             filterFL.Location = new Point((filter.Width - filterFL.Width) / 2, (filter.Height - filterFL.Height) / 2);
         };
     }
-
     private void AddButtonNewAdd()
     {
         cardsContainerFL.Controls.Add(buttonAddNew);
@@ -399,10 +398,15 @@ internal class Viaje : Home
 
         card.Click += (s, e) =>
         {
-            this.Hide();
-            ViajeFiltro form = new ViajeFiltro(item.nombre, cantCamposTabla, campos, filtro, camposFaltantesTabla, " ");
+            List<string> camposLista = new List<string>();
+            foreach (string i in campos)
+            {
+                camposLista.Add(i);
+            }
+            FormRegistro form = new FormRegistro(camposLista, cantCamposTabla, item.nombre, filtro, camposFaltantesTabla, " ");
             form.TopLevel = true;
-            form.ShowDialog();
+            this.Hide();
+            form.Show();
         };
     }
 
@@ -487,10 +491,15 @@ internal class Viaje : Home
 
         card.Click += (s, e) =>
         {
-            this.Hide();
-            ViajeFiltro form = new ViajeFiltro(item.Nombre, cantCamposTabla, campos, filtro, camposFaltantesTabla, " ");
+            List<string> camposLista = new List<string>();
+            foreach (string i in campos)
+            {
+                camposLista.Add(i);
+            }
+            FormRegistro form = new FormRegistro(camposLista, cantCamposTabla, item.Nombre, filtro, camposFaltantesTabla, " ");
             form.TopLevel = true;
-            form.ShowDialog();
+            this.Hide();
+            form.Show();
         };
     }
 
@@ -586,10 +595,15 @@ internal class Viaje : Home
 
         card.Click += (s, e) =>
         {
-            this.Hide();
-            ViajeFiltro form = new ViajeFiltro(item.Patente, cantCamposTabla, campos, filtro, camposFaltantesTabla, item.Nombre_Chofer);
+            List<string> camposLista = new List<string>();
+            foreach (string i in campos)
+            {
+                camposLista.Add(i);
+            }
+            FormRegistro form = new FormRegistro(camposLista, cantCamposTabla, item.Patente, filtro, camposFaltantesTabla, item.Nombre_Chofer);
             form.TopLevel = true;
-            form.ShowDialog();
+            this.Hide();
+            form.Show();
         };
     }
 

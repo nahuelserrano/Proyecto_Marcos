@@ -83,18 +83,15 @@ namespace Proyecto_camiones.Services
             Cliente c;
             if(cliente != null)
             {
-                MessageBox.Show("hay cliente");
+                MessageBox.Show("hola");
                 c = await clienteRepository.ObtenerPorNombreAsync(cliente.ToUpper());
                 if (c == null)
                 {
                     return -1;
                 }
-                Console.WriteLine("corroborado que el cliente/fletero existe y no se salió");
                 CuentaCorriente result = await ccRepository.InsertarAsync(c.Id, null, fecha, nro, adeuda, pagado);
-                Console.WriteLine("superado 1");
                 if (result != null)
                 {
-                    MessageBox.Show(result.Id + " ");
                     return result.Id;
                 }
                 return -1;
@@ -105,7 +102,6 @@ namespace Proyecto_camiones.Services
                 flete = await this.fleteRepository.ObtenerPorNombreAsync(fletero.ToUpper());
                 if (flete == null) return -1;
                 CuentaCorriente result = await ccRepository.InsertarAsync(null, flete.Id, fecha, nro, adeuda, pagado);
-                Console.WriteLine("superado 1");
                 if (result != null)
                 {
                     return result.Id;

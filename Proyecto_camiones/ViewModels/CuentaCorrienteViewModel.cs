@@ -28,7 +28,6 @@ namespace Proyecto_camiones.ViewModels
         {
             if (await this.testearConexion())
             {
-                MessageBox.Show("hay conexión");
                 int id = await cs.Insertar(cliente, fletero, fecha, nro, adeuda, pagado);
                 if (id > -1) return Result<int>.Success(id);
                 return Result<int>.Failure("No se pudo crear el nuevo registro");
@@ -75,7 +74,7 @@ namespace Proyecto_camiones.ViewModels
 
         public async Task<Result<List<CuentaCorrienteDTO>>> ObtenerCuentasByFleteroAsync(string fletero)
         {
-            if (this.testearConexion().Result)
+            if (await this.testearConexion())
             {
                 return await this.cs.ObtenerCuentasDeUnFletero(fletero);
             }

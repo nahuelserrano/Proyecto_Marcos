@@ -100,7 +100,6 @@
 	<Compile Include="Front\Viaje.cs" />
 	<Compile Include="Front\CuentaCorriente.cs" />
 	<Compile Include="Front\Cheque.cs" />
-	<Compile Include="Front\ViajeFiltro.cs" />
 	<Compile Include="Front\FormRegistro.cs" />
 	<Compile Include="Front\Home.cs" />
 	<Compile Include="Front\NewRoundPanel.cs" />

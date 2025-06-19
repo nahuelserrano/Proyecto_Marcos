@@ -70,7 +70,7 @@ public class FormRegistro : Home
         btnCargar.MouseLeave += (s, e) => HoverEffect(s, e, false);
 
         //Events
-        btnCargar.Click += (s, e) => BtnCargar_Click(s, e, filtro, dato);
+        btnCargar.Click += (s, e) => BtnCargar_Click(s, e, filtro, dato, choferCamion);
 
 
         cheq.CellClick += (s, e) => EliminarFila(s, e, filtro, dato);
@@ -89,17 +89,12 @@ public class FormRegistro : Home
         AddButtonCuentaCorriente(filtro, dato);
         AddButtonSueldoMensual(filtro, dato, choferCamion);
 
-        this.TopLevel = false;
-        this.FormBorderStyle = FormBorderStyle.None;
-        this.Dock = DockStyle.Fill; // (opcional, para ocupar todo el espacio disponible)
+        this.FormBorderStyle = FormBorderStyle.Fixed3D;
     }
 
     //Initializations
     private void InitializeUI(List<string> camposForm, int cant, string filtro, List<string> camposFaltantesTablas, string dato, string choferCamion)
     {
-        this.AutoScaleMode = AutoScaleMode.Dpi;
-        this.AutoSize = true;
-        this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
 
         AddItemsToGrid(camposForm, cant, camposFaltantesTablas, filtro);
         ResaltarBoton(viajesMenu);
@@ -108,11 +103,11 @@ public class FormRegistro : Home
         ShowInfoTable(filtro, dato, choferCamion);
     }
 
-    private async void BtnCargar_Click(object sender, EventArgs e, string filtro, string dato)
+    private async void BtnCargar_Click(object sender, EventArgs e, string filtro, string dato, string clienteO_Flete)
     {
         btnCargar.Enabled = false;
 
-        await cargaClickEvent(sender, e, filtro, dato); // Ejecuta tu lógica
+        await cargaClickEvent(sender, e, filtro, dato, clienteO_Flete); // Ejecuta tu lógica
 
         btnCargar.Enabled = true;
     }
@@ -260,50 +255,97 @@ public class FormRegistro : Home
         else if (filtro == "cuenta corriente")
         {
             CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
-            var resultCuentaCorriente = await ccvm.ObtenerCuentasByClienteAsync(dato);
-
-            if (resultCuentaCorriente.IsSuccess)
+            if (choferCamion == "Cliente")
             {
-                foreach (DataGridViewColumn col in cheq.Columns)
+                var resultCuentaCorriente = await ccvm.ObtenerCuentasByClienteAsync(dato);
+                if (resultCuentaCorriente.IsSuccess)
                 {
-                    if (col.HeaderText.Equals("Pagado") || col.HeaderText.Equals("Adeuda") || col.HeaderText.Equals("Total adeudado")) // O el nombre correcto de tu columna de monto
+                    foreach (DataGridViewColumn col in cheq.Columns)
                     {
-                        col.DefaultCellStyle.Format = "N2";
-                        col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                    }
-                }
-
-                // SEGUNDO: Agregar las filas con los datos convertidos
-                foreach (var cuenta in resultCuentaCorriente.Value)
-                {
-                    // Convertir el monto a decimal si viene como string
-                    decimal pagadoDecimal = 0;
-                    decimal adeudaDecimal = 0;
-                    decimal totalDecimal = 0;
-
-                    if (cuenta.Pagado is float || cuenta.Adeuda is float || cuenta.Saldo_Total is float)
-                    {
-                        pagadoDecimal = (decimal)cuenta.Pagado;
-                        adeudaDecimal = (decimal)cuenta.Adeuda;
-                        totalDecimal = (decimal)cuenta.Saldo_Total;
+                        if (col.HeaderText.Equals("Pagado") || col.HeaderText.Equals("Adeuda") || col.HeaderText.Equals("Total adeudado")) // O el nombre correcto de tu columna de monto
+                        {
+                            col.DefaultCellStyle.Format = "N2";
+                            col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                        }
                     }
 
+                    // SEGUNDO: Agregar las filas con los datos convertidos
+                    foreach (var cuenta in resultCuentaCorriente.Value)
+                    {
+                        // Convertir el monto a decimal si viene como string
+                        decimal pagadoDecimal = 0;
+                        decimal adeudaDecimal = 0;
+                        decimal totalDecimal = 0;
 
-                    cheq.Rows.Add(cuenta.Fecha_factura, cuenta.Nro_factura, pagadoDecimal, adeudaDecimal, totalDecimal, cuenta.idCuenta);
-                }
+                        if (cuenta.Pagado is float || cuenta.Adeuda is float || cuenta.Saldo_Total is float)
+                        {
+                            pagadoDecimal = (decimal)cuenta.Pagado;
+                            adeudaDecimal = (decimal)cuenta.Adeuda;
+                            totalDecimal = (decimal)cuenta.Saldo_Total;
+                        }
+                        cheq.Rows.Add(cuenta.Fecha_factura, cuenta.Nro_factura, pagadoDecimal, adeudaDecimal, totalDecimal, cuenta.idCuenta);
+                    }
 
-            }
-            else
-            {
-                if (this.InvokeRequired)
-                {
-                    this.Invoke(new Action(() => CartelAviso(resultCuentaCorriente.Error)));
                 }
                 else
                 {
-                    CartelAviso(resultCuentaCorriente.Error);
+                    if (this.InvokeRequired)
+                    {
+                        this.Invoke(new Action(() => CartelAviso(resultCuentaCorriente.Error)));
+                    }
+                    else
+                    {
+                        CartelAviso(resultCuentaCorriente.Error);
+                    }
                 }
             }
+            else if (choferCamion == "Flete")
+            {
+                var resultCuentaCorriente = await ccvm.ObtenerCuentasByFleteroAsync(dato);
+
+                if (resultCuentaCorriente.IsSuccess)
+                {
+                    foreach (DataGridViewColumn col in cheq.Columns)
+                    {
+                        if (col.HeaderText.Equals("Pagado") || col.HeaderText.Equals("Adeuda") || col.HeaderText.Equals("Total adeudado")) // O el nombre correcto de tu columna de monto
+                        {
+                            col.DefaultCellStyle.Format = "N2";
+                            col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                        }
+                    }
+
+                    // SEGUNDO: Agregar las filas con los datos convertidos
+                    foreach (var cuenta in resultCuentaCorriente.Value)
+                    {
+                        // Convertir el monto a decimal si viene como string
+                        decimal pagadoDecimal = 0;
+                        decimal adeudaDecimal = 0;
+                        decimal totalDecimal = 0;
+
+                        if (cuenta.Pagado is float || cuenta.Adeuda is float || cuenta.Saldo_Total is float)
+                        {
+                            pagadoDecimal = (decimal)cuenta.Pagado;
+                            adeudaDecimal = (decimal)cuenta.Adeuda;
+                            totalDecimal = (decimal)cuenta.Saldo_Total;
+                        }
+                        cheq.Rows.Add(cuenta.Fecha_factura, cuenta.Nro_factura, pagadoDecimal, adeudaDecimal, totalDecimal, cuenta.idCuenta);
+                    }
+
+                }
+                else
+                {
+                    if (this.InvokeRequired)
+                    {
+                        this.Invoke(new Action(() => CartelAviso(resultCuentaCorriente.Error)));
+                    }
+                    else
+                    {
+                        CartelAviso(resultCuentaCorriente.Error);
+                    }
+                }
+            }
+
+
         }
         else if (filtro == "sueldo")
         {
@@ -345,7 +387,14 @@ public class FormRegistro : Home
             }
             else
             {
-                CartelAviso(resultSueldo.Error);
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() => CartelAviso(resultSueldo.Error)));
+                }
+                else
+                {
+                    CartelAviso(resultSueldo.Error);
+                }
             }
         }
     }
@@ -380,11 +429,6 @@ public class FormRegistro : Home
         panelGrid.Controls.Add(cheq);
         this.Controls.Add(panelGrid);
     }
-    public void addColumn(string s)
-    {
-        cheq.Columns.Add(s, s);
-    }
-
 
     //HoverFunction
     private void HoverEffect(object sender, EventArgs e, bool isHover)
@@ -486,7 +530,8 @@ public class FormRegistro : Home
         if (filtro == "Flete")
         {
             campoTextBox.Size = new Size(95, 40);
-        } else
+        }
+        else
         {
             campoTextBox.Size = new Size(105, 40);
         }
@@ -495,7 +540,7 @@ public class FormRegistro : Home
         return campoTextBox;
     }
 
-    private Label CreateLabelAndProperties(object campo ,string filtro)
+    private Label CreateLabelAndProperties(object campo, string filtro)
     {
         Label ll = new Label();
         ll.Text = campo.ToString();
@@ -559,7 +604,7 @@ public class FormRegistro : Home
         };
         return textBoxCampo;
     }
-   
+
 
     //GridProperties
     private void GridChequesProperties()
@@ -639,8 +684,7 @@ public class FormRegistro : Home
             }
         }
     }
-
-    private async Task cargaClickEvent(object sender, EventArgs e, string filtro, string dato)
+    private async Task cargaClickEvent(object sender, EventArgs e, string filtro, string dato, string clienteO_Flete)
     {
         // Obtener los valores de los TextBox
         List<string> datos = new List<string>();
@@ -736,21 +780,43 @@ public class FormRegistro : Home
             else if (filtro == "cuenta corriente")
             {
                 CuentaCorrienteViewModel ccvm = new CuentaCorrienteViewModel();
-                var resultado = await ccvm.InsertarAsync(dato, null, DateOnly.Parse(datos[0]), int.Parse(datos[1]), float.Parse(datos[3]), float.Parse(datos[2]));
+                if(clienteO_Flete == "Cliente")
+                {
+                    var resultado = await ccvm.InsertarAsync(dato, null, DateOnly.Parse(datos[0]), int.Parse(datos[1]), float.Parse(datos[3]), float.Parse(datos[2]));
 
-                if (resultado.IsSuccess)
-                {
-                    ShowInfoTable(filtro, dato, " ");
-                }
-                else
-                {
-                    if (this.InvokeRequired)
+                    if (resultado.IsSuccess)
                     {
-                        this.Invoke(new Action(() => CartelAviso(resultado.Error)));
+                        ShowInfoTable(filtro, dato, clienteO_Flete);
                     }
                     else
                     {
-                        CartelAviso(resultado.Error);
+                        if (this.InvokeRequired)
+                        {
+                            this.Invoke(new Action(() => CartelAviso(resultado.Error)));
+                        }
+                        else
+                        {
+                            CartelAviso(resultado.Error);
+                        }
+                    }
+                } else if(clienteO_Flete == "Flete")
+                {
+                    var resultado = await ccvm.InsertarAsync(null, dato, DateOnly.Parse(datos[0]), int.Parse(datos[1]), float.Parse(datos[3]), float.Parse(datos[2]));
+
+                    if (resultado.IsSuccess)
+                    {
+                        ShowInfoTable(filtro, dato, clienteO_Flete);
+                    }
+                    else
+                    {
+                        if (this.InvokeRequired)
+                        {
+                            this.Invoke(new Action(() => CartelAviso(resultado.Error)));
+                        }
+                        else
+                        {
+                            CartelAviso(resultado.Error);
+                        }
                     }
                 }
             }
@@ -956,6 +1022,7 @@ public class FormRegistro : Home
                 {
                     if (filtro == "Camion")
                     {
+
                         // Obtener los valores de la fila seleccionada
                         string fecha = cheq.Rows[e.RowIndex].Cells["Fecha"].Value.ToString();
                         string origen = cheq.Rows[e.RowIndex].Cells["Origen"].Value.ToString();
@@ -963,13 +1030,12 @@ public class FormRegistro : Home
                         string remito = cheq.Rows[e.RowIndex].Cells["RTO o CPE"].Value.ToString();
                         string carga = cheq.Rows[e.RowIndex].Cells["Carga"].Value.ToString();
                         string km = cheq.Rows[e.RowIndex].Cells["Km"].Value.ToString();
-                        string kg = cheq.Rows[e.RowIndex].Cells["Kg"].Value.ToString();
+                        string kg = cheq.Rows[e.RowIndex].Cells["Toneladas"].Value.ToString();
                         string tarifa = cheq.Rows[e.RowIndex].Cells["Tarifa"].Value.ToString();
                         string chofer = cheq.Rows[e.RowIndex].Cells["Chofer"].Value.ToString();
                         string cliente = cheq.Rows[e.RowIndex].Cells["Cliente"].Value.ToString();
                         string porcentaje = cheq.Rows[e.RowIndex].Cells["Porcentaje"].Value.ToString();
                         string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
-
                         var result = await vvm.ActualizarAsync(int.Parse(id), DateOnly.Parse(fecha), origen, destino, int.Parse(remito), carga, int.Parse(kg), null, dato, float.Parse(km), float.Parse(tarifa), chofer, float.Parse(porcentaje));
 
                         if (result.IsSuccess)
@@ -1024,14 +1090,14 @@ public class FormRegistro : Home
                     }
                     else if (filtro == "Flete")
                     {
-                        MessageBox.Show("flete");
+
                         string fecha = cheq.Rows[e.RowIndex].Cells["Fecha"].Value.ToString();
                         string origen = cheq.Rows[e.RowIndex].Cells["Origen"].Value.ToString();
                         string destino = cheq.Rows[e.RowIndex].Cells["Destino"].Value.ToString();
                         string remito = cheq.Rows[e.RowIndex].Cells["RTO o CPE"].Value.ToString();
                         string carga = cheq.Rows[e.RowIndex].Cells["Carga"].Value.ToString();
                         string km = cheq.Rows[e.RowIndex].Cells["Km"].Value.ToString();
-                        string kg = cheq.Rows[e.RowIndex].Cells["Kg"].Value.ToString();
+                        string kg = cheq.Rows[e.RowIndex].Cells["Toneladas"].Value.ToString();
                         string tarifa = cheq.Rows[e.RowIndex].Cells["Tarifa"].Value.ToString();
                         string factura = cheq.Rows[e.RowIndex].Cells["Factura"].Value.ToString();
                         string cliente = cheq.Rows[e.RowIndex].Cells["Cliente"].Value.ToString();
@@ -1114,7 +1180,7 @@ public class FormRegistro : Home
                 this.Hide();
                 Viaje vv = new Viaje(filtro);
                 vv.TopLevel = true;
-                vv.ShowDialog();
+                vv.Show();
             };
             this.Controls.Add(btnVolver);
         }
@@ -1153,7 +1219,7 @@ public class FormRegistro : Home
                 this.Hide();
                 CuentaCorriente cuentaCorriente = new CuentaCorriente(dato, filtro);
                 cuentaCorriente.TopLevel = true;
-                cuentaCorriente.ShowDialog();
+                cuentaCorriente.Show();
             };
         }
 
@@ -1244,7 +1310,7 @@ public class FormRegistro : Home
         avisoPanel.Visible = true;  // Asegurar que sea visible
 
 
-        avisoPanel.Size = new Size(300, 150);
+        avisoPanel.AutoSize = true;
         avisoPanel.BackColor = System.Drawing.Color.FromArgb(48, 48, 48);
 
         avisoPanel.Controls.Add(ll);

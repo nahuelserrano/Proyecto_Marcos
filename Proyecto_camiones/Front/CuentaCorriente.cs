@@ -10,7 +10,7 @@ namespace Proyecto_camiones.Front
         private RoundButton btnVolver = new RoundButton();
 
         public CuentaCorriente(string dato, string filtro)
-            : base(new List<string> { "Fecha", "Nro factura", "Pagado", "Adeuda" }, 4, dato, "cuenta corriente", new List<string> { "Total adeudado" }, null)
+            : base(new List<string> { "Fecha", "Nro factura", "Pagado", "Adeuda" }, 4, dato, "cuenta corriente", new List<string> { "Total adeudado" }, filtro)
         {
             InitializeUI(dato, filtro);
         }
@@ -42,20 +42,17 @@ namespace Proyecto_camiones.Front
 
                 List<string> camposFaltantesTabla = new List<string> { "Total" };
 
-                ViajeFiltro form = new ViajeFiltro(dato, cantCamposTabla, campos, filtro, camposFaltantesTabla, null);
+                List<string> camposLista = new List<string>();
+                foreach (string i in campos)
+                {
+                    camposLista.Add(i);
+                }
+                FormRegistro form = new FormRegistro(camposLista, cantCamposTabla, dato, filtro, camposFaltantesTabla, " ");
+                form.TopLevel = true;
+                form.Show();
 
                 this.Controls.Add(btnVolver);
             };
-        }
-        
-        private void infoForTableAndForm(string dato)
-        {
-            List<string> datos = new List<string> { "Fecha", "Nro factura", "pagado", "Adeuda" };
-            List<string> campoFaltanteTabla = new List<string> { "Total adeudado" };
-            int cant = datos.Count;
-            FormRegistro vv = new FormRegistro(datos, cant, dato, "Cuenta corriente", campoFaltanteTabla, null);
-            vv.TopLevel = true;
-            vv.ShowDialog();
         }
     }
 }

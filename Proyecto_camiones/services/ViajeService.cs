@@ -240,7 +240,6 @@ namespace Proyecto_camiones.Presentacion.Services
 
                 if (chofer != null)
                 {
-                    Console.WriteLine($"🔍 Procesando chofer: '{chofer}'");
 
                     var obtenerChoferResult = await _choferService.ObtenerPorNombreAsync(chofer);
 
@@ -249,9 +248,6 @@ namespace Proyecto_camiones.Presentacion.Services
 
                     idChofer = obtenerChoferResult.Value.Id;
                     chofer = obtenerChoferResult.Value.Nombre;
-
-                    Console.WriteLine($"Nombre obtenido por busqueda: {chofer}");
-
                 }
                 else
                 {
@@ -262,8 +258,6 @@ namespace Proyecto_camiones.Presentacion.Services
                     else
                         return Result<bool>.Failure(MensajeError.EntidadNoEncontrada(nameof(Chofer), id));
                 }
-
-                Console.WriteLine($"ID Chofer: {idChofer} - ViajeService.ActualizarAsync");
 
                 using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {

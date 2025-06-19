@@ -20,6 +20,7 @@ public class Home : Form
     {
         InitializeUI();
         this.WindowState = FormWindowState.Maximized;
+        this.Bounds = Screen.PrimaryScreen.WorkingArea;
 
 
         //Redirections

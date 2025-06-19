@@ -27,7 +27,6 @@ namespace Proyecto_camiones.Repositories
             {
                 // Intentar comprobar si la conexión a la base de datos es exitosa
                 bool puedeConectar = await _context.Database.CanConnectAsync();
-                Console.WriteLine("rompió acá no??");
                 if (puedeConectar)
                 {
                     Console.WriteLine("Conexión exitosa a la base de datos.");
@@ -53,16 +52,12 @@ namespace Proyecto_camiones.Repositories
             {
                 if (!await _context.Database.CanConnectAsync())
                 {
-                    MessageBox.Show("No se puede conectar a la base de datos");
-                    Console.WriteLine("No se puede conectar a la base de datos");
                     return null;
                 }
                 CuentaCorriente ultimoRegistro;
                 if (idCliente != null)
                 {
-                    MessageBox.Show("id cliente: " + idCliente);
                     ultimoRegistro = await this._context.Cuentas.Where(c => c.IdCliente == idCliente).OrderByDescending(c => c.Id).FirstOrDefaultAsync();
-                    MessageBox.Show("ultimo registro: " + ultimoRegistro);
                 }
                 else if (idFletero != null)
                 {
@@ -76,13 +71,10 @@ namespace Proyecto_camiones.Repositories
                 CuentaCorriente cuenta;
                 if (ultimoRegistro == null)
                 {
-                    MessageBox.Show(ultimoRegistro + "es null");
                     cuenta = new CuentaCorriente(idCliente, idFletero, fecha, nro, adeuda, pagado, 0);
                 }
                 else
                 {
-                    Console.WriteLine(ultimoRegistro.Saldo_Total);
-                    Console.WriteLine(adeuda + ultimoRegistro.Saldo_Total - pagado);
                     cuenta = new CuentaCorriente(idCliente, idFletero, fecha, nro, adeuda, pagado, ultimoRegistro.Saldo_Total);
                 }
 
@@ -91,11 +83,8 @@ namespace Proyecto_camiones.Repositories
 
                 if (registrosAfectados > 0)
                 {
-                    MessageBox.Show("hay registros afectados: " + registrosAfectados);
                     return cuenta;
                 }
-                MessageBox.Show("no hay registros afectados: " + registrosAfectados);
-                Console.WriteLine("No se insertó ningún registro");
                 return null;
             }
             catch (Exception e)
@@ -104,16 +93,14 @@ namespace Proyecto_camiones.Repositories
                 Console.WriteLine(e.Message);
                 return null;
             }
-
         }
 
         public async Task<CuentaCorrienteDTO> ObtenerCuentaMasRecientePorClienteIdAsync(int clienteId)
         {
             try
             {
-                if (!await _context.Database.CanConnectAsync())
-                {
-                    Console.WriteLine("No se puede conectar a la base de datos");
+                if (!await _context.Database.CanConnectAsync()) 
+                { 
                     return null;
                 }
 
@@ -138,7 +125,6 @@ namespace Proyecto_camiones.Repositories
             {
                 if (!await _context.Database.CanConnectAsync())
                 {
-                    Console.WriteLine("No se puede conectar a la base de datos");
                     return null;
                 }
 

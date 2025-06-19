@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Proyecto_camiones.Repositories;
 using Proyecto_camiones.Services;
+using System.Windows.Forms;
 
 namespace Proyecto_camiones.ViewModels
 {
@@ -141,7 +142,7 @@ namespace Proyecto_camiones.ViewModels
         }
 
         // Método para actualizar un viaje
-        public async Task<Result<bool>> ActualizarAsync(
+        public async Task<Result<bool>> ActualizarAsync (
             int id,
             DateOnly? fechaInicio = null,
             string? lugarPartida = null,
@@ -156,6 +157,7 @@ namespace Proyecto_camiones.ViewModels
             string? nombreChofer = null,
             float? porcentaje = null)
         {
+            MessageBox.Show("hola");
             if (await this.TestearConexion())
             {
                 var resultado = await _viajeService.ActualizarAsync(

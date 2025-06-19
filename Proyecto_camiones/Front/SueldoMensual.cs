@@ -41,7 +41,13 @@ internal class SueldoMensual : FormRegistro
 
             List<string> camposFaltantesTabla = new List<string> { "Total", "Monto chofer" };
 
-            ViajeFiltro form = new ViajeFiltro(dato, cantCamposTabla, campos, filtro, camposFaltantesTabla, null);
+            List<string> camposLista = new List<string>();
+            foreach (string i in campos)
+            {
+                camposLista.Add(i);
+            }
+            FormRegistro form = new FormRegistro(camposLista, cantCamposTabla, dato, filtro, camposFaltantesTabla, " ");
+            form.Show();
         };  
     }
 }

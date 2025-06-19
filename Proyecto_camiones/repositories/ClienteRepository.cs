@@ -164,13 +164,9 @@ namespace Proyecto_camiones.Presentacion.Repositories
                     {
                         cliente = match.Value.cliente;
                         double similitud = match.Value.similitud;
-
-                        Console.WriteLine(
-                            $"Cliente con nombre {nombre_cliente} no encontrado, Match {cliente.Nombre} con una similitud de {similitud}");
                     }
                     else
                     {
-                        Console.WriteLine($"Cliente con nombre {nombre_cliente} no encontrado");
                         return null;
                     }
                 }
@@ -179,7 +175,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
                 return null;
             }
         }
@@ -220,7 +215,6 @@ namespace Proyecto_camiones.Presentacion.Repositories
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error en búsqueda híbrida de cliente: {ex.Message}");
                 return null;
             }
         }
