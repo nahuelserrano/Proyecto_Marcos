@@ -183,18 +183,18 @@ namespace Proyecto_camiones.Presentacion.Services
         }
 
         public async Task<Result<bool>> ActualizarAsync(
-    int id,
-    DateOnly? fechaInicio = null,
-    string? lugarPartida = null,
-    string? destino = null,
-    int? remito = null,
-    float? kg = null,
-    string? carga = null,
-    string? nombreCliente = null,
-    float? km = null,
-    float? tarifa = null,
-    string? chofer = null,
-    float? porcentaje = null)
+            int id,
+            DateOnly? fechaInicio = null,
+            string? lugarPartida = null,
+            string? destino = null,
+            int? remito = null,
+            float? kg = null,
+            string? carga = null,
+            string? nombreCliente = null,
+            float? km = null,
+            float? tarifa = null,
+            string? chofer = null,
+            float? porcentaje = null)
         {
             if (id <= 0)
                 return Result<bool>.Failure(MensajeError.IdInvalido(id));
@@ -278,19 +278,24 @@ namespace Proyecto_camiones.Presentacion.Services
                     Console.WriteLine("Viaje actualizado exitosamente");
 
                     // Obtener el viaje actualizado para calcular la ganancia
-                    var viajeActualizado = await _viajeRepository.ObtenerPorIdAsync(id);
-                    if (viajeActualizado == null)
-                        return Result<bool>.Failure("No se pudo obtener el viaje actualizado");
+                    if (HayQueModificarPago(tarifa, idChofer, kg))
+                    {
+                        var viajeActualizado = await _viajeRepository.ObtenerPorIdAsync(id);
+
+                        if (viajeActualizado == null)
+                            return Result<bool>.Failure("No se pudo obtener el viaje actualizado");
+
+                        var pagoResult = await _pagoService.ActualizarAsync((int)idChofer, id, viajeActualizado.GananciaChofer);
+                        Console.WriteLine("Intentando actualizar pago");
+
+                        if (!pagoResult.IsSuccess)
+                        {
+                            Console.WriteLine($"Error al actualizar pago: {pagoResult.Error}");
+                            return Result<bool>.Failure($"No se pudo actualizar el pago asociado al viaje: {pagoResult.Error}");
+                        }
+                    }
 
                     // Actualizar el pago asociado al viaje
-                    var pagoResult = await _pagoService.ActualizarAsync((int)idChofer, id, viajeActualizado.GananciaChofer);
-                    Console.WriteLine("Intentando actualizar pago");
-
-                    if (!pagoResult.IsSuccess)
-                    {
-                        Console.WriteLine($"Error al actualizar pago: {pagoResult.Error}");
-                        return Result<bool>.Failure($"No se pudo actualizar el pago asociado al viaje: {pagoResult.Error}");
-                    }
 
                     scope.Complete();
                     Console.WriteLine("Transacción completada exitosamente");
@@ -442,6 +447,11 @@ namespace Proyecto_camiones.Presentacion.Services
                 return !result.Value.Pagado;
 
             return false;
+        }
+
+        private bool HayQueModificarPago(float? tarifa, int? idChofer, float? kg)
+        {
+            return tarifa.HasValue || idChofer.HasValue || kg.HasValue;
         }
     }
 }

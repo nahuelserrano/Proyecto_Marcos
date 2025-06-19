@@ -38,8 +38,8 @@ internal class ViajeFiltro : Home
     {
         FormRegistro formulario = new FormRegistro(campos, cant, dato, filtro, camposFaltantesTablas, choferCamion);
         formulario.TopLevel = true;
-        this.Close();
         formulario.ShowDialog();
+        this.Close();
     }
 
 

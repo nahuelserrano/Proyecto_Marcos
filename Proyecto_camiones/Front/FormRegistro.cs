@@ -963,14 +963,27 @@ public class FormRegistro : Home
                         string remito = cheq.Rows[e.RowIndex].Cells["RTO o CPE"].Value.ToString();
                         string carga = cheq.Rows[e.RowIndex].Cells["Carga"].Value.ToString();
                         string km = cheq.Rows[e.RowIndex].Cells["Km"].Value.ToString();
-                        string kg = cheq.Rows[e.RowIndex].Cells["Kg"].Value.ToString();
+                        string kg = cheq.Rows[e.RowIndex].Cells["Toneladas"].Value.ToString();
                         string tarifa = cheq.Rows[e.RowIndex].Cells["Tarifa"].Value.ToString();
                         string chofer = cheq.Rows[e.RowIndex].Cells["Chofer"].Value.ToString();
                         string cliente = cheq.Rows[e.RowIndex].Cells["Cliente"].Value.ToString();
                         string porcentaje = cheq.Rows[e.RowIndex].Cells["Porcentaje"].Value.ToString();
                         string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
-
-                        var result = await vvm.ActualizarAsync(int.Parse(id), DateOnly.Parse(fecha), origen, destino, int.Parse(remito), carga, int.Parse(kg), dato, float.Parse(km), float.Parse(tarifa), chofer, float.Parse(porcentaje));
+                            
+                        var result = await vvm.ActualizarAsync(
+                            id: int.Parse(id),
+                            fechaInicio: DateOnly.Parse(fecha),
+                            lugarPartida: origen,
+                            destino: destino,
+                            remito: int.Parse(remito),
+                            carga: carga,
+                            kg: float.Parse(kg),               
+                            nombreCliente: cliente,            
+                            km: float.Parse(km),
+                            tarifa: float.Parse(tarifa),
+                            nombreChofer: chofer,
+                            porcentaje: float.Parse(porcentaje)
+                        );
 
                         if (result.IsSuccess)
                         {
@@ -1031,7 +1044,7 @@ public class FormRegistro : Home
                         string remito = cheq.Rows[e.RowIndex].Cells["RTO o CPE"].Value.ToString();
                         string carga = cheq.Rows[e.RowIndex].Cells["Carga"].Value.ToString();
                         string km = cheq.Rows[e.RowIndex].Cells["Km"].Value.ToString();
-                        string kg = cheq.Rows[e.RowIndex].Cells["Kg"].Value.ToString();
+                        string kg = cheq.Rows[e.RowIndex].Cells["Toneladas"].Value.ToString();
                         string tarifa = cheq.Rows[e.RowIndex].Cells["Tarifa"].Value.ToString();
                         string factura = cheq.Rows[e.RowIndex].Cells["Factura"].Value.ToString();
                         string cliente = cheq.Rows[e.RowIndex].Cells["Cliente"].Value.ToString();

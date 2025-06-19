@@ -39,6 +39,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             try
             {
                 var sueldo = new Sueldo(monto, Id_Chofer, pagadoDesde, pagadoHasta, idCamion);
+
                 if(fecha_pago != null)
                 {
                     sueldo.FechaPago = fecha_pago;

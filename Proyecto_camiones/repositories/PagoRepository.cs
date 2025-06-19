@@ -113,8 +113,9 @@ namespace Proyecto_camiones.Repositories
                     foreach (var pago in pagosModificar)
                     {
                         pago.Pagado = pagado;
+
                         if(id_Sueldo!=null)
-                        pago.Id_sueldo = id_Sueldo;
+                            pago.Id_sueldo = id_Sueldo;
                     }
 
                 }

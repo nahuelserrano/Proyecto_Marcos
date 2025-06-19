@@ -108,11 +108,9 @@ namespace Proyecto_camiones.Tests
                     Console.WriteLine($"[ÉXITO] Sueldo creado con ID: {resultado.Value}");
                     return resultado.Value;
                 }
-                else
-                {
-                    Console.WriteLine($"[ERROR] No se pudo crear el sueldo: {resultado.Error}");
-                    return -1;
-                }
+                
+                Console.WriteLine($"[ERROR] No se pudo crear el sueldo: {resultado.Error}");
+                return -1;
             }
             catch (Exception ex)
             {

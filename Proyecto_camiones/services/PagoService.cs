@@ -67,6 +67,14 @@ namespace Proyecto_camiones.Services
 
             try
             {
+                var pago = await _pagoRepository.ObtenerPorIdViajeAsync(id_viaje);
+
+                if (pago == null)
+                    return Result<bool>.Failure($"No se encontró un pago para el viaje con ID: {id_viaje}");
+
+                if (pago.Pagado)
+                    return Result<bool>.Failure("No se pudo actualizar el pago ya que el mismo ya se encuentra pagado");
+
                 // CORREGIR EL ERROR DE SINTAXIS
                 bool actualizado = await _pagoRepository.ActualizarAsync(id_chofer, id_viaje, monto_pagado);
 
@@ -74,7 +82,7 @@ namespace Proyecto_camiones.Services
                 {
                     return Result<bool>.Success(actualizado);
                 }
-                return Result<bool>.Failure("No se pudo actualizar el pago ya que el mismo ya se encuentra pagado");
+                return Result<bool>.Failure(MensajeError.ErrorEliminacion(nameof(Pago)));
             }
             catch (Exception ex)
             {
