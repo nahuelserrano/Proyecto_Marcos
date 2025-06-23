@@ -43,6 +43,8 @@ namespace Proyecto_camiones
             {
                 Console.WriteLine(result.Error);
             }
+
+             
         }
     }
 }

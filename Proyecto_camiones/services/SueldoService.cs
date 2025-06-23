@@ -10,7 +10,7 @@ using System.Transactions;
 
 namespace Proyecto_camiones.Presentacion.Services
 {
-    class SueldoService
+    public class SueldoService
     {
         private SueldoRepository _sueldoRepository;
         private PagoService _pagoService;
@@ -31,7 +31,7 @@ namespace Proyecto_camiones.Presentacion.Services
             ClienteService cs = new ClienteService(clr);
             ChoferRepository chr = new ChoferRepository();
             this._choferService = new ChoferService(chr);
-            this._viajeService = new ViajeService(vr, _camionService, cs, _choferService, pagoS);
+            this._viajeService = new ViajeService(vr, _camionService, cs, _choferService, pagoS,this);
         }
 
 
@@ -193,9 +193,12 @@ namespace Proyecto_camiones.Presentacion.Services
 
 
             var pagoExistente = await _sueldoRepository.ObtenerPorId(id);
-
+            
             if (pagoExistente == null)
                 return Result<SueldoDTO>.Failure("No se encontró el pago con el ID proporcionado.");
+
+            if (pagoExistente.Pagado)
+                return Result<SueldoDTO>.Failure("No se logro actualizar el sueldo correspondiente, se encuentra pagado.");
 
             if (monto == null && Id_Chofer == null && pagadoDesde == null && pagadoHasta == null && FechaPago == null)
                 return Result<SueldoDTO>.Failure("No se proporcionó ningún dato para actualizar.");
@@ -224,5 +227,14 @@ namespace Proyecto_camiones.Presentacion.Services
             }
             return Result<SueldoDTO>.Failure("No se pudo realizar la actualización");
         }
-    }
+
+        public async Task<Result<SueldoDTO>> ObtenerPorIdAsync(int id)
+        {
+            if (id <= 0)
+                return Result<SueldoDTO>.Failure(MensajeError.IdInvalido(id));
+            SueldoDTO? sueldo = await _sueldoRepository.ObtenerPorId(id);
+            if (sueldo == null)
+                return Result<SueldoDTO>.Failure("No se encontró el sueldo con el ID proporcionado.");
+            return Result<SueldoDTO>.Success(sueldo);
+        }
 }

@@ -19,6 +19,7 @@ namespace Proyecto_camiones.Presentacion.Services
         private readonly ClienteService _clienteService;
         private readonly ChoferService _choferService;
         private readonly PagoService _pagoService;
+        private readonly SueldoService _sueldoService;
         //private int Porcentaje = 100;
         //private int Tonelada = 1000;
 
@@ -27,14 +28,16 @@ namespace Proyecto_camiones.Presentacion.Services
             CamionService camionService,
             ClienteService clienteService,
             ChoferService choferService,
-            PagoService pagoService)
+            PagoService pagoService,
+            SueldoService sueldoService)
         {
             _viajeRepository = viajeRepository ?? throw new ArgumentNullException(nameof(viajeRepository));
             _camionService = camionService ?? throw new ArgumentNullException(nameof(camionService));
             _clienteService = clienteService ?? throw new ArgumentNullException(nameof(clienteService));
             _choferService = choferService ?? throw new ArgumentNullException(nameof(choferService));
             _pagoService = pagoService ?? throw new ArgumentNullException(nameof(pagoService));
-        }
+            _sueldoService = sueldoService ?? throw new ArgumentNullException(nameof(sueldoService));
+            }
 
         public async Task<bool> ProbarConexionAsync()
         {
@@ -143,7 +146,7 @@ namespace Proyecto_camiones.Presentacion.Services
                         return Result<int>.Failure(MensajeError.ErrorCreacion(nameof(Viaje)));
 
                     // Crear el pago asociado al viaje
-                    float pagoMonto = tarifa * kg * porcentajeChofer;
+                    float pagoMonto = tarifa * kg * porcentajeChofer/100;
                     // *Tonelada / Porcentaje
 
                     if (idChofer != -1)
@@ -235,11 +238,9 @@ namespace Proyecto_camiones.Presentacion.Services
 
                     idChofer = obtenerChoferResult.Value.Id;
                     chofer = obtenerChoferResult.Value.Nombre;
-<<<<<<< HEAD
-=======
+
 
                     Console.WriteLine($"Nombre obtenido por búsqueda: {chofer}");
->>>>>>> 247f58abec1bc998886bd4905278ad083eba908d
                 }
                 else
                 {
@@ -325,10 +326,33 @@ namespace Proyecto_camiones.Presentacion.Services
 
                 Result<Pago> pago = await _pagoService.ObtenerPorIdViajeAsync(id);
 
-                if (pago.Value == null)
-                    return Result<bool>.Failure("No se encontró el pago asociado al viaje.");
+                if (pago.Value.Pagado) { 
 
-                if (pago.Value.Pagado)
+                    int? IdSueldo = null;
+                    if (pago.Value.Id_sueldo != null)
+                    {
+                        IdSueldo = pago.Value.Id_sueldo;
+                        var sueldo = await _sueldoService.ObtenerPorIdAsync(IdSueldo.Value);
+                       
+                        if (sueldo.Value.Pagado == false) { 
+                                
+                            float montoPagado = pago.Value.Monto_Pagado;
+                       
+                            float montoSueldo = sueldo.Value.Monto_Pagado;
+                            _sueldoService.ActualizarAsync(IdSueldo.Value,montoSueldo-montoPagado,null,null,null).Wait();
+                        }
+                        else
+                        {
+                            return Result<bool>.Failure("El pago asociado a este viaje ya esta pagado, por tanto no se puede eliiminar.");
+                        }
+                    }
+                }
+                else
+                {
+                    _pagoService.EliminarAsync(pago.Value.Id).Wait(); // Eliminar el pago asociado al viaje si no está pagado
+                }
+
+
                     return Result<bool>.Failure("El pago asociado a este viaje ya esta pagado, por tanto no se puede eliiminar.");
 
                 bool seEliminoViaje = await _viajeRepository.EliminarAsync(id);
