@@ -120,6 +120,7 @@ namespace Proyecto_camiones.Services
             }
             return totalPagar;
         }
+
         public async Task<Result<bool>> EliminarAsync(int id)
         {
             if (id <= 0)

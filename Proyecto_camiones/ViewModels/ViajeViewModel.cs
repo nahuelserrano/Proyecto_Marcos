@@ -24,16 +24,18 @@ namespace Proyecto_camiones.ViewModels
             var clienteRepository = new ClienteRepository();
             var choferRepository = new ChoferRepository();
             var pagoRepository = new PagoRepository();
+            var sueldoRepository = new SueldoRepository();
 
             // Creamos los servicios que ViajeService necesita
             var camionService = new CamionService(camionRepository);
             var clienteService = new ClienteService(clienteRepository);
             var choferService = new ChoferService(choferRepository);
             var pagoService = new PagoService(pagoRepository);
+            var sueldoService = new SueldoService(sueldoRepository, pagoService);
 
 
             // Finalmente creamos el servicio de viajes con todas sus dependencias
-            _viajeService = new ViajeService(viajeRepository, camionService, clienteService, choferService, pagoService);
+            _viajeService = new ViajeService(viajeRepository, camionService, clienteService, choferService, pagoService, sueldoService);
         }
 
         // Método para probar la conexión

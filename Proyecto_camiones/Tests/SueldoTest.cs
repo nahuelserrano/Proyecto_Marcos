@@ -438,5 +438,19 @@ namespace Proyecto_camiones.Tests
                 Console.WriteLine($"[EXCEPCIÓN] Error en pruebas de eliminación: {ex.Message}");
             }
         }
+        public static void ProbarActualizarSueldo()
+        {
+            Console.WriteLine("\n=== PROBANDO ACTUALIZACIÓN DE SUELDO ===");
+            try
+            {
+                var sueldoViewModel = new SueldoViewModel();
+                
+                
+               
+            }
+            catch (Exception ex) {
+                Console.WriteLine($"[EXCEPCIÓN] Error al probar actualización de sueldo: {ex.Message}");
+            }
+        }
     }
 }

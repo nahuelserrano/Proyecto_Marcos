@@ -1036,9 +1036,6 @@ public class FormRegistro : Home
                         string cliente = cheq.Rows[e.RowIndex].Cells["Cliente"].Value.ToString();
                         string porcentaje = cheq.Rows[e.RowIndex].Cells["Porcentaje"].Value.ToString();
                         string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
-<<<<<<< HEAD
-                        var result = await vvm.ActualizarAsync(int.Parse(id), DateOnly.Parse(fecha), origen, destino, int.Parse(remito), carga, int.Parse(kg), null, dato, float.Parse(km), float.Parse(tarifa), chofer, float.Parse(porcentaje));
-=======
                             
                         var result = await vvm.ActualizarAsync(
                             id: int.Parse(id),
@@ -1054,7 +1051,6 @@ public class FormRegistro : Home
                             nombreChofer: chofer,
                             porcentaje: float.Parse(porcentaje)
                         );
->>>>>>> 247f58abec1bc998886bd4905278ad083eba908d
 
                         if (result.IsSuccess)
                         {

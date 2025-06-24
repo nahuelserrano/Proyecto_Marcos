@@ -314,7 +314,7 @@ namespace Proyecto_camiones.Presentacion.Services
         public async Task<Result<bool>> EliminarAsync(int id)
         {
             if (id <= 0)
-                return Result<bool>.Failure("ID de viaje inválido.");
+                return Result<bool>.Failure(MensajeError.IdInvalido(id));
 
             try
             {
@@ -326,41 +326,44 @@ namespace Proyecto_camiones.Presentacion.Services
 
                 Result<Pago> pago = await _pagoService.ObtenerPorIdViajeAsync(id);
 
-                if (pago.Value.Pagado) { 
-
-                    int? IdSueldo = null;
-                    if (pago.Value.Id_sueldo != null)
+                using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                {
+                    if (pago.Value.Pagado)
                     {
-                        IdSueldo = pago.Value.Id_sueldo;
-                        var sueldo = await _sueldoService.ObtenerPorIdAsync(IdSueldo.Value);
-                       
-                        if (sueldo.Value.Pagado == false) { 
-                                
-                            float montoPagado = pago.Value.Monto_Pagado;
-                       
-                            float montoSueldo = sueldo.Value.Monto_Pagado;
-                            _sueldoService.ActualizarAsync(IdSueldo.Value,montoSueldo-montoPagado,null,null,null).Wait();
-                        }
-                        else
+                        int? IdSueldo = null;
+                        if (pago.Value.Id_sueldo != null)
                         {
-                            return Result<bool>.Failure("El pago asociado a este viaje ya esta pagado, por tanto no se puede eliiminar.");
+                            IdSueldo = pago.Value.Id_sueldo;
+                            var sueldo = await _sueldoService.ObtenerPorIdAsync(IdSueldo.Value);
+
+                            if (sueldo.Value.Pagado == false)
+                            {
+
+                                float montoPagado = pago.Value.Monto_Pagado;
+                                float montoSueldo = sueldo.Value.Monto_Pagado;
+                                float montoFinal = montoSueldo - montoPagado;
+
+                                if (montoFinal < 1) // Si el monto final es menor a 1 probablemente sea por un error de redondeo
+                                    await _sueldoService.EliminarAsync(IdSueldo.Value);
+
+                                else
+                                    await _sueldoService.ActualizarAsync(IdSueldo.Value, montoFinal, null, null, null);
+                            }
+                            else
+                            {
+                                return Result<bool>.Failure("El pago asociado a este viaje ya esta pagado, por tanto no se puede eliminar.");
+                            }
                         }
                     }
+
+                    bool seEliminoViaje = await _viajeRepository.EliminarAsync(id);
+
+                    if (!seEliminoViaje)
+                        return Result<bool>.Failure(MensajeError.ErrorEliminacion(nameof(Viaje)));
+
+                    scope.Complete();
+                    return Result<bool>.Success(true);
                 }
-                else
-                {
-                    _pagoService.EliminarAsync(pago.Value.Id).Wait(); // Eliminar el pago asociado al viaje si no está pagado
-                }
-
-
-                    return Result<bool>.Failure("El pago asociado a este viaje ya esta pagado, por tanto no se puede eliiminar.");
-
-                bool seEliminoViaje = await _viajeRepository.EliminarAsync(id);
-
-                if (!seEliminoViaje)
-                    return Result<bool>.Failure(MensajeError.ErrorEliminacion(nameof(Viaje)));
-
-                return Result<bool>.Success(true);
             }
             catch (Exception ex)
             {
