@@ -28,7 +28,7 @@ namespace Proyecto_camiones.Front;
 public class FormRegistro : Home
 {
     //Form
-    private NewRoundPanel formPanel = new NewRoundPanel(20);
+    private Panel formPanel = new Panel();
     private FlowLayoutPanel formFLTextBox = new FlowLayoutPanel();
     private FlowLayoutPanel formFLLabel = new FlowLayoutPanel();
 
@@ -53,7 +53,7 @@ public class FormRegistro : Home
     private System.Windows.Forms.Label nombre = new System.Windows.Forms.Label();
 
     //cartel de aviso
-    private NewRoundPanel avisoPanel = new NewRoundPanel(20);
+    private Panel avisoPanel = new Panel();
     private Button btnAceptarAviso = new Button();
 
 
@@ -147,7 +147,6 @@ public class FormRegistro : Home
                         totalGananciaChofer = (decimal)viaje.GananciaChofer;
                     }
                     cheq.Rows.Add(viaje.FechaInicio, viaje.LugarPartida, viaje.Destino, viaje.Remito, viaje.Carga, viaje.Km, viaje.Kg, tarifaDecimal, viaje.PorcentajeChofer, viaje.NombreCliente, viaje.NombreChofer, totalDecimal, totalGananciaChofer, viaje.Id);
-
                 }
             }
 
@@ -194,7 +193,6 @@ public class FormRegistro : Home
                     cheq.Rows.Add(cliente.Fecha_salida, cliente.Origen, cliente.Destino, cliente.Remito, cliente.Carga, cliente.Km, cliente.Kg, tarifaDecimal, cliente.Nombre_chofer, cliente.Camion, cliente.Fletero, totalDecimal, cliente.Id);
                 }
             }
-
             else
             {
                 if (this.InvokeRequired)
@@ -344,8 +342,6 @@ public class FormRegistro : Home
                     }
                 }
             }
-
-
         }
         else if (filtro == "sueldo")
         {
@@ -461,7 +457,6 @@ public class FormRegistro : Home
     }
 
     //FormProperties
-
     private void FormProperties(int cant)
     {
         if (cant > 8)
@@ -476,7 +471,7 @@ public class FormRegistro : Home
 
         this.Resize += (s, e) =>
         {
-            formPanel.Location = new Point((this.Width - formPanel.Width + 15) / 2, 115);
+            formPanel.Location = new Point((this.Width - formPanel.Width + 10) / 2, 115);
         };
     }
     private void LayoutFormProperties(int cant, string filtro)
@@ -523,7 +518,6 @@ public class FormRegistro : Home
             formFLTextBox.Controls.Add(campoPanel);
         }
     }
-
     private FlowLayoutPanel PropertiesFormPanel(string filtro)
     {
         FlowLayoutPanel campoTextBox = new FlowLayoutPanel();
@@ -539,7 +533,6 @@ public class FormRegistro : Home
 
         return campoTextBox;
     }
-
     private Label CreateLabelAndProperties(object campo, string filtro)
     {
         Label ll = new Label();
@@ -604,7 +597,6 @@ public class FormRegistro : Home
         };
         return textBoxCampo;
     }
-
 
     //GridProperties
     private void GridChequesProperties()
@@ -1036,9 +1028,6 @@ public class FormRegistro : Home
                         string cliente = cheq.Rows[e.RowIndex].Cells["Cliente"].Value.ToString();
                         string porcentaje = cheq.Rows[e.RowIndex].Cells["Porcentaje"].Value.ToString();
                         string id = cheq.Rows[e.RowIndex].Cells["Id"].Value.ToString();
-<<<<<<< HEAD
-                        var result = await vvm.ActualizarAsync(int.Parse(id), DateOnly.Parse(fecha), origen, destino, int.Parse(remito), carga, int.Parse(kg), null, dato, float.Parse(km), float.Parse(tarifa), chofer, float.Parse(porcentaje));
-=======
                             
                         var result = await vvm.ActualizarAsync(
                             id: int.Parse(id),
@@ -1054,7 +1043,6 @@ public class FormRegistro : Home
                             nombreChofer: chofer,
                             porcentaje: float.Parse(porcentaje)
                         );
->>>>>>> 247f58abec1bc998886bd4905278ad083eba908d
 
                         if (result.IsSuccess)
                         {
@@ -1171,7 +1159,6 @@ public class FormRegistro : Home
             }
         }
     }
-
     private void AddControls()
     {
         this.Controls.Add(formPanel);
@@ -1195,10 +1182,9 @@ public class FormRegistro : Home
 
             btnVolver.Click += (s, e) =>
             {
-                this.Hide();
                 Viaje vv = new Viaje(filtro);
-                vv.TopLevel = true;
-                vv.Show();
+                this.Hide();
+                vv.ShowDialog(); // Bloquea el anterior y no genera parpadeo
             };
             this.Controls.Add(btnVolver);
         }
@@ -1234,10 +1220,9 @@ public class FormRegistro : Home
 
             btnCuentaCorriente.Click += (s, e) =>
             {
-                this.Hide();
                 CuentaCorriente cuentaCorriente = new CuentaCorriente(dato, filtro);
-                cuentaCorriente.TopLevel = true;
-                cuentaCorriente.Show();
+                this.Hide();
+                cuentaCorriente.ShowDialog(); // Bloquea el anterior y no genera parpadeo
             };
         }
 

@@ -28,22 +28,22 @@ namespace Proyecto_camiones.Front;
 internal class Viaje : Home
 {
     //Filter
-    private NewRoundPanel filter = new NewRoundPanel(20);
+    private Panel filter = new Panel();
     private FlowLayoutPanel filterFL = new FlowLayoutPanel();
 
     private ArrayList buttonsFilter = new ArrayList();
     private ArrayList buttonsNameFilter = new ArrayList();
-    private RoundButton fleteFilter = new RoundButton();
-    private RoundButton camionFilter = new RoundButton();
-    private RoundButton clienteFilter = new RoundButton();
+    private System.Windows.Forms.Button fleteFilter = new System.Windows.Forms.Button();
+    private System.Windows.Forms.Button camionFilter = new System.Windows.Forms.Button();
+    private System.Windows.Forms.Button clienteFilter = new System.Windows.Forms.Button();
 
-    private RoundButton buttonAddNew = new RoundButton();
+    private System.Windows.Forms.Button buttonAddNew = new System.Windows.Forms.Button();
 
     private ArrayList botonesRegistro = new ArrayList();
     private ArrayList nombreBotonesRegistro = new ArrayList();
 
     //Form
-    private NewRoundPanel formCargarSection = new NewRoundPanel(40);
+    private Panel formCargarSection = new Panel();
     private FlowLayoutPanel layourFormSection = new FlowLayoutPanel();
     private System.Windows.Forms.ComboBox select = new System.Windows.Forms.ComboBox();
 
@@ -62,10 +62,9 @@ internal class Viaje : Home
 
     private List<string> camposFaltantesTabla = new List<string>();
 
-
     private int cantCamposTabla = 0;
 
-    private NewRoundPanel avisoPanel = new NewRoundPanel(20);
+    private Panel avisoPanel = new Panel();
     private System.Windows.Forms.Button btnAceptarAviso = new System.Windows.Forms.Button();
     private string filtroActual;
 
@@ -207,7 +206,13 @@ internal class Viaje : Home
             if (resultado.IsSuccess)
             {
                 camionFilter.ForeColor = Color.Yellow;
+                clienteFilter.ForeColor = Color.White;
+                fleteFilter.ForeColor = Color.White;
+
                 camionFilter.Font = new Font("Nunito", 20, FontStyle.Regular);
+                clienteFilter.Font = new Font("Nunito", 16, FontStyle.Regular);
+                fleteFilter.Font = new Font("Nunito", 16, FontStyle.Regular);
+
                 CardCamionGenerator("Camion", resultado);
             }
             else
@@ -230,7 +235,13 @@ internal class Viaje : Home
             if (resultado.IsSuccess)
             {
                 clienteFilter.ForeColor = Color.Yellow;
+                camionFilter.ForeColor = Color.White;
+                fleteFilter.ForeColor = Color.White;
+
                 clienteFilter.Font = new Font("Nunito", 20, FontStyle.Regular);
+                camionFilter.Font = new Font("Nunito", 16, FontStyle.Regular);
+                fleteFilter.Font = new Font("Nunito", 16, FontStyle.Regular);
+
                 CardClienteGenerator("Cliente", resultado);
             }
             else
@@ -252,7 +263,13 @@ internal class Viaje : Home
             if (resultado.IsSuccess)
             {
                 fleteFilter.ForeColor = Color.Yellow;
+                clienteFilter.ForeColor = Color.White;
+                camionFilter.ForeColor = Color.White;
+
                 fleteFilter.Font = new Font("Nunito", 20, FontStyle.Regular);
+                camionFilter.Font = new Font("Nunito", 16, FontStyle.Regular);
+                clienteFilter.Font = new Font("Nunito", 16, FontStyle.Regular);
+
                 CardFleteGenerator("Flete", resultado);
             }
             else
@@ -404,9 +421,8 @@ internal class Viaje : Home
                 camposLista.Add(i);
             }
             FormRegistro form = new FormRegistro(camposLista, cantCamposTabla, item.nombre, filtro, camposFaltantesTabla, " ");
-            form.TopLevel = true;
             this.Hide();
-            form.Show();
+            form.ShowDialog(); // Bloquea el anterior y no genera parpadeo
         };
     }
 
@@ -836,6 +852,7 @@ internal class Viaje : Home
     {
         filtroActual = filtro; // Guardamos el filtro actual
 
+        BackToInitialState();
         cardsContainerFL.Controls.Clear();
 
         buttonAddNew.Visible = true;
@@ -855,6 +872,18 @@ internal class Viaje : Home
 
         AddButtonNewAdd();
     }   
+
+    private void BackToInitialState()
+    {
+        camionFilter.ForeColor = Color.White;
+        clienteFilter.ForeColor = Color.White;
+        fleteFilter.ForeColor = Color.White;
+
+        clienteFilter.Font = new Font("Nunito", 16, FontStyle.Regular);
+        camionFilter.Font = new Font("Nunito", 16, FontStyle.Regular);
+        fleteFilter.Font = new Font("Nunito", 16, FontStyle.Regular);
+
+    }
 
     private void FormProperties()
     {
@@ -1032,7 +1061,7 @@ internal class Viaje : Home
         // Efectos hover
         buttonAcept.MouseEnter += (s, e) => {
             buttonAcept.BackColor = System.Drawing.Color.FromArgb(67, 160, 71);
-            buttonAcept.Transform = true; // Efecto de elevación
+            //buttonAcept.Transform = true; // Efecto de elevación
         };
         buttonAcept.MouseLeave += (s, e) => {
             buttonAcept.BackColor = System.Drawing.Color.FromArgb(76, 175, 80);
@@ -1050,9 +1079,7 @@ internal class Viaje : Home
         if (buttonAcept.Parent != null && formCargarSection != null)
         {
             buttonAcept.Location = new Point(
-                (formCargarSection.Width - buttonAcept.Width) / 2,
-                230
-                // Posición Y fija
+                (formCargarSection.Width - buttonAcept.Width) / 2, 230
             );
         }
     }
@@ -1156,6 +1183,4 @@ internal class Viaje : Home
     {
         FormAddNew(sender, e, filtroActual);
     }
-
-
 }

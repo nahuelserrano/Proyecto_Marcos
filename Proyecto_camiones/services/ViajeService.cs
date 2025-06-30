@@ -235,11 +235,8 @@ namespace Proyecto_camiones.Presentacion.Services
 
                     idChofer = obtenerChoferResult.Value.Id;
                     chofer = obtenerChoferResult.Value.Nombre;
-<<<<<<< HEAD
-=======
 
                     Console.WriteLine($"Nombre obtenido por búsqueda: {chofer}");
->>>>>>> 247f58abec1bc998886bd4905278ad083eba908d
                 }
                 else
                 {

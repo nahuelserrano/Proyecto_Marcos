@@ -28,7 +28,7 @@ namespace Proyecto_camiones.Front
             btnVolver.Size = new Size(140, 40);
             btnVolver.FlatAppearance.BorderSize = 0;
             btnVolver.FlatStyle = FlatStyle.Flat;
-            btnVolver.Location = new Point(40, 100);
+            btnVolver.Location = new Point(40, 130);
             btnVolver.Font = new Font("Nunito", 16, FontStyle.Regular);
             btnVolver.BackColor = System.Drawing.Color.FromArgb(48, 48, 48);
             btnVolver.ForeColor = System.Drawing.Color.FromArgb(218, 218, 28);
@@ -48,9 +48,8 @@ namespace Proyecto_camiones.Front
                     camposLista.Add(i);
                 }
                 FormRegistro form = new FormRegistro(camposLista, cantCamposTabla, dato, filtro, camposFaltantesTabla, " ");
-                form.TopLevel = true;
-                form.Show();
-
+                this.Hide();
+                form.ShowDialog(); // Bloquea el anterior y no genera parpadeo
                 this.Controls.Add(btnVolver);
             };
         }

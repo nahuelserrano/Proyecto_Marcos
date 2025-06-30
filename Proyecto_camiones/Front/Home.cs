@@ -35,6 +35,7 @@ public class Home : Form
         // Cierra el formulario activo si existe
         if (activeForm != null)
         {
+            activeForm.Close();
             activeForm = null;
             activeForm.Close();
         }
@@ -65,8 +66,6 @@ public class Home : Form
             menuItem.ForeColor = System.Drawing.Color.FromArgb(218, 218, 28);
         }
     }
-
-
 
     //Initializations
     private void InitializeUI()
@@ -131,23 +130,6 @@ public class Home : Form
             MessageBox.Show("La imagen no se encuentra: " + iconoApp);
         }
     }
-    //private void InitializeIconoUser()
-    //{
-    //    string icono_user = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "icono_user.png");
-
-
-    //    if (File.Exists(icono_user))
-    //    {
-    //        userMenu.Image = Image.FromFile(icono_user);
-    //    }
-    //    else
-    //    {
-    //        MessageBox.Show("La imagen no se encuentra: " + icono_user);
-    //    }
-    //}
-
-
-
 
     //Adds
     private void AddItemsToMenu()
@@ -158,9 +140,6 @@ public class Home : Form
         this.MainMenuStrip = menuStrip;
         this.Controls.Add(menuStrip);
     }
-
-
-
 
     //NavProperties
     private void ItemsCapitalLetter()
@@ -182,9 +161,6 @@ public class Home : Form
     {
         viajesMenu.ForeColor = System.Drawing.Color.FromArgb(218, 218, 28);
         chequesMenu.ForeColor = System.Drawing.Color.FromArgb(218, 218, 28);
-
-        //viajesMenu.ForeColor = System.Drawing.Color.FromArgb(76, 175, 80);
-        //chequesMenu.ForeColor = System.Drawing.Color.FromArgb(76, 175, 80);
     }
     private void MarginToItems()
     {
