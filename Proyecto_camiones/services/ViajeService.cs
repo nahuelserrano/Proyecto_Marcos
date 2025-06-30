@@ -19,6 +19,7 @@ namespace Proyecto_camiones.Presentacion.Services
         private readonly ClienteService _clienteService;
         private readonly ChoferService _choferService;
         private readonly PagoService _pagoService;
+        private readonly SueldoService _sueldoService;
         //private int Porcentaje = 100;
         //private int Tonelada = 1000;
 
@@ -27,14 +28,16 @@ namespace Proyecto_camiones.Presentacion.Services
             CamionService camionService,
             ClienteService clienteService,
             ChoferService choferService,
-            PagoService pagoService)
+            PagoService pagoService,
+            SueldoService sueldoService)
         {
             _viajeRepository = viajeRepository ?? throw new ArgumentNullException(nameof(viajeRepository));
             _camionService = camionService ?? throw new ArgumentNullException(nameof(camionService));
             _clienteService = clienteService ?? throw new ArgumentNullException(nameof(clienteService));
             _choferService = choferService ?? throw new ArgumentNullException(nameof(choferService));
             _pagoService = pagoService ?? throw new ArgumentNullException(nameof(pagoService));
-        }
+            _sueldoService = sueldoService ?? throw new ArgumentNullException(nameof(sueldoService));
+            }
 
         public async Task<bool> ProbarConexionAsync()
         {
@@ -143,7 +146,7 @@ namespace Proyecto_camiones.Presentacion.Services
                         return Result<int>.Failure(MensajeError.ErrorCreacion(nameof(Viaje)));
 
                     // Crear el pago asociado al viaje
-                    float pagoMonto = tarifa * kg * porcentajeChofer;
+                    float pagoMonto = tarifa * kg * porcentajeChofer/100;
                     // *Tonelada / Porcentaje
 
                     if (idChofer != -1)
@@ -236,6 +239,7 @@ namespace Proyecto_camiones.Presentacion.Services
                     idChofer = obtenerChoferResult.Value.Id;
                     chofer = obtenerChoferResult.Value.Nombre;
 
+
                     Console.WriteLine($"Nombre obtenido por búsqueda: {chofer}");
                 }
                 else
@@ -310,7 +314,7 @@ namespace Proyecto_camiones.Presentacion.Services
         public async Task<Result<bool>> EliminarAsync(int id)
         {
             if (id <= 0)
-                return Result<bool>.Failure("ID de viaje inválido.");
+                return Result<bool>.Failure(MensajeError.IdInvalido(id));
 
             try
             {
@@ -322,18 +326,44 @@ namespace Proyecto_camiones.Presentacion.Services
 
                 Result<Pago> pago = await _pagoService.ObtenerPorIdViajeAsync(id);
 
-                if (pago.Value == null)
-                    return Result<bool>.Failure("No se encontró el pago asociado al viaje.");
+                using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                {
+                    if (pago.Value.Pagado)
+                    {
+                        int? IdSueldo = null;
+                        if (pago.Value.Id_sueldo != null)
+                        {
+                            IdSueldo = pago.Value.Id_sueldo;
+                            var sueldo = await _sueldoService.ObtenerPorIdAsync(IdSueldo.Value);
 
-                if (pago.Value.Pagado)
-                    return Result<bool>.Failure("El pago asociado a este viaje ya esta pagado, por tanto no se puede eliiminar.");
+                            if (sueldo.Value.Pagado == false)
+                            {
 
-                bool seEliminoViaje = await _viajeRepository.EliminarAsync(id);
+                                float montoPagado = pago.Value.Monto_Pagado;
+                                float montoSueldo = sueldo.Value.Monto_Pagado;
+                                float montoFinal = montoSueldo - montoPagado;
 
-                if (!seEliminoViaje)
-                    return Result<bool>.Failure(MensajeError.ErrorEliminacion(nameof(Viaje)));
+                                if (montoFinal < 1) // Si el monto final es menor a 1 probablemente sea por un error de redondeo
+                                    await _sueldoService.EliminarAsync(IdSueldo.Value);
 
-                return Result<bool>.Success(true);
+                                else
+                                    await _sueldoService.ActualizarAsync(IdSueldo.Value, montoFinal, null, null, null);
+                            }
+                            else
+                            {
+                                return Result<bool>.Failure("El pago asociado a este viaje ya esta pagado, por tanto no se puede eliminar.");
+                            }
+                        }
+                    }
+
+                    bool seEliminoViaje = await _viajeRepository.EliminarAsync(id);
+
+                    if (!seEliminoViaje)
+                        return Result<bool>.Failure(MensajeError.ErrorEliminacion(nameof(Viaje)));
+
+                    scope.Complete();
+                    return Result<bool>.Success(true);
+                }
             }
             catch (Exception ex)
             {

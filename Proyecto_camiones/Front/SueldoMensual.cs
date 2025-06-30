@@ -11,17 +11,17 @@ internal class SueldoMensual : FormRegistro
     public SueldoMensual(string dato, string filtro, string nombreChofer)
         : base(new List<string> { "Fecha inicial", "Fecha final", "Chofer" }, 3, dato, "sueldo", new List<string> { "Rango fechas", "Chofer", "Sueldo" }, nombreChofer)
     {
-        InitializeUI(dato, filtro);
+        InitializeUI(dato, filtro, nombreChofer);
     }
 
-    private void InitializeUI(string dato, string filtro)
+    private void InitializeUI(string dato, string filtro, string nombreChofer)
     {
         this.Controls.Add(btnVolver);
         ResaltarBoton(viajesMenu);
-        BtnVolverProperties(dato, filtro);
+        BtnVolverProperties(dato, filtro, nombreChofer);
     }
 
-    private void BtnVolverProperties(string dato, string filtro)
+    private void BtnVolverProperties(string dato, string filtro, string nombreChofer)
     {
         btnVolver.Text = "Volver";
         btnVolver.Size = new Size(140, 40);
@@ -46,7 +46,7 @@ internal class SueldoMensual : FormRegistro
             {
                 camposLista.Add(i);
             }
-            FormRegistro form = new FormRegistro(camposLista, cantCamposTabla, dato, filtro, camposFaltantesTabla, " ");
+            FormRegistro form = new FormRegistro(camposLista, cantCamposTabla, dato, filtro, camposFaltantesTabla, nombreChofer);
             form.Show();
         };  
     }

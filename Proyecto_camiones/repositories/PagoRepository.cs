@@ -41,7 +41,26 @@ namespace Proyecto_camiones.Repositories
                 return false;
             }
         }
+        public async Task<bool> EliminarAsync(int id)
+        {
+            try
+            {
+                var pago = await _context.Pagos.FindAsync(id);
 
+                if (pago == null)
+                    return false;
+
+                _context.Pagos.Remove(pago);
+
+                await _context.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
         public async Task<Pago?> ObtenerPorIdViajeAsync(int idViaje)
         {
             try

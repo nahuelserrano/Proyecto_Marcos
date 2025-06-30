@@ -836,6 +836,10 @@ public class FormRegistro : Home
             else if (filtro == "sueldo")
             {
                 SueldoViewModel svm = new SueldoViewModel();
+                if (datos[2] == "Chofer")
+                {
+                    datos[2] = clienteO_Flete;
+                }
                 var resultado = await svm.CrearAsync(datos[2], DateOnly.Parse(datos[0]), DateOnly.Parse(datos[1]), null, dato);
                 if (resultado.IsSuccess)
                 {
@@ -1233,7 +1237,7 @@ public class FormRegistro : Home
     {
         if (filtro == "Camion")
         {
-            btnSueldoMensual.Text = "Ver sueldo mensual";
+            btnSueldoMensual.Text = "Ver sueldo";
             btnSueldoMensual.Size = new Size(180, 40);
             btnSueldoMensual.FlatAppearance.BorderSize = 0;
             btnSueldoMensual.FlatStyle = FlatStyle.Flat;

@@ -283,19 +283,19 @@ namespace Proyecto_camiones.Front
             {
                 foreach (DataGridViewRow row in cheq.Rows)
                 {
-                    if (row.Cells["nroPersonal"].Value != null && row.Cells["nroPersonal"].Value.ToString().ToLower().Contains(filterTextBox.Text.ToLower()))
-                    {
-                        row.Visible = true;
-                    }
-                    if (row.Cells["nroPersonal"].Value != null && !row.Cells["nroPersonal"].Value.ToString().ToLower().Contains(filterTextBox.Text.ToLower()))
-                    {
-                        row.Visible = false;
-                    }
                     if (row.Cells["banco"].Value != null && row.Cells["banco"].Value.ToString().ToLower().Contains(filterTextBox.Text.ToLower()))
                     {
                         row.Visible = true;
                     }
                     if (row.Cells["banco"].Value != null && !row.Cells["banco"].Value.ToString().ToLower().Contains(filterTextBox.Text.ToLower()))
+                    {
+                        row.Visible = false;
+                    }
+                    if (row.Cells["nombre"].Value != null && row.Cells["nombre"].Value.ToString().ToLower().Contains(filterTextBox.Text.ToLower()))
+                    {
+                        row.Visible = true;
+                    }
+                    if (row.Cells["nombre"].Value != null && !row.Cells["nombre"].Value.ToString().ToLower().Contains(filterTextBox.Text.ToLower()))
                     {
                         row.Visible = false;
                     }

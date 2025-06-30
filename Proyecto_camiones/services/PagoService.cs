@@ -39,6 +39,7 @@ namespace Proyecto_camiones.Services
                 return Result<Pago>.Failure($"Error al obtener los pagos: {ex.Message}");
             }
         }
+       
         public async Task<int> CrearAsync(int id_chofer, int id_viaje, float monto_pagado)
         {
             try
@@ -118,6 +119,25 @@ namespace Proyecto_camiones.Services
                 totalPagar += pago.Monto_Pagado;
             }
             return totalPagar;
+        }
+
+        public async Task<Result<bool>> EliminarAsync(int id)
+        {
+            if (id <= 0)
+                return Result<bool>.Failure(MensajeError.IdInvalido(id));
+            try
+            {
+                bool eliminado = await _pagoRepository.EliminarAsync(id);
+                if (eliminado)
+                {
+                    return Result<bool>.Success(eliminado);
+                }
+                return Result<bool>.Failure(MensajeError.ErrorEliminacion(nameof(Pago)));
+            }
+            catch (Exception ex)
+            {
+                return Result<bool>.Failure($"Error al eliminar el pago: {ex.Message}");
+            }
         }
     }
 }

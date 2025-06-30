@@ -90,6 +90,33 @@ namespace Proyecto_camiones.Presentacion.Repositories
                 return null;
             }
         }
+        public async Task<SueldoDTO?> DespagarSueldo(int id)
+        {
+            try
+            {
+                var sueldo = await _context.Sueldos.FindAsync(id);
+
+                if (sueldo == null)
+                    return null;
+
+                sueldo.Pagado = false;
+
+                int registrosAfectados = await _context.SaveChangesAsync();
+
+                if (registrosAfectados > 0)
+                {
+                    return new SueldoDTO(sueldo.Id, sueldo.Monto, sueldo.Id_Chofer, sueldo.pagadoDesde, sueldo.pagadoHasta, sueldo.FechaPago, sueldo.Pagado, sueldo.IdCamion, null);
+                }
+                return null;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al pagar sueldo: {ex.Message}");
+                Console.WriteLine(ex.InnerException);
+                return null;
+            }
+        }
 
 
 
@@ -113,7 +140,7 @@ namespace Proyecto_camiones.Presentacion.Repositories
             );
 
             return sueldoS;
-      }
+        }
 
 
         public async Task<List<SueldoDTO>?> ObtenerTodosAsync(int idCamionParametro, int? idChofer)
