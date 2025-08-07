@@ -23,6 +23,6 @@ Esta herramienta fue pensada para optimizar tiempos de carga de datos, mejorar l
 ---
 
 ## 📌 Estado del proyecto
-✔️ Funcionalidad base completa
-🚧 En constante mejora y mantenimiento
-🤝 Desarrollado en equipo bajo buenas prácticas de versionado y colaboración
+- ✔️ Funcionalidad base completa
+- 🚧 En constante mejora y mantenimiento
+- 🤝 Desarrollado en equipo bajo buenas prácticas de versionado y colaboración
